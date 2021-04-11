@@ -6,11 +6,12 @@ import { LikerCounter } from './liker.js'
 import { File } from './file.js'
 import { Media } from './media.js'
 
-import dao from '../image/dao.png'
-import ogu from '../image/ogu.PNG'
+import dao from '../../media/dao.png'
+import ogu from '../../media/ogu.PNG'
 
-import cat from '../image/cat.mp4'
-import piano from '../image/piano.mp4'
+import cat from '../../media/cat.mp4'
+import piano from '../../media/piano.mp4'
+
 // 확장자 대소문자 유의하기
 
 import React, {useState, useEffect} from 'react';
