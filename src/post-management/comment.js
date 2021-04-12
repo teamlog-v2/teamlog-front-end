@@ -10,9 +10,11 @@ import UserInfo from './user.js';
 import { DateInfo } from './datetime.js';
 import { UserTag } from './tag.js'
 
+
 const useStyles = makeStyles((theme) => ({
     comment: {
-        backgroundColor: 'rgb(255, 255, 255)'
+        backgroundColor: 'rgb(255, 255, 255)',
+        textAlign: 'left'
     },
     reply: {
         // display='inline-block' right='0px' width='10%' textAlign='right'
@@ -85,7 +87,9 @@ export const Comment = (props) => {
                 </Box>
 
                 <Box className={classes.reply}>
-                    <ReplyIcon />
+                    <Box>
+                        <ReplyIcon />
+                    </Box>
                 </Box>
                 <Box>
                     <Box display='inline-block' width='90%'>
@@ -96,12 +100,11 @@ export const Comment = (props) => {
                                 )
                             }) : ''
                         }
-
                         <Content content={content} />
                     </Box>
                 </Box>
             </Box>
-
+            <CommentForm/>
         </Box>
     );
 }
@@ -110,7 +113,7 @@ export const CommentForm = (props) => {
     return (
         <Container>
             <Box display='inline-block' width='80%'>
-                <TextField variant='outlined' fullWidth multiline />
+                <TextField  variant='outlined' fullWidth multiline />
             </Box>
             <Box display='inline-block' bgcolor='pink' width='20%'>
                 <Button variant="contained" color="primary" fullWidth>작성</Button>

@@ -18,7 +18,7 @@ export const Postlist = () => {
             {
                 dataList ? dataList.map((item, index) => {
                     return(
-                        <Post postContents = {item}/>
+                        <Post maxWidth = 'md' postContents = {item}/>
                     );
                 }) : ''
             }
