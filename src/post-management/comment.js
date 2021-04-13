@@ -25,7 +25,6 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-
 const Content = (props) => {
     const { content } = props;
 
