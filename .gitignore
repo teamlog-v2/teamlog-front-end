@@ -24,3 +24,9 @@ yarn-error.log*
 
 # api key
 .env
+
+# env
+.env.development
+
+# mock images
+public/images
