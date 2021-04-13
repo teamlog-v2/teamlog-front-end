@@ -21,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
             backgroundColor: fade(theme.palette.common.white, 0.25),
         },
         marginLeft: 0,
-        right: '0px',
         width: '100%',
         [theme.breakpoints.up('sm')]: {
             marginLeft: theme.spacing(1),
@@ -66,11 +65,9 @@ const useStyles = makeStyles((theme) => ({
     },
     toolbarLink: {
         padding: theme.spacing(1),
-        marginLeft: theme.spacing(2),
-        marginsRight: theme.spacing(2),
         marginTop: theme.spacing(1),
         marginBottom: theme.spacing(1),
-        width: '12%',
+        width: '15%',
         fontSize: '1.25em',
         flexShrink: 0,
         textAlign: 'center',

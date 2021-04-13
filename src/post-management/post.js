@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(8),
         display: 'flex',
         flexDirection: 'column',
-        border: '1px solid grey',
+        border: `1px solid ${theme.palette.divider}`,
     },
     header: {
         height: '4em',
@@ -85,7 +85,7 @@ const useStyles = makeStyles((theme) => ({
         marginTop: '0.5em',
         marginBottom: '0.5em',
         cursor: 'pointer',
-        border: '1px solid grey',
+        border: `1px solid ${theme.palette.divider}`,
         textAlign: 'left'
     },
     avatar: {

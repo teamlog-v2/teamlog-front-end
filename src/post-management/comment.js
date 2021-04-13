@@ -38,7 +38,6 @@ const Content = (props) => {
 const Header = (props) => {
     const { userId, imgPath } = props;
     return (
-        // path는 나중에 알아서 정해라
         <Box>
             <UserInfo userId={userId} imgPath={imgPath}></UserInfo>
         </Box>
@@ -76,7 +75,7 @@ export const Comment = (props) => {
     var margin_left = CheckRoot(parent_comment_id);
 
     return (
-        <Box className={classes.comment} border='1px solid grey'>
+        <Box className={classes.comment} border='1px solid `${theme.palette.divider}'>
             <Box marginLeft={margin_left}>
                 <Box display='inline-block' width='90%'>
                     <Header userId={userId} imgPath={imgPath} />
