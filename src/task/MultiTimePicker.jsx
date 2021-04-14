@@ -15,7 +15,7 @@ const MultiTimePicker = (props) => {
       <KeyboardDateTimePicker
         variant="dialog"
         minutesStep={15}
-        label={props.name}
+        label={props.label}
         inputVariant="outlined"
         value={selectedDate}
         onChange={setDate}

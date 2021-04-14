@@ -1,9 +1,10 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import { Grid, Chip, Typography } from '@material-ui/core';
+import { Grid, Chip, Typography, Button, Dialog, Box, CircularProgress, IconButton } from '@material-ui/core';
 import TaskItem from "./TaskItem";
-import TaskCreateDialog from "./TaskCreateDialog"
+import TaskCreateForm from "./TaskCreateForm";
 import { getTasksByProject, updateTaskStatus } from './TaskService'
+import CloseIcon from '@material-ui/icons/Close';
 
 const reorder = (list, droppableSource, droppableDestination) => {
   const result = Array.from(list);
@@ -25,8 +26,13 @@ const move = (source, destination, droppableSource, droppableDestination) => {
 };
 
 const TaskContainer = () => {
-  const [state, setState] = useState([[],[],[],[]]);
+  const [state, setState] = useState([[], [], [], []]);
   const [status] = useState(["진행 전", "진행 중", "완료", "실패"]);
+  const [open, setOpen] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  const handleClickOpen = () => { setOpen(true); };
+  const handleClose = () => { setOpen(false); };
 
   const addTaskInContainer = (task) => {
     const newState = [...state];
@@ -34,24 +40,23 @@ const TaskContainer = () => {
     setState(newState);
   }
 
-  const initializeData = () => {
-    const newState = [...state];
-    newState.map(container => {
-      container.length=0;
-    })
-    setState(newState);
-    getTasksByProject()
-      .then((response) => response.json())
-      .then((tasks) => {
-        tasks.map(task => {
-          addTaskInContainer(task)
-          console.log("gkgk")
-        })
-      })
-  }
-
   useEffect(() => {
-    initializeData();
+    (async () => {
+      setIsLoaded(false);
+      const newState = [...state];
+      newState.map(container => { container.length = 0; })
+      setState(newState);
+      let tasks;
+      try {
+        let response = await getTasksByProject();
+        tasks = await response.json();
+      } catch (err) {
+        alert(err)
+        setIsLoaded(false);
+      }
+      tasks.map(task => { addTaskInContainer(task) })
+      setIsLoaded(true);
+    })();
   }, []);
 
   const onDragEnd = (result) => {
@@ -80,17 +85,49 @@ const TaskContainer = () => {
         .then(res => res.json())
         .then(response => console.log('Success'))
         .catch(error => console.error('Error'))
-
       setState(newState);
     }
+  }
+
+  if (!isLoaded) {
+    return (
+      <Grid
+        container
+        direction="column"
+        justify="center"
+        alignItems="center"
+        style={{ minHeight: '100vh' }}
+      >
+        <Grid item>
+          <CircularProgress />
+        </Grid>
+        <Grid item>
+          <Typography> 태스크 목록을 불러오고 있어요!</Typography>
+        </Grid>
+      </Grid>
+    )
   }
 
   return (
     <>
       <Typography variant="h3">태스크 목록</Typography>
-      <br />
-      <TaskCreateDialog addTaskInContainer={addTaskInContainer} />
-      <br />
+      <Box padding="10px">
+        <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+          + 태스크 생성
+      </Button>
+
+      </Box>
+      <Dialog open={open} onClose={handleClose}>
+        <Box display="flex" alignItems="center">
+          <Box flexGrow={1} />
+          <Box>
+            <IconButton onClick={handleClose}>
+              <CloseIcon />
+            </IconButton>
+          </Box>
+        </Box>
+        <TaskCreateForm addTaskInContainer={addTaskInContainer} />
+      </Dialog>
       <Grid container spacing={2}>
         <DragDropContext onDragEnd={onDragEnd}>
           {state.map((el, ind) => (
@@ -100,7 +137,17 @@ const TaskContainer = () => {
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                 >
-                  <Chip varient="contained" color="primary" label={status[ind]} />
+                  <Grid container spacing={1} alignItems='center'>
+                    <Grid item>
+                      <Chip varient="contained" color="primary" label={status[ind]} />
+                    </Grid>
+                    <Grid item>
+                      <Typography>{state[ind].length}</Typography>
+                    </Grid>
+                  </Grid>
+                  {state[ind].length === 0 ? <Grid>
+                    <p>없어요</p>
+                    </Grid> : null}
                   {el.map((item, index) => (
                     <TaskItem item={item} index={index} />
                   ))}
@@ -111,6 +158,7 @@ const TaskContainer = () => {
           ))}
         </DragDropContext>
       </Grid>
+
     </>
   );
 }

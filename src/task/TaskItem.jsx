@@ -5,15 +5,15 @@ import { Draggable } from "react-beautiful-dnd";
 const getItemStyle = (isDragging, draggableStyle) => ({
   userSelect: "none",
   padding: 10,
-  margin: "0 0 5px 0",
+  margin: "5px 0 5px 0",
   background: isDragging ? "violet" : "white",
 
   // styles we need to apply on draggables
   ...draggableStyle
 });
-export default function TaskItem(props) {
-  return (
 
+const TaskItem = (props) => {
+  return (
     <Draggable
       key={props.item.id+"-"+props.item.taskName}
       draggableId={props.item.id+"-"+props.item.taskName}
@@ -38,3 +38,4 @@ export default function TaskItem(props) {
     </Draggable>
   )
 }
+export default TaskItem;
