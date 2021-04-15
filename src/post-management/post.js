@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
     },
     header: {
         height: '4em',
-        textAlign: 'left'
+        textAlign: 'left',
     },
     tags: {
         width: '100%',
@@ -74,8 +74,8 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'right',
         cursor: 'pointer'
     },
-    position: {
-
+    location: {
+        backgroundColor: 'pink'
     },
     media: {
         textAlign: 'center',
@@ -127,9 +127,8 @@ export const Post = (props) => {
     const classes = useStyles();
 
     return (
-        <Container component="main" maxWidth={maxWidth}>
+        <Container component="main" maxWidth={maxWidth} disableGutters>
             <Box className={classes.paper}>
-                <Container>
                     <Container>
                         <Box className={classes.header}>
                             <Box display='inline-block' width='90%'>
@@ -148,7 +147,7 @@ export const Post = (props) => {
                         </Box>
                     </Container>
                     <Container>
-                        <Box className = {classes.position}>
+                        <Box className = {classes.location}>
                             <RoomIcon/>
                             경상북도 구미시 대학로 61 금오공과대학교 디지털관
                         </Box>
@@ -165,7 +164,8 @@ export const Post = (props) => {
                                 }
                             </Box>
                         </Box>
-
+                    </Container>
+                    <Container>
                         <Box id="mediaBox" className={classes.media}>
                             <Slider {...settings}>
                                 <Media content={cat1}></Media>
@@ -174,10 +174,13 @@ export const Post = (props) => {
                                 <Media content={piano}></Media>
                             </Slider>
                         </Box>
+                    </Container>
+                    <Container>
                         <Box className={classes.content}>
                             <Typography>{postContents.contents}</Typography>
                         </Box>
-
+                    </Container>
+                    <Container>
                         <Box className={classes.files}>
                             <File file='오구.jpg' />
                         </Box>
@@ -211,7 +214,6 @@ export const Post = (props) => {
                         "강소공",
                         "pink"
                     ]} />
-                </Container>
             </Box>
         </Container>
     );

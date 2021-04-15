@@ -15,12 +15,14 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { Avatar } from '@material-ui/core';
+import InputBase from '@material-ui/core/InputBase';
+import Paper from '@material-ui/core/Paper';
 
 
 const useStyles = makeStyles((theme) => ({
     comment: {
         backgroundColor: 'rgb(255, 255, 255)',
-        textAlign: 'left'
+        textAlign: 'left',
     },
     reply: {
         // display='inline-block' right='0px' width='10%' textAlign='right'
@@ -29,12 +31,14 @@ const useStyles = makeStyles((theme) => ({
         width: '10%',
         textAlign: 'right'
     },
+    icon: {
+        cursor: 'pointer'
+    },
     friends: {
         width: '80%',
         // height: '10em',
         zIndex: '500',
         overflow: 'auto',
-        // ...어... 여기서 zIndex 할게 아닌 듯
     }
 }));
 
@@ -75,15 +79,20 @@ const CheckRoot = (parent_comment_id) => {
     return '0.25em';
 }
 
+
+
 export const Comment = (props) => {
     const { userId, imgPath, comment_mention, content, parent_comment_id, userTag } = props;
     const classes = useStyles();
 
     const [tagList, setTagList] = useState([]);
+    const [visibility, setVisibility] = useState('none');
+    
 
     useEffect(() => {
         setTagList(comment_mention);
     }, []);
+
 
     var margin_left = CheckRoot(parent_comment_id);
 
@@ -98,7 +107,7 @@ export const Comment = (props) => {
                 </Box>
 
                 <Box className={classes.reply}>
-                    <Box>
+                    <Box className = {classes.icon} onClick = {() => {if(visibility == 'none') {setVisibility('block')} else {setVisibility('none')}}}>
                         <ReplyIcon />
                     </Box>
                 </Box>
@@ -115,6 +124,7 @@ export const Comment = (props) => {
                     </Box>
                 </Box>
             </Box>
+            
             <CommentForm options={[
                 "신동헌",
                 "신현정",
@@ -126,7 +136,7 @@ export const Comment = (props) => {
                 "이사람",
                 "강소공",
                 "pink"
-            ]} />
+            ]} visibility = {visibility} />
         </Box>
     );
 }
@@ -149,38 +159,18 @@ const FriendList = (props) => {
                     );
                 }) : ''
             }
-
-            {/* <ListItem button>
-                <ListItemIcon>
-                    <Avatar/>
-                </ListItemIcon>
-                <ListItemText primary="이희수" />
-            </ListItem>
-            <ListItem button>
-                <ListItemIcon>
-                    <Avatar/>
-                </ListItemIcon>
-                <ListItemText primary="신현정" />
-            </ListItem>
-            <ListItem button>
-                <ListItemIcon>
-                    <Avatar/>
-                </ListItemIcon>
-                <ListItemText primary="윤진" />
-            </ListItem> */}
         </List>
     );
 }
 
 
-export const CommentForm = ({ options }) => {
+export const CommentForm = ({ options, visibility }) => {
 
     const classes = useStyles();
 
     // const defaultProps = {
     //     options: []
     // };
-
 
     const [state, setState] = useState({
         activeOption: 0,
@@ -302,13 +292,21 @@ export const CommentForm = ({ options }) => {
 
     return (
         <Container>
-            <Box display='inline-block' width='80%'>
-                <Fragment>
-                    <TextField onChange={onChange} onKeyDown={onKeyDown} value={state.userInput} variant='outlined' fullWidth multiline />
+            <Box component="form" display={visibility}>
+                <Box width = '80%' display = 'inline-block'>
+                    <Fragment>
+                <InputBase
+                    className={classes.input}
+                    placeholder="댓글을 입력하세요."
+                    multiline
+                    fullWidth
+                    onChange={onChange} onKeyDown={onKeyDown} value={state.userInput}
+                />
                 </Fragment>
-            </Box>
-            <Box display='inline-block' width='20%'>
-                <Button variant="contained" color="primary" fullWidth>작성</Button>
+                </Box>
+                <Box width='20%' display = 'inline-block'>
+                    <Button fullWidth variant='contained' color='primary'>등록</Button>
+                </Box>
             </Box>
             <Box className={classes.friends}>
                 <FriendList options={filteredOptions} onClick={onClick} />
