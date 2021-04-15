@@ -1,3 +1,4 @@
+import { Box } from '@material-ui/core';
 import React from 'react'
 
 export const Media = (props) => {
@@ -12,29 +13,29 @@ export const Media = (props) => {
 
     if (fileExtention == '.mp4') {
         return (
-            <Video content={content} />
+            <Video content={content} width='100%'/>
         );
     } else if (fileExtention == '.png') {
         return(
-            <Image content={content} />
+            <Image content={content} width='100%' />
         );
         // 조건 더 필요하긴 하겠지만...
     }
 }
 
 const Image = (props) => {
-    const { content } = props;
+    const { content, width, height } = props;
 
     return(
-        <img src = {content}/>
+            <img src = {content} width = {width}/>
     );
 }
 
 const Video = (props) => {
-    const { content } = props;
+    const { content, width, height } = props;
 
     return (
-        <video loop controls>
+        <video width={width} loop controls>
             <source src={content}></source>
         </video>
     );

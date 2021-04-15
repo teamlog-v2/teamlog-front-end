@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Fragment } from 'react';
 import { Container } from '@material-ui/core';
 import { Box } from '@material-ui/core';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
@@ -9,6 +9,12 @@ import ReplyIcon from '@material-ui/icons/Reply';
 import UserInfo from './user.js';
 import { DateInfo } from './datetime.js';
 import { UserTag } from './tag.js'
+import PropTypes from "prop-types";
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import { Avatar } from '@material-ui/core';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -22,6 +28,13 @@ const useStyles = makeStyles((theme) => ({
         right: '0px',
         width: '10%',
         textAlign: 'right'
+    },
+    friends: {
+        width: '80%',
+        // height: '10em',
+        zIndex: '500',
+        overflow: 'auto',
+        // ...어... 여기서 zIndex 할게 아닌 듯
     }
 }));
 
@@ -102,22 +115,205 @@ export const Comment = (props) => {
                     </Box>
                 </Box>
             </Box>
-            <CommentForm/>
+            <CommentForm options={[
+                "신동헌",
+                "신현정",
+                "이희수",
+                "윤진",
+                "오득환",
+                "이현아",
+                "김사람",
+                "이사람",
+                "강소공",
+                "pink"
+            ]} />
         </Box>
     );
 }
 
-export const CommentForm = (props) => {
+const FriendList = (props) => {
+
+    const {options, onClick} = props;
+
+    return (
+        <List>
+            {
+                options ? options.map((item, index) => {
+                    return (
+                        <ListItem button className='option-active' key={item} onClick = {onClick}>
+                            <ListItemIcon>
+                                <Avatar />
+                            </ListItemIcon>
+                            <ListItemText primary={item} />
+                        </ListItem>
+                    );
+                }) : ''
+            }
+
+            {/* <ListItem button>
+                <ListItemIcon>
+                    <Avatar/>
+                </ListItemIcon>
+                <ListItemText primary="이희수" />
+            </ListItem>
+            <ListItem button>
+                <ListItemIcon>
+                    <Avatar/>
+                </ListItemIcon>
+                <ListItemText primary="신현정" />
+            </ListItem>
+            <ListItem button>
+                <ListItemIcon>
+                    <Avatar/>
+                </ListItemIcon>
+                <ListItemText primary="윤진" />
+            </ListItem> */}
+        </List>
+    );
+}
+
+
+export const CommentForm = ({ options }) => {
+
+    const classes = useStyles();
+
+    // const defaultProps = {
+    //     options: []
+    // };
+
+
+    const [state, setState] = useState({
+        activeOption: 0,
+        filteredOptions: [],
+        showOptions: false,
+        userInput: "",
+        tagStartIndex: 1
+    });
+
+    const onChange = (e) => {
+        // 와 근데 서버측으로 넘길거까지 계산하려면 복잡하겠다
+        // 버그가 좀 있어 추후 조금 더 손보기
+        const userInput = e.currentTarget.value;
+        console.log(userInput.length + " " + userInput.charAt(state.tagStartIndex - 1));
+
+        if ((state.tagStartIndex == 1 && userInput.charAt(state.tagStartIndex - 1) == '@')
+        || (state.tagStartIndex != 1 && userInput.charAt(state.tagStartIndex - 1) == '@' && userInput.charAt(state.tagStartIndex - 2) == ' ')) {
+            const filteredOptions = options.filter(
+                (option) => option.toLowerCase().indexOf(userInput.substring(state.tagStartIndex).toLowerCase()) > -1
+            );
+
+            setState({
+                ...state,
+                activeOption: 0,
+                filteredOptions,
+                showOptions: true,
+                userInput: e.currentTarget.value
+            });
+        } else {
+            setState({
+                activeOption: 0,
+                filteredOptions: [],
+                showOptions: false,
+                userInput: e.currentTarget.value,
+                tagStartIndex: userInput.length
+            });
+        }
+    };
+
+    const onClick = (e) => {
+        console.log('클릭');
+        setState({
+            activeOption: 0,
+            filteredOptions: [],
+            showOptions: false,
+            userInput: userInput.substr(0, state.tagStartIndex) + e.currentTarget.innerText,
+            tagStartIndex: userInput.length + 1
+        });
+    };
+
+    const onKeyDown = (e) => {
+        const { activeOption, filteredOptions } = state;
+
+        // enter
+        if (e.keyCode === 13) {
+            setState({
+                ...state,
+                activeOption: 0,
+                showOptions: false,
+                userInput: userInput.substr(0, state.tagStartIndex) + filteredOptions[activeOption] + ' ',
+                tagStartIndex: userInput.length + 1
+            });
+        }
+
+        // 위 화살표
+        else if (e.keyCode === 38) {
+            if (activeOption === 0) {
+                return;
+            }
+
+            setState({ ...state, activeOption: activeOption - 1 });
+        }
+
+        // 아래 화살표
+        else if (e.keyCode === 40) {
+            if (activeOption === filteredOptions.length - 1) {
+                return;
+            }
+
+            setState({ ...state, activeOption: activeOption + 1 });
+        }
+    };
+
+    const { activeOption, filteredOptions, showOptions, userInput } = state;
+
+    let optionsListComponent;
+
+    // if (state.showOptions && state.userInput) {
+    //     if (state.filteredOptions.length) {
+    //         optionsListComponent = (
+    //             <ul class="options">
+    //                 {state.filteredOptions.map((option, index) => {
+    //                     let className;
+
+    //                     if (index === state.activeOption) {
+    //                         className = "option-active";
+    //                     }
+
+    //                     return (
+    //                         <li className={className} key={option} onClick={onClick}>
+    //                             {option}
+    //                         </li>
+    //                     );
+    //                 })}
+    //             </ul>
+    //         );
+    //     } else {
+    //         optionsListComponent = (
+    //             <div class="no-options">
+    //                 <em>No options!</em>
+    //             </div>
+    //         );
+    //     }
+    // }
+
     return (
         <Container>
             <Box display='inline-block' width='80%'>
-                <TextField  variant='outlined' fullWidth multiline />
+                <Fragment>
+                    <TextField onChange={onChange} onKeyDown={onKeyDown} value={state.userInput} variant='outlined' fullWidth multiline />
+                </Fragment>
             </Box>
-            <Box display='inline-block' bgcolor='pink' width='20%'>
+            <Box display='inline-block' width='20%'>
                 <Button variant="contained" color="primary" fullWidth>작성</Button>
+            </Box>
+            <Box className = {classes.friends}>
+                <FriendList options = {filteredOptions} onClick = {onClick}/>
             </Box>
         </Container>
     );
 }
 
+CommentForm.propTypes = {
+    options: PropTypes.instanceOf(Array)
+}
 

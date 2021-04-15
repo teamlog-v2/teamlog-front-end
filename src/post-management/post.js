@@ -20,6 +20,7 @@ import cat4 from '../../src/media/cat4.PNG'
 import "./carousel-theme.css";
 import "./carousel.css";
 import Slider from "react-slick"
+import RoomIcon from '@material-ui/icons/Room';
 
 
 // 확장자 대소문자 유의하기
@@ -72,6 +73,9 @@ const useStyles = makeStyles((theme) => ({
         display: 'inline-block',
         textAlign: 'right',
         cursor: 'pointer'
+    },
+    position: {
+
     },
     media: {
         textAlign: 'center',
@@ -144,6 +148,12 @@ export const Post = (props) => {
                         </Box>
                     </Container>
                     <Container>
+                        <Box className = {classes.position}>
+                            <RoomIcon/>
+                            여기는 서울입니다.
+                        </Box>
+                    </Container>
+                    <Container>
                         <Box>
                             <Box className={classes.tags}>
                                 {
@@ -162,7 +172,6 @@ export const Post = (props) => {
                                 <Media content={cat2}></Media>
                                 <Media content={cat3}></Media>
                                 <Media content={piano}></Media>
-
                             </Slider>
                         </Box>
                         <Box className={classes.content}>
@@ -190,7 +199,18 @@ export const Post = (props) => {
                         }
 
                     </Container>
-                    <CommentForm />
+                    <CommentForm options={[
+                        "신동헌",
+                        "신현정",
+                        "이희수",
+                        "윤진",
+                        "오득환",
+                        "이현아",
+                        "김사람",
+                        "이사람",
+                        "강소공",
+                        "pink"
+                    ]} />
                 </Container>
             </Box>
         </Container>

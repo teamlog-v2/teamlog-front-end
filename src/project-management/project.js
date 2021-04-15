@@ -21,10 +21,10 @@ const useStyles = makeStyles((theme) => ({
 
 const sections = [
     { title: '홈', url: '#' },
-    { title: '포스트', url: '#' },
-    { title: '태스크', url: '#' },
-    { title: '멤버', url: '#' },
-    { title: '팔로워', url: '#' }
+    { title: '포스트', url: '/post' },
+    { title: '태스크', url: '/task' },
+    { title: '멤버', url: 'member' },
+    { title: '팔로워', url: 'follower' }
 ];
 
 export const Project = () => {
