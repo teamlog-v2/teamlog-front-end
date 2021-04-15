@@ -133,14 +133,14 @@ export const Comment = (props) => {
 
 const FriendList = (props) => {
 
-    const {options, onClick} = props;
+    const { options, onClick } = props;
 
     return (
         <List>
             {
                 options ? options.map((item, index) => {
                     return (
-                        <ListItem button className='option-active' key={item} onClick = {onClick}>
+                        <ListItem button className='option-active' key={item} onClick={onClick}>
                             <ListItemIcon>
                                 <Avatar />
                             </ListItemIcon>
@@ -197,7 +197,7 @@ export const CommentForm = ({ options }) => {
         console.log(userInput.length + " " + userInput.charAt(state.tagStartIndex - 1));
 
         if ((state.tagStartIndex == 1 && userInput.charAt(state.tagStartIndex - 1) == '@')
-        || (state.tagStartIndex != 1 && userInput.charAt(state.tagStartIndex - 1) == '@' && userInput.charAt(state.tagStartIndex - 2) == ' ')) {
+            || (state.tagStartIndex != 1 && userInput.charAt(state.tagStartIndex - 1) == '@' && userInput.charAt(state.tagStartIndex - 2) == ' ')) {
             const filteredOptions = options.filter(
                 (option) => option.toLowerCase().indexOf(userInput.substring(state.tagStartIndex).toLowerCase()) > -1
             );
@@ -236,13 +236,17 @@ export const CommentForm = ({ options }) => {
 
         // enter
         if (e.keyCode === 13) {
-            setState({
-                ...state,
-                activeOption: 0,
-                showOptions: false,
-                userInput: userInput.substr(0, state.tagStartIndex) + filteredOptions[activeOption] + ' ',
-                tagStartIndex: userInput.length + 1
-            });
+            if ((state.tagStartIndex == 1 && userInput.charAt(state.tagStartIndex - 1) == '@')
+                || (state.tagStartIndex != 1 && userInput.charAt(state.tagStartIndex - 1) == '@' && userInput.charAt(state.tagStartIndex - 2) == ' ')) {
+                setState({
+                    ...state,
+                    activeOption: 0,
+                    showOptions: false,
+                    userInput: userInput.substr(0, state.tagStartIndex) + filteredOptions[activeOption] + ' ',
+                    tagStartIndex: userInput.length + 1
+                });
+            }
+
         }
 
         // 위 화살표
@@ -306,8 +310,8 @@ export const CommentForm = ({ options }) => {
             <Box display='inline-block' width='20%'>
                 <Button variant="contained" color="primary" fullWidth>작성</Button>
             </Box>
-            <Box className = {classes.friends}>
-                <FriendList options = {filteredOptions} onClick = {onClick}/>
+            <Box className={classes.friends}>
+                <FriendList options={filteredOptions} onClick={onClick} />
             </Box>
         </Container>
     );

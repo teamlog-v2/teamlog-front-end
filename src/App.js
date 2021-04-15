@@ -8,8 +8,8 @@ import { FriendList } from './post-management/friendlist.js'
 function App() {
   return (
     <div className="App">
-        <Postlist/>
-        {/* <Project></Project> */}
+        {/* <Postlist/> */}
+        <Project></Project>
         {/* <FriendList/> */}
     </div>
   );

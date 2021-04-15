@@ -67,13 +67,12 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(1),
         marginTop: theme.spacing(1),
         marginBottom: theme.spacing(1),
-        width: '15%',
+        width: '20%',
         fontSize: '1.25em',
         flexShrink: 0,
         textAlign: 'center',
         display: 'inline-block',
         cursor: 'pointer'
-        
     },
 }));
 
@@ -106,12 +105,9 @@ export const Header = (props) => {
         <React.Fragment>
             <Toolbar className={classes.toolbar}>
                 <ProjectTitle title = {title} introduction={introduction}/>
-                <IconButton>
-                    <SearchForm />
-                </IconButton>
             </Toolbar>
             <Toolbar component="nav" variant="dense" className={classes.toolbarSecondary}>
-                <Box width='100%' textAlign='center'>
+                <Container maxWidth='lg' textAlign='center'>
                     {sections.map((section) => (
                         <Link
                             color="inherit"
@@ -124,7 +120,7 @@ export const Header = (props) => {
                             {section.title}
                         </Link>
                     ))}
-                </Box>
+                </Container>
             </Toolbar>
         </React.Fragment>
     );

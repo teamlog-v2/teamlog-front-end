@@ -150,7 +150,7 @@ export const Post = (props) => {
                     <Container>
                         <Box className = {classes.position}>
                             <RoomIcon/>
-                            여기는 서울입니다.
+                            경상북도 구미시 대학로 61 금오공과대학교 디지털관
                         </Box>
                     </Container>
                     <Container>
