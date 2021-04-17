@@ -21,14 +21,17 @@ import "./carousel-theme.css";
 import "./carousel.css";
 import Slider from "react-slick"
 import RoomIcon from '@material-ui/icons/Room';
-
-
-// 확장자 대소문자 유의하기
+import Grow from '@material-ui/core/Grow';
+import Popper from '@material-ui/core/Popper';
+import Paper from '@material-ui/core/Paper';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuList from '@material-ui/core/MenuList';
 
 import React, { useState, useEffect } from 'react';
 
 
-import Avatar from '@material-ui/core/Avatar';
+import Avatar from '@material-ui/core/Avatar'
 
 import CssBaseline from '@material-ui/core/CssBaseline';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -49,7 +52,8 @@ const settings = {
     speed: 500, // 애니메이션의 속도, 단위는 milliseconds
     slidesToShow: 1, // 한번에 몇개의 슬라이드를 보여줄 지
     slidesToScroll: 1, // 한번 스크롤시 몇장의 슬라이드를 넘길지
-    arrows: true
+    arrows: true,
+
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -75,10 +79,19 @@ const useStyles = makeStyles((theme) => ({
         cursor: 'pointer'
     },
     location: {
-        backgroundColor: 'pink'
+        paddingTop: '0.25em',
+        paddingBottom: '0.25em',
+        cursor: 'pointer'
+    },
+    postMenu: {
+        zIndex: 5
     },
     media: {
+        height: '60em',
+        backgroundColor: 'pink',
         textAlign: 'center',
+        verticalAlign: 'center',
+        overflow: 'hidden'
     },
     content: {
         marginTop: '0.5em',
@@ -111,6 +124,74 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+const PostMenu = () => {
+    const classes = useStyles();
+    const [open, setOpen] = React.useState(false);
+    const anchorRef = React.useRef(null);
+
+    const handleToggle = () => {
+        setOpen((prevOpen) => !prevOpen);
+    };
+
+    const handleClose = (event) => {
+        if (anchorRef.current && anchorRef.current.contains(event.target)) {
+            return;
+        }
+
+        setOpen(false);
+    };
+
+    function handleListKeyDown(event) {
+        if (event.key === 'Tab') {
+            event.preventDefault();
+            setOpen(false);
+        }
+    }
+
+    // return focus to the button when we transitioned from !open -> open
+    const prevOpen = React.useRef(open);
+    React.useEffect(() => {
+        if (prevOpen.current === true && open === false) {
+            anchorRef.current.focus();
+        }
+
+        prevOpen.current = open;
+    }, [open]);
+
+    return (
+        <div className={classes.root}>
+            <div>
+                <Button
+                    ref={anchorRef}
+                    aria-controls={open ? 'menu-list-grow' : undefined}
+                    aria-haspopup="true"
+                    onClick={handleToggle}
+                >
+                    <Menu />
+                </Button>
+                <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
+                    {({ TransitionProps, placement }) => (
+                        <Grow
+                            {...TransitionProps}
+                            style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+                        >
+                            <Paper className={classes.postMenu}>
+                                <ClickAwayListener onClickAway={handleClose}>
+                                    <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown} >
+                                        <MenuItem onClick={handleClose}>수정</MenuItem>
+                                        <MenuItem onClick={handleClose}>수정 내역</MenuItem>
+                                        <MenuItem onClick={handleClose}>삭제</MenuItem>
+                                    </MenuList>
+                                </ClickAwayListener>
+                            </Paper>
+                        </Grow>
+                    )}
+                </Popper>
+            </div>
+        </div>
+    );
+}
+
 export const Post = (props) => {
 
     const { postContents, maxWidth } = props;
@@ -129,91 +210,98 @@ export const Post = (props) => {
     return (
         <Container component="main" maxWidth={maxWidth} disableGutters>
             <Box className={classes.paper}>
-                    <Container>
-                        <Box className={classes.header}>
-                            <Box display='inline-block' width='90%'>
-                                <Box>
-                                    <UserInfo userId={postContents.writer_user_id} imgWidth='30px' imgHeight='30px' imgPath={ogu} />
-                                </Box>
-                                <Box>
-                                    <DateInfo year='2021' month='04' date='06' fs='11px' />
-                                </Box>
+                <Container>
+                    <Box className={classes.header}>
+                        <Box display='inline-block' width='90%'>
+                            <Box>
+                                <UserInfo userId={postContents.writer_user_id} imgWidth='30px' imgHeight='30px' imgPath={ogu} />
                             </Box>
+                            <Box>
+                                <DateInfo year='2021' month='04' date='06' fs='11px' />
+                            </Box>
+                        </Box>
 
-                            <Box className={classes.menu}>
-                                <Menu />
-                                {/*섹션만 나눠놓은 상태. 정교한 배치는 추후에...*/}
-                            </Box>
+                        <Box className={classes.menu}>
+                            <PostMenu />
                         </Box>
-                    </Container>
-                    <Container>
-                        <Box className = {classes.location}>
-                            <RoomIcon/>
-                            경상북도 구미시 대학로 61 금오공과대학교 디지털관
+                    </Box>
+                </Container>
+                <Container>
+                    <Box className={classes.location}>
+                        <RoomIcon />
+                        {postContents.location}
+                    </Box>
+                </Container>
+                <Container>
+                    <Box>
+                        <Box className={classes.tags}>
+                            {
+                                tagList ? tagList.map((item, index) => {
+                                    return (
+                                        <Tag name={item.name} />
+                                    );
+                                }) : ''
+                            }
                         </Box>
-                    </Container>
-                    <Container>
-                        <Box>
-                            <Box className={classes.tags}>
-                                {
-                                    tagList ? tagList.map((item, index) => {
-                                        return (
-                                            <Tag name={item.name} />
-                                        );
-                                    }) : ''
-                                }
-                            </Box>
-                        </Box>
-                    </Container>
-                    <Container>
-                        <Box id="mediaBox" className={classes.media}>
-                            <Slider {...settings}>
+                    </Box>
+                </Container>
+                <Container>
+                    <Box id="mediaBox" textAlign='center'>
+                        <Slider {...settings}>
+                            <Box className={classes.media}>
                                 <Media content={cat1}></Media>
+                            </Box>
+                            <Box className={classes.media}>
                                 <Media content={cat2}></Media>
+                            </Box>
+                            <Box className={classes.media}>
                                 <Media content={cat3}></Media>
+                            </Box>
+                            {/* <Box className={classes.media}>
                                 <Media content={piano}></Media>
-                            </Slider>
-                        </Box>
-                    </Container>
-                    <Container>
-                        <Box className={classes.content}>
-                            <Typography>{postContents.contents}</Typography>
-                        </Box>
-                    </Container>
-                    <Container>
-                        <Box className={classes.files}>
-                            <File file='오구.jpg' />
-                        </Box>
+                            </Box> */}
+                        </Slider>
+                    </Box>
+                </Container>
+                <Container>
+                    <Box className={classes.content}>
+                        <Typography>{postContents.contents}</Typography>
+                    </Box>
+                </Container>
+                <Container>
+                    <Box className={classes.files}>
+                        <File file='오구.jpg' />
+                    </Box>
 
-                        <Box className={classes.etc}>
+                    <Box className={classes.etc}>
 
-                            <LikerCounter count={postContents.likerCnt} />
-                            <CommentCounter count={postContents.commentCnt} />
-                        </Box>
-                    </Container>
-                    <Container>
-                        {
-                            commentList ? commentList.map((item, index) => {
+                        <LikerCounter count={postContents.likerCnt} />
+                        <CommentCounter count={postContents.commentCnt} />
+                    </Box>
+                </Container>
+                <Container>
+                    {
+                        commentList ? commentList.map((item, index) => {
 
-                                return (
-                                    <Comment userId={item.writer_user_id} userTag='null' imgPath={ogu} comment_mention={item.comment_mention} content={item.contents} parent_comment_id={item.parent_comment_id} />
-                                )
-                            }) : ''
-                        }
+                            return (
+                                <Comment userId={item.writer_user_id} userTag='null' imgPath={ogu} comment_mention={item.comment_mention} content={item.contents} parent_comment_id={item.parent_comment_id} />
+                            )
+                        }) : ''
+                    }
 
-                    </Container>
-                    <CommentForm options={[
-                        "신동헌",
-                        "신현정",
-                        "이희수",
-                        "윤진",
-                        "오득환",
-                        "이현아",
-                        "김사람",
-                        "이사람",
-                        "강소공",
-                        "pink"
-                    ]} />
+                </Container>
+                <CommentForm options={[
+                    "신동헌",
+                    "신현정",
+                    "이희수",
+                    "윤진",
+                    "오득환",
+                    "이현아",
+                    "김사람",
+                    "이사람",
+                    "강소공",
+                    "pink"
+                ]} />
             </Box>
         </Container>
     );

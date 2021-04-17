@@ -2,7 +2,7 @@ import { Box } from '@material-ui/core';
 import React from 'react'
 
 export const Media = (props) => {
-    const { content } = props;
+    const { content, maxWidth, maxHeight } = props;
 
     var fileName = content.toString();
     var fileLength = fileName.length;
@@ -17,18 +17,22 @@ export const Media = (props) => {
         );
     } else if (fileExtention == '.png') {
         return(
-            <Image content={content} width='100%' />
+            <ImageContent content={content} width='100%' />
         );
         // 조건 더 필요하긴 하겠지만...
     }
 }
 
-const Image = (props) => {
+const ImageContent = (props) => {
     const { content, width, height } = props;
 
-    return(
-            <img src = {content} width = {width}/>
-    );
+    const image = new Image();
+    image.src = content.toString();
+    console.log(image.width);
+
+        return(
+            <img src = {content} width = '100%'/>
+        );
 }
 
 const Video = (props) => {

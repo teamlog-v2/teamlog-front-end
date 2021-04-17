@@ -33,7 +33,7 @@ export const Project = () => {
             <CssBaseline />
 
             <Header title="도쿄 여행 프로젝트" introduction="동창 친구 넷이서 떠나는 도쿄 여행" sections={sections} />
-            {/* <Container maxWidth='xl'>
+            <Container maxWidth='xl'>
                 <Title title = '도쿄 여행 프로젝트 소개' />
                 <Introduction name = '도쿄 여행 프로젝트' master_user_id = 'jduck1024' follower_count={15} member_count={60}/>
             </Container>
@@ -41,7 +41,7 @@ export const Project = () => {
             <Container maxWidth='x1'>
                 <Title title = '스토리보드' />
                 <Postlist/>
-            </Container> */}
+            </Container>
         </React.Fragment>
     );
 }

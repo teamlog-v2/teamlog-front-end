@@ -10,9 +10,14 @@ import Link from '@material-ui/core/Link';
 import { Container } from '@material-ui/core';
 import Box from '@material-ui/core/Box'
 import InputBase from '@material-ui/core/InputBase';
-
+import Paper from '@material-ui/core/Paper';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 
 const useStyles = makeStyles((theme) => ({
+    root: {
+        flexGrow: 1,
+    },
     search: {
         position: 'relative',
         borderRadius: theme.shape.borderRadius,
@@ -78,19 +83,19 @@ const useStyles = makeStyles((theme) => ({
 
 const ProjectTitle = (props) => {
     const classes = useStyles();
-    const {title, introduction} = props;
+    const { title, introduction } = props;
 
-    return(
-        <Box width = '100%'>
+    return (
+        <Box width='100%'>
             <Typography
-                    component="h2"
-                    variant="h5"
-                    color="inherit"
-                    align="left"
-                    noWrap
-                    className={classes.toolbarTitle}
-                >
-                    {title}
+                component="h2"
+                variant="h5"
+                color="inherit"
+                align="left"
+                noWrap
+                className={classes.toolbarTitle}
+            >
+                {title}
             </Typography>
             <Typography component='div'>{introduction}</Typography>
         </Box>
@@ -100,13 +105,33 @@ const ProjectTitle = (props) => {
 export const Header = (props) => {
     const classes = useStyles();
     const { sections, title, introduction } = props;
+    const [value, setValue] = React.useState(0);
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
 
     return (
         <React.Fragment>
             <Toolbar className={classes.toolbar}>
-                <ProjectTitle title = {title} introduction={introduction}/>
+                <ProjectTitle title={title} introduction={introduction} />
             </Toolbar>
-            <Toolbar component="nav" variant="dense" className={classes.toolbarSecondary}>
+
+            <Paper className={classes.root}>
+                <Tabs
+                    value={value}
+                    onChange={handleChange}
+                    indicatorColor="primary"
+                    textColor="primary"
+                    centered
+                >
+
+                    {sections.map((section) => (
+                        <Tab label={section.title} />
+                    ))}
+                </Tabs>
+            </Paper>
+            {/* <Toolbar component="nav" variant="dense" className={classes.toolbarSecondary}>
                 <Container maxWidth='lg' textAlign='center'>
                     {sections.map((section) => (
                         <Link
@@ -121,7 +146,7 @@ export const Header = (props) => {
                         </Link>
                     ))}
                 </Container>
-            </Toolbar>
+            </Toolbar> */}
         </React.Fragment>
     );
 }
