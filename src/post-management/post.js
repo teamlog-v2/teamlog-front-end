@@ -8,6 +8,7 @@ import { useMediaQuery } from "react-responsive"
 import { LikerCounter } from './liker.js'
 import { File } from './file.js'
 import { Media } from './media.js'
+import Carousel from 'react-material-ui-carousel'
 
 
 
@@ -24,7 +25,6 @@ import cat4 from '../../src/media/cat4.PNG'
 
 import "./carousel-theme.css";
 import "./carousel.css";
-import Slider from "react-slick"
 import RoomIcon from '@material-ui/icons/Room';
 import Grow from '@material-ui/core/Grow';
 import Popper from '@material-ui/core/Popper';
@@ -53,16 +53,6 @@ import { Button } from '@material-ui/core'
 
 import jQuery from "jquery";
 window.$ = window.jQuery = jQuery;
-
-const settings = {
-    dots: false, // 캐러셀이미지가 몇번째인지 알려주는 점을 보여줄지 정한다.
-    infinite: false, // loop를 만들지(마지막 이미지-처음 이미지-중간 이미지들-마지막 이미지)
-    speed: 500, // 애니메이션의 속도, 단위는 milliseconds
-    slidesToShow: 1, // 한번에 몇개의 슬라이드를 보여줄 지
-    slidesToScroll: 1, // 한번 스크롤시 몇장의 슬라이드를 넘길지
-    arrows: true,
-
-};
 
 const useStyles = makeStyles((theme) => ({
 
@@ -97,8 +87,7 @@ const useStyles = makeStyles((theme) => ({
     },
     media: {
         position: 'relative',
-       
-        // backgroundColor: 'black',
+        backgroundColor: 'black',
         objectFit: 'contain'
         //모바일 ver, pc ver 높이 필요할 듯        
     },
@@ -203,37 +192,37 @@ const PostMenu = () => {
 
 const MediaList = () => {
     const classes = useStyles();
-    
+
     const isPc = useMediaQuery({
-        query : "(min-width:1024px)"
+        query: "(min-width:1024px)"
     });
     const isTablet = useMediaQuery({
-        query : "(min-width:768px) and (max-width:1023px)"
+        query: "(min-width:768px) and (max-width:1023px)"
     });
     const isMobile = useMediaQuery({
-        query : "(max-width:767px)"
+        query: "(max-width:767px)"
     });
-    
+
     let size = isPc ? '60em' : isTablet ? '45em' : '30em';
 
-    return (<Box id="mediaBox" textAlign='center'>
-        <Slider {...settings}>
-            <Box className={classes.media} height={size}>
-                
-                <Media content={cat1}></Media>
-                {/* <Box bgcolor='yellow' width='500px' left='10px' display='inline-block'>sjfkjd</Box> */}
-            </Box>
-            <Box className={classes.media} height={size}>
-                <Media content={cat2}></Media>
-            </Box>
-            <Box className={classes.media} height={size}>
-                <Media content={cat3}></Media>
-            </Box>
-            {/* <Box className={classes.media}>
+    return (
+        <Box id="mediaBox" textAlign='center'>
+            <Carousel autoPlay={false} animation='slide' cycleNavigation={false}>
+                <Box className={classes.media} height={size}>
+                    <Media content={cat1}></Media>
+                    {/* <Box bgcolor='yellow' width='500px' left='10px' display='inline-block'>sjfkjd</Box> */}
+                </Box>
+                <Box className={classes.media} height={size}>
+                    <Media content={cat2}></Media>
+                </Box>
+                <Box className={classes.media} height={size}>
+                    <Media content={cat3}></Media>
+                </Box>
+                {/* <Box className={classes.media}>
             <Media content={piano}></Media>
         </Box> */}
-        </Slider>
-    </Box>);
+            </Carousel>
+        </Box>);
 }
 
 

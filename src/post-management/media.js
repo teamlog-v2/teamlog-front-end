@@ -25,6 +25,7 @@ export const Media = (props) => {
     var startIdx = fileName.lastIndexOf('.');
 
     var fileExtention = String(fileName.substring(startIdx, fileLength).toLowerCase());
+
     // 확장자 판별
 
     if (fileExtention == '.mp4') {
