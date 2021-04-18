@@ -1,43 +1,62 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import {
-  Grid
+  Grid,
+  IconButton,
+  Divider,
+  Button,
 } from '@material-ui/core';
-  
-const MediaUploader = ({ files, updateFiles }) => {
+import { makeStyles } from '@material-ui/core/styles';
+import PhotoCamera from '@material-ui/icons/PhotoCamera';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import EmojiObjects from '@material-ui/icons/EmojiObjects';
+
+const MediaUploader = ({ files, updateFiles }) => { // 확인, 취소 버튼 누를 시?
+  // const [isUploading, updateIsUploading] = useState(0);
+  const fileInputRef = useRef(null);
+
   const getTypeofFile = (name) => {
     const token = name.split('.');
     const extension = token[token.length - 1];
-    // split해서 확장자 필터링하는 것 보다
-    // 버튼을 다르게 둬서
-    // javascript accept활용해서 사진/동영상 구분
     if (extension === 'mp4') {
       return 'video';
     }
     return 'image';
   }
 
+  const handleInputChange = (event) => {// click trigger
+    if ([...files].length + [...event.target.files].length > 10) {
+      alert('미디어 파일은 최대 10개까지 업로드 가능합니다.');
+      return;
+    }
+  
+    const fileWithType = [...event.target.files].map((file) => {
+                            return ({ url: URL.createObjectURL(file),
+                                type: getTypeofFile(file.name),
+                              });
+                            }); // 일시적 file url
+    const newFiles = [...files].concat(fileWithType);
+    updateFiles(newFiles);
+    // if(isUploading) {
+    //   updateIsUploading(0);
+    // }
+  }
+
+  const handleButtonClick = () => {
+    // updateIsUploading(1);
+    fileInputRef.current.click();
+  }
+
   return (
     <Grid item>
-      <label htmlFor="media-upload"
-      style={{ backgroundColor: 'black', color: 'white',
-      padding: '1%', cursor: 'pointer' }}>
-        사진/동영상
-      </label>
-      <input id="media-upload" type="file" multiple
-        accept="image/*,video/*"
+      <Button variant='contained' color='primary' onClick={handleButtonClick}>
+        <PhotoCamera fontSize='large'/>
+        <strong>사진 / 동영상</strong>
+      </Button>
+      <input id='media-upload' type='file' multiple
+        ref={fileInputRef}
+        accept='image/*,video/*'
         style={{ display: 'none' }}
-        onChange={(event) => {
-          if (files.length === 10) {
-            alert('미디어 파일은 최대 10개까지 업로드 가능합니다.');
-            return;
-          }
-          const fileWithType = [...event.target.files].map((file) => {
-                                  return ({ url: URL.createObjectURL(file),
-                                      type: getTypeofFile(file.name),
-                                    });
-                                  }); // 일시적 file url
-          const newFiles = [...files].concat(fileWithType);
-          updateFiles(newFiles); }}/>
+        onChange={handleInputChange}/>
     </Grid>);
 };
 
