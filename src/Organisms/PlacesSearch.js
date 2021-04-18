@@ -4,7 +4,7 @@ import {
   Typography,
   Dialog
 } from '@material-ui/core';
-import { LocationOn } from '@material-ui/icons';
+import LocationOn from '@material-ui/icons/LocationOn';
 import PlaceSearchApi from './PlacesSearchApi';
 
 const SimpleDialog = (props) => {
@@ -31,9 +31,16 @@ const PlacesSearch = ({ updateLocation }) => {
   return (
     <>
       <Grid onClick={handleClickOpen} style={{ cursor: 'pointer' }}>
-        <Typography>
-          <LocationOn />어디를 방문하셨나요?
-        </Typography>
+        <Grid container direction='row' alignItems='center'>
+          <Grid item>
+            <LocationOn />
+          </Grid>
+          <Grid item>
+            <Typography>
+              어디를 방문하셨나요?
+             </Typography>
+          </Grid>
+        </Grid>
       </Grid>
       <SimpleDialog
         open={open}

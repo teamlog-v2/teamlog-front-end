@@ -3,7 +3,7 @@ import {
   TextField,
   Grid
 } from '@material-ui/core';
-import { LocationOn } from '@material-ui/icons';
+import LocationOn from '@material-ui/icons/LocationOn';
 import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
@@ -40,7 +40,7 @@ class LocationSearchInput extends React.Component {
           <div style={{ overflow: 'hidden' }}>
             <TextField variant='outlined' fullWidth
               {...getInputProps({
-                placeholder: '위치를 입력하세요.',
+                placeholder: '장소를 입력하세요.',
                 className: 'location-search-input',
               })}
             />
