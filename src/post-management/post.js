@@ -167,7 +167,7 @@ const PostMenu = () => {
                 >
                     <Menu />
                 </Button>
-                <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
+                <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal style={{ zIndex: 1 }}>
                     {({ TransitionProps, placement }) => (
                         <Grow
                             {...TransitionProps}
@@ -189,6 +189,7 @@ const PostMenu = () => {
         </div>
     );
 }
+
 
 const MediaList = () => {
     const classes = useStyles();
@@ -218,6 +219,7 @@ const MediaList = () => {
                 <Box className={classes.media} height={size}>
                     <Media content={cat3}></Media>
                 </Box>
+
                 {/* <Box className={classes.media}>
             <Media content={piano}></Media>
         </Box> */}
@@ -308,6 +310,7 @@ export const Post = (props) => {
                     }
 
                 </Container>
+                <Container disableGutters>
                 <CommentForm options={[
                     "신동헌",
                     "신현정",
@@ -320,6 +323,7 @@ export const Post = (props) => {
                     "강소공",
                     "pink"
                 ]} />
+                </Container>
             </Box>
         </Container>
     );

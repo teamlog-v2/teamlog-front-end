@@ -17,7 +17,9 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { Avatar } from '@material-ui/core';
 import InputBase from '@material-ui/core/InputBase';
 import Paper from '@material-ui/core/Paper';
-
+import Popper from '@material-ui/core/Popper';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Grow from '@material-ui/core/Grow';
 
 const useStyles = makeStyles((theme) => ({
     comment: {
@@ -32,11 +34,13 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'right'
     },
     icon: {
-        cursor: 'pointer'
+        cursor: 'pointer',
+        width: 'auto',
+        display: 'inline-block'
     },
     friends: {
-        width: '80%',
-        // height: '10em',
+        width: '20em',
+        height: '25em',
         zIndex: '500',
         overflow: 'auto',
     }
@@ -87,7 +91,7 @@ export const Comment = (props) => {
 
     const [tagList, setTagList] = useState([]);
     const [visibility, setVisibility] = useState('none');
-    
+
 
     useEffect(() => {
         setTagList(comment_mention);
@@ -107,7 +111,7 @@ export const Comment = (props) => {
                 </Box>
 
                 <Box className={classes.reply}>
-                    <Box className = {classes.icon} onClick = {() => {if(visibility == 'none') {setVisibility('block')} else {setVisibility('none')}}}>
+                    <Box className={classes.icon} onClick={() => { if (visibility == 'none') { setVisibility('block') } else { setVisibility('none') } }}>
                         <ReplyIcon />
                     </Box>
                 </Box>
@@ -124,7 +128,7 @@ export const Comment = (props) => {
                     </Box>
                 </Box>
             </Box>
-            
+
             <CommentForm options={[
                 "신동헌",
                 "신현정",
@@ -136,30 +140,36 @@ export const Comment = (props) => {
                 "이사람",
                 "강소공",
                 "pink"
-            ]} visibility = {visibility} />
+            ]} visibility={visibility} />
         </Box>
     );
 }
 
 const FriendList = (props) => {
 
+    const classes = useStyles();
     const { options, onClick } = props;
 
     return (
-        <List>
-            {
-                options ? options.map((item, index) => {
-                    return (
                         <ListItem button className='option-active' key={item} onClick={onClick}>
-                            <ListItemIcon>
-                                <Avatar />
-                            </ListItemIcon>
-                            <ListItemText primary={item} />
-                        </ListItem>
-                    );
-                }) : ''
-            }
-        </List>
+        <Container disableGutters>
+            <Box className = {classes.friends}>
+                <List>
+                    {
+                        options ? options.map((item, index) => {
+                            return (
+                                <ListItem button className='option-active' key={item} onClick={onClick}>
+                                    <ListItemIcon>
+                                        <Avatar />
+                                    </ListItemIcon>
+                                    <ListItemText primary={item} />
+                                </ListItem>
+                            );
+                        }) : ''
+                    }
+                </List>
+            </Box>
+        </Container>
     );
 }
 
@@ -182,7 +192,7 @@ export const CommentForm = ({ options, visibility }) => {
 
     const onChange = (e) => {
         // 와 근데 서버측으로 넘길거까지 계산하려면 복잡하겠다
-        // 버그가 좀 있어 추후 조금 더 손보기
+        // 버그가 좀 있어 추후 조금 많이 손보기
         const userInput = e.currentTarget.value;
         console.log(userInput.length + " " + userInput.charAt(state.tagStartIndex - 1));
 
@@ -199,7 +209,20 @@ export const CommentForm = ({ options, visibility }) => {
                 showOptions: true,
                 userInput: e.currentTarget.value
             });
+
+            console.log(filteredOptions.length);
+
+            if(filteredOptions.length > 0){
+                setOpen(true);
+                setAnchorEl(e.currentTarget);
+            }else{
+                setOpen(false);
+                setAnchorEl(null);
+            }
         } else {
+            setOpen(false);
+            setAnchorEl(null);
+
             setState({
                 activeOption: 0,
                 filteredOptions: [],
@@ -211,7 +234,9 @@ export const CommentForm = ({ options, visibility }) => {
     };
 
     const onClick = (e) => {
-        console.log('클릭');
+        setOpen(false);
+        setAnchorEl(null);
+
         setState({
             activeOption: 0,
             filteredOptions: [],
@@ -290,27 +315,70 @@ export const CommentForm = ({ options, visibility }) => {
     //     }
     // }
 
+    const [open, setOpen] = useState(false);
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    const handleToggle = () => {
+        setOpen((prevOpen) => !prevOpen);
+    };
+
+    const handleClose = (event) => {
+        //   if (anchorRef.current && anchorRef.current.contains(event.target)) {
+        //     return;
+        //   }
+
+        setOpen(false);
+    };
+
+    function handleListKeyDown(event) {
+        if (event.key === 'Tab') {
+            event.preventDefault();
+            setOpen(false);
+        }
+    }
+
+    // return focus to the button when we transitioned from !open -> open
+    const prevOpen = React.useRef(open);
+    React.useEffect(() => {
+        if (prevOpen.current === true && open === false) {
+            // anchorRef.current.focus();
+        }
+
+        prevOpen.current = open;
+    }, [open]);
+
     return (
         <Container>
-            <Box component="form" display={visibility}>
-                <Box width = '80%' display = 'inline-block'>
+            <Box component="form" display={visibility} marginTop='1em' marginBottom='1em'>
+                <Box width='80%' display='inline-block'>
                     <Fragment>
-                <InputBase
-                    className={classes.input}
-                    placeholder="댓글을 입력하세요."
-                    multiline
-                    fullWidth
-                    onChange={onChange} onKeyDown={onKeyDown} value={state.userInput}
-                />
-                </Fragment>
+                        <InputBase
+                            className={classes.input}
+                            placeholder="댓글을 입력하세요."
+                            multiline
+                            fullWidth
+                            onChange={onChange} onKeyDown={onKeyDown} value={state.userInput}
+                        />
+                    </Fragment>
                 </Box>
-                <Box width='20%' display = 'inline-block'>
+                <Box width='20%' display='inline-block'>
                     <Button fullWidth variant='contained' color='primary'>등록</Button>
                 </Box>
             </Box>
-            <Box className={classes.friends}>
-                <FriendList options={filteredOptions} onClick={onClick} />
-            </Box>
+            <Popper open={open} disablePortal style={{ zIndex: 1 }} anchorEl={anchorEl} placement='top-start' role={undefined} transition disablePortal>
+                {({ TransitionProps, placement }) => (
+                    <Grow
+                        {...TransitionProps}
+                        style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+                    >
+                        <Paper className={classes.postMenu}>
+                            <ClickAwayListener onClickAway={handleClose}>
+                                <FriendList options={filteredOptions} onClick={onClick} />
+                            </ClickAwayListener>
+                        </Paper>
+                    </Grow>
+                )}
+            </Popper>
         </Container>
     );
 }

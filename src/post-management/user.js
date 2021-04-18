@@ -30,18 +30,6 @@ const UserImage = (props) => {
     const {imgPath} = props;
 
     return(
-        // <Box className = {classes.image} width={imgWidth} height={imgHeight} display='inline-block'>
-            
-        // </Box>
-        
-        // 아니 아바타 return까지는 맞는데 따로 설정해줘야 하는 코드 있음.
-        // 예제에서는 이렇게 써줬더라
-        // root: {
-        // display: 'flex',
-        // '& > *': {
-        // margin: theme.spacing(1),
-        //    },
-        // },
         <Avatar className = {classes.small} src = {imgPath}/>
     );
 }

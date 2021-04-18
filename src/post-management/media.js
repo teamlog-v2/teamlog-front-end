@@ -32,7 +32,7 @@ export const Media = (props) => {
         return (
             <Video content={content} width='100%' />
         );
-    } else if (fileExtention == '.png') {
+    } else if (fileExtention == '.png' || fileExtention == '.jpg') {
         return (
             <ImageContent content={content} />
         );
