@@ -9,7 +9,8 @@ const useStyles = makeStyles((theme) => ({
         position: 'absolute',
         top: '50%',
         left: '50%',
-        transform: 'translate(-50%, -50%)'
+        transform: 'translate(-50%, -50%)',
+        objectFit: 'contain'
     },
 }));
 
@@ -29,7 +30,7 @@ export const Media = (props) => {
         );
     } else if (fileExtention == '.png') {
         return (
-            <ImageContent content={content} width='100%' />
+            <ImageContent content={content} />
         );
         // 조건 더 필요하긴 하겠지만...
     }
@@ -41,6 +42,8 @@ const ImageContent = (props) => {
 
     const image = new Image();
     image.src = content.toString();
+
+    // 세로로 길면 세로로 맞춰줄까
 
     if (image.width >= image.height) {
         return (

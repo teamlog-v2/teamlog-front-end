@@ -2,6 +2,7 @@ import UserInfo from './user.js'
 import { Tag } from './tag.js'
 import { DateInfo } from './datetime.js'
 import { Comment, CommentCounter, CommentForm } from './comment.js'
+import { useMediaQuery } from "react-responsive"
 import { LikerCounter } from './liker.js'
 import { File } from './file.js'
 import { Media } from './media.js'
@@ -57,6 +58,7 @@ const settings = {
 };
 
 const useStyles = makeStyles((theme) => ({
+
     paper: {
         display: 'flex',
         flexDirection: 'column',
@@ -88,9 +90,9 @@ const useStyles = makeStyles((theme) => ({
     },
     media: {
         position: 'relative',
-        height: '60em',
-        textAlign: 'center',
-        verticalAlign: 'middle',
+       
+        // backgroundColor: 'black',
+        objectFit: 'contain'
         //모바일 ver, pc ver 높이 필요할 듯        
     },
     content: {
@@ -192,6 +194,41 @@ const PostMenu = () => {
     );
 }
 
+const MediaList = () => {
+    const classes = useStyles();
+    
+    const isPc = useMediaQuery({
+        query : "(min-width:1024px)"
+    });
+    const isTablet = useMediaQuery({
+        query : "(min-width:768px) and (max-width:1023px)"
+    });
+    const isMobile = useMediaQuery({
+        query : "(max-width:767px)"
+    });
+    
+    let size = isPc ? '60em' : isTablet ? '45em' : '30em';
+
+    return (<Box id="mediaBox" textAlign='center'>
+        <Slider {...settings}>
+            <Box className={classes.media} height={size}>
+                <Media content={cat1}></Media>
+                {/* <Box bgcolor='yellow' width='500px' left='10px' display='inline-block'>sjfkjd</Box> */}
+            </Box>
+            <Box className={classes.media} height={size}>
+                <Media content={cat2}></Media>
+            </Box>
+            <Box className={classes.media} height={size}>
+                <Media content={cat3}></Media>
+            </Box>
+            {/* <Box className={classes.media}>
+            <Media content={piano}></Media>
+        </Box> */}
+        </Slider>
+    </Box>);
+}
+
+
 export const Post = (props) => {
 
     const { postContents, maxWidth } = props;
@@ -199,13 +236,13 @@ export const Post = (props) => {
     const [tagList, setTagList] = useState([]);
     const [commentList, setCommentList] = useState([]);
 
+    const classes = useStyles();
+
     useEffect(() => {
         setTagList(postContents.post_tag);
         setCommentList(postContents.comment);
         var slides = document.getElementsByClassName('media');
     }, []);
-
-    const classes = useStyles();
 
     return (
         <Container component="main" maxWidth={maxWidth} disableGutters>
@@ -246,23 +283,7 @@ export const Post = (props) => {
                     </Box>
                 </Container>
                 <Container>
-                    <Box id="mediaBox" textAlign='center'>
-                        <Slider {...settings}>
-                            <Box className={classes.media}>
-                                <Media content={cat1}></Media>
-                                {/* <Box bgcolor='yellow' width='500px' left='10px' display='inline-block'>sjfkjd</Box> */}
-                            </Box>
-                            <Box className={classes.media}>
-                                <Media content={cat2}></Media>
-                            </Box>
-                            <Box className={classes.media}>
-                                <Media content={cat3}></Media>
-                            </Box>
-                            <Box className={classes.media}>
-                                <Media content={piano}></Media>
-                            </Box>
-                        </Slider>
-                    </Box>
+                    <MediaList />
                 </Container>
                 <Container>
                     <Box className={classes.content}>
