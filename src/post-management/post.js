@@ -58,13 +58,13 @@ const settings = {
 
 const useStyles = makeStyles((theme) => ({
     paper: {
-        marginTop: theme.spacing(8),
         display: 'flex',
         flexDirection: 'column',
         border: `1px solid ${theme.palette.divider}`,
     },
     header: {
         height: '4em',
+        paddingTop: '1em',
         textAlign: 'left',
     },
     tags: {
@@ -87,11 +87,11 @@ const useStyles = makeStyles((theme) => ({
         zIndex: 5
     },
     media: {
+        position: 'relative',
         height: '60em',
-        backgroundColor: 'pink',
         textAlign: 'center',
-        verticalAlign: 'center',
-        overflow: 'hidden'
+        verticalAlign: 'middle',
+        //모바일 ver, pc ver 높이 필요할 듯        
     },
     content: {
         marginTop: '0.5em',
@@ -250,6 +250,7 @@ export const Post = (props) => {
                         <Slider {...settings}>
                             <Box className={classes.media}>
                                 <Media content={cat1}></Media>
+                                {/* <Box bgcolor='yellow' width='500px' left='10px' display='inline-block'>sjfkjd</Box> */}
                             </Box>
                             <Box className={classes.media}>
                                 <Media content={cat2}></Media>
@@ -257,9 +258,9 @@ export const Post = (props) => {
                             <Box className={classes.media}>
                                 <Media content={cat3}></Media>
                             </Box>
-                            {/* <Box className={classes.media}>
+                            <Box className={classes.media}>
                                 <Media content={piano}></Media>
-                            </Box> */}
+                            </Box>
                         </Slider>
                     </Box>
                 </Container>
@@ -282,7 +283,6 @@ export const Post = (props) => {
                 <Container>
                     {
                         commentList ? commentList.map((item, index) => {
-
                             return (
                                 <Comment userId={item.writer_user_id} userTag='null' imgPath={ogu} comment_mention={item.comment_mention} content={item.contents} parent_comment_id={item.parent_comment_id} />
                             )
