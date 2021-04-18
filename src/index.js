@@ -1,10 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import PostFormPage from './PostFormPage';
+import ProjectPage from './ProjectPage';
+import ModuleTest from './ModuleTest';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#C16AF5',
+    },
+    secondary: {
+      main: '#E0BAF7',
+    }
+  },
+});
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ThemeProvider theme={theme}>
+      <PostFormPage />
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
