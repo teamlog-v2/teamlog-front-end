@@ -1,3 +1,5 @@
+
+
 import UserInfo from './user.js'
 import { Tag } from './tag.js'
 import { DateInfo } from './datetime.js'
@@ -6,6 +8,8 @@ import { useMediaQuery } from "react-responsive"
 import { LikerCounter } from './liker.js'
 import { File } from './file.js'
 import { Media } from './media.js'
+
+
 
 import dao from '../../src/media/dao.png'
 import ogu from '../../src/media/ogu.PNG'
@@ -46,6 +50,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Menu } from '@material-ui/icons'
 import { Button } from '@material-ui/core'
+
+import jQuery from "jquery";
+window.$ = window.jQuery = jQuery;
 
 const settings = {
     dots: false, // 캐러셀이미지가 몇번째인지 알려주는 점을 보여줄지 정한다.
@@ -212,6 +219,7 @@ const MediaList = () => {
     return (<Box id="mediaBox" textAlign='center'>
         <Slider {...settings}>
             <Box className={classes.media} height={size}>
+                
                 <Media content={cat1}></Media>
                 {/* <Box bgcolor='yellow' width='500px' left='10px' display='inline-block'>sjfkjd</Box> */}
             </Box>

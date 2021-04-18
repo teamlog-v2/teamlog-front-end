@@ -2,6 +2,9 @@ import { Box } from '@material-ui/core';
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import { VerifiedUserOutlined } from '@material-ui/icons';
+import jQuery from "jquery";
+window.$ = window.jQuery = jQuery;
+
 
 const useStyles = makeStyles((theme) => ({
     align: {
@@ -15,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const Media = (props) => {
-    const { content, maxWidth, maxHeight } = props;
+    const { content, frameWidth, frameHeight } = props;
 
     var fileName = content.toString();
     var fileLength = fileName.length;
@@ -37,7 +40,7 @@ export const Media = (props) => {
 }
 
 const ImageContent = (props) => {
-    const { content, width, height } = props;
+    const { content, frameWidth, frameHeight } = props;
     const classes = useStyles();
 
     const image = new Image();
