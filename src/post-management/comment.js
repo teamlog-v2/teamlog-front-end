@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Fragment } from 'react';
+import React, { useEffect, useState, Fragment, useRef} from 'react';
 import { Container } from '@material-ui/core';
 import { Box } from '@material-ui/core';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
@@ -151,7 +151,6 @@ const FriendList = (props) => {
     const { options, onClick } = props;
 
     return (
-                        <ListItem button className='option-active' key={item} onClick={onClick}>
         <Container disableGutters>
             <Box className = {classes.friends}>
                 <List>
@@ -190,11 +189,25 @@ export const CommentForm = ({ options, visibility }) => {
         tagStartIndex: 1
     });
 
+    const inputRef = useRef();
+    const [selectionStart, setSelectionStart] = useState(0);
+
+    const onSelect = () => {
+        setSelectionStart(inputRef.current.selectionStart);
+        console.log(selectionStart);
+    }
+
     const onChange = (e) => {
         // 와 근데 서버측으로 넘길거까지 계산하려면 복잡하겠다
         // 버그가 좀 있어 추후 조금 많이 손보기
+        // 커서 받아오고 하는 작업이면 onSelect가 더 맞겠는데...?
+        // 아 둘 다 필요하겠구나...ㅎㅎ
+
         const userInput = e.currentTarget.value;
-        console.log(userInput.length + " " + userInput.charAt(state.tagStartIndex - 1));
+        console.log(userInput.length + " " + userInput);
+
+        
+        // 
 
         if ((state.tagStartIndex == 1 && userInput.charAt(state.tagStartIndex - 1) == '@')
             || (state.tagStartIndex != 1 && userInput.charAt(state.tagStartIndex - 1) == '@' && userInput.charAt(state.tagStartIndex - 2) == ' ')) {
@@ -285,36 +298,6 @@ export const CommentForm = ({ options, visibility }) => {
 
     const { activeOption, filteredOptions, showOptions, userInput } = state;
 
-    let optionsListComponent;
-
-    // if (state.showOptions && state.userInput) {
-    //     if (state.filteredOptions.length) {
-    //         optionsListComponent = (
-    //             <ul class="options">
-    //                 {state.filteredOptions.map((option, index) => {
-    //                     let className;
-
-    //                     if (index === state.activeOption) {
-    //                         className = "option-active";
-    //                     }
-
-    //                     return (
-    //                         <li className={className} key={option} onClick={onClick}>
-    //                             {option}
-    //                         </li>
-    //                     );
-    //                 })}
-    //             </ul>
-    //         );
-    //     } else {
-    //         optionsListComponent = (
-    //             <div class="no-options">
-    //                 <em>No options!</em>
-    //             </div>
-    //         );
-    //     }
-    // }
-
     const [open, setOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
 
@@ -337,16 +320,6 @@ export const CommentForm = ({ options, visibility }) => {
         }
     }
 
-    // return focus to the button when we transitioned from !open -> open
-    const prevOpen = React.useRef(open);
-    React.useEffect(() => {
-        if (prevOpen.current === true && open === false) {
-            // anchorRef.current.focus();
-        }
-
-        prevOpen.current = open;
-    }, [open]);
-
     return (
         <Container>
             <Box component="form" display={visibility} marginTop='1em' marginBottom='1em'>
@@ -357,7 +330,8 @@ export const CommentForm = ({ options, visibility }) => {
                             placeholder="댓글을 입력하세요."
                             multiline
                             fullWidth
-                            onChange={onChange} onKeyDown={onKeyDown} value={state.userInput}
+                            inputRef = {inputRef}
+                            onChange={onChange} onSelect={onSelect} onKeyDown={onKeyDown} value={state.userInput}
                         />
                     </Fragment>
                 </Box>
