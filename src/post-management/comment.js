@@ -1,5 +1,5 @@
 import React, { useEffect, useState, Fragment, useRef} from 'react';
-import { Container } from '@material-ui/core';
+import { Container, setRef } from '@material-ui/core';
 import { Box } from '@material-ui/core';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import { makeStyles } from '@material-ui/core/styles';
@@ -186,7 +186,7 @@ export const CommentForm = ({ options, visibility }) => {
         filteredOptions: [],
         showOptions: false,
         userInput: "",
-        tagStartIndex: 1
+        tagStartIndex: 0
     });
 
     const inputRef = useRef();
@@ -194,26 +194,46 @@ export const CommentForm = ({ options, visibility }) => {
 
     const onSelect = () => {
         setSelectionStart(inputRef.current.selectionStart);
-        console.log(selectionStart);
+
+        let index = inputRef.current.selectionStart;
+
+        if(index == 1 && userInput.charAt(index - 1) == '@'  
+        || (index > 1 && userInput.charAt(index - 1) == '@'  
+        && (userInput.charAt(index - 2) == ' ' || userInput.charAt(index - 2) == '\n'))){
+            console.log('idx ' + index);
+            setState({
+                ...state,
+                tagStartIndex: index - 1
+            });
+        }
     }
 
     const onChange = (e) => {
-        // 와 근데 서버측으로 넘길거까지 계산하려면 복잡하겠다
-        // 버그가 좀 있어 추후 조금 많이 손보기
-        // 커서 받아오고 하는 작업이면 onSelect가 더 맞겠는데...?
-        // 아 둘 다 필요하겠구나...ㅎㅎ
-
         const userInput = e.currentTarget.value;
-        console.log(userInput.length + " " + userInput);
 
-        
-        // 
+        setState({
+            ...state,
+            userInput: e.currentTarget.value,
+        });
 
-        if ((state.tagStartIndex == 1 && userInput.charAt(state.tagStartIndex - 1) == '@')
-            || (state.tagStartIndex != 1 && userInput.charAt(state.tagStartIndex - 1) == '@' && userInput.charAt(state.tagStartIndex - 2) == ' ')) {
+
+        if ((state.tagStartIndex == 0 && userInput.charAt(state.tagStartIndex) == '@')
+            || (state.tagStartIndex > 0 && userInput.charAt(state.tagStartIndex) == '@' && 
+            (userInput.charAt(state.tagStartIndex - 1) == ' ' || userInput.charAt(state.tagStartIndex - 1) == '\n'))) {
+
+            const splitName = userInput.substring(state.tagStartIndex + 1).split(' ')[0];
+            
+            
+            
             const filteredOptions = options.filter(
-                (option) => option.toLowerCase().indexOf(userInput.substring(state.tagStartIndex).toLowerCase()) > -1
+                (option) => option.toLowerCase().indexOf(splitName.toLowerCase()) > -1
             );
+
+            console.log(filteredOptions)
+
+            if(splitName.length < 1){
+                return;
+            }
 
             setState({
                 ...state,
@@ -222,8 +242,6 @@ export const CommentForm = ({ options, visibility }) => {
                 showOptions: true,
                 userInput: e.currentTarget.value
             });
-
-            console.log(filteredOptions.length);
 
             if(filteredOptions.length > 0){
                 setOpen(true);
@@ -237,11 +255,12 @@ export const CommentForm = ({ options, visibility }) => {
             setAnchorEl(null);
 
             setState({
+                ...state,
                 activeOption: 0,
                 filteredOptions: [],
                 showOptions: false,
                 userInput: e.currentTarget.value,
-                tagStartIndex: userInput.length
+                tagStartIndex: inputRef.current.selectionStart
             });
         }
     };
@@ -250,12 +269,22 @@ export const CommentForm = ({ options, visibility }) => {
         setOpen(false);
         setAnchorEl(null);
 
+        let startStr = userInput.substring(0, state.tagStartIndex); 
+        let midStr = '@' + e.currentTarget.innerText;
+      
+        let lastStr = userInput.substring(inputRef.current.selectionStart , userInput.length);
+        //input 기준이라 이상해지는구나?
+
+        console.log(startStr + " " + startStr.length)
+        console.log(midStr + " " + midStr.length)
+        console.log(lastStr + " " + lastStr.length)
+
         setState({
             activeOption: 0,
             filteredOptions: [],
             showOptions: false,
-            userInput: userInput.substr(0, state.tagStartIndex) + e.currentTarget.innerText,
-            tagStartIndex: userInput.length + 1
+            userInput: startStr + midStr + lastStr,
+            tagStartIndex: inputRef.current.selectionStart
         });
     };
 
@@ -273,6 +302,12 @@ export const CommentForm = ({ options, visibility }) => {
                     userInput: userInput.substr(0, state.tagStartIndex) + filteredOptions[activeOption] + ' ',
                     tagStartIndex: userInput.length + 1
                 });
+
+                setRef(() => {
+                    inputRef.input.selectionStart = inputRef.input.selectionStart + 1;
+                });
+                
+                
             }
 
         }
@@ -331,7 +366,11 @@ export const CommentForm = ({ options, visibility }) => {
                             multiline
                             fullWidth
                             inputRef = {inputRef}
-                            onChange={onChange} onSelect={onSelect} onKeyDown={onKeyDown} value={state.userInput}
+                            onChange={onChange} 
+                            onSelect={onSelect} 
+                            onKeyDown={onKeyDown} 
+                           
+                            value={state.userInput}
                         />
                     </Fragment>
                 </Box>
