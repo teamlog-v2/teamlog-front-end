@@ -1,5 +1,5 @@
 import React, { useEffect, useState, Fragment, useRef } from 'react';
-import { Container, setRef } from '@material-ui/core';
+import { Container, MenuItem, MenuList, setRef } from '@material-ui/core';
 import { Box } from '@material-ui/core';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import { makeStyles } from '@material-ui/core/styles';
@@ -20,6 +20,8 @@ import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
+import { useMediaQuery } from "react-responsive"
+
 
 const useStyles = makeStyles((theme) => ({
     comment: {
@@ -150,23 +152,38 @@ const FriendList = (props) => {
     const classes = useStyles();
     const { options, onClick } = props;
 
+    const isPc = useMediaQuery({
+        query: "(min-width:1024px)"
+    });
+    const isTablet = useMediaQuery({
+        query: "(min-width:768px) and (max-width:1023px)"
+    });
+    const isMobile = useMediaQuery({
+        query: "(max-width:767px)"
+    });
+
+    // 이게 문제가 아니에요 디바이스 구분이 필요할 것 같아요...
+    // 아이패드가 말썽이네요
+
+    let autoFocus = isPc ? true : false;
+
     return (
         <Container disableGutters>
             <Box className={classes.friends}>
-                <List>
+                <MenuList autoFocusItem={autoFocus} variant='menu'>
                     {
                         options ? options.map((item, index) => {
                             return (
-                                <ListItem button className='option-active' key={item} onClick={onClick}>
+                                <MenuItem button className='option-active' key={item} onClick={onClick}>
                                     <ListItemIcon>
                                         <Avatar />
                                     </ListItemIcon>
                                     <ListItemText primary={item} />
-                                </ListItem>
+                                </MenuItem>
                             );
                         }) : ''
                     }
-                </List>
+                </MenuList>
             </Box>
         </Container>
     );
@@ -257,6 +274,7 @@ export const CommentForm = ({ options, visibility }) => {
             if (filteredOptions.length > 0) {
                 setOpen(true);
                 setAnchorEl(e.currentTarget);
+                inputRef.current.focus();
             } else {
                 setOpen(false);
                 setAnchorEl(null);
@@ -347,42 +365,6 @@ export const CommentForm = ({ options, visibility }) => {
         inputRef.current.focus();
     };
 
-    const onKeyDown = (e) => {
-        const { activeOption, filteredOptions } = state;
-
-        // enter
-        if (e.keyCode === 13) {
-            if ((state.tagStartIndex == 1 && userInput.charAt(state.tagStartIndex - 1) == '@')
-                || (state.tagStartIndex != 1 && userInput.charAt(state.tagStartIndex - 1) == '@' && userInput.charAt(state.tagStartIndex - 2) == ' ')) {
-                setState({
-                    ...state,
-                    activeOption: 0,
-                    showOptions: false,
-                    userInput: userInput.substr(0, state.tagStartIndex) + filteredOptions[activeOption] + ' ',
-                    tagStartIndex: -1
-                });
-            }
-        }
-
-        // 위 화살표
-        else if (e.keyCode === 38) {
-            if (activeOption === 0) {
-                return;
-            }
-
-            setState({ ...state, activeOption: activeOption - 1 });
-        }
-
-        // 아래 화살표
-        else if (e.keyCode === 40) {
-            if (activeOption === filteredOptions.length - 1) {
-                return;
-            }
-
-            setState({ ...state, activeOption: activeOption + 1 });
-        }
-    };
-
     const { activeOption, filteredOptions, showOptions, userInput } = state;
 
     const [open, setOpen] = useState(false);
@@ -420,7 +402,6 @@ export const CommentForm = ({ options, visibility }) => {
                             inputRef={inputRef}
                             onChange={onChange}
                             onSelect={onSelect}
-                            onKeyDown={onKeyDown}
 
                             value={state.userInput}
                         />
