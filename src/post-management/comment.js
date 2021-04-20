@@ -85,8 +85,6 @@ const CheckRoot = (parent_comment_id) => {
     return '0.25em';
 }
 
-
-
 export const Comment = (props) => {
     const { userId, imgPath, comment_mention, content, parent_comment_id, userTag } = props;
     const classes = useStyles();
@@ -150,7 +148,7 @@ export const Comment = (props) => {
 const FriendList = (props) => {
 
     const classes = useStyles();
-    const { options, onClick } = props;
+    const { options, onClick, autoFocus } = props;
 
     const isPc = useMediaQuery({
         query: "(min-width:1024px)"
@@ -162,15 +160,12 @@ const FriendList = (props) => {
         query: "(max-width:767px)"
     });
 
-    // 이게 문제가 아니에요 디바이스 구분이 필요할 것 같아요...
-    // 아이패드가 말썽이네요
-
-    let autoFocus = isPc ? true : false;
+    // 디바이스 구분?
 
     return (
         <Container disableGutters>
             <Box className={classes.friends}>
-                <MenuList autoFocusItem={autoFocus} variant='menu'>
+                <MenuList autoFocusItem={autoFocus} variant='selectedMenu'>
                     {
                         options ? options.map((item, index) => {
                             return (
@@ -207,24 +202,21 @@ export const CommentForm = ({ options, visibility }) => {
     });
 
     const inputRef = useRef();
-    const [selectionStart, setSelectionStart] = useState(0);
+    const [menuFocus, setMenuFocus] = useState(false);
+
+    menuFocus ? document.body.style.overflow = 'hidden' : document.body.style.overflow = 'unset';
+
+    const onKeyDown = (e) => {
+        // 위 화살표 or 아래 화살표
+        if (state.showOptions && e.keyCode === 38 || e.keyCode === 40) {
+           setMenuFocus(true);
+        }
+    };
 
     const onSelect = () => {
-        // setSelectionStart(inputRef.current.selectionStart);
-
-        // let index = inputRef.current.selectionStart;
-
-        // if(index == 1 && userInput.charAt(index - 1) == '@'  
-        // || (index > 1 && userInput.charAt(index - 1) == '@'  
-        // && (userInput.charAt(index - 2) == ' ' || userInput.charAt(index - 2) == '\n'))){
-        //     console.log('idx ' + index + ' startidx' + state.tagStartIndex);
-
-        //         setState({
-        //             ...state,
-        //             tagStartIndex: index - 1
-        //         });
-        // }
         let index = inputRef.current.selectionStart;
+
+        setMenuFocus(false);
 
         if(state.userInput.charAt(index - 2) == '@'){
             setState({
@@ -274,7 +266,6 @@ export const CommentForm = ({ options, visibility }) => {
             if (filteredOptions.length > 0) {
                 setOpen(true);
                 setAnchorEl(e.currentTarget);
-                inputRef.current.focus();
             } else {
                 setOpen(false);
                 setAnchorEl(null);
@@ -362,6 +353,8 @@ export const CommentForm = ({ options, visibility }) => {
             tagStartIndex: -1
         });
 
+        setMenuFocus(false);
+
         inputRef.current.focus();
     };
 
@@ -402,6 +395,7 @@ export const CommentForm = ({ options, visibility }) => {
                             inputRef={inputRef}
                             onChange={onChange}
                             onSelect={onSelect}
+                            onKeyDown={onKeyDown}
 
                             value={state.userInput}
                         />
@@ -419,7 +413,7 @@ export const CommentForm = ({ options, visibility }) => {
                     >
                         <Paper className={classes.postMenu}>
                             <ClickAwayListener onClickAway={handleClose}>
-                                <FriendList options={filteredOptions} onClick={onClick} />
+                                <FriendList autoFocus = {menuFocus} options={filteredOptions} onClick={onClick} />
                             </ClickAwayListener>
                         </Paper>
                     </Grow>
