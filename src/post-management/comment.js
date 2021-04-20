@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Fragment, useRef} from 'react';
+import React, { useEffect, useState, Fragment, useRef } from 'react';
 import { Container, setRef } from '@material-ui/core';
 import { Box } from '@material-ui/core';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
@@ -152,7 +152,7 @@ const FriendList = (props) => {
 
     return (
         <Container disableGutters>
-            <Box className = {classes.friends}>
+            <Box className={classes.friends}>
                 <List>
                     {
                         options ? options.map((item, index) => {
@@ -186,25 +186,36 @@ export const CommentForm = ({ options, visibility }) => {
         filteredOptions: [],
         showOptions: false,
         userInput: "",
-        tagStartIndex: 0
+        tagStartIndex: -1
     });
 
     const inputRef = useRef();
     const [selectionStart, setSelectionStart] = useState(0);
 
     const onSelect = () => {
-        setSelectionStart(inputRef.current.selectionStart);
+        // setSelectionStart(inputRef.current.selectionStart);
 
+        // let index = inputRef.current.selectionStart;
+
+        // if(index == 1 && userInput.charAt(index - 1) == '@'  
+        // || (index > 1 && userInput.charAt(index - 1) == '@'  
+        // && (userInput.charAt(index - 2) == ' ' || userInput.charAt(index - 2) == '\n'))){
+        //     console.log('idx ' + index + ' startidx' + state.tagStartIndex);
+
+        //         setState({
+        //             ...state,
+        //             tagStartIndex: index - 1
+        //         });
+        // }
         let index = inputRef.current.selectionStart;
 
-        if(index == 1 && userInput.charAt(index - 1) == '@'  
-        || (index > 1 && userInput.charAt(index - 1) == '@'  
-        && (userInput.charAt(index - 2) == ' ' || userInput.charAt(index - 2) == '\n'))){
-            console.log('idx ' + index);
+        if(state.userInput.charAt(index - 2) == '@'){
             setState({
                 ...state,
-                tagStartIndex: index - 1
+                tagStartIndex: index - 2
             });
+
+            console.log(index - 2)
         }
     }
 
@@ -216,14 +227,60 @@ export const CommentForm = ({ options, visibility }) => {
             userInput: e.currentTarget.value,
         });
 
+        let index = inputRef.current.selectionStart;
 
+        // console.log(userInput.charAt(index - 2))
+
+
+
+        // console.log(state.tagStartIndex)
+
+        if (state.tagStartIndex > -1 && userInput.charAt(state.tagStartIndex) == '@') {
+            // const splitName = userInput.substring(state.tagStartIndex + 1).split(' ')[0];
+            const splitName = userInput.substring(state.tagStartIndex + 1, inputRef.current.selectionStart)
+            console.log(splitName)
+
+            if(splitName.length == 0) return;
+
+            const filteredOptions = options.filter(
+                (option) => option.toLowerCase().indexOf(splitName.toLowerCase()) > -1
+            );
+
+            setState({
+                ...state,
+                activeOption: 0,
+                filteredOptions,
+                showOptions: true,
+                userInput: e.currentTarget.value
+            });
+
+            if (filteredOptions.length > 0) {
+                setOpen(true);
+                setAnchorEl(e.currentTarget);
+            } else {
+                setOpen(false);
+                setAnchorEl(null);
+            }
+        } else {
+            setOpen(false);
+            setAnchorEl(null);
+
+            setState({
+                ...state,
+                activeOption: 0,
+                filteredOptions: [],
+                showOptions: false,
+                userInput: e.currentTarget.value,
+            });
+        }
+
+        /*
         if ((state.tagStartIndex == 0 && userInput.charAt(state.tagStartIndex) == '@')
             || (state.tagStartIndex > 0 && userInput.charAt(state.tagStartIndex) == '@' && 
             (userInput.charAt(state.tagStartIndex - 1) == ' ' || userInput.charAt(state.tagStartIndex - 1) == '\n'))) {
 
             const splitName = userInput.substring(state.tagStartIndex + 1).split(' ')[0];
-            
-            
+            console.log(splitName)
             
             const filteredOptions = options.filter(
                 (option) => option.toLowerCase().indexOf(splitName.toLowerCase()) > -1
@@ -260,32 +317,34 @@ export const CommentForm = ({ options, visibility }) => {
                 filteredOptions: [],
                 showOptions: false,
                 userInput: e.currentTarget.value,
-                tagStartIndex: inputRef.current.selectionStart
             });
         }
+
+        */
     };
 
     const onClick = (e) => {
         setOpen(false);
         setAnchorEl(null);
 
-        let startStr = userInput.substring(0, state.tagStartIndex); 
-        let midStr = '@' + e.currentTarget.innerText;
-      
-        let lastStr = userInput.substring(inputRef.current.selectionStart , userInput.length);
-        //input 기준이라 이상해지는구나?
+        let startStr = userInput.substring(0, state.tagStartIndex);
+        let midStr = '@' + e.currentTarget.innerText + ' ';
+        let lastStr = userInput.substring(inputRef.current.selectionStart, userInput.length);
 
-        console.log(startStr + " " + startStr.length)
-        console.log(midStr + " " + midStr.length)
-        console.log(lastStr + " " + lastStr.length)
+        // console.log(state.tagStartIndex)
+        // console.log(startStr + " " + startStr.length)
+        // console.log(midStr + " " + midStr.length)
+        // console.log(lastStr + " " + lastStr.length)
 
         setState({
             activeOption: 0,
             filteredOptions: [],
             showOptions: false,
             userInput: startStr + midStr + lastStr,
-            tagStartIndex: inputRef.current.selectionStart
+            tagStartIndex: -1
         });
+
+        inputRef.current.focus();
     };
 
     const onKeyDown = (e) => {
@@ -300,16 +359,9 @@ export const CommentForm = ({ options, visibility }) => {
                     activeOption: 0,
                     showOptions: false,
                     userInput: userInput.substr(0, state.tagStartIndex) + filteredOptions[activeOption] + ' ',
-                    tagStartIndex: userInput.length + 1
+                    tagStartIndex: -1
                 });
-
-                setRef(() => {
-                    inputRef.input.selectionStart = inputRef.input.selectionStart + 1;
-                });
-                
-                
             }
-
         }
 
         // 위 화살표
@@ -365,11 +417,11 @@ export const CommentForm = ({ options, visibility }) => {
                             placeholder="댓글을 입력하세요."
                             multiline
                             fullWidth
-                            inputRef = {inputRef}
-                            onChange={onChange} 
-                            onSelect={onSelect} 
-                            onKeyDown={onKeyDown} 
-                           
+                            inputRef={inputRef}
+                            onChange={onChange}
+                            onSelect={onSelect}
+                            onKeyDown={onKeyDown}
+
                             value={state.userInput}
                         />
                     </Fragment>
