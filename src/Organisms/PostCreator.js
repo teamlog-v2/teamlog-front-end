@@ -6,11 +6,11 @@ import IconButton from '@material-ui/core/IconButton';
 import Create from '@material-ui/icons/Create';
 
 const Post = ({ submitPost }) => (<Grid container item>
-          <Grid container justify="flex-end">
-            <IconButton onClick={() => {
+          <Grid container justify='flex-end'>
+            <IconButton color='primary' onClick={() => {
                 submitPost();
-              }} style={{ backgroundColor: 'black' }}>
-              <Create style={{ color: 'white' }}/>
+              }}>
+              <Create style={{ fontSize: 'larger', color: '#C16AF5' }} />
             </IconButton>
           </Grid>
         </Grid>);
