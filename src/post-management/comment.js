@@ -2,7 +2,7 @@ import React, { useEffect, useState, Fragment, useRef } from 'react';
 import { Container, MenuItem, MenuList, setRef } from '@material-ui/core';
 import { Box } from '@material-ui/core';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import ReplyIcon from '@material-ui/icons/Reply';
@@ -21,11 +21,11 @@ import Popper from '@material-ui/core/Popper';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
 import { useMediaQuery } from "react-responsive"
-
+import $ from "jquery";
 
 const useStyles = makeStyles((theme) => ({
     comment: {
-        backgroundColor: 'rgb(255, 255, 255)',
+        backgroundColor: 'rgb(245, 245, 245)',
         textAlign: 'left',
     },
     reply: {
@@ -38,7 +38,8 @@ const useStyles = makeStyles((theme) => ({
     icon: {
         cursor: 'pointer',
         width: 'auto',
-        display: 'inline-block'
+        display: 'inline-block',
+        margin: '0.5em'
     },
     friends: {
         width: '20em',
@@ -111,8 +112,16 @@ export const Comment = (props) => {
                 </Box>
 
                 <Box className={classes.reply}>
-                    <Box className={classes.icon} onClick={() => { if (visibility == 'none') { setVisibility('block') } else { setVisibility('none') } }}>
-                        <ReplyIcon />
+                    <Box className={classes.icon} 
+                        onClick={() => { 
+                            if (visibility == 'none') { 
+                                setVisibility('block') 
+                            } 
+                            else { setVisibility('none') 
+                            } 
+                        }
+                    }>
+                        <ReplyIcon color = 'action'/>
                     </Box>
                 </Box>
                 <Box>
@@ -129,6 +138,7 @@ export const Comment = (props) => {
                 </Box>
             </Box>
 
+            <Box display = {visibility}>
             <CommentForm options={[
                 "신동헌",
                 "신현정",
@@ -140,7 +150,8 @@ export const Comment = (props) => {
                 "이사람",
                 "강소공",
                 "pink"
-            ]} visibility={visibility} />
+            ]}/>
+            </Box>
         </Box>
     );
 }
@@ -185,7 +196,7 @@ const FriendList = (props) => {
 }
 
 
-export const CommentForm = ({ options, visibility }) => {
+export const CommentForm = ({ options }) => {
 
     const classes = useStyles();
 
@@ -282,54 +293,6 @@ export const CommentForm = ({ options, visibility }) => {
                 userInput: e.currentTarget.value,
             });
         }
-
-        /*
-        if ((state.tagStartIndex == 0 && userInput.charAt(state.tagStartIndex) == '@')
-            || (state.tagStartIndex > 0 && userInput.charAt(state.tagStartIndex) == '@' && 
-            (userInput.charAt(state.tagStartIndex - 1) == ' ' || userInput.charAt(state.tagStartIndex - 1) == '\n'))) {
-
-            const splitName = userInput.substring(state.tagStartIndex + 1).split(' ')[0];
-            console.log(splitName)
-            
-            const filteredOptions = options.filter(
-                (option) => option.toLowerCase().indexOf(splitName.toLowerCase()) > -1
-            );
-
-            console.log(filteredOptions)
-
-            if(splitName.length < 1){
-                return;
-            }
-
-            setState({
-                ...state,
-                activeOption: 0,
-                filteredOptions,
-                showOptions: true,
-                userInput: e.currentTarget.value
-            });
-
-            if(filteredOptions.length > 0){
-                setOpen(true);
-                setAnchorEl(e.currentTarget);
-            }else{
-                setOpen(false);
-                setAnchorEl(null);
-            }
-        } else {
-            setOpen(false);
-            setAnchorEl(null);
-
-            setState({
-                ...state,
-                activeOption: 0,
-                filteredOptions: [],
-                showOptions: false,
-                userInput: e.currentTarget.value,
-            });
-        }
-
-        */
     };
 
     const onClick = (e) => {
@@ -354,7 +317,7 @@ export const CommentForm = ({ options, visibility }) => {
         });
 
         setMenuFocus(false);
-
+        
         inputRef.current.focus();
     };
 
@@ -375,19 +338,28 @@ export const CommentForm = ({ options, visibility }) => {
         setOpen(false);
     };
 
-    function handleListKeyDown(event) {
+    const handleListKeyDown = (event) => {
         if (event.key === 'Tab') {
             event.preventDefault();
             setOpen(false);
         }
     }
 
+    const theme = createMuiTheme({
+        palette: {
+          primary: {
+            main: 'rgb(220, 220, 220)'
+          }
+        },
+    });
+
     return (
         <Container>
-            <Box component="form" display={visibility} marginTop='1em' marginBottom='1em'>
+            <Box component="form" marginTop='1em' marginBottom='1em' width='auto' height='auto'>
                 <Box width='80%' display='inline-block'>
                     <Fragment>
                         <InputBase
+                            name='reply'
                             className={classes.input}
                             placeholder="댓글을 입력하세요."
                             multiline
@@ -396,13 +368,14 @@ export const CommentForm = ({ options, visibility }) => {
                             onChange={onChange}
                             onSelect={onSelect}
                             onKeyDown={onKeyDown}
-
                             value={state.userInput}
                         />
                     </Fragment>
                 </Box>
                 <Box width='20%' display='inline-block'>
-                    <Button fullWidth variant='contained' color='primary'>등록</Button>
+                    <ThemeProvider theme = {theme}>
+                    <Button fullWidth variant='contained' borderColor='purple' color='primary'>작성</Button>
+                    </ThemeProvider>
                 </Box>
             </Box>
             <Popper open={open} disablePortal style={{ zIndex: 1 }} anchorEl={anchorEl} placement='top-start' role={undefined} transition disablePortal>

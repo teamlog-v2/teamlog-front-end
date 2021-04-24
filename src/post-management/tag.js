@@ -8,7 +8,7 @@ const useStyles = makeStyles(theme => ({
         paddingLeft: theme.spacing(1),
         paddingRight: theme.spacing(1),
         borderRadius: '10%',
-        backgroundColor: 'purple',
+        backgroundColor: 'rgb(195, 0, 255)',
         color: 'white', 
         cursor: 'pointer'
     },
@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
         paddingLeft: theme.spacing(1),
         paddingRight: theme.spacing(1),
         borderRadius: '10%',
-        backgroundColor: 'purple',
+        backgroundColor: 'rgb(195, 0, 255)',
         color: 'white', 
         cursor: 'pointer'
     }

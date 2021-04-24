@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { fade, makeStyles } from '@material-ui/core/styles';
+import { fade, makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
@@ -111,6 +111,14 @@ export const Header = (props) => {
         setValue(newValue);
     };
 
+    const theme = createMuiTheme({
+        palette: {
+            primary: {
+              main: 'rgb(195, 0, 255)'
+            }
+          },
+    });
+
     return (
         <React.Fragment>
             <Toolbar className={classes.toolbar}>
@@ -118,6 +126,7 @@ export const Header = (props) => {
             </Toolbar>
 
             <Paper className={classes.root}>
+                <ThemeProvider theme = {theme}>
                 <Tabs
                     value={value}
                     onChange={handleChange}
@@ -130,23 +139,8 @@ export const Header = (props) => {
                         <Tab label={section.title} />
                     ))}
                 </Tabs>
+                </ThemeProvider>
             </Paper>
-            {/* <Toolbar component="nav" variant="dense" className={classes.toolbarSecondary}>
-                <Container maxWidth='lg' textAlign='center'>
-                    {sections.map((section) => (
-                        <Link
-                            color="inherit"
-                            noWrap
-                            key={section.title}
-                            variant="body2"
-                            href={section.url}
-                            className={classes.toolbarLink}
-                        >
-                            {section.title}
-                        </Link>
-                    ))}
-                </Container>
-            </Toolbar> */}
         </React.Fragment>
     );
 }

@@ -1,5 +1,3 @@
-
-
 import UserInfo from './user.js'
 import { Tag } from './tag.js'
 import { DateInfo } from './datetime.js'
@@ -33,7 +31,7 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 
 import Avatar from '@material-ui/core/Avatar'
@@ -62,9 +60,12 @@ const useStyles = makeStyles((theme) => ({
         border: `1px solid ${theme.palette.divider}`,
     },
     header: {
-        height: '4em',
-        paddingTop: '1em',
+        height: '4.5em',
+        paddingTop: '0.5em',
         textAlign: 'left',
+        display: 'inline-block',
+        position: 'relative',
+        width: '100%'
     },
     tags: {
         width: '100%',
@@ -72,10 +73,10 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'left'
     },
     menu: {
-        width: '10%',
         display: 'inline-block',
-        textAlign: 'right',
-        cursor: 'pointer'
+        cursor: 'pointer',
+        position: 'absolute',
+        right: 0
     },
     location: {
         paddingTop: '0.25em',
@@ -124,8 +125,8 @@ const useStyles = makeStyles((theme) => ({
 
 const PostMenu = () => {
     const classes = useStyles();
-    const [open, setOpen] = React.useState(false);
-    const anchorRef = React.useRef(null);
+    const [open, setOpen] = useState(false);
+    const anchorRef = useRef(null);
 
     const handleToggle = () => {
         setOpen((prevOpen) => !prevOpen);
@@ -147,8 +148,8 @@ const PostMenu = () => {
     }
 
     // return focus to the button when we transitioned from !open -> open
-    const prevOpen = React.useRef(open);
-    React.useEffect(() => {
+    const prevOpen = useRef(open);
+    useEffect(() => {
         if (prevOpen.current === true && open === false) {
             anchorRef.current.focus();
         }
@@ -164,8 +165,9 @@ const PostMenu = () => {
                     aria-controls={open ? 'menu-list-grow' : undefined}
                     aria-haspopup="true"
                     onClick={handleToggle}
+                    
                 >
-                    <Menu />
+                    <Menu color='action'/>
                 </Button>
                 <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal style={{ zIndex: 1 }}>
                     {({ TransitionProps, placement }) => (
@@ -241,19 +243,31 @@ export const Post = (props) => {
         setTagList(postContents.post_tag);
         setCommentList(postContents.comment);
         var slides = document.getElementsByClassName('media');
+
+        var pcDevice = "win16|win32|win64|mac|macintel";
+
+        if(navigator.platform){
+            if(pcDevice.indexOf(navigator.platform.toLowerCase()) < 0){
+                console.log('MOBILE');
+            }else{
+                console.log("PC")
+            }
+        }
     }, []);
 
     return (
         <Container component="main" maxWidth={maxWidth} disableGutters>
+            <CssBaseline/>
             <Box className={classes.paper}>
-                <Container>
+            <Container disableGutters>
+            <Box bgcolor = 'rgb(245, 212, 255)'>
                     <Box className={classes.header}>
-                        <Box display='inline-block' width='90%'>
+                        <Box display='inline-block' marginLeft='0.25em'>
                             <Box>
-                                <UserInfo userId={postContents.writer_user_id} imgWidth='30px' imgHeight='30px' imgPath={ogu} />
+                                <UserInfo userId={postContents.writer_user_id} imgWidth='30px' imgHeight='30px' imgPath={ogu} fontSize = '16px'/>
                             </Box>
                             <Box>
-                                <DateInfo year='2021' month='04' date='06' fs='11px' />
+                                <DateInfo year='2021' month='04' date='06' fs='12px' />
                             </Box>
                         </Box>
 
@@ -261,14 +275,15 @@ export const Post = (props) => {
                             <PostMenu />
                         </Box>
                     </Box>
+                </Box>
                 </Container>
-                <Container>
+                <Container disableGutters>
                     <Box className={classes.location}>
                         <RoomIcon />
                         {postContents.location}
                     </Box>
                 </Container>
-                <Container>
+                <Container disableGutters>
                     <Box>
                         <Box className={classes.tags}>
                             {
@@ -281,15 +296,15 @@ export const Post = (props) => {
                         </Box>
                     </Box>
                 </Container>
-                <Container>
+                <Container disableGutters>
                     <MediaList />
                 </Container>
-                <Container>
+                <Container disableGutters>
                     <Box className={classes.content}>
                         <Typography>{postContents.contents}</Typography>
                     </Box>
                 </Container>
-                <Container>
+                <Container disableGutters>
                     <Box className={classes.files}>
                         <File file='오구.jpg' />
                     </Box>
@@ -300,7 +315,7 @@ export const Post = (props) => {
                         <CommentCounter count={postContents.commentCnt} />
                     </Box>
                 </Container>
-                <Container>
+                <Container disableGutters>
                     {
                         commentList ? commentList.map((item, index) => {
                             return (

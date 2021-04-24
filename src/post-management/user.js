@@ -12,13 +12,11 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: 'black',
     },
     small: {
-        width: '20px',
-        height: '20px',
+        width: '25px',
+        height: '25px',
         margin: '2px',
         border: '1px solid grey'
     }
-    // 저기요 이미지 크기도 바꿀거면 글씨 크기도 바꾸죠
-    // 고민해봅시다
 }));
 
 
@@ -35,10 +33,10 @@ const UserImage = (props) => {
 }
 
 const UserId = (props) => {
-    const {userId, size} = props;
+    const {userId, fontSize} = props;
 
     return (
-        <Box display='inline-block' marginLeft='0.25em' fontSize={size}>
+        <Box display='inline-block' marginLeft='0.25em' fontSize={fontSize}>
             {userId}
         </Box>
     ) ;
@@ -47,12 +45,12 @@ const UserId = (props) => {
 const UserInfo = (props) => {
     
     const classes = useStyles();
-    const {userId , imgWidth, imgHeight, imgPath} = props;
+    const {userId , imgWidth, imgHeight, imgPath, fontSize} = props;
 
     return(
         <Box display = 'inline-block' className={classes.root}>
             <UserImage imgWidth={imgWidth} imgHeight={imgHeight} imgPath = {imgPath}/>
-            <UserId userId = {userId}/>
+            <UserId userId = {userId} fontSize = {fontSize}/>
         </Box>
         // 나는 정보만 줄테니 css는 네가 알아서 하든가... (이런 의도로 작성하고 싶은데...)
     );
