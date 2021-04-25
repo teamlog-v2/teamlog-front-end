@@ -1,12 +1,10 @@
-import React, { useRef } from 'react';
+import React, { useEffect } from 'react';
 import {
   Grid,
   Chip,
 } from '@material-ui/core';
 
 const HashtagChooser = ({ hashtags, selectedTags, updateSelectedTags }) => {
-  const chipRef = useRef(null);
-
   const handleChipClick = (index) => {
     let newSelectedTags = [...selectedTags];
     if ([...selectedTags].includes(index)) {
@@ -17,17 +15,35 @@ const HashtagChooser = ({ hashtags, selectedTags, updateSelectedTags }) => {
     updateSelectedTags(newSelectedTags);
   };
 
+  const handleToggle = (index) => {
+    const item = document.querySelectorAll('.tags')[index];
+    if (!selectedTags.includes(index)) {
+      item.style.backgroundColor = '#C16AF5';
+      item.style.color = 'white';
+    } else {
+      item.style.backgroundColor = 'white';
+      item.style.color = '#C16AF5';
+    }
+  };
+
+  useEffect(() => {
+    const item = document.querySelector('.tags');
+    item.style.backgroundColor = '#C16AF5';
+    item.style.color = 'white';
+  }, []);
+
   return (
     <Grid container direction="row" spacing={1}>
       {hashtags.map((item, index) => (
         <Grid item>
           <Chip
-            ref={chipRef}
+            className="tags"
             key={index}
             label={`#${item}`}
-            variant={selectedTags.includes(index) ? 'default' : 'outlined'}
+            variant="outlined"
             onClick={() => {
               handleChipClick(index);
+              handleToggle(index);
             }}
             color="primary"
           />

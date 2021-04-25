@@ -50,7 +50,13 @@ const ProjectPage = () => {
     // get에서 분기 ? or url다른 get 여러 개?
     const newPosts = postsMock.filter(({ content }) => content.includes(value));
     setPosts(newPosts);
-    setSelectedTags([0]);
+    setSelectedTags([]);
+
+    const tags = document.querySelectorAll('.tags');
+    tags.forEach((tag) => {
+      tag.style.backgroundColor = 'white';
+      tag.style.color = '#C16AF5';
+    });
   };
 
   const handleSelectChange = (event) => {
