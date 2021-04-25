@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import PostFormPage from './PostFormPage';
-import ProjectPage from './ProjectPage';
-import ModuleTest from './ModuleTest';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import PostFormPage from './PostFormPage';
+// import ProjectPage from './ProjectPage';
+// import ModuleTest from './ModuleTest';
 
 const theme = createMuiTheme({
   palette: {
@@ -12,7 +12,7 @@ const theme = createMuiTheme({
     },
     secondary: {
       main: '#E0BAF7',
-    }
+    },
   },
 });
 
@@ -22,5 +22,5 @@ ReactDOM.render(
       <PostFormPage />
     </ThemeProvider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById('root'),
 );

@@ -3,6 +3,6 @@ const isDuplicateData = (list, value) => {
     return true;
   }
   return false;
-}
+};
 
 module.exports = { isDuplicateData };

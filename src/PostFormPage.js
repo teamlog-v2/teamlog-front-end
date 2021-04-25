@@ -13,7 +13,6 @@ import PostCreator from './Organisms/PostCreator';
 import MediaUploader from './Organisms/MediaUploader';
 import AttachmentUploader from './Organisms/AttachmentUploader';
 import AttachmentList from './Organisms/AttachmentList';
-import VideoCall from '@material-ui/icons/VideoCall';
 
 
 const App = () => {

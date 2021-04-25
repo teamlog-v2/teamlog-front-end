@@ -3,8 +3,8 @@ import {
   Grid,
   Chip,
 } from '@material-ui/core';
-import { isDuplicateData } from '../utils';
 import styled from 'styled-components';
+import { isDuplicateData } from '../utils';
 
 const StyledInput = styled.input`
   font-size: smaller;
@@ -22,14 +22,24 @@ const Hashtags = ({ hashtags, updateHashtags }) => {
   const onDeleteItem = (index) => {
     const newHashtags = hashtags.filter((item, i) => index !== i);
     updateHashtags(newHashtags);
-  }
+  };
 
-  return (<Grid container direction='row' spacing={1}>
-          {hashtags.map((item, index) => (<Grid item>
-            <Chip key={index} label={`#${item}`} onDelete={() => {
-              onDeleteItem(index);}} color='primary'/>
-            </Grid>))}
-          </Grid>);
+  return (
+    <Grid container direction="row" spacing={1}>
+      {hashtags.map((item, index) => (
+        <Grid item>
+          <Chip
+            key={index}
+            label={`#${item}`}
+            onDelete={() => {
+              onDeleteItem(index);
+          }}
+            color="primary"
+          />
+        </Grid>
+      ))}
+    </Grid>
+    );
 };
 
 const HashtagInput = ({ hashtags, updateHashtags }) => {
@@ -37,16 +47,15 @@ const HashtagInput = ({ hashtags, updateHashtags }) => {
     const { keyCode, target } = event;
     console.log(keyCode);
     if (keyCode === 8) {
-      if(target.value === '#'){
+      if (target.value === '#') {
         event.preventDefault();
         const newHashtags = [...hashtags];
         newHashtags.splice(newHashtags.length - 1, 1);
         updateHashtags(newHashtags);
       }
-    }
-    else if (keyCode === 13) {
+    } else if (keyCode === 13) {
       const newHashtags = [...hashtags];
-      if(target.value === '#') return;
+      if (target.value === '#') return;
       const value = target.value.slice(1);
       if (isDuplicateData(hashtags, value)) {
         alert('이미 입력된 태그입니다!');
@@ -58,18 +67,25 @@ const HashtagInput = ({ hashtags, updateHashtags }) => {
     }
   };
 
-  return (<Grid container item>
-            <Grid container direction='row' spacing={1}>
-              {hashtags.length > 0 
-                ? (<Grid item>
-                    <Hashtags hashtags={hashtags} updateHashtags={updateHashtags}/>
-                  </Grid>)
-                : null}
-              <Grid item>
-                <StyledInput type='text' defaultValue='#' onKeyDown={handleHashtagInput} color='primary'/>
-              </Grid>
+  return (
+    <Grid container item>
+      <Grid container direction="row" spacing={1}>
+        {hashtags.length > 0
+          ? (
+            <Grid item>
+              <Hashtags
+                hashtags={hashtags}
+                updateHashtags={updateHashtags}
+              />
             </Grid>
-          </Grid>);
-}
+          )
+        : null}
+        <Grid item>
+          <StyledInput type="text" defaultValue="#" onKeyDown={handleHashtagInput} color="primary" />
+        </Grid>
+      </Grid>
+    </Grid>
+    );
+};
 
 export default HashtagInput;

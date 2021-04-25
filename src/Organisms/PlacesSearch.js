@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   Grid,
   Typography,
-  Dialog
+  Dialog,
 } from '@material-ui/core';
 import LocationOn from '@material-ui/icons/LocationOn';
 import PlaceSearchApi from './PlacesSearchApi';
@@ -13,11 +13,11 @@ const SimpleDialog = (props) => {
   return (
     <Dialog onClose={onClose} aria-labelledby="simple-dialog-title" open={open}>
       {/* <DialogTitle id="simple-dialog-title">위치 선택 API</DialogTitle> */}
-      <PlaceSearchApi updateLocation={updateLocation} onClose={onClose}/>
+      <PlaceSearchApi updateLocation={updateLocation} onClose={onClose} />
     </Dialog>
   );
 };
-  
+
 const PlacesSearch = ({ updateLocation }) => {
   const [open, setOpen] = useState(false);
 
@@ -31,14 +31,14 @@ const PlacesSearch = ({ updateLocation }) => {
   return (
     <>
       <Grid onClick={handleClickOpen} style={{ cursor: 'pointer' }}>
-        <Grid container direction='row' alignItems='center'>
+        <Grid container direction="row" alignItems="center">
           <Grid item>
             <LocationOn />
           </Grid>
           <Grid item>
             <Typography>
               어디를 방문하셨나요?
-             </Typography>
+            </Typography>
           </Grid>
         </Grid>
       </Grid>
@@ -46,8 +46,9 @@ const PlacesSearch = ({ updateLocation }) => {
         open={open}
         onClose={handleClose}
         updateLocation={updateLocation}
-        />
-    </>);
+      />
+    </>
+    );
 };
 
 export default PlacesSearch;

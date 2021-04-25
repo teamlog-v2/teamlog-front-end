@@ -42,7 +42,7 @@ const posts = [
     likeCount: 46,
     commentCount: 7,
     writeTime: '2021-05-13',
-  }
-]
+  },
+];
 
 export default posts;
