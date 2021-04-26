@@ -5,7 +5,6 @@ module.exports = {
     },
     extends: [
         "plugin:react/recommended",
-        "plugin:prettier/recommended",
         "airbnb"
     ],
     // "parser": "@typescript-eslint/parser",
@@ -29,6 +28,7 @@ module.exports = {
         "indent": 0, // 주석 자유롭게 달기위해
         "object-curly-newline": 0, // 매개변수 한 줄에 작성 가능하게 함
         "import/no-named-as-default-member": 0,
-        
+        "linebreak-style": 0,
+        "no-param-reassign": 0
     }
 };

@@ -45,7 +45,7 @@
   },
   "eslintIgnore": [
     "src/post-management/post.js",
-    "src/post-management/datalist.js",
+    "src/mock/datalist.js",
     "src/post-management/comment.js",
     "src/project-management/header.js",
     "src/post-management/media.js",

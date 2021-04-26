@@ -2,7 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import PostFormPage from './PostFormPage';
+// import PostFormPage from './PostFormPage';
+import App from './App';
 
 // ReactDOM.render(
 //   <React.StrictMode>
@@ -25,7 +26,8 @@ const theme = createMuiTheme({
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      <PostFormPage />
+      {/* <PostFormPage /> */}
+      <App />
     </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root'),

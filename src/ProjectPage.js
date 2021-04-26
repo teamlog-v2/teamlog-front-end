@@ -86,8 +86,8 @@ const ProjectPage = () => {
 
   const fetchPosts = (selected) => {
     let newPosts;
-    if (selected.length === 0) {
-      newPosts = [...postsMock];
+    if (selected.length === 0) { // 아무것도 해시태그가 선택되지 않으면
+      newPosts = [...postsMock]; // 전체가 저장됨.
     } else {
       newPosts = postsMock.filter(({ hashtags }) => (
         selected.some((selectedIndex) => hashtags.includes(projectHashtags[selectedIndex]))));

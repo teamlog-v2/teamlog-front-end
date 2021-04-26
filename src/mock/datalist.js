@@ -1,7 +1,7 @@
 const data = [
   {
     "id": 1,
-    "contents": "성공적인 MT였습니다. 모두 수고 많으셨어요!!!",
+    "content": "성공적인 MT였습니다. 모두 수고 많으셨어요!!!",
     "post_media": [
       {
         "id": 1,

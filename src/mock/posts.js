@@ -2,10 +2,67 @@ const posts = [
   {
     id: '5363646',
     content: '후지산은 일본의 혼슈 중앙부, 시즈오카현과 야마나시현의 경계에 있는 휴화산이며, 해발 3,776m로 일본에서 제일 높은 산이다.',
+    post_media: [
+      {
+        id: 1,
+        path: '../image/piano.mp4',
+        type: 'video',
+      },
+    ],
+    writer_user_id: 'jduck1024',
+    access_modifier: 'PUBLIC',
+    comment_modifier: 'PUBLIC',
+    location: '경상북도 구미시 대학로 61 금오공과대학교 디지털관',
     hashtags: ['스토리보드', '일본', '여행', '후지산'],
     likeCount: 46,
     commentCount: 7,
-    writeTime: '2020-06-13',
+    writeTime: '2021-04-09T23:05:37.9795225',
+    post_tag: [
+      {
+        name: '스토리보드',
+      },
+      {
+        name: 'MT',
+      },
+      {
+        name: '경주',
+      },
+      {
+        name: '추억',
+      },
+      {
+        name: '동영상',
+      },
+    ],
+    comment: [
+      {
+        id: 1,
+        contents: '이런건 도대체 언제 찍은거야??????',
+        write_time: '2021-04-09T23:05:37.9795225',
+        parent_comment_id: null,
+        writer_user_id: 'semicolumn21',
+        comment_mention: [],
+      },
+      {
+        id: 2,
+        contents: '어제 밤에 찍은건데!? 기억 안나니???',
+        write_time: '2021-04-09T23:05:37.9795225',
+        parent_comment_id: 1,
+        writer_user_id: 'jduck1024',
+        comment_mention: [
+          {
+            id: 1,
+            target_user_id: 'jduck1024',
+          },
+          {
+            id: 2,
+            target_user_id: 'friend18',
+          },
+        ],
+      },
+    ],
+    commentCnt: 2,
+    likerCnt: 15,
   },
   {
     id: '796799',
