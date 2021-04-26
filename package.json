@@ -18,21 +18,24 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "slick-carousel": "^1.8.1",
-    "web-vitals": "^1.1.1"
+    "web-vitals": "^1.1.1",
+    "@material-ui/lab": "^4.0.0-alpha.57",
+    "lodash": "^4.17.21",
+    "react-beautiful-dnd": "^13.1.0",
+    "react-places-autocomplete": "^7.3.0",
+    "styled-components": "^5.2.3"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "prettier": "prettier --write --config ./.prettierrc './src/**/*.{ts,tsx}'"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest",
-      "airbnb",
-      "prettier"
+      "airbnb"
     ],
     "rules": {
       "react/prefer-stateless-function": 0,
@@ -46,7 +49,10 @@
     "src/post-management/comment.js",
     "src/project-management/header.js",
     "src/post-management/media.js",
-    "src/post-management/tag.js"
+    "src/post-management/tag.js",
+    "src/Organisms/ThumbnailList.js",
+    "src/PostFormPage.js",
+    "src/Organisms/PlacesSearchApi.js"
   ],
   "browserslist": {
     "production": [
@@ -65,12 +71,9 @@
     "@typescript-eslint/parser": "^4.22.0",
     "eslint": "^7.25.0",
     "eslint-config-airbnb": "^18.2.1",
-    "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsx-a11y": "^6.4.1",
-    "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-react": "^7.23.2",
-    "eslint-plugin-react-hooks": "^4.2.0",
-    "prettier": "^2.2.1"
+    "eslint-plugin-react-hooks": "^4.2.0"
   }
 }
