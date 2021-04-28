@@ -20,7 +20,8 @@
 //             {
 //                 options ? options.map((item, index) => {
 //                     return (
-//                         <ListItem button className='option-active' key={item} onClick = {onClick}>
+//                         <ListItem button className='option-active' key={item} 
+// onClick = {onClick}>
 //                             <ListItemIcon>
 //                                 <Avatar />
 //                             </ListItemIcon>
