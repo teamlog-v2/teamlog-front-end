@@ -27,44 +27,44 @@
         "comment_list": [
             {
                 "id": 1,
-                "contents": "헐 나도 가고싶었는데...ㅠ",
-                "writer_user_id": "jini",
+                "contents": "댓글111111",
+                "writer_user_id": "jduck1024",
                 "write_time": "2021-04-27T09:00:00",
                 "comment_mention_list": [
                     {
                         "id": 1,
-                        "user_id": "jduck1024"
+                        "user_id": "dfsfs"
                     },
                     {
                         "id": 2,
+                        "user_id": "jduck1024"
+                    },
+                    {
+                        "id": 3,
                         "user_id": "jini"
                     }
                 ]
             },
             {
                 "id": 2,
-                "contents": "ㅠㅠ 다음에는 꼭...",
-                "writer_user_id": "jduck1024",
+                "contents": "대댓글222222",
+                "writer_user_id": "jini",
                 "write_time": "2021-04-28T09:00:00",
                 "comment_mention_list": []
             }
         ],
         "tag_list": [
             {
-                "id": 1,
-                "name": "스토리보드"
-            },
-            {
-                "id": 2,
-                "name": "용인"
-            },
-            {
                 "id": 3,
-                "name": "에버랜드"
+                "name": "태그1"
             },
             {
                 "id": 4,
-                "name": "MT"
+                "name": "태그2"
+            },
+            {
+                "id": 5,
+                "name": "태그3"
             }
         ]
     },
@@ -79,43 +79,59 @@
         "write_time": "2021-04-27T09:00:00",
         "media_list": [],
         "post_liker_count": 0,
-        "comment_count": 2,
-        "comment_list": [
+        "comment_count": 0,
+        "comment_list": [],
+        "tag_list": []
+    },
+    {
+        "id": 3,
+        "contents": "내용",
+        "writer_user_id": "jduck1024",
+        "access_modifier": "PUBLIC",
+        "comment_modifier": "PUBLIC",
+        "latitude": 128.888,
+        "longitude": 0.0,
+        "write_time": "2021-04-28T01:10:30",
+        "media_list": [],
+        "post_liker_count": 0,
+        "comment_count": 0,
+        "comment_list": [],
+        "tag_list": []
+    },
+    {
+        "id": 4,
+        "contents": "게시물게시물게시물게시물",
+        "writer_user_id": "jduck1024",
+        "access_modifier": "PUBLIC",
+        "comment_modifier": "PUBLIC",
+        "latitude": 128.888,
+        "longitude": 0.0,
+        "write_time": "2021-04-28T18:13:47",
+        "media_list": [
             {
-                "id": 3,
-                "contents": "댓글댓글",
-                "writer_user_id": "jini",
-                "write_time": "2021-04-25T09:00:00",
-                "comment_mention_list": []
+                "path": "어... 어디까지 넣지",
+                "type": "IMAGE"
             },
             {
-                "id": 4,
-                "contents": "댓글입니다",
-                "writer_user_id": "jduck1024",
-                "write_time": "2021-03-28T09:00:00",
-                "comment_mention_list": []
+                "path": "어... 어디까지 넣지",
+                "type": "IMAGE"
+            },
+            {
+                "path": "어... 어디까지 넣지",
+                "type": "IMAGE"
             }
         ],
+        "post_liker_count": 0,
+        "comment_count": 0,
+        "comment_list": [],
         "tag_list": [
             {
-                "id": 5,
-                "name": "스토리보드"
-            },
-            {
                 "id": 6,
-                "name": "일본"
+                "name": "3"
             },
             {
                 "id": 7,
-                "name": "여행"
-            },
-            {
-                "id": 8,
-                "name": "후지산"
-            },
-            {
-                "id": 9,
-                "name": "초밥"
+                "name": "4"
             }
         ]
     }

@@ -24,6 +24,13 @@ import { DateInfo } from './datetime';
 import { UserTag } from './tag';
 
 const useStyles = makeStyles(() => ({
+  more: {
+    marginLeft: '0.25em',
+    color: 'rgb(180, 180, 180)',
+    paddingTop: '0.5em',
+    paddingBottom: '0.5em',
+    cursor: 'pointer',
+  },
   comment: {
     backgroundColor: 'rgb(245, 245, 245)',
     textAlign: 'left',
@@ -68,6 +75,16 @@ const Header = (props) => {
   );
 };
 
+export const MoreComment = () => {
+  const classes = useStyles();
+
+  return(
+    <Box className = {classes.more}>
+      댓글 더 보기 . . .
+    </Box>
+  );
+}
+
 export const CommentCounter = (props) => {
   const { count } = props;
   return (
@@ -87,14 +104,14 @@ const CheckRoot = (parentCommentId) => {
 };
 
 export const Comment = (props) => {
-  const { userId, imgPath, commentMention, content, parentCommentId } = props;
+  const { userId, imgPath, comment_mention_list, content, parentCommentId } = props;
   const classes = useStyles();
 
   const [tagList, setTagList] = useState([]);
   const [visibility, setVisibility] = useState('none');
 
   useEffect(() => {
-    setTagList(commentMention);
+    setTagList(comment_mention_list);
   }, []);
 
   const marginLeft = CheckRoot(parentCommentId);
@@ -390,7 +407,6 @@ export const CommentForm = ({ options }) => {
             <Button
               fullWidth
               variant="contained"
-              borderColor="purple"
               color="primary"
             >
               작성

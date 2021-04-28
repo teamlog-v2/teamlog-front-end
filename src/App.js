@@ -1,13 +1,17 @@
 import './App.css';
 import React from 'react';
+import { BrowserRouter, Route } from 'react-router-dom';
 import Project from './project-management/project';
+
 // import FileTest from './file/filetest';
 
 function App() {
   return (
     <div className="App">
       {/* <Postlist/> */}
-      <Project />
+      <BrowserRouter>
+        <Route exact path="/" component={Project} />
+      </BrowserRouter>
       {/* <FriendList/> */}
     </div>
   );

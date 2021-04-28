@@ -1,5 +1,6 @@
-import React from 'react';
+import {React, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
+import {Router, Link} from 'react-router-dom';
 import {
   fade,
   makeStyles,
@@ -80,6 +81,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
 const ProjectTitle = (props) => {
   const classes = useStyles();
   const { title, introduction } = props;
@@ -104,7 +106,14 @@ const ProjectTitle = (props) => {
 const Header = (props) => {
   const classes = useStyles();
   const { sections, title, introduction } = props;
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
+  const [response, setResponse] = useState();
+
+  useEffect(() => {
+    fetch('/teamlog-api/project/1')
+    .then(response => response.json())
+    .then((data) => setResponse(data));
+  }, []);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -133,9 +142,13 @@ const Header = (props) => {
             textColor="primary"
             centered
           >
+          
             {sections.map((section) => (
-              <Tab label={section.title} />
+                <Tab label={section.title}> 
+                  <Link to = "/h" />
+                </Tab>
             ))}
+           
           </Tabs>
         </ThemeProvider>
       </Paper>

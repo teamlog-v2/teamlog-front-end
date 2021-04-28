@@ -26,7 +26,7 @@ import File from './file';
 import { Media } from './media';
 import { Tag } from './tag';
 import { DateInfo } from './datetime';
-import { Comment, CommentCounter, CommentForm } from './comment';
+import { Comment, CommentCounter, CommentForm, MoreComment } from './comment';
 
 // import dao from '../../src/media/dao.png';
 import ogu from '../media/ogu.PNG';
@@ -230,25 +230,31 @@ const MediaList = () => {
 };
 
 export const Post = (props) => {
+    const MAX_COMMENT_SIZE = 2;
     const { postContents, maxWidth } = props;
 
     const [tagList, setTagList] = useState([]);
     const [commentList, setCommentList] = useState([]);
+    const [moreComment, setMoreComment] = useState("none");
 
     const classes = useStyles();
 
     useEffect(() => {
-        setTagList(postContents.post_tag);
-    setCommentList(postContents.comment);
+      setTagList(postContents.post_tag);
+      setCommentList(postContents.comment_list);
+      if(commentList.length > MAX_COMMENT_SIZE){
+        setMoreComment("block");
+      }
+
     var slides = document.getElementsByClassName('media');
 
     var pcDevice = 'win16|win32|win64|mac|macintel';
 
     if (navigator.platform) {
       if (pcDevice.indexOf(navigator.platform.toLowerCase()) < 0) {
-        console.log('MOBILE');
+        // console.log('MOBILE');
       } else {
-        console.log('PC');
+        // console.log('PC');
       }
     }
   }, []);
@@ -312,24 +318,30 @@ export const Post = (props) => {
           </Box>
 
           <Box className={classes.etc}>
-            <LikerCounter count={postContents.likerCnt} />
-            <CommentCounter count={postContents.commentCnt} />
+            <LikerCounter count={postContents.post_liker_count} />
+            <CommentCounter count={postContents.comment_count} />
           </Box>
         </Container>
         <Container disableGutters>
           {commentList
             ? commentList.map((item, index) => {
+              if(index < MAX_COMMENT_SIZE){
                 return (
                   <Comment
                     userId={item.writer_user_id}
                     userTag="null"
                     imgPath={ogu}
-                    comment_mention={item.comment_mention}
+                    comment_mention_list={item.comment_mention_list}
                     content={item.contents}
                     parent_comment_id={item.parent_comment_id}
                   />
                 );
-              })
+              }
+
+              if(index === MAX_COMMENT_SIZE){
+                return (<MoreComment />);
+              }
+            })
             : ''}
         </Container>
         <Container disableGutters>
