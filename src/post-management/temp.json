@@ -1,0 +1,122 @@
+[
+    {
+        "id": 1,
+        "contents": "재밌어요!!!!!!",
+        "writer_user_id": "jini",
+        "access_modifier": "PUBLIC",
+        "comment_modifier": "PUBLIC",
+        "latitude": 127.0,
+        "longitude": 37.0,
+        "write_time": "2021-04-15T09:00:00",
+        "media_list": [
+            {
+                "path": "../media/cat1.PNG",
+                "type": "IMAGE"
+            },
+            {
+                "path": "../media/cat2.PNG",
+                "type": "IMAGE"
+            },
+            {
+                "path": "../media/cat3.PNG",
+                "type": "IMAGE"
+            }
+        ],
+        "post_liker_count": 3,
+        "comment_count": 2,
+        "comment_list": [
+            {
+                "id": 1,
+                "contents": "헐 나도 가고싶었는데...ㅠ",
+                "writer_user_id": "jini",
+                "write_time": "2021-04-27T09:00:00",
+                "comment_mention_list": [
+                    {
+                        "id": 1,
+                        "user_id": "jduck1024"
+                    },
+                    {
+                        "id": 2,
+                        "user_id": "jini"
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "contents": "ㅠㅠ 다음에는 꼭...",
+                "writer_user_id": "jduck1024",
+                "write_time": "2021-04-28T09:00:00",
+                "comment_mention_list": []
+            }
+        ],
+        "tag_list": [
+            {
+                "id": 1,
+                "name": "스토리보드"
+            },
+            {
+                "id": 2,
+                "name": "용인"
+            },
+            {
+                "id": 3,
+                "name": "에버랜드"
+            },
+            {
+                "id": 4,
+                "name": "MT"
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "contents": "저희 학생회 지시에 잘 따라주신 우리 멋쟁이 컴소공 여러분들 모두 진심으로 감사합니다!!! 교수님들과도 함께 즐길 수 있어 너무 영광이었습니다 ㅎㅎ",
+        "writer_user_id": "jduck1024",
+        "access_modifier": "PUBLIC",
+        "comment_modifier": "PUBLIC",
+        "latitude": 36.813683,
+        "longitude": 128.626556,
+        "write_time": "2021-04-27T09:00:00",
+        "media_list": [],
+        "post_liker_count": 0,
+        "comment_count": 2,
+        "comment_list": [
+            {
+                "id": 3,
+                "contents": "댓글댓글",
+                "writer_user_id": "jini",
+                "write_time": "2021-04-25T09:00:00",
+                "comment_mention_list": []
+            },
+            {
+                "id": 4,
+                "contents": "댓글입니다",
+                "writer_user_id": "jduck1024",
+                "write_time": "2021-03-28T09:00:00",
+                "comment_mention_list": []
+            }
+        ],
+        "tag_list": [
+            {
+                "id": 5,
+                "name": "스토리보드"
+            },
+            {
+                "id": 6,
+                "name": "일본"
+            },
+            {
+                "id": 7,
+                "name": "여행"
+            },
+            {
+                "id": 8,
+                "name": "후지산"
+            },
+            {
+                "id": 9,
+                "name": "초밥"
+            }
+        ]
+    }
+]
