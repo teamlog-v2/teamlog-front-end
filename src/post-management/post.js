@@ -1,7 +1,7 @@
 import { useMediaQuery } from 'react-responsive';
 import Carousel from 'react-material-ui-carousel';
-import './carousel-theme.css';
-import './carousel.css';
+// import './carousel-theme.css';
+// import './carousel.css';
 import RoomIcon from '@material-ui/icons/Room';
 import Grow from '@material-ui/core/Grow';
 import Popper from '@material-ui/core/Popper';
@@ -17,7 +17,7 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { Menu } from '@material-ui/icons';
+import { AmpStories, Menu } from '@material-ui/icons';
 import { Button } from '@material-ui/core';
 
 import UserInfo from './user';
@@ -29,7 +29,7 @@ import { DateInfo } from './datetime';
 import { Comment, CommentCounter, CommentForm, MoreComment } from './comment';
 
 // import dao from '../../src/media/dao.png';
-import ogu from '../media/ogu.PNG';
+// import ogu from '../../public/media/ogu.PNG';;
 
 // import cat from '../../src/media/cat.mp4';
 // import piano from '../../src/media/piano.mp4';
@@ -75,7 +75,8 @@ const useStyles = makeStyles((theme) => ({
   media: {
     position: 'relative',
     backgroundColor: 'black',
-    objectFit: 'contain',
+    width: '100%',
+    
     // 모바일 ver, pc ver 높이 필요할 듯
   },
   content: {
@@ -191,8 +192,9 @@ const PostMenu = () => {
   );
 };
 
-const MediaList = () => {
+const MediaList = (props) => {
   const classes = useStyles();
+  const {mediaList} = props;
 
   const isPc = useMediaQuery({
     query: '(min-width:1024px)',
@@ -204,22 +206,29 @@ const MediaList = () => {
     query: '(max-width:767px)',
   });
 
-  let size = isPc ? '60em' : isTablet ? '45em' : '30em';
+  let height = isPc ? '60em' : isTablet ? '45em' : '30em';
+  // 기본 너비는 유드리있게
 
   return (
     <Box id="mediaBox" textAlign="center">
       <Carousel autoPlay={false} animation="slide" cycleNavigation={false}>
-        <Box className={classes.media} height={size}>
-          <Media content={cat1}></Media>
-          {/* <Box bgcolor='yellow' width='500px' left='10px'
-          display='inline-block'>sjfkjd</Box> */}
+
+      {mediaList ? mediaList.map((item, index) => (
+        <Box className={classes.media} height={height}>
+          
+          <Media content={item}/>
         </Box>
-        <Box className={classes.media} height={size}>
+      )
+      
+      ) : null} 
+
+        
+        {/* <Box className={classes.media} height={size}>
           <Media content={cat2}/>
         </Box>
         <Box className={classes.media} height={size}>
           <Media content={cat3}/>
-        </Box>
+        </Box> */}
 
         {/* <Box className={classes.media}>
             <Media content={piano}></Media>
@@ -235,29 +244,27 @@ export const Post = (props) => {
 
     const [tagList, setTagList] = useState([]);
     const [commentList, setCommentList] = useState([]);
-    const [moreComment, setMoreComment] = useState("none");
+    const [mediaList, setMediaList] = useState([]);
 
     const classes = useStyles();
 
     useEffect(() => {
       setTagList(postContents.post_tag);
       setCommentList(postContents.comment_list);
-      if(commentList.length > MAX_COMMENT_SIZE){
-        setMoreComment("block");
+      setMediaList(postContents.media_list);
+
+      var slides = document.getElementsByClassName('media');
+
+      var pcDevice = 'win16|win32|win64|mac|macintel';
+
+      if (navigator.platform) {
+        if (pcDevice.indexOf(navigator.platform.toLowerCase()) < 0) {
+          // console.log('MOBILE');
+        } else {
+          // console.log('PC');
+        }
       }
-
-    var slides = document.getElementsByClassName('media');
-
-    var pcDevice = 'win16|win32|win64|mac|macintel';
-
-    if (navigator.platform) {
-      if (pcDevice.indexOf(navigator.platform.toLowerCase()) < 0) {
-        // console.log('MOBILE');
-      } else {
-        // console.log('PC');
-      }
-    }
-  }, []);
+    }, []);
 
   return (
     <Container component="main" maxWidth={maxWidth} disableGutters>
@@ -272,7 +279,7 @@ export const Post = (props) => {
                     userId={postContents.writer_user_id}
                     imgWidth="30px"
                     imgHeight="30px"
-                    imgPath={ogu}
+                    // imgPath={ogu}
                     fontSize="16px"
                   />
                 </Box>
@@ -297,15 +304,12 @@ export const Post = (props) => {
           <Box>
             <Box className={classes.tags}>
               {tagList
-                ? tagList.map((item, index) => {
-                    return <Tag name={item.name} />;
-                  })
-                : ''}
+                ? tagList.map((item, index) => <Tag name={item.name} />) : null}
             </Box>
           </Box>
         </Container>
         <Container disableGutters>
-          <MediaList />
+          <MediaList mediaList = {mediaList}/>
         </Container>
         <Container disableGutters>
           <Box className={classes.content}>
@@ -330,7 +334,7 @@ export const Post = (props) => {
                   <Comment
                     userId={item.writer_user_id}
                     userTag="null"
-                    imgPath={ogu}
+                    // imgPath={ogu}
                     comment_mention_list={item.comment_mention_list}
                     content={item.contents}
                     parent_comment_id={item.parent_comment_id}

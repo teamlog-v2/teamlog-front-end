@@ -10,15 +10,15 @@ const data = [
       "write_time": "2021-04-15T09:00:00",
       "media_list": [
           {
-              "path": "../media/cat1.PNG",
+              "path": "/image/cat1.PNG",
               "type": "IMAGE"
           },
           {
-              "path": "../media/cat2.PNG",
+              "path": "/image/cat2.PNG",
               "type": "IMAGE"
           },
           {
-              "path": "../media/cat3.PNG",
+              "path": "/image/cat3.PNG",
               "type": "IMAGE"
           }
       ],
@@ -116,16 +116,16 @@ const data = [
       "write_time": "2021-04-28T18:13:47",
       "media_list": [
           {
-              "path": "어... 어디까지 넣지",
-              "type": "IMAGE"
+            "path": "/image/cat1.PNG",
+            "type": "IMAGE"
           },
           {
-              "path": "어... 어디까지 넣지",
-              "type": "IMAGE"
+            "path": "/image/cat1.PNG",
+            "type": "IMAGE"
           },
           {
-              "path": "어... 어디까지 넣지",
-              "type": "IMAGE"
+            "path": "/image/cat1.PNG",
+            "type": "IMAGE"
           }
       ],
       "post_liker_count": 0,

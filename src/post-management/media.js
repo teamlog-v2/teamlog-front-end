@@ -13,26 +13,32 @@ const useStyles = makeStyles(() => ({
     left: '50%',
     transform: 'translate(-50%, -50%)',
     objectFit: 'contain',
+    backgroundColor: 'pink',
+    color: 'white'
   },
 }));
 
 export const Media = (props) => {
   const { content, frameWidth, frameHeight } = props;
+  // alert(content.path);
 
-  var fileName = content.toString();
-  var fileLength = fileName.length;
-  var startIdx = fileName.lastIndexOf('.');
+  // var fileName = content.toString();
+  // var fileLength = fileName.length;
+  // var startIdx = fileName.lastIndexOf('.');
 
-  var fileExtention = String(
-    fileName.substring(startIdx, fileLength).toLowerCase(),
-  );
+  // var fileExtention = String(
+  //   fileName.substring(startIdx, fileLength).toLowerCase(),
+  // );
 
-  // 확장자 판별
-  if (fileExtention == '.mp4') {
-    return <Video content={content} width="100%" />;
-  } else if (fileExtention == '.png' || fileExtention == '.jpg') {
-    return <ImageContent content={content} />;
-    // 조건 더 필요하긴 하겠지만...
+  if(content.type === 'IMAGE'){
+    return (
+      <ImageContent content={content} />
+    );
+    
+  }else if(content.type === 'VIDEO'){
+    return (
+      <VideoContent content={content} />
+    );
   }
 };
 
@@ -41,23 +47,27 @@ const ImageContent = (props) => {
   const classes = useStyles();
 
   const image = new Image();
-  image.src = content.toString();
+  image.src = content.path.toString();
 
-  if (image.width >= image.height) {
-    return (
-      <Box width="100%" className={classes.align}>
-        <img src={content} width="100%" />
-      </Box>
-    );
-  }
-    return (
-      <Box height="100%" className={classes.align}>
-        <img src={content} height="100%" />
-      </Box>
-    );
+  return(
+       <img src = {process.env.PUBLIC_URL + '/media' + content.path} width='100%'/> 
+  );
+
+  // if (image.width >= image.height) {
+  //   return (
+  //     <Box width="100%" className={classes.align}>
+  //       <img src={process.env.PUBLIC_URL + '/media' + content.path} width="100%" />
+  //     </Box>
+  //   );
+  // }
+  //   return (
+  //     <Box height="100%" className={classes.align}>
+  //       <img src={process.env.PUBLIC_URL + '/media' + content.path} height="100%" />
+  //     </Box>
+  //   );
 };
 
-const Video = (props) => {
+const VideoContent = (props) => {
   const { content, width, height } = props;
   const classes = useStyles();
 
@@ -68,7 +78,7 @@ const Video = (props) => {
   return (
     <Box>
       <video className={classes.align} controls>
-        <source src={content}></source>
+        <source src={content.path}></source>
       </video>
     </Box>
   );
