@@ -16,7 +16,6 @@ const AttachUploader = ({ files, updateFiles }) => {
     newFiles.forEach(({ size }) => {
       totalSize += size / 1000;
     });
-    console.log(totalSize);
     return totalSize <= 10000;
   };
 

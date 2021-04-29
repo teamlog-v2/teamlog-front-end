@@ -2,15 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-// import PostFormPage from './PostFormPage';
-import App from './App';
+import PostFormPage from './pages/PostFormPage';
+// import App from './App';
 
-// ReactDOM.render(
-//   <React.StrictMode>
-//     <App />
-//   </React.StrictMode>,
-//   document.getElementById('root'),
-// );
+const UserContext = React.createContext({ userId: 'unknown' }); // 기본값이 설정됨, provider로 전달하고 싶은 값을 지정할 수 있다.
 
 const theme = createMuiTheme({
   palette: {
@@ -26,8 +21,14 @@ const theme = createMuiTheme({
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      {/* <PostFormPage /> */}
-      <App />
+      <UserContext.Provider value={{ userId: 'migu554' }}>
+        <UserContext.Consumer>
+          {(user) => (
+            <PostFormPage user={user} />
+          )}
+        </UserContext.Consumer>
+        {/* <App /> */}
+      </UserContext.Provider>
     </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root'),

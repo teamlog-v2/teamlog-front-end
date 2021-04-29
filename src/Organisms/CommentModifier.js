@@ -5,13 +5,13 @@ import {
 } from '@material-ui/core';
 import { Lock, LockOpen } from '@material-ui/icons';
 
-const AccessModifier = ({ isPostPrivate, updateIsPostPrivate }) => (
+const CommentModifier = ({ isCommentPrivate, updateIsCommentPrivate }) => (
   <Grid container item justify="flex-end">
-    {!isPostPrivate ? (
+    {!isCommentPrivate ? (
       <Grid
         item
         onClick={() => {
-          updateIsPostPrivate(!isPostPrivate);
+          updateIsCommentPrivate(!isCommentPrivate);
         }}
         style={{ cursor: 'pointer' }}
       >
@@ -21,7 +21,7 @@ const AccessModifier = ({ isPostPrivate, updateIsPostPrivate }) => (
           </Grid>
           <Grid item>
             <Typography>
-              내부 멤버만
+              내부 멤버만 댓글 작성
             </Typography>
           </Grid>
         </Grid>
@@ -30,7 +30,7 @@ const AccessModifier = ({ isPostPrivate, updateIsPostPrivate }) => (
       <Grid
         item
         onClick={() => {
-          updateIsPostPrivate(!isPostPrivate);
+          updateIsCommentPrivate(!isCommentPrivate);
         }}
         style={{ cursor: 'pointer' }}
       >
@@ -40,7 +40,7 @@ const AccessModifier = ({ isPostPrivate, updateIsPostPrivate }) => (
           </Grid>
           <Grid item>
             <Typography>
-              외부에도 공개
+              외부인도 댓글 작성
             </Typography>
           </Grid>
         </Grid>
@@ -49,4 +49,4 @@ const AccessModifier = ({ isPostPrivate, updateIsPostPrivate }) => (
   </Grid>
 );
 
-export default AccessModifier;
+export default CommentModifier;

@@ -18,52 +18,40 @@ const StyledInput = styled.input`
   }
 `;
 
-const Hashtags = ({ hashtags, updateHashtags }) => {
-  const onDeleteItem = (index) => {
-    const newHashtags = hashtags.filter((item, i) => index !== i);
-    updateHashtags(newHashtags);
-  };
-
-  return (
-    <Grid container direction="row" spacing={1}>
-      {hashtags.map((item, index) => (
-        <Grid item>
-          <Chip
-            key={index}
-            label={`#${item}`}
-            onDelete={() => {
-              onDeleteItem(index);
-          }}
-            color="primary"
-          />
-        </Grid>
-      ))}
-    </Grid>
-    );
-};
+const Hashtags = ({ hashtags }) => (
+  <Grid container direction="row" spacing={1}>
+    {hashtags.map((item, index) => (
+      <Grid item>
+        <Chip
+          key={index}
+          label={`${item}`}
+          color="primary"
+        />
+      </Grid>
+    ))}
+  </Grid>
+);
 
 const HashtagInput = ({ hashtags, updateHashtags }) => {
   const handleHashtagInput = (event) => {
     const { keyCode, target } = event;
-    console.log(keyCode);
-    if (keyCode === 8) {
-      if (target.value === '#') {
+    const { value } = target;
+
+    if (keyCode === 8 && value === '') { // backspace
         event.preventDefault();
         const newHashtags = [...hashtags];
         newHashtags.splice(newHashtags.length - 1, 1);
         updateHashtags(newHashtags);
-      }
-    } else if (keyCode === 13) {
+    } else if (keyCode === 13) { // enter
       const newHashtags = [...hashtags];
-      if (target.value === '#') return;
-      const value = target.value.slice(1);
+      if (value === '') return;
       if (isDuplicateData(hashtags, value)) {
         alert('이미 입력된 태그입니다!');
       } else {
         newHashtags.push(value);
         updateHashtags(newHashtags);
       }
-      target.value = '#';
+      target.value = '';
     }
   };
 
@@ -75,13 +63,12 @@ const HashtagInput = ({ hashtags, updateHashtags }) => {
             <Grid item>
               <Hashtags
                 hashtags={hashtags}
-                updateHashtags={updateHashtags}
               />
             </Grid>
           )
         : null}
         <Grid item>
-          <StyledInput type="text" defaultValue="#" onKeyDown={handleHashtagInput} color="primary" />
+          <StyledInput type="text" onKeyDown={handleHashtagInput} color="primary" />
         </Grid>
       </Grid>
     </Grid>

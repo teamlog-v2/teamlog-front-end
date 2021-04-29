@@ -1,4 +1,4 @@
-import React  from 'react';
+import React from 'react';
 import { Card, CardMedia,
 } from '@material-ui/core';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
@@ -29,8 +29,8 @@ const ThumbnailList = ({ files, updateFiles }) => {
     if (!destination) { // 삭제
       const current = document.querySelectorAll('.media')[index];
       current.style.border = 'none';
-
-      const newFiles = files.filter((e, i) => index !== i);
+      const newFiles = files.filter((file, i) => index !== i);
+      // URL.revokeObjectURL(newFiles[index].url); // blob url 해제
       updateFiles(newFiles);
       return;
     }
@@ -40,9 +40,8 @@ const ThumbnailList = ({ files, updateFiles }) => {
       source.index,
       destination.index,
     );
-
     updateFiles(newItems);
-  }
+  };
 
   const handleDragupdate = (result) => {
     const { destination, source } = result;
@@ -55,7 +54,7 @@ const ThumbnailList = ({ files, updateFiles }) => {
   };
 
   const reorder = (list, startIndex, endIndex) => {
-    const result = Array.from(list);
+    const result = [...list];
     const [removed] = result.splice(startIndex, 1); // 제거된 객체 반환
     result.splice(endIndex, 0, removed); // endIndex에 제거된 객체 추가
 

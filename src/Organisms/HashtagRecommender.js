@@ -17,20 +17,17 @@ const HashtagRecommender = ({ recommendedHashtags, hashtags, updateHashtags }) =
   };
 
   return (
-    <Grid>
-      <Grid container direction="row" alignItems="center" spacing={1}>
-        <strong style={{ color: '#828282' }}>이런 해시태그는 어때요?</strong>
-        {recommendedHashtags.map((item) => (
-          <Grid item key={item.key}>
-            <Chip
-              label={`#${item.name}`}
-              color="secondary"
-              style={{ cursor: 'pointer' }}
-              onClick={() => { handleChipClick(item.name); }}
-            />
-          </Grid>
-        ))}
-      </Grid>
+    <Grid item container direction="row" alignItems="center" spacing={1} sm={10}>
+      {recommendedHashtags.map((item) => (
+        <Grid item key={item.key}>
+          <Chip
+            label={`${item.name}`}
+            color="secondary"
+            style={{ cursor: 'pointer' }}
+            onClick={() => { handleChipClick(item.name); }}
+          />
+        </Grid>
+      ))}
     </Grid>
   );
 };

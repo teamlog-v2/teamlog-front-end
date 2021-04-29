@@ -5,25 +5,25 @@
   "dependencies": {
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.57",
     "@testing-library/jest-dom": "^5.11.10",
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
     "@types/react-responsive": "^8.0.2",
     "jquery": "^3.6.0",
+    "lodash": "^4.17.21",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
+    "react-beautiful-dnd": "^13.1.0",
     "react-dom": "^17.0.2",
     "react-material-ui-carousel": "^2.2.4",
+    "react-places-autocomplete": "^7.3.0",
     "react-responsive": "^8.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "slick-carousel": "^1.8.1",
-    "web-vitals": "^1.1.1",
-    "@material-ui/lab": "^4.0.0-alpha.57",
-    "lodash": "^4.17.21",
-    "react-beautiful-dnd": "^13.1.0",
-    "react-places-autocomplete": "^7.3.0",
-    "styled-components": "^5.2.3"
+    "styled-components": "^5.2.3",
+    "web-vitals": "^1.1.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -43,6 +43,7 @@
       "react/jsx-one-expression-per-line": 0
     }
   },
+  "proxy": "http://202.31.202.150:8080",
   "eslintIgnore": [
     "src/post-management/post.js",
     "src/mock/datalist.js",
@@ -50,9 +51,9 @@
     "src/project-management/header.js",
     "src/post-management/media.js",
     "src/post-management/tag.js",
-    "src/Organisms/ThumbnailList.js",
-    "src/PostFormPage.js",
-    "src/Organisms/PlacesSearchApi.js"
+    "src/organisms/ThumbnailList.js",
+    "src/pages/PostFormPage.js",
+    "src/organisms/PlacesSearchApi.js"
   ],
   "browserslist": {
     "production": [

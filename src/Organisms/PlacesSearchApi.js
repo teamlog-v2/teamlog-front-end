@@ -9,7 +9,7 @@ import PlacesAutocomplete, {
   getLatLng,
 } from 'react-places-autocomplete';
 
-class LocationSearchInput extends React.Component {
+class PlaceSearchApi extends React.Component {
   constructor(props) {
     super(props);
     this.state = { address: '' };
@@ -24,7 +24,8 @@ class LocationSearchInput extends React.Component {
     geocodeByAddress(address)
       .then(results => getLatLng(results[0]))
       .then(latLng => { console.log('Success', latLng); // 위도 및 경도
-      this.props.updateLocation(`${address}`);
+      this.props.updateAddress(address);
+      this.props.updateLocation({ latitude: latLng.lat, longitude: latLng.lng });
     }) 
       .catch(error => console.error('Error', error));
   };
@@ -74,4 +75,4 @@ class LocationSearchInput extends React.Component {
   }
 }
 
-export default LocationSearchInput;
+export default PlaceSearchApi;

@@ -9,8 +9,8 @@ import {
   InputAdornment,
 } from '@material-ui/core';
 import Search from '@material-ui/icons/Search';
-import HashtagChooser from './Organisms/HashtagChooser';
-import postsMock from './mock/posts';
+import HashtagChooser from '../organisms/HashtagChooser';
+import postsMock from '../mock/posts';
 
 const useStyles = makeStyles((theme) => ({
   root: {

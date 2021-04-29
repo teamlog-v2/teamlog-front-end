@@ -5,13 +5,13 @@ import {
 import IconButton from '@material-ui/core/IconButton';
 import Create from '@material-ui/icons/Create';
 
-const Post = ({ submitPost }) => (
+const Post = ({ handleSubmit }) => (
   <Grid container item>
     <Grid container justify="flex-end">
       <IconButton
         color="primary"
         onClick={() => {
-            submitPost();
+            handleSubmit();
         }}
       >
         <Create style={{ fontSize: 'larger', color: '#C16AF5' }} />
