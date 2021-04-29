@@ -104,7 +104,7 @@ const CheckRoot = (parentCommentId) => {
 };
 
 export const Comment = (props) => {
-  const { userId, imgPath, comment_mention_list, content, parentCommentId } = props;
+  const { userId, writer_profile, imgPath, comment_mention_list, content, parentCommentId } = props;
   const classes = useStyles();
 
   const [tagList, setTagList] = useState([]);
@@ -116,13 +116,15 @@ export const Comment = (props) => {
 
   const marginLeft = CheckRoot(parentCommentId);
 
+  alert(writer_profile)
+
   return (
     <Box className={classes.comment}>
       <Box marginLeft={marginLeft}>
         <Box display="inline-block" width="90%">
-          <Header userId={userId} imgPath={imgPath} />
+          <Header userId={writer_profile.user_id} imgPath={user_profile.user_profile_image_path} />
           <Box>
-            <DateInfo year="2021" month="04" date="06" fs="11px" />
+           <DateInfo dateTime = {postContents.write_time} fs="11px" />
           </Box>
         </Box>
 

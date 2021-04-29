@@ -6,7 +6,12 @@ export const modifyString = () => {
 };
 
 export const DateInfo = (props) => {
-  const { year, month, date, fs } = props;
+  const { dateTime, fs } = props;
+  const dateString = dateTime.toString().split('-');
+
+  const year = dateString[0];
+  const month = dateString[1];
+  const date = dateString[2].split('T')[0];
 
   return (
     <Box fontSize={fs}>{`${year}년 ${month}월 ${date}일`}</Box>

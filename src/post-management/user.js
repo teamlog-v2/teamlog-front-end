@@ -24,7 +24,10 @@ const UserImage = (props) => {
 
   const { imgPath } = props;
 
-  return <Avatar className={classes.small} src={imgPath} />;
+  const src = `${process.env.PUBLIC_URL} /media ${imgPath}`;
+  console.log(src);
+
+  return <Avatar className={classes.small} src={`${process.env.PUBLIC_URL}/media${imgPath}`} />;
 };
 
 const UserId = (props) => {

@@ -50,8 +50,10 @@ const ImageContent = (props) => {
   image.src = content.path.toString();
 
   return(
-       <img src = {process.env.PUBLIC_URL + '/media' + content.path} width='100%'/> 
+       <img src = {process.env.PUBLIC_URL + '/media' + content.path}  height='100%' objectFit='contain'/> 
   );
+
+  // 올릴 때 정사각형으로 자르는 방향은 어떤지...
 
   // if (image.width >= image.height) {
   //   return (

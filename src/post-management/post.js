@@ -17,7 +17,7 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { AmpStories, Menu } from '@material-ui/icons';
+import { AmpStories, Block, Menu } from '@material-ui/icons';
 import { Button } from '@material-ui/core';
 
 import UserInfo from './user';
@@ -76,13 +76,24 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
     backgroundColor: 'black',
     width: '100%',
-    
+    // '&::after': {
+    //   content: '',
+    //   display: 'block',
+    //   paddingBottom: '100%',
+    // }
     // 모바일 ver, pc ver 높이 필요할 듯
+  },
+  temp: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'pink',
   },
   content: {
     marginTop: '0.5em',
     marginBottom: '0.5em',
     textAlign: 'left',
+    marginLeft: '0.25em'
   },
   files: {
     marginTop: '0.5em',
@@ -103,6 +114,7 @@ const useStyles = makeStyles((theme) => ({
     height: '2.5em',
     marginTop: '0.25em',
     marginBottom: '0.5em',
+    marginLeft: '0.25em',
     textAlign: 'left',
   },
   submit: {
@@ -206,33 +218,18 @@ const MediaList = (props) => {
     query: '(max-width:767px)',
   });
 
-  let height = isPc ? '60em' : isTablet ? '45em' : '30em';
-  // 기본 너비는 유드리있게
+  let size = isPc ? '60em' : isTablet ? '45em' : '30em';
 
   return (
     <Box id="mediaBox" textAlign="center">
       <Carousel autoPlay={false} animation="slide" cycleNavigation={false}>
 
       {mediaList ? mediaList.map((item, index) => (
-        <Box className={classes.media} height={height}>
-          
+        <Box className={classes.media}>
           <Media content={item}/>
         </Box>
       )
-      
       ) : null} 
-
-        
-        {/* <Box className={classes.media} height={size}>
-          <Media content={cat2}/>
-        </Box>
-        <Box className={classes.media} height={size}>
-          <Media content={cat3}/>
-        </Box> */}
-
-        {/* <Box className={classes.media}>
-            <Media content={piano}></Media>
-        </Box> */}
       </Carousel>
     </Box>
   );
@@ -276,15 +273,15 @@ export const Post = (props) => {
               <Box display="inline-block" marginLeft="0.25em">
                 <Box>
                   <UserInfo
-                    userId={postContents.writer_user_id}
+                    userId={postContents.writer_profile.user_id}
                     imgWidth="30px"
                     imgHeight="30px"
-                    // imgPath={ogu}
+                    imgPath={postContents.writer_profile.user_profile_image_path}
                     fontSize="16px"
                   />
                 </Box>
                 <Box>
-                  <DateInfo year="2021" month="04" date="06" fs="12px" />
+                  <DateInfo dateTime = {postContents.write_time} fs="12px" />
                 </Box>
               </Box>
 
@@ -326,15 +323,14 @@ export const Post = (props) => {
             <CommentCounter count={postContents.comment_count} />
           </Box>
         </Container>
-        <Container disableGutters>
+        {/* <Container disableGutters>
           {commentList
             ? commentList.map((item, index) => {
               if(index < MAX_COMMENT_SIZE){
                 return (
                   <Comment
-                    userId={item.writer_user_id}
+                    writer_profile={item.writer_profile}
                     userTag="null"
-                    // imgPath={ogu}
                     comment_mention_list={item.comment_mention_list}
                     content={item.contents}
                     parent_comment_id={item.parent_comment_id}
@@ -347,7 +343,7 @@ export const Post = (props) => {
               }
             })
             : ''}
-        </Container>
+        </Container> */}
         <Container disableGutters>
           <CommentForm
             options={[
