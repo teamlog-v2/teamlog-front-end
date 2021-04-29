@@ -71,11 +71,11 @@ const PostForm = (props) => {
       tag_list: hashtags,
     };
 
-    const result = await fetch(`${process.env.REACT_APP_SERVER_ADDRESS}/upload`, {
+    await fetch(`http://localhost:8080/upload`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
-      mode: 'no-cors',
+      // mode: 'no-cors',
     }).then((res) => res.json()).then((res) => {
       if (res.status === 200) { // get res with http status code
         console.log('성공적으로 등록');
@@ -86,7 +86,6 @@ const PostForm = (props) => {
     }).catch((error) => { // 요청이 비정상적으로 처리
       console.log(error);
     });
-    console.log(result);
   };
 
   useEffect(() => {
