@@ -1,4 +1,4 @@
-import React from 'react';
+import { React, useEffect, useState } from 'react';
 import { Typography, Box, Divider } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -35,25 +35,33 @@ const sections = [
 
 const Project = () => {
   const classes = useStyles();
+  const [project, setProject] = useState([]);
+
+  const id = 1; // 얘는 어떻게 전달받을지 알아보자
+
+  useEffect(() => {
+    fetch(`http://localhost:8080/teamlog-api/project/id=${id}`)
+    .then((res) => res.json()).then((info) => setProject(info));
+  }, []);
 
   return (
     <>
       <CssBaseline />
 
       <Header
-        title="도쿄 여행 프로젝트"
-        introduction="동창 친구 넷이서 떠나는 도쿄 여행"
+        title={project.name}
+        introduction={project.introduction}
         sections={sections}
       />
       <Container maxWidth="md">
         <Container className={classes.partition} disableGutters>
-          <Title title="도쿄 여행 프로젝트 소개" />
+          <Title title={project.name} />
           <Introduction
-            name="도쿄 여행 프로젝트"
-            master_user_id="jduck1024"
-            create_time="2021년 04월 17일"
-            follower_count={15}
-            member_count={60}
+            name={project.name}
+            masterUserId={project.master_user_id}
+            createTime={project.create_time}
+            followerCount={15}
+            memberCount={60}
           />
         </Container>
         <Divider light />
