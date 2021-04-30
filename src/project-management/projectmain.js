@@ -39,9 +39,6 @@ const ProjectMain = ({ match }) => {
     useEffect(() => {
       fetch(`http://localhost:8080/api/projects/${projectId}`)
       .then((res) => res.json()).then((info) => setProject(info));
-
-      fetch(`http://localhost:8080/api/posts/${projectId}`)
-      .then((res) => res.json()).then((info) => setPostList(info));
     }, []);
     console.log(postList);
 
@@ -60,7 +57,7 @@ const ProjectMain = ({ match }) => {
         <Divider light />
         <Container className={classes.partition} disableGutters>
           <Title title="스토리보드" />
-          <Postlist dataList = {postList} />
+          <Postlist projectId = {projectId}/>
         </Container>
       </Container>
     );
