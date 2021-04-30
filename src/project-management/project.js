@@ -1,59 +1,72 @@
 import { React, useEffect, useState } from 'react';
-import { Typography, Box, Divider } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+// import { Typography, Box, Divider } from '@material-ui/core';
+// import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 // import Fab from '@material-ui/core/Fab';
 // import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
-import Container from '@material-ui/core/Container';
+// import Container from '@material-ui/core/Container';
+
+import { BrowserRouter, Route } from 'react-router-dom';
+// import ProjectMain from './projectmain';
+import TestFile from './testfile';
 import Header from './header';
-import Introduction from './introduction';
-import Postlist from '../post-management/postlist';
+import ProjectMain from './projectmain';
 
-const useStyles = makeStyles((theme) => ({
-  // arrowButton: {
-  //     zIndex: 'tooltip'
-  // },
-  mainGrid: {
-    marginTop: theme.spacing(3),
-  },
-  partition: {
-    marginTop: '2.5em',
-    marginBottom: '2.5em',
-  },
-  subtitle: {
-    // 글씨 크기 등 적용할 예정
-  },
-}));
+// import Introduction from './introduction';
+// import Postlist from '../post-management/postlist';
 
-const sections = [
-  { title: '홈', url: '#' },
-  { title: '포스트', url: '/post' },
-  { title: '태스크', url: '/task' },
-  { title: '멤버', url: 'member' },
-  { title: '팔로워', url: 'follower' },
-];
+// const useStyles = makeStyles((theme) => ({
+//   // arrowButton: {
+//   //     zIndex: 'tooltip'
+//   // },
+//   mainGrid: {
+//     marginTop: theme.spacing(3),
+//   },
+//   partition: {
+//     marginTop: '2.5em',
+//     marginBottom: '2.5em',
+//   },
+//   subtitle: {
+//     // 글씨 크기 등 적용할 예정
+//   },
+// }));
 
-const Project = () => {
-  const classes = useStyles();
+const Project = ({ id }) => {
+  // const classes = useStyles();
   const [project, setProject] = useState([]);
 
-  const id = 1; // 얘는 어떻게 전달받을지 알아보자
-
   useEffect(() => {
-    fetch(`http://localhost:8080/teamlog-api/project/id=${id}`)
+    fetch(`http://localhost:8080/api/projects/${id}`)
     .then((res) => res.json()).then((info) => setProject(info));
   }, []);
+
+  console.log(project.name);
+
+  const sections = [
+    { title: '홈', url: `/projects/${id}` },
+    { title: '포스트', url: `/projects/post/${id}` },
+    { title: '태스크', url: `/projects/task/${id}` },
+    { title: '멤버', url: `/projects/member/${id}` },
+    { title: '팔로워', url: `/projects/follower/${id}` },
+  ];
 
   return (
     <>
       <CssBaseline />
 
-      <Header
-        title={project.name}
-        introduction={project.introduction}
-        sections={sections}
-      />
-      <Container maxWidth="md">
+      <BrowserRouter>
+        <Header
+          title={project.name}
+          introduction={project.introduction}
+          sections={sections}
+        />
+        <Route exact path="/projects/:id" component={ProjectMain} />
+        <Route exact path="/projects/task/:id" component={TestFile} />
+      </BrowserRouter>
+      {/* <Route exact path="/" render={() => <ProjectMain projectInfo={project} />} />
+        <Route path="/task" component={TestFile} />
+      </BrowserRouter> */}
+      {/* <Container maxWidth="md">
         <Container className={classes.partition} disableGutters>
           <Title title={project.name} />
           <Introduction
@@ -69,7 +82,7 @@ const Project = () => {
           <Title title="스토리보드" />
           <Postlist />
         </Container>
-      </Container>
+      </Container> */}
     </>
   );
 };
@@ -85,14 +98,14 @@ const Project = () => {
 //   );
 // };
 
-const Title = (props) => {
-  const { title } = props;
+// const Title = (props) => {
+//   const { title } = props;
 
-  return (
-    <Box margin="0.5em">
-      <Typography variant="h6">{title}</Typography>
-    </Box>
-  );
-};
+//   return (
+//     <Box margin="0.5em">
+//       <Typography variant="h6">{title}</Typography>
+//     </Box>
+//   );
+// };
 
 export default Project;

@@ -6,12 +6,16 @@ export const modifyString = () => {
 };
 
 export const ManufactureDate = (dateTime) => {
-  const dateString = dateTime.toString().split('-');
-  const year = dateString[0];
-  const month = dateString[1];
-  const date = dateString[2].split('T')[0];
+    const defaultVal = 1;
+    if (dateTime !== undefined) {
+    const dateString = dateTime.toString().split('-');
+    const year = dateString[0];
+    const month = dateString[1];
+    const date = dateString[2].split('T')[0];
+    return `${year}년 ${month}월 ${date}일`;
+  }
 
-  return `${year}년 ${month}월 ${date}일`;
+  return `${defaultVal}년 ${defaultVal}월 ${defaultVal}일`;
 };
 
 export const DateInfo = (props) => {
