@@ -12,6 +12,7 @@ const AttachmentList = ({ files, updateFiles }) => (
           <u>{name}</u>
           <Cancel
             style={{ cursor: 'pointer' }}
+            fontSize="small"
             onClick={() => {
             const newFiles = files.filter((e, i) => index !== i);
             updateFiles(newFiles);

@@ -32,16 +32,11 @@ const MediaUploader = ({ files, updateFiles }) => {
 
     [...event.target.files].forEach((file) => {
       const fileReader = new FileReader();
-      fileReader.onprogress = () => { // 비동기
-        console.log('progress..');
-      };
-
-      fileReader.onabort = () => {
-        console.log('abort');
-      };
 
       fileReader.onloadstart = () => {
-        console.log('load start');
+        if (cnt === 0) {
+          setIsUploading(true);
+        }
       };
 
       fileReader.onloadend = () => {
@@ -78,8 +73,16 @@ const MediaUploader = ({ files, updateFiles }) => {
 
   return (
     <Grid item>
-      <Button variant="contained" color="primary" onClick={handleButtonClick} disabled={isUploading}>
-        <PhotoCamera fontSize="large" />
+      <Button
+        variant="contained"
+        color="primary"
+        size="large"
+        onClick={handleButtonClick}
+        disabled={isUploading}
+        style={{ width: '160px', textAlign: 'center' }}
+      >
+        <PhotoCamera fontSize="medium" />
+        &nbsp;
         <strong>사진 / 동영상</strong>
       </Button>
       <input

@@ -1,47 +1,47 @@
 import React from 'react';
 import {
   Grid,
-  Chip,
 } from '@material-ui/core';
 import styled from 'styled-components';
 import { isDuplicateData } from '../utils';
 
-const StyledInput = styled.input`
+const StyledChip = styled.input`
+  width: ${(props) => (props.isInput ? '60px;' : `${props.value.length * 12}px;`)}
+  cursor: ${(props) => (props.isInput ? 'default;' : 'pointer;')}
+  text-align: ${(props) => (props.isInput ? 'none;' : 'center;')}
   font-size: smaller;
   border-style: none;
   color: white;
   background-color: #C16AF5;
   border-radius: 500px;
-  padding: 5%;
+  padding: 8px 15px;
   &:focus{
     outline: none;
   }
+  &:hover{
+    ${(props) => (props.isInput ? 'none;' : 'background-color: #722387;')}
+  }
+  transition: 0.3s;
 `;
 
-const Hashtags = ({ hashtags }) => (
-  <Grid container direction="row" spacing={1}>
-    {hashtags.map((item, index) => (
-      <Grid item>
-        <Chip
-          key={index}
-          label={`${item}`}
-          color="primary"
-        />
-      </Grid>
-    ))}
-  </Grid>
-);
-
 const HashtagInput = ({ hashtags, updateHashtags }) => {
-  const handleHashtagInput = (event) => {
+  const deleteHashtag = (index) => {
+    const newHashtags = [...hashtags];
+    newHashtags.splice(index, 1);
+    updateHashtags(newHashtags);
+  };
+
+  const handleClick = (index) => {
+    deleteHashtag(index);
+  };
+
+  const handleInput = (event) => {
     const { keyCode, target } = event;
     const { value } = target;
 
     if (keyCode === 8 && value === '') { // backspace
         event.preventDefault();
-        const newHashtags = [...hashtags];
-        newHashtags.splice(newHashtags.length - 1, 1);
-        updateHashtags(newHashtags);
+        deleteHashtag(hashtags.length - 1, 1);
     } else if (keyCode === 13) { // enter
       const newHashtags = [...hashtags];
       if (value === '') return;
@@ -59,16 +59,22 @@ const HashtagInput = ({ hashtags, updateHashtags }) => {
     <Grid container item>
       <Grid container direction="row" spacing={1}>
         {hashtags.length > 0
-          ? (
-            <Grid item>
-              <Hashtags
-                hashtags={hashtags}
-              />
-            </Grid>
-          )
-        : null}
+            ? hashtags.map((item, index) => (
+              <Grid item>
+                <StyledChip
+                  key={index}
+                  type="text"
+                  value={item}
+                  color="primary"
+                  readOnly
+                  onClick={() => {
+                    handleClick(index);
+                  }}
+                />
+              </Grid>
+            )) : null }
         <Grid item>
-          <StyledInput type="text" onKeyDown={handleHashtagInput} color="primary" />
+          <StyledChip isInput type="text" onKeyDown={handleInput} color="primary" />
         </Grid>
       </Grid>
     </Grid>

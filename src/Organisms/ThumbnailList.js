@@ -9,15 +9,12 @@ const getItemStyle = (isDragging, draggableStyle) => ({
   userSelect: 'none',
   padding: grid * 2,
   margin: `0 ${grid}px 0 0`,
-  minWidth: '200px',
-  maxWidth: '200px',
-
   ...draggableStyle,
 });
 
 const getListStyle = (isDraggingOver) => ({
-  display: 'flex',
   padding: grid,
+  display: 'flex',
   overflow: 'auto',
 });
 
@@ -49,7 +46,7 @@ const ThumbnailList = ({ files, updateFiles }) => {
     const current = document.querySelectorAll('.media')[index];
 
     if (!destination) { // dropped outside the list 
-      current.style.border = '2px solid #D53030';
+      current.style.border = '3px solid #C900FF';
     } else current.style.border = 'none';
   };
 
@@ -88,10 +85,12 @@ const ThumbnailList = ({ files, updateFiles }) => {
                               src={url}
                               autoPlay
                               control
+                              style={{ width: '200px', height: '200px' }}
                               />
                               : <CardMedia
                               component="img"
                               src={url}
+                              style={{ width: '200px', height: '200px' }}
                             />}
                             </Card>
                         </div>

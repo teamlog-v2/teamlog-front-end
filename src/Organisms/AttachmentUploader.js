@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   Grid,
   Button,
@@ -6,6 +6,7 @@ import {
 import Attachment from '@material-ui/icons/Attachment';
 
 const AttachUploader = ({ files, updateFiles }) => {
+  const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef(null);
 
   const isValidSize = (newFiles) => {
@@ -20,13 +21,32 @@ const AttachUploader = ({ files, updateFiles }) => {
   };
 
   const handleInputChange = (event) => {
-    let newFiles = [...event.target.files];
+    const uploadedFiles = [...event.target.files];
+    const newFiles = [...files];
     if (!isValidSize(newFiles)) {
       alert('첨부파일 최대 용량은 10MB 입니다.');
       return;
     }
-    newFiles = [...files].concat(newFiles);
-    updateFiles(newFiles);
+    let cnt = 0;
+
+    [...event.target.files].forEach((file) => {
+      const fileReader = new FileReader();
+      fileReader.onloadstart = () => {
+        if (cnt === 0) {
+          setIsUploading(true);
+        }
+      };
+
+      fileReader.onloadend = () => {
+        newFiles.push(file);
+        cnt += 1;
+        if (uploadedFiles.length === cnt) {
+          setIsUploading(false);
+          updateFiles(newFiles);
+        }
+      };
+      fileReader.readAsDataURL(file); // 동기
+    });
   };
 
   const handleButtonClick = () => {
@@ -35,8 +55,16 @@ const AttachUploader = ({ files, updateFiles }) => {
 
   return (
     <Grid item>
-      <Button variant="contained" color="primary" onClick={handleButtonClick}>
-        <Attachment fontSize="large" />
+      <Button
+        variant="contained"
+        color="primary"
+        size="large"
+        onClick={handleButtonClick}
+        disabled={isUploading}
+        style={{ width: '160px', textAlign: 'center' }}
+      >
+        <Attachment fontSize="medium" />
+        &nbsp;
         <strong>첨부파일</strong>
       </Button>
       <input
