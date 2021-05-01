@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { Grid, Chip, Typography, Button, Dialog, Box, CircularProgress, IconButton } from '@material-ui/core';
-import TaskItem from "./TaskItem";
-import TaskCreateForm from "./TaskCreateForm";
-import { getTasksByProject, updateTaskStatus } from './TaskService'
 import CloseIcon from '@material-ui/icons/Close';
+import TaskItem from './TaskItem';
+import TaskCreateForm from './TaskCreateForm';
+import { getTasksByProject, updateTaskStatus } from './TaskService';
 
 const reorder = (list, droppableSource, droppableDestination) => {
   const result = Array.from(list);
@@ -27,7 +27,7 @@ const move = (source, destination, droppableSource, droppableDestination) => {
 
 const TaskContainer = () => {
   const [state, setState] = useState([[], [], [], []]);
-  const [status] = useState(["진행 전", "진행 중", "완료", "실패"]);
+  const [status] = useState(['진행 전', '진행 중', '완료', '실패']);
   const [open, setOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -44,7 +44,7 @@ const TaskContainer = () => {
     (async () => {
       setIsLoaded(false);
       const newState = [...state];
-      newState.map(container => { container.length = 0; })
+      newState.map(container => { container.length = 0; });
       setState(newState);
       let tasks;
       try {
@@ -54,7 +54,7 @@ const TaskContainer = () => {
         alert(err)
         setIsLoaded(false);
       }
-      tasks.map(task => { addTaskInContainer(task) })
+      tasks.map(task => { addTaskInContainer(task)});
       setIsLoaded(true);
     })();
   }, []);
@@ -83,11 +83,11 @@ const TaskContainer = () => {
       var data = { status: toStatusIndex };
       updateTaskStatus(target.id, data)
         .then(res => res.json())
-        .then(response => console.log('Success'))
-        .catch(error => console.error('Error'))
+        .then((response) => console.log('Success'))
+        .catch(error => console.error('Error'));
       setState(newState);
     }
-  }
+  };
 
   if (!isLoaded) {
     return (
@@ -114,7 +114,7 @@ const TaskContainer = () => {
       <Box padding="10px">
         <Button variant="outlined" color="primary" onClick={handleClickOpen}>
           + 태스크 생성
-      </Button>
+        </Button>
 
       </Box>
       <Dialog open={open} onClose={handleClose}>
@@ -132,12 +132,15 @@ const TaskContainer = () => {
         <DragDropContext onDragEnd={onDragEnd}>
           {state.map((el, ind) => (
             <Droppable key={ind} droppableId={`${ind}`}>
-              {(provided, snapshot) => (
-                <Grid item sm={3} xs={12}
+              {(provided) => (
+                <Grid
+                  item
+                  sm={3}
+                  xs={12}
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                 >
-                  <Grid container spacing={1} alignItems='center'>
+                  <Grid container spacing={1} alignItems="center">
                     <Grid item>
                       <Chip varient="contained" color="primary" label={status[ind]} />
                     </Grid>
@@ -145,9 +148,7 @@ const TaskContainer = () => {
                       <Typography>{state[ind].length}</Typography>
                     </Grid>
                   </Grid>
-                  {state[ind].length === 0 ? <Grid>
-                    <p>없어요</p>
-                    </Grid> : null}
+                  {state[ind].length === 0 ? <Grid> <p>없어요</p></Grid> : null}
                   {el.map((item, index) => (
                     <TaskItem item={item} index={index} />
                   ))}
@@ -161,5 +162,6 @@ const TaskContainer = () => {
 
     </>
   );
-}
+};
+
 export default TaskContainer;

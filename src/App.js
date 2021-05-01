@@ -1,14 +1,14 @@
 import './App.css';
 import React from 'react';
-import Project from './project-management/project';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import loadable from '@loadable/component';
-import ProjectListContainer from './/project/ProjectListContainer';
+import Project from './project-management/project';
+import ProjectListContainer from './project/ProjectListContainer';
 
 // import FileTest from './file/filetest';
 
 function App() {
-  const  TaskContainer = loadable(() => import('./task/TaskContainer'));
+  const TaskContainer = loadable(() => import('./task/TaskContainer'));
 
   return (
     <div className="App">
@@ -19,9 +19,9 @@ function App() {
       {/* <FileTest /> */}
       {/* <FriendList/> */}
       <Switch>
-      <Redirect exact path="/" to="/project" />
-      <Route path="/task" component={TaskContainer} />
-      <Route path="/project" component={ProjectListContainer}/>
+        <Redirect exact path="/" to="/project" />
+        <Route path="/task" component={TaskContainer} />
+        <Route path="/project" component={ProjectListContainer} />
       </Switch>
     </div>
   );
