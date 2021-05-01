@@ -53,6 +53,27 @@ const PostForm = (props) => {
   const handleSubmit = async () => {
     const media_list = uploadedFiles.map(({ file, type }) => ({ path: file.name, type }));
     const attachment_list = attachedFiles.map((file) => ({ path: file.name }));
+    
+    // 미디어 파일 전송
+    const mediaData = {
+      multipartList: media_list,
+    };
+
+    await fetch(`${process.env.REACT_APP_SERVER_ADDRESS}/upload`, { // 미디어 파일 전송 api
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(mediaData),
+    }).then((res) => res.json()).then((res) => {
+      if (res.status === 200) { // get res with http status code
+        console.log('성공적으로 등록');
+        console.log(data);
+      } else {
+        console.log('에러 감지');
+      }
+    }).catch((error) => { // 요청이 비정상적으로 처리
+      console.log(error);
+    });
+
     // console.log(attachment_list);
     // 첨부파일 및 이미지 파일 보낸 후 나머지 data 전송
     // const imgData = new FormData();
@@ -71,11 +92,10 @@ const PostForm = (props) => {
       tag_list: hashtags,
     };
 
-    const result = await fetch(`${process.env.REACT_APP_SERVER_ADDRESS}/upload`, {
+    await fetch(`${process.env.REACT_APP_SERVER_ADDRESS}/upload`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
-      mode: 'no-cors',
     }).then((res) => res.json()).then((res) => {
       if (res.status === 200) { // get res with http status code
         console.log('성공적으로 등록');
@@ -86,7 +106,6 @@ const PostForm = (props) => {
     }).catch((error) => { // 요청이 비정상적으로 처리
       console.log(error);
     });
-    console.log(result);
   };
 
   useEffect(() => {
@@ -188,6 +207,6 @@ const PostForm = (props) => {
                 </Grid>
               </Grid>
       );
-    };
+  };
 
 export default PostForm;

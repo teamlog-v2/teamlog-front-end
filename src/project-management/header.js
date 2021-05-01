@@ -10,8 +10,11 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import TextField from '@material-ui/core/TextField';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import Search from '@material-ui/icons/Search';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -103,7 +106,7 @@ const ProjectTitle = (props) => {
 
 const Header = (props) => {
   const classes = useStyles();
-  const { sections, title, introduction } = props;
+  const { sections, title, introduction, handleInputChange} = props;
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -122,6 +125,11 @@ const Header = (props) => {
     <>
       <Toolbar className={classes.toolbar}>
         <ProjectTitle title={title} introduction={introduction} />
+        <TextField
+        placeholder="검색어를 입력하세요."
+        InputProps={{ endAdornment: (<InputAdornment><Search /></InputAdornment>) }}
+        onChange={handleInputChange}
+      />
       </Toolbar>
 
       <Paper className={classes.root}>

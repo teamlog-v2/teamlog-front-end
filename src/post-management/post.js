@@ -232,13 +232,11 @@ const MediaList = () => {
 export const Post = (props) => {
     const { postContents, maxWidth } = props;
 
-    const [tagList, setTagList] = useState([]);
     const [commentList, setCommentList] = useState([]);
 
     const classes = useStyles();
 
     useEffect(() => {
-        setTagList(postContents.post_tag);
     setCommentList(postContents.comment);
     var slides = document.getElementsByClassName('media');
 
@@ -271,7 +269,12 @@ export const Post = (props) => {
                   />
                 </Box>
                 <Box>
-                  <DateInfo year="2021" month="04" date="06" fs="12px" />
+                  {/* <DateInfo year="2021" month="04" date="06" fs="12px" /> */}
+                  {new Date(postContents.write_time).toLocaleTimeString(undefined, {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
                 </Box>
               </Box>
 
@@ -290,16 +293,28 @@ export const Post = (props) => {
         <Container disableGutters>
           <Box>
             <Box className={classes.tags}>
-              {tagList
-                ? tagList.map((item, index) => {
+              {postContents.tag_list
+                ? postContents.tag_list.map((item, index) => {
                     return <Tag name={item.name} />;
                   })
                 : ''}
             </Box>
+            {/* <Grid container direction="row" spacing={1}>
+            {postContents.tag_list.map((item, index) => (
+              <Grid item>
+                <Chip
+                  className="tags"
+                  key={index}
+                  label={`#${item.name}`}
+                  color="primary"
+                />
+              </Grid>
+              ))}
+          </Grid> */}
           </Box>
         </Container>
         <Container disableGutters>
-          <MediaList />
+          {/* <MediaList /> */}
         </Container>
         <Container disableGutters>
           <Box className={classes.content}>
@@ -312,13 +327,13 @@ export const Post = (props) => {
           </Box>
 
           <Box className={classes.etc}>
-            <LikerCounter count={postContents.likerCnt} />
-            <CommentCounter count={postContents.commentCnt} />
+            <LikerCounter count={postContents.post_liker_count} />
+            <CommentCounter count={postContents.comment_count} />
           </Box>
         </Container>
         <Container disableGutters>
-          {commentList
-            ? commentList.map((item, index) => {
+          {postContents.comment_list
+            ? postContents.comment_list.map((item, index) => {
                 return (
                   <Comment
                     userId={item.writer_user_id}

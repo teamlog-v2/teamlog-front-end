@@ -89,8 +89,10 @@ const ProjectPage = () => {
     if (selected.length === 0) { // 아무것도 해시태그가 선택되지 않으면
       newPosts = [...postsMock]; // 전체가 저장됨.
     } else {
-      newPosts = postsMock.filter(({ hashtags }) => (
-        selected.some((selectedIndex) => hashtags.includes(projectHashtags[selectedIndex]))));
+      newPosts = postsMock.filter(({ tag_list }) => (
+        selected.some((selectedIndex) => (
+          tag_list.some(({ name }) => name === projectHashtags[selectedIndex])
+      ))));
     }
     // 실제 request api 요청
     // fetch('SERVER_ADDRESS', { method: 'GET', body: hashtags })
@@ -101,10 +103,10 @@ const ProjectPage = () => {
   useEffect(() => { // 특정 프로젝트에 대해 모든 해시태그 값들 get // @get('/post_hashtags/projectId')
     const initProjectHashtags = [];
 
-    postsMock.forEach(({ hashtags }) => {
-      hashtags.forEach((hashtag) => {
-        if (!initProjectHashtags.includes(hashtag)) {
-          initProjectHashtags.push(hashtag);
+    postsMock.forEach(({ tag_list }) => { // 중복된 해시태그 거르고 해시태그 추출
+      tag_list.forEach(({ name }) => {
+        if (!initProjectHashtags.includes(name)) {
+          initProjectHashtags.push(name);
         }
       });
     });
@@ -151,7 +153,7 @@ const ProjectPage = () => {
         </Grid>
         <Grid className={classes.children} item container xs={12}>
           {
-            posts.map(({ id, content, likeCount, commentCount, writeTime }) => (
+            posts.map(({ id, contents, post_liker_count, comment_count, write_time }) => (
               <Paper
                 className={classes.children}
                 elevation={0}
@@ -159,10 +161,10 @@ const ProjectPage = () => {
                 style={{ padding: '1%' }}
               >
                 <Grid key={id}>
-                  {content}
+                  {contents}
                 </Grid>
                 <Grid style={{ backgroundColor: 'white' }}>
-                  ❤{likeCount} 🗨{commentCount} 🕓{writeTime}
+                  ❤{post_liker_count} 🗨{comment_count} 🕓{write_time}
                 </Grid>
               </Paper>
               ))
