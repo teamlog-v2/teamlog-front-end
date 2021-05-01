@@ -46,60 +46,40 @@ const PostForm = (props) => {
   const [location, setLocation] = useState({});
   const contentRef = useRef(null); // contents
   const [hashtags, setHashtags] = useState([]); // tag_list
-  const [uploadedFiles, setUploadedFiles] = useState([]); // media_list
-  const [attachedFiles, setAttachedFiles] = useState([]); // media_list (?)
+  const [uploadedFiles, setUploadedFiles] = useState([]);
+  const [attachedFiles, setAttachedFiles] = useState([]);
   const [recommendedHashtags, setRecommendedHashtags] = useState([]);
 
   const handleSubmit = async () => {
-    const media_list = uploadedFiles.map(({ file, type }) => ({ path: file.name, type }));
-    const attachment_list = attachedFiles.map((file) => ({ path: file.name }));
-    
-    // 미디어 파일 전송
-    const mediaData = {
-      multipartList: media_list,
-    };
-
-    await fetch(`${process.env.REACT_APP_SERVER_ADDRESS}/upload`, { // 미디어 파일 전송 api
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(mediaData),
-    }).then((res) => res.json()).then((res) => {
-      if (res.status === 200) { // get res with http status code
-        console.log('성공적으로 등록');
-        console.log(data);
-      } else {
-        console.log('에러 감지');
-      }
-    }).catch((error) => { // 요청이 비정상적으로 처리
-      console.log(error);
+    const formData = new FormData();
+    uploadedFiles.forEach(({ file }) => {
+      formData.append('media', file);
     });
+    attachedFiles.forEach(({ file }) => {
+      formData.append('files', file);
+    })
 
-    // console.log(attachment_list);
-    // 첨부파일 및 이미지 파일 보낸 후 나머지 data 전송
-    // const imgData = new FormData();
-    // uploadedFiles.forEach(({ file }) => {
-    // })
     const data = {
+      projectId: 9,
       contents: contentRef.current.value,
-      writer_user_id: props.user.userId,
-      access_modifier: !isPostPrivate ? 'PUBLIC' : 'PRIVATE',
-      comment_modifier: !isCommentPrivate ? 'PUBLIC' : 'PRIVATE',
+      writerId: 'string',
+      accessModifier: !isPostPrivate ? 'PUBLIC' : 'PRIVATE',
+      commentModifier: !isCommentPrivate ? 'PUBLIC' : 'PRIVATE',
       latitude: location.latitude,
       longitude: location.longitude,
-      write_time: null, // 서버 시간으로 처리
-      media_list,
-      // attachment_list,
-      tag_list: hashtags,
+      hashtags: hashtags,
     };
 
-    await fetch(`${process.env.REACT_APP_SERVER_ADDRESS}/upload`, {
+    formData.append('key', new Blob([JSON.stringify(data)], { type: "application/json" }));
+
+    await fetch('/api/posts', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    }).then((res) => res.json()).then((res) => {
-      if (res.status === 200) { // get res with http status code
+      body: formData,
+      headers: {},
+    }).then((res) => { // spring으로부터 json형태의 response를 받음.
+      console.log(res);
+      if (res.status === 201) { // get res with http status code
         console.log('성공적으로 등록');
-        console.log(data);
       } else {
         console.log('에러 감지');
       }
