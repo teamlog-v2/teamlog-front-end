@@ -18,7 +18,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Menu } from '@material-ui/icons';
-import { Button } from '@material-ui/core';
+import { Button, Chip, Grid } from '@material-ui/core';
 
 import UserInfo from './user';
 import LikerCounter from './liker';
@@ -232,23 +232,25 @@ const MediaList = () => {
 export const Post = (props) => {
     const { postContents, maxWidth } = props;
 
-    const [commentList, setCommentList] = useState([]);
+    // const [commentList, setCommentList] = useState([]);
+    // 댓글 관련 일단 모두 주석처리
 
     const classes = useStyles();
 
     useEffect(() => {
-    setCommentList(postContents.comment);
+    // setCommentList(postContents.comment);
     var slides = document.getElementsByClassName('media');
 
-    var pcDevice = 'win16|win32|win64|mac|macintel';
+    // 밑에 주석친건 사실 쓸일이 있을지 아직 모르겠어여
+    // var pcDevice = 'win16|win32|win64|mac|macintel';
 
-    if (navigator.platform) {
-      if (pcDevice.indexOf(navigator.platform.toLowerCase()) < 0) {
-        console.log('MOBILE');
-      } else {
-        console.log('PC');
-      }
-    }
+    // if (navigator.platform) {
+    //   if (pcDevice.indexOf(navigator.platform.toLowerCase()) < 0) {
+    //     console.log('MOBILE');
+    //   } else {
+    //     console.log('PC');
+    //   }
+    // } 
   }, []);
 
   return (
@@ -270,7 +272,7 @@ export const Post = (props) => {
                 </Box>
                 <Box>
                   {/* <DateInfo year="2021" month="04" date="06" fs="12px" /> */}
-                  {new Date(postContents.write_time).toLocaleTimeString(undefined, {
+                  {new Date(postContents.writeTime).toLocaleTimeString(undefined, {
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric',
@@ -293,11 +295,26 @@ export const Post = (props) => {
         <Container disableGutters>
           <Box>
             <Box className={classes.tags}>
+            <Grid container direction="row" spacing={1}>
               {postContents.tag_list
                 ? postContents.tag_list.map((item, index) => {
-                    return <Tag name={item.name} />;
+                    return <Grid item>
+                        <Chip
+                          className="tags"
+                          key={index}
+                          label={`#${item.name}`}
+                          variant="outlined"
+                          size="small"
+                          onClick={() => {
+                            // handleChipClick(index);
+                            // handleToggle(index);
+                          }}
+                          color="primary"
+                        />
+                      </Grid>
                   })
                 : ''}
+                </Grid>
             </Box>
             {/* <Grid container direction="row" spacing={1}>
             {postContents.tag_list.map((item, index) => (

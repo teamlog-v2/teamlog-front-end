@@ -45,6 +45,7 @@ const HashtagChooser = ({ hashtags, selectedTags, updateSelectedTags }) => {
               handleChipClick(index);
               handleToggle(index);
             }}
+            size="small"
             color="primary"
           />
         </Grid>
