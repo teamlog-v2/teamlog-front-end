@@ -24,8 +24,7 @@ const UserImage = (props) => {
 
   const { imgPath } = props;
 
-  const src = `${process.env.PUBLIC_URL} /media ${imgPath}`;
-  console.log(src);
+  // const src = `${process.env.PUBLIC_URL} /media ${imgPath}`;
 
   return <Avatar className={classes.small} src={`${process.env.PUBLIC_URL}/media${imgPath}`} />;
 };

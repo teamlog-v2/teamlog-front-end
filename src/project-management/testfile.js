@@ -1,12 +1,8 @@
-import { React, useEffect } from 'react';
+import { React } from 'react';
 
 const TextFile = ({ match }) => {
-    const text = 'TextFile';
+    const text = '번 프로젝트의 태스크가 들어갈 자리입니다.';
 
-        useEffect(() => {
-        }, []);
-
-    console.log('test');
     return (
       <div>{match.params.id + text}</div>
     );

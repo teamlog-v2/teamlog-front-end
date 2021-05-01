@@ -225,7 +225,7 @@ const MediaList = (props) => {
       <Carousel autoPlay={false} animation="slide" cycleNavigation={false}>
 
       {mediaList ? mediaList.map((item, index) => (
-        <Box className={classes.media}>
+        <Box className={classes.media} height={size}>
           <Media content={item}/>
         </Box>
       )
@@ -323,12 +323,16 @@ export const Post = (props) => {
             <CommentCounter count={postContents.comment_count} />
           </Box>
         </Container>
-        {/* <Container disableGutters>
+        <Container disableGutters>
           {commentList
             ? commentList.map((item, index) => {
               if(index < MAX_COMMENT_SIZE){
                 return (
                   <Comment
+                    id={item.id}
+                    postId={postContents.id}
+                    parentId={item.parentId}
+                    write_time={item.writeTime}
                     writer_profile={item.writer_profile}
                     userTag="null"
                     comment_mention_list={item.comment_mention_list}
@@ -343,7 +347,7 @@ export const Post = (props) => {
               }
             })
             : ''}
-        </Container> */}
+        </Container>
         <Container disableGutters>
           <CommentForm
             options={[
@@ -371,6 +375,8 @@ export const Post = (props) => {
               '김에어',
               '김지현',
             ]}
+            parentCommentId={null}
+            postId={postContents.id}
           />
         </Container>
       </Box>

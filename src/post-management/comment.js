@@ -96,17 +96,19 @@ export const CommentCounter = (props) => {
 };
 
 const CheckRoot = (parentCommentId) => {
-  if (parentCommentId != null) {
+  if (parentCommentId != -1) {
     return '1.5em'; // 대댓글 들여쓰기
   }
 
   return '0.25em';
 };
 
-export const Comment = (props) => {
-  const { userId, writer_profile, imgPath, comment_mention_list, content, parentCommentId } = props;
-  const classes = useStyles();
 
+
+export const Comment = (props) => {
+  const { id, postId, parentId, write_time,  writer_profile, imgPath, comment_mention_list, content, parentCommentId } = props;
+  const classes = useStyles();
+  
   const [tagList, setTagList] = useState([]);
   const [visibility, setVisibility] = useState('none');
 
@@ -114,17 +116,16 @@ export const Comment = (props) => {
     setTagList(comment_mention_list);
   }, []);
 
-  const marginLeft = CheckRoot(parentCommentId);
-
-  alert(writer_profile)
+  
+  const marginLeft = CheckRoot(parentId);
 
   return (
     <Box className={classes.comment}>
       <Box marginLeft={marginLeft}>
         <Box display="inline-block" width="90%">
-          <Header userId={writer_profile.user_id} imgPath={user_profile.user_profile_image_path} />
+          <Header userId={writer_profile.user_id} imgPath={writer_profile.user_profile_image_path} />
           <Box>
-           <DateInfo dateTime = {postContents.write_time} fs="11px" />
+           <DateInfo dateTime = {write_time} fs="11px" />
           </Box>
         </Box>
 
@@ -166,6 +167,8 @@ export const Comment = (props) => {
             '강소공',
             'pink',
           ]}
+          parentCommentId={id}
+          postId={postId}
         />
       </Box>
     </Box>
@@ -214,12 +217,9 @@ const FriendList = (props) => {
   );
 };
 
-export const CommentForm = ({ options }) => {
+export const CommentForm = (props) => {
   const classes = useStyles();
-
-  // const defaultProps = {
-  //     options: []
-  // };
+  const { options, postId, parentCommentId } = props;
 
   const [state, setState] = useState({
     activeOption: 0,
@@ -235,6 +235,7 @@ export const CommentForm = ({ options }) => {
   menuFocus
     ? (document.body.style.overflow = 'hidden')
     : (document.body.style.overflow = 'unset');
+    
 
   const onKeyDown = (e) => {
     // 위 화살표 or 아래 화살표
@@ -242,6 +243,23 @@ export const CommentForm = ({ options }) => {
       setMenuFocus(true);
     }
   };
+
+  const CreateComment = () => { 
+    let comment = {
+      parentCommentId: parentCommentId,
+      writerId: 'jduck1024', // 이미 알고있어야 하는 아이디
+      postId: postId, 
+      contents: inputRef.current.value
+    }
+
+    fetch('http://localhost:8080/api/comments/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(comment)
+    }).then((res) => alert(res.status));
+  }
 
   const onSelect = () => {
     let index = inputRef.current.selectionStart;
@@ -253,8 +271,6 @@ export const CommentForm = ({ options }) => {
         ...state,
         tagStartIndex: index - 2,
       });
-
-      console.log(index - 2);
     }
   };
 
@@ -268,10 +284,6 @@ export const CommentForm = ({ options }) => {
 
     let index = inputRef.current.selectionStart;
 
-    // console.log(userInput.charAt(index - 2))
-
-    // console.log(state.tagStartIndex)
-
     if (
       state.tagStartIndex > -1 &&
       userInput.charAt(state.tagStartIndex) == '@'
@@ -281,7 +293,6 @@ export const CommentForm = ({ options }) => {
         state.tagStartIndex + 1,
         inputRef.current.selectionStart,
       );
-      console.log(splitName);
 
       if (splitName.length == 0) return;
 
@@ -328,11 +339,6 @@ export const CommentForm = ({ options }) => {
       inputRef.current.selectionStart,
       userInput.length,
     );
-
-    // console.log(state.tagStartIndex)
-    // console.log(startStr + " " + startStr.length)
-    // console.log(midStr + " " + midStr.length)
-    // console.log(lastStr + " " + lastStr.length)
 
     setState({
       activeOption: 0,
@@ -407,9 +413,11 @@ export const CommentForm = ({ options }) => {
         <Box width="20%" display="inline-block">
           <ThemeProvider theme={theme}>
             <Button
+              parentCommentId = '1'
               fullWidth
               variant="contained"
               color="primary"
+              onClick = {CreateComment}
             >
               작성
             </Button>
