@@ -38,7 +38,7 @@
       "react/jsx-one-expression-per-line": 0
     }
   },
-  "proxy": "http://localhost:8090/",
+  "proxy": "http://3.15.16.150:8090/",
   "eslintIgnore": [
     "src/post-management/post.js",
     "src/post-management/datalist.js",

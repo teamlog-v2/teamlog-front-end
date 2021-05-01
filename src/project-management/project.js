@@ -36,11 +36,9 @@ const Project = ({ id }) => {
   const [project, setProject] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:8090/api/projects/${id}`)
+    fetch(`http://3.15.16.150:8090/api/projects/${id}`)
     .then((res) => res.json()).then((info) => setProject(info));
   }, []);
-
-  console.log(project.name);
 
   const sections = [
     { title: '홈', url: `/projects/${id}` },

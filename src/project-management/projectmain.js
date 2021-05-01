@@ -37,7 +37,7 @@ const ProjectMain = ({ match }) => {
     const [postList, setPostList] = useState([]);
 
     useEffect(() => {
-      fetch(`http://localhost:8090/api/projects/${projectId}`)
+      fetch(`http://3.15.16.150:8090/api/projects/${projectId}`)
       .then((res) => res.json()).then((info) => setProject(info));
     }, []);
     console.log(postList);
