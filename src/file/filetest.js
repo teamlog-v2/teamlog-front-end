@@ -1,6 +1,6 @@
 import React from 'react';
 
-const FileTest = () => (
+const FileTest = () 
 <form action="/uploadTest" method="post" encType="multipart/form-data">
 <div>
     <input multiple="multiple" type="file" name="multipartFileList"/>

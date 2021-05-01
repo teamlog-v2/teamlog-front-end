@@ -20,6 +20,7 @@ import Container from '@material-ui/core/Container';
 import { AmpStories, Block, Menu } from '@material-ui/icons';
 import { Button } from '@material-ui/core';
 
+import CommentList from './commentlist';
 import UserInfo from './user';
 import LikerCounter from './liker';
 import File from './file';
@@ -240,12 +241,14 @@ export const Post = (props) => {
     const { postContents, maxWidth } = props;
 
     const [tagList, setTagList] = useState([]);
+    const [commentList, setCommentList] = useState([]);
     const [mediaList, setMediaList] = useState([]);
 
     const classes = useStyles();
 
     useEffect(() => {
       setTagList(postContents.hashtags);
+
       setMediaList(postContents.media);
 
       var slides = document.getElementsByClassName('media');
@@ -322,7 +325,8 @@ export const Post = (props) => {
           </Box>
         </Container>
         <Container disableGutters>
-          {commentList
+          <CommentList postId = {postContents.id} /> 
+          {/* {commentList
             ? commentList.map((item, index) => {
               if(index < MAX_COMMENT_SIZE){
                 return (
@@ -344,7 +348,7 @@ export const Post = (props) => {
                 return (<MoreComment />);
               }
             })
-            : ''}
+            : ''} */}
         </Container>
         <Container disableGutters>
           <CommentForm

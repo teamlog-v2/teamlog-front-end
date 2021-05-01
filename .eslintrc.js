@@ -28,5 +28,7 @@ module.exports = {
         'import/no-named-as-default-member': 0,
         'linebreak-style': 0, // Expected linebreaks to be 'LF' but found 'CRLF' 오류 해결
         'raect/destructuring-assignment': 0,
+        'array-callback-return': 0,
+        'consistent-return': 0,
     },
 };

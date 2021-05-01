@@ -57,11 +57,11 @@ const useStyles = makeStyles(() => ({
 }));
 
 const Content = (props) => {
-  const { content } = props;
+  const { contents } = props;
 
   return (
     <Box marginTop="0.5em" marginBottom="0.5em" display="inline-block">
-      {content}
+      {contents}
     </Box>
   );
 };
@@ -95,39 +95,36 @@ export const CommentCounter = (props) => {
   );
 };
 
-const CheckRoot = (parentCommentId) => {
-  if (parentCommentId != -1) {
+const CheckRoot = (type) => {
+  if (type === 'child') {
     return '1.5em'; // 대댓글 들여쓰기
   }
 
   return '0.25em';
 };
 
-
-
 export const Comment = (props) => {
-  const { id, postId, parentId, write_time,  writer_profile, imgPath, comment_mention_list, content, parentCommentId } = props;
+  const { id, type ,postId, writeTime, writer, commentMentions, contents} = props;
   const classes = useStyles();
   
   const [tagList, setTagList] = useState([]);
   const [visibility, setVisibility] = useState('none');
-  const [commentList, setCommentList] = useState([]);
+  
 
   useEffect(() => {
-    setTagList(comment_mention_list);
-    // get으로 요청하기
+    setTagList(commentMentions);
   }, []);
 
   
-  const marginLeft = CheckRoot(parentId);
+  const marginLeft = CheckRoot(type);
 
   return (
     <Box className={classes.comment}>
       <Box marginLeft={marginLeft}>
         <Box display="inline-block" width="90%">
-          <Header userId={writer_profile.user_id} imgPath={writer_profile.user_profile_image_path} />
+          <Header userId={writer.id} imgPath={writer.profileImgPath} />
           <Box>
-           <DateInfo dateTime = {write_time} fs="11px" />
+           <DateInfo dateTime = {writeTime} fs="11px" />
           </Box>
         </Box>
 
@@ -150,7 +147,7 @@ export const Comment = (props) => {
             {tagList
               ? tagList.map((item) => <UserTag userId={item.target_user_id} />)
               : null}
-            <Content content={content} />
+            <Content contents={contents} />
           </Box>
         </Box>
       </Box>
@@ -249,10 +246,12 @@ export const CommentForm = (props) => {
   const CreateComment = () => { 
     let comment = {
       parentCommentId: parentCommentId,
-      writerId: 'jduck1024', // 이미 알고있어야 하는 아이디
+      writerId: 'string', // 이미 알고있어야 하는 아이디
       postId: postId, 
       contents: inputRef.current.value
     }
+
+    alert(parentCommentId + " " + postId);
 
     fetch('http://localhost:8090/api/comments/', {
       method: 'POST',
