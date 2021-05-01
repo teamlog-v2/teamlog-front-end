@@ -27,5 +27,6 @@ module.exports = {
         'object-curly-newline': 0, // 매개변수 한 줄에 작성 가능하게 함
         'import/no-named-as-default-member': 0,
         'linebreak-style': 0, // Expected linebreaks to be 'LF' but found 'CRLF' 오류 해결
+        'raect/destructuring-assignment': 0,
     },
 };

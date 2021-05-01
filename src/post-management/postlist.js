@@ -8,7 +8,6 @@ const Postlist = ({ projectId }) => {
   useEffect(() => {
     fetch(`http://3.15.16.150:8090/api/posts/project/${projectId}`)
       .then((res) => res.json()).then((info) => setPostList(info));
-    console.log(postList);
   }, []);
 
   return (

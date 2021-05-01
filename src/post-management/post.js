@@ -226,7 +226,7 @@ const MediaList = (props) => {
 
       {mediaList ? mediaList.map((item, index) => (
         <Box className={classes.media} height={size}>
-          <Media content={item}/>
+          {/* <Media content={item}/> */}
         </Box>
       )
       ) : null} 
@@ -240,14 +240,12 @@ export const Post = (props) => {
     const { postContents, maxWidth } = props;
 
     const [tagList, setTagList] = useState([]);
-    const [commentList, setCommentList] = useState([]);
     const [mediaList, setMediaList] = useState([]);
 
     const classes = useStyles();
 
     useEffect(() => {
       setTagList(postContents.hashtags);
-      // setCommentList(postContents.comment_list);
       setMediaList(postContents.media);
 
       var slides = document.getElementsByClassName('media');
@@ -273,10 +271,10 @@ export const Post = (props) => {
               <Box display="inline-block" marginLeft="0.25em">
                 <Box>
                   <UserInfo
-                    userId={postContents.writer_profile.user_id}
+                    userId={postContents.writer.name}
                     imgWidth="30px"
                     imgHeight="30px"
-                    imgPath={postContents.writer_profile.user_profile_image_path}
+                    imgPath={postContents.writer.profileImgPath}
                     fontSize="16px"
                   />
                 </Box>
@@ -294,14 +292,14 @@ export const Post = (props) => {
         <Container disableGutters>
           <Box className={classes.location}>
             <RoomIcon />
-            {postContents.location}
+            {postContents.latitude}
           </Box>
         </Container>
         <Container disableGutters>
           <Box>
             <Box className={classes.tags}>
               {tagList
-                ? tagList.map((item, index) => <Tag name={item.name} />) : null}
+                ? tagList.map((item, index) => <Tag name={item} />) : null}
             </Box>
           </Box>
         </Container>

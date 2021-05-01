@@ -111,9 +111,11 @@ export const Comment = (props) => {
   
   const [tagList, setTagList] = useState([]);
   const [visibility, setVisibility] = useState('none');
+  const [commentList, setCommentList] = useState([]);
 
   useEffect(() => {
     setTagList(comment_mention_list);
+    // get으로 요청하기
   }, []);
 
   

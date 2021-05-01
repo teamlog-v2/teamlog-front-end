@@ -1,200 +1,638 @@
 [
     {
-        "id": 1,
-        "contents": "재밌어요!!!!!!",
-        "writer_profile": {
-            "user_id": "jini",
-            "user_profile_image_path": "/image/ogu.PNG"
+        "id": 42,
+        "writer": {
+            "id": "string",
+            "name": "string",
+            "profileImgPath": null
         },
-        "access_modifier": "PUBLIC",
-        "comment_modifier": "PUBLIC",
-        "latitude": 127.0,
-        "longitude": 37.0,
-        "write_time": "2021-04-15T09:00:00",
-        "media_list": [
-            {
-                "path": "/image/cat1.PNG",
-                "type": "IMAGE"
-            },
-            {
-                "path": "/image/cat2.PNG",
-                "type": "IMAGE"
-            },
-            {
-                "path": "/image/cat3.PNG",
-                "type": "IMAGE"
-            }
+        "contents": "asfasf",
+        "latitude": null,
+        "longitude": null,
+        "likeCount": 0,
+        "commentCount": 0,
+        "writeTime": "2021-04-30T02:39:24",
+        "hashtags": [],
+        "media": [],
+        "files": []
+    },
+    {
+        "id": 45,
+        "writer": {
+            "id": "string",
+            "name": "string",
+            "profileImgPath": null
+        },
+        "contents": "asfasf",
+        "latitude": null,
+        "longitude": null,
+        "likeCount": 0,
+        "commentCount": 0,
+        "writeTime": "2021-04-30T02:41:29",
+        "hashtags": [],
+        "media": [],
+        "files": []
+    },
+    {
+        "id": 48,
+        "writer": {
+            "id": "string",
+            "name": "string",
+            "profileImgPath": null
+        },
+        "contents": "asfasf",
+        "latitude": null,
+        "longitude": null,
+        "likeCount": 0,
+        "commentCount": 0,
+        "writeTime": "2021-04-30T02:43:30",
+        "hashtags": [],
+        "media": [],
+        "files": []
+    },
+    {
+        "id": 51,
+        "writer": {
+            "id": "string",
+            "name": "string",
+            "profileImgPath": null
+        },
+        "contents": "asfasf",
+        "latitude": null,
+        "longitude": null,
+        "likeCount": 0,
+        "commentCount": 0,
+        "writeTime": "2021-04-30T02:44:00",
+        "hashtags": [
+            "스토리보드"
         ],
-        "post_liker_count": 3,
-        "comment_count": 2,
-        "comment_list": [
-            {
-                "id": 1,
-                "contents": "댓글111111",
-                "writer_profile": {
-                    "user_id": "jduck1024",
-                    "user_profile_image_path": "/image/ogu.PNG"
-                },
-                "write_time": "2021-04-27T09:00:00",
-                "comment_mention_list": [
-                    {
-                        "id": 1,
-                        "target_user_id": "dfsfs"
-                    },
-                    {
-                        "id": 2,
-                        "target_user_id": "jduck1024"
-                    },
-                    {
-                        "id": 3,
-                        "target_user_id": "jini"
-                    }
-                ]
-            },
-            {
-                "id": 2,
-                "contents": "대댓글222222",
-                "writer_profile": {
-                    "user_id": "jini",
-                    "user_profile_image_path": "/image/ogu.PNG"
-                },
-                "write_time": "2021-04-28T09:00:00",
-                "comment_mention_list": []
-            }
+        "media": [],
+        "files": []
+    },
+    {
+        "id": 54,
+        "writer": {
+            "id": "string",
+            "name": "string",
+            "profileImgPath": null
+        },
+        "contents": "asfasf",
+        "latitude": null,
+        "longitude": null,
+        "likeCount": 0,
+        "commentCount": 0,
+        "writeTime": "2021-04-30T02:44:56",
+        "hashtags": [
+            "yaho",
+            "스토리보드"
         ],
-        "tag_list": [
+        "media": [],
+        "files": []
+    },
+    {
+        "id": 57,
+        "writer": {
+            "id": "string",
+            "name": "string",
+            "profileImgPath": null
+        },
+        "contents": "asfasf",
+        "latitude": null,
+        "longitude": null,
+        "likeCount": 0,
+        "commentCount": 0,
+        "writeTime": "2021-04-30T02:52:08",
+        "hashtags": [
+            "yaho",
+            "스토리보드"
+        ],
+        "media": [],
+        "files": []
+    },
+    {
+        "id": 60,
+        "writer": {
+            "id": "string",
+            "name": "string",
+            "profileImgPath": null
+        },
+        "contents": "asfasf",
+        "latitude": null,
+        "longitude": null,
+        "likeCount": 0,
+        "commentCount": 0,
+        "writeTime": "2021-04-30T02:52:36",
+        "hashtags": [
+            "yaho",
+            "스토리보드"
+        ],
+        "media": [],
+        "files": []
+    },
+    {
+        "id": 63,
+        "writer": {
+            "id": "string",
+            "name": "string",
+            "profileImgPath": null
+        },
+        "contents": "asfasf",
+        "latitude": null,
+        "longitude": null,
+        "likeCount": 0,
+        "commentCount": 0,
+        "writeTime": "2021-04-30T02:55:39",
+        "hashtags": [
+            "yaho",
+            "스토리보드"
+        ],
+        "media": [],
+        "files": []
+    },
+    {
+        "id": 66,
+        "writer": {
+            "id": "string",
+            "name": "string",
+            "profileImgPath": null
+        },
+        "contents": "asfasf",
+        "latitude": null,
+        "longitude": null,
+        "likeCount": 0,
+        "commentCount": 0,
+        "writeTime": "2021-04-30T02:58:03",
+        "hashtags": [
+            "yaho",
+            "스토리보드"
+        ],
+        "media": [],
+        "files": []
+    },
+    {
+        "id": 75,
+        "writer": {
+            "id": "string",
+            "name": "string",
+            "profileImgPath": null
+        },
+        "contents": "asfasf",
+        "latitude": null,
+        "longitude": null,
+        "likeCount": 0,
+        "commentCount": 0,
+        "writeTime": "2021-04-30T03:54:06",
+        "hashtags": [
+            "yaho",
+            "스토리보드"
+        ],
+        "media": [],
+        "files": []
+    },
+    {
+        "id": 79,
+        "writer": {
+            "id": "string",
+            "name": "string",
+            "profileImgPath": null
+        },
+        "contents": "..............................",
+        "latitude": null,
+        "longitude": null,
+        "likeCount": 0,
+        "commentCount": 0,
+        "writeTime": "2021-04-30T06:54:06",
+        "hashtags": [
+            "yaho",
+            "스토리보드"
+        ],
+        "media": [],
+        "files": []
+    },
+    {
+        "id": 192,
+        "writer": {
+            "id": "string",
+            "name": "string",
+            "profileImgPath": null
+        },
+        "contents": "asfasf",
+        "latitude": null,
+        "longitude": null,
+        "likeCount": 0,
+        "commentCount": 0,
+        "writeTime": "2021-05-01T21:28:56",
+        "hashtags": [
+            "yaho",
+            "스토리보드"
+        ],
+        "media": [],
+        "files": [
             {
-                "id": 3,
-                "name": "태그1"
-            },
-            {
-                "id": 4,
-                "name": "태그2"
-            },
-            {
-                "id": 5,
-                "name": "태그3"
+                "contentType": "image/jpeg",
+                "fileName": "diagram copy (1).jpg",
+                "fileDownloadUri": "http://3.15.16.150:8090/api/downloadFile/20210501(462327b1-5986-4128-956f-86b08a2dc17d)"
             }
         ]
     },
     {
-        "id": 2,
-        "contents": "저희 학생회 지시에 잘 따라주신 우리 멋쟁이 컴소공 여러분들 모두 진심으로 감사합니다!!! 교수님들과도 함께 즐길 수 있어 너무 영광이었습니다 ㅎㅎ",
-        "writer_profile": {
-            "user_id": "jduck1024",
-            "user_profile_image_path": "/image/ogu.PNG"
+        "id": 196,
+        "writer": {
+            "id": "string",
+            "name": "string",
+            "profileImgPath": null
         },
-        "access_modifier": "PUBLIC",
-        "comment_modifier": "PUBLIC",
-        "latitude": 36.813683,
-        "longitude": 128.626556,
-        "write_time": "2021-04-27T09:00:00",
-        "media_list": [],
-        "post_liker_count": 0,
-        "comment_count": 0,
-        "comment_list": [],
-        "tag_list": []
-    },
-    {
-        "id": 3,
-        "contents": "내용",
-        "writer_profile": {
-            "user_id": "jduck1024",
-            "user_profile_image_path": "/image/ogu.PNG"
-        },
-        "access_modifier": "PUBLIC",
-        "comment_modifier": "PUBLIC",
-        "latitude": 128.888,
-        "longitude": 0.0,
-        "write_time": "2021-04-28T01:10:30",
-        "media_list": [],
-        "post_liker_count": 0,
-        "comment_count": 0,
-        "comment_list": [],
-        "tag_list": []
-    },
-    {
-        "id": 4,
-        "contents": "게시물게시물게시물게시물",
-        "writer_profile": {
-            "user_id": "jduck1024",
-            "user_profile_image_path": "/image/ogu.PNG"
-        },
-        "access_modifier": "PUBLIC",
-        "comment_modifier": "PUBLIC",
-        "latitude": 128.888,
-        "longitude": 0.0,
-        "write_time": "2021-04-28T18:13:47",
-        "media_list": [
-            {
-                "path": "/image/cat4.PNG",
-                "type": "IMAGE"
-            },
-            {
-                "path": "/image/cat2.PNG",
-                "type": "IMAGE"
-            },
-            {
-                "path": "/image/cat1.PNG",
-                "type": "IMAGE"
-            }
+        "contents": "asfasf",
+        "latitude": null,
+        "longitude": null,
+        "likeCount": 0,
+        "commentCount": 0,
+        "writeTime": "2021-05-01T21:30:36",
+        "hashtags": [
+            "yaho",
+            "스토리보드"
         ],
-        "post_liker_count": 0,
-        "comment_count": 0,
-        "comment_list": [],
-        "tag_list": [
+        "media": [],
+        "files": [
             {
-                "id": 6,
-                "name": "3"
-            },
-            {
-                "id": 7,
-                "name": "4"
+                "contentType": "image/jpeg",
+                "fileName": "diagram copy (1).jpg",
+                "fileDownloadUri": "http://3.15.16.150:8090/api/downloadFile/20210501(4d0de93e-4820-4b18-b62d-a1a764046971)"
             }
         ]
     },
     {
-        "id": 5,
-        "contents": "게시물게시물게시물게시물",
-        "writer_profile": {
-            "user_id": "jduck1024",
-            "user_profile_image_path": "/image/ogu.PNG"
+        "id": 200,
+        "writer": {
+            "id": "string",
+            "name": "string",
+            "profileImgPath": null
         },
-        "access_modifier": "PUBLIC",
-        "comment_modifier": "PUBLIC",
-        "latitude": 128.888,
-        "longitude": 0.0,
-        "write_time": "2021-04-29T13:50:30",
-        "media_list": [
-            {
-                "path": "/image/cat1.PNG",
-                "type": "IMAGE"
-            }
+        "contents": "asfasf",
+        "latitude": null,
+        "longitude": null,
+        "likeCount": 0,
+        "commentCount": 0,
+        "writeTime": "2021-05-01T21:35:40",
+        "hashtags": [
+            "yaho",
+            "스토리보드"
         ],
-        "post_liker_count": 0,
-        "comment_count": 0,
-        "comment_list": [],
-        "tag_list": [
+        "media": [],
+        "files": [
             {
-                "id": 11,
-                "name": "0"
-            },
-            {
-                "id": 12,
-                "name": "1"
-            },
-            {
-                "id": 13,
-                "name": "2"
-            },
-            {
-                "id": 14,
-                "name": "3"
-            },
-            {
-                "id": 15,
-                "name": "4"
+                "contentType": "image/jpeg",
+                "fileName": "diagram copy (1) (1).jpg",
+                "fileDownloadUri": "http://3.15.16.150:8090/api/downloadFile/20210501(c20a1cbd-c530-4b7f-a624-78d223d412fd)"
             }
         ]
+    },
+    {
+        "id": 204,
+        "writer": {
+            "id": "string",
+            "name": "string",
+            "profileImgPath": null
+        },
+        "contents": "asfasf",
+        "latitude": null,
+        "longitude": null,
+        "likeCount": 0,
+        "commentCount": 0,
+        "writeTime": "2021-05-01T21:53:10",
+        "hashtags": [
+            "yaho",
+            "스토리보드"
+        ],
+        "media": [
+            {
+                "contentType": "image/jpeg",
+                "fileName": "diagram copy (1) (1).jpg",
+                "fileDownloadUri": "http://3.15.16.150:8090/api/downloadFile/20210501(f2acc80a-431d-4690-af39-b66b9a040a7b)"
+            }
+        ],
+        "files": []
+    },
+    {
+        "id": 208,
+        "writer": {
+            "id": "string",
+            "name": "string",
+            "profileImgPath": null
+        },
+        "contents": "ergrgr",
+        "latitude": null,
+        "longitude": null,
+        "likeCount": 0,
+        "commentCount": 0,
+        "writeTime": "2021-05-01T21:54:40",
+        "hashtags": [
+            "gg"
+        ],
+        "media": [],
+        "files": []
+    },
+    {
+        "id": 210,
+        "writer": {
+            "id": "string",
+            "name": "string",
+            "profileImgPath": null
+        },
+        "contents": "ergrgr",
+        "latitude": null,
+        "longitude": null,
+        "likeCount": 0,
+        "commentCount": 0,
+        "writeTime": "2021-05-01T21:56:27",
+        "hashtags": [
+            "gg"
+        ],
+        "media": [],
+        "files": []
+    },
+    {
+        "id": 212,
+        "writer": {
+            "id": "string",
+            "name": "string",
+            "profileImgPath": null
+        },
+        "contents": "asfasf",
+        "latitude": null,
+        "longitude": null,
+        "likeCount": 0,
+        "commentCount": 0,
+        "writeTime": "2021-05-01T21:56:57",
+        "hashtags": [
+            "yaho",
+            "스토리보드"
+        ],
+        "media": [
+            {
+                "contentType": "image/jpeg",
+                "fileName": "diagram copy (1) (1).jpg",
+                "fileDownloadUri": "http://3.15.16.150:8090/api/downloadFile/20210501(fe6ab05a-8de6-4508-82be-2019046bfd5f)"
+            }
+        ],
+        "files": []
+    },
+    {
+        "id": 216,
+        "writer": {
+            "id": "string",
+            "name": "string",
+            "profileImgPath": null
+        },
+        "contents": "도쿄는 꿀잼이다\n또 가고 싶당 ㅠㅠ",
+        "latitude": null,
+        "longitude": null,
+        "likeCount": 0,
+        "commentCount": 0,
+        "writeTime": "2021-05-01T22:00:14",
+        "hashtags": [
+            "스토리보드",
+            "일본",
+            "스시",
+            "먹방"
+        ],
+        "media": [
+            {
+                "contentType": "image/jpeg",
+                "fileName": "20180209_200501.jpg",
+                "fileDownloadUri": "http://3.15.16.150:8090/api/downloadFile/20210501(e5ffdaf7-bd27-4d60-bcaf-19380fba1d1c)"
+            },
+            {
+                "contentType": "image/jpeg",
+                "fileName": "20180209_203811.jpg",
+                "fileDownloadUri": "http://3.15.16.150:8090/api/downloadFile/20210501(1bcde0cf-f9da-4637-aa9e-eef73e436e65)"
+            },
+            {
+                "contentType": "image/jpeg",
+                "fileName": "20180209_210342.jpg",
+                "fileDownloadUri": "http://3.15.16.150:8090/api/downloadFile/20210501(b87a3994-3b16-4299-9873-7b55e2389225)"
+            },
+            {
+                "contentType": "image/jpeg",
+                "fileName": "20180209_221105.jpg",
+                "fileDownloadUri": "http://3.15.16.150:8090/api/downloadFile/20210501(7b13ab19-2b32-43dd-9c7c-5459d582d9cc)"
+            },
+            {
+                "contentType": "image/jpeg",
+                "fileName": "20180209_221307.jpg",
+                "fileDownloadUri": "http://3.15.16.150:8090/api/downloadFile/20210501(2dab6c96-664a-471c-b47d-381198f987d0)"
+            },
+            {
+                "contentType": "image/gif",
+                "fileName": "104005483-8a54ae00-51e8-11eb-9093-52f5e4ad54ee.gif",
+                "fileDownloadUri": "http://3.15.16.150:8090/api/downloadFile/20210501(2ec6ab6a-09ee-4b8b-b9b5-2a8d8db7cecc)"
+            }
+        ],
+        "files": []
+    },
+    {
+        "id": 227,
+        "writer": {
+            "id": "string",
+            "name": "string",
+            "profileImgPath": null
+        },
+        "contents": "도쿄는 꿀잼이다\n또 가고 싶당 ㅠㅠ",
+        "latitude": null,
+        "longitude": null,
+        "likeCount": 0,
+        "commentCount": 0,
+        "writeTime": "2021-05-01T22:01:32",
+        "hashtags": [
+            "스토리보드",
+            "일본",
+            "스시",
+            "먹방"
+        ],
+        "media": [
+            {
+                "contentType": "image/jpeg",
+                "fileName": "20180209_200501.jpg",
+                "fileDownloadUri": "http://3.15.16.150:8090/api/downloadFile/20210501(03bc210e-8d64-45d5-be36-f00bedb0c1c2)"
+            },
+            {
+                "contentType": "image/jpeg",
+                "fileName": "20180209_203811.jpg",
+                "fileDownloadUri": "http://3.15.16.150:8090/api/downloadFile/20210501(ed32b3ee-015b-4743-9ae9-21355580dd18)"
+            },
+            {
+                "contentType": "image/jpeg",
+                "fileName": "20180209_210342.jpg",
+                "fileDownloadUri": "http://3.15.16.150:8090/api/downloadFile/20210501(279565bb-95c3-4e11-8fd1-ba15de293be6)"
+            },
+            {
+                "contentType": "image/jpeg",
+                "fileName": "20180209_221105.jpg",
+                "fileDownloadUri": "http://3.15.16.150:8090/api/downloadFile/20210501(ac0e1f8b-568e-4b57-8259-89a8b4bb103b)"
+            },
+            {
+                "contentType": "image/jpeg",
+                "fileName": "20180209_221307.jpg",
+                "fileDownloadUri": "http://3.15.16.150:8090/api/downloadFile/20210501(609f0dba-5e62-47d7-bdd2-db8bdc18c494)"
+            },
+            {
+                "contentType": "image/gif",
+                "fileName": "104005483-8a54ae00-51e8-11eb-9093-52f5e4ad54ee.gif",
+                "fileDownloadUri": "http://3.15.16.150:8090/api/downloadFile/20210501(cc0f5ab2-bbbc-458a-acd3-11ed4e24423b)"
+            }
+        ],
+        "files": []
+    },
+    {
+        "id": 238,
+        "writer": {
+            "id": "string",
+            "name": "string",
+            "profileImgPath": null
+        },
+        "contents": "asfasf",
+        "latitude": null,
+        "longitude": null,
+        "likeCount": 0,
+        "commentCount": 0,
+        "writeTime": "2021-05-01T22:02:06",
+        "hashtags": [
+            "yaho",
+            "스토리보드"
+        ],
+        "media": [],
+        "files": [
+            {
+                "contentType": "image/jpeg",
+                "fileName": "diagram copy (1) (1).jpg",
+                "fileDownloadUri": "http://3.15.16.150:8090/api/downloadFile/20210501(dd65dacf-56d8-46a3-a2c1-20302bf1dc9c)"
+            }
+        ]
+    },
+    {
+        "id": 242,
+        "writer": {
+            "id": "string",
+            "name": "string",
+            "profileImgPath": null
+        },
+        "contents": "재밌는 학교생활...",
+        "latitude": 35.9021687,
+        "longitude": 128.849098,
+        "likeCount": 0,
+        "commentCount": 0,
+        "writeTime": "2021-05-01T22:35:31",
+        "hashtags": [
+            "스토리보드",
+            "학교",
+            "일상"
+        ],
+        "media": [
+            {
+                "contentType": "image/jpeg",
+                "fileName": "20180209_221307.jpg",
+                "fileDownloadUri": "http://3.15.16.150:8090/api/downloadFile/20210501(37c828f0-a77c-4929-925a-bb9d56686d71)"
+            },
+            {
+                "contentType": "image/jpeg",
+                "fileName": "20180209_210342.jpg",
+                "fileDownloadUri": "http://3.15.16.150:8090/api/downloadFile/20210501(f627fbd7-32f4-4795-8a23-2a1f3cdb05f6)"
+            },
+            {
+                "contentType": "image/gif",
+                "fileName": "104005483-8a54ae00-51e8-11eb-9093-52f5e4ad54ee.gif",
+                "fileDownloadUri": "http://3.15.16.150:8090/api/downloadFile/20210501(49cc8c87-5841-4924-b478-01e077f2b12f)"
+            },
+            {
+                "contentType": "image/jpeg",
+                "fileName": "20180209_221105.jpg",
+                "fileDownloadUri": "http://3.15.16.150:8090/api/downloadFile/20210501(0d1cc192-8036-41a8-92dd-f3f7bd607a8d)"
+            }
+        ],
+        "files": []
+    },
+    {
+        "id": 250,
+        "writer": {
+            "id": "string",
+            "name": "string",
+            "profileImgPath": null
+        },
+        "contents": "재밌는 학교생활...",
+        "latitude": 35.9021687,
+        "longitude": 128.849098,
+        "likeCount": 0,
+        "commentCount": 0,
+        "writeTime": "2021-05-01T22:39:31",
+        "hashtags": [
+            "스토리보드",
+            "학교",
+            "일상"
+        ],
+        "media": [
+            {
+                "contentType": "image/jpeg",
+                "fileName": "20180209_221307.jpg",
+                "fileDownloadUri": "http://3.15.16.150:8090/api/downloadFile/20210501(a6a1374b-1683-4cdd-858d-521c12a3df79)"
+            },
+            {
+                "contentType": "image/gif",
+                "fileName": "104005483-8a54ae00-51e8-11eb-9093-52f5e4ad54ee.gif",
+                "fileDownloadUri": "http://3.15.16.150:8090/api/downloadFile/20210501(c6266f31-f6ee-4d1d-ac3e-065fa5842012)"
+            },
+            {
+                "contentType": "image/jpeg",
+                "fileName": "20180209_210342.jpg",
+                "fileDownloadUri": "http://3.15.16.150:8090/api/downloadFile/20210501(ea3ee379-b4a5-4e34-9cea-aa0b7d1ad580)"
+            },
+            {
+                "contentType": "image/jpeg",
+                "fileName": "20180209_221105.jpg",
+                "fileDownloadUri": "http://3.15.16.150:8090/api/downloadFile/20210501(8c30fae3-e3fd-4eca-a902-24484283c18d)"
+            }
+        ],
+        "files": []
+    },
+    {
+        "id": 258,
+        "writer": {
+            "id": "string",
+            "name": "string",
+            "profileImgPath": null
+        },
+        "contents": "재밌는 학교생활...",
+        "latitude": 35.9021687,
+        "longitude": 128.849098,
+        "likeCount": 0,
+        "commentCount": 0,
+        "writeTime": "2021-05-01T22:39:36",
+        "hashtags": [
+            "스토리보드",
+            "학교",
+            "일상"
+        ],
+        "media": [
+            {
+                "contentType": "image/jpeg",
+                "fileName": "20180209_221307.jpg",
+                "fileDownloadUri": "http://3.15.16.150:8090/api/downloadFile/20210501(845edb07-ba1c-4836-9761-e0dbabed073b)"
+            },
+            {
+                "contentType": "image/gif",
+                "fileName": "104005483-8a54ae00-51e8-11eb-9093-52f5e4ad54ee.gif",
+                "fileDownloadUri": "http://3.15.16.150:8090/api/downloadFile/20210501(cb75a2a5-51e3-4458-baa4-ae865629dc04)"
+            },
+            {
+                "contentType": "image/jpeg",
+                "fileName": "20180209_210342.jpg",
+                "fileDownloadUri": "http://3.15.16.150:8090/api/downloadFile/20210501(d0f2d19a-597f-4bff-abb1-96234ced91e8)"
+            },
+            {
+                "contentType": "image/jpeg",
+                "fileName": "20180209_221105.jpg",
+                "fileDownloadUri": "http://3.15.16.150:8090/api/downloadFile/20210501(633962d2-dd7a-49c6-891b-2e402db23b6e)"
+            }
+        ],
+        "files": []
     }
 ]
