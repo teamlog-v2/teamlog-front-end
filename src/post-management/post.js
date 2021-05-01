@@ -246,9 +246,9 @@ export const Post = (props) => {
     const classes = useStyles();
 
     useEffect(() => {
-      setTagList(postContents.post_tag);
-      setCommentList(postContents.comment_list);
-      setMediaList(postContents.media_list);
+      setTagList(postContents.hashtags);
+      // setCommentList(postContents.comment_list);
+      setMediaList(postContents.media);
 
       var slides = document.getElementsByClassName('media');
 
@@ -281,7 +281,7 @@ export const Post = (props) => {
                   />
                 </Box>
                 <Box>
-                  <DateInfo dateTime = {postContents.write_time} fs="12px" />
+                  <DateInfo dateTime = {postContents.writeTime} fs="12px" />
                 </Box>
               </Box>
 
@@ -319,8 +319,8 @@ export const Post = (props) => {
           </Box>
 
           <Box className={classes.etc}>
-            <LikerCounter count={postContents.post_liker_count} />
-            <CommentCounter count={postContents.comment_count} />
+            <LikerCounter count={postContents.likeCount} />
+            <CommentCounter count={postContents.commentCount} />
           </Box>
         </Container>
         <Container disableGutters>

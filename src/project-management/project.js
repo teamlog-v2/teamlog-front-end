@@ -36,7 +36,7 @@ const Project = ({ id }) => {
   const [project, setProject] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/api/projects/${id}`)
+    fetch(`http://localhost:8090/api/projects/${id}`)
     .then((res) => res.json()).then((info) => setProject(info));
   }, []);
 

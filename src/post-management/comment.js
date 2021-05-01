@@ -252,7 +252,7 @@ export const CommentForm = (props) => {
       contents: inputRef.current.value
     }
 
-    fetch('http://localhost:8080/api/comments/', {
+    fetch('http://localhost:8090/api/comments/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

@@ -6,8 +6,9 @@ const Postlist = ({ projectId }) => {
   const [postList, setPostList] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/api/posts/${projectId}`)
+    fetch(`http://localhost:8090/api/posts/list/${projectId}`)
       .then((res) => res.json()).then((info) => setPostList(info));
+    console.log(postList);
   }, []);
 
   return (

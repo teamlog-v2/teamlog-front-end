@@ -10,7 +10,7 @@ function App() {
       {/* <BrowserRouter>
         <Route exact path="/" component={Project} />
       </BrowserRouter> */}
-      <Project id={1} />
+      <Project id={9} />
       {/* <FileTest /> */}
       {/* <FriendList/> */}
     </div>

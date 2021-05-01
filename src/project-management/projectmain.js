@@ -37,7 +37,7 @@ const ProjectMain = ({ match }) => {
     const [postList, setPostList] = useState([]);
 
     useEffect(() => {
-      fetch(`http://localhost:8080/api/projects/${projectId}`)
+      fetch(`http://localhost:8090/api/projects/${projectId}`)
       .then((res) => res.json()).then((info) => setProject(info));
     }, []);
     console.log(postList);
@@ -48,10 +48,10 @@ const ProjectMain = ({ match }) => {
           <Title title={project.name} />
           <Introduction
             name={project.name}
-            masterUserId={project.master_user_id}
-            createTime={project.create_time}
-            followerCount={15}
-            memberCount={60}
+            masterUserId={project.masterId}
+            createTime={project.createTime}
+            followerCount={project.followerCount}
+            memberCount={project.memberCount}
           />
         </Container>
         <Divider light />
