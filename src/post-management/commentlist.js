@@ -10,6 +10,7 @@ import Grow from '@material-ui/core/Grow';
 import {Reac, useEffect, useState, Fragment, useRef, useCallback } from 'react';
 import { Container, MenuItem, MenuList, Box, Avatar } from '@material-ui/core';
 import { CreateComment, GetComment } from './commentapi';
+import { getProjectMembers } from '../project-management/projectapi';
 import {
     makeStyles,
     createMuiTheme,
@@ -51,12 +52,10 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const CommentList = ({ postId }) => {
+const CommentList = ({ projectId, postId }) => {
   const [commentList, setCommentList] = useState([]);
-  // const [childCommentList, setChildCommentList] = useState([]);
 
   const SetCommentList = useCallback(async() => {
-    alert("메롱");
     setCommentList(await GetComment(postId));
   })
 
@@ -101,32 +100,33 @@ const CommentList = ({ postId }) => {
           
 }) : []}
         <CommentForm
-            options={[
-              '신동헌',
-              '신현정',
-              '이희수',
-              '윤진',
-              '오득환',
-              '이현아',
-              '김사람',
-              '이사람',
-              '강소공',
-              'Zaki Mars Stewart',
-              '박지훈',
-              '박소공',
-              '김소공',
-              '김시관',
-              '김성렬',
-              '김선명',
-              '김민종',
-              '김효진',
-              '김초코',
-              '김커피',
-              '김생수',
-              '김에어',
-              '김지현',
-            ]}
+            // options={[
+            //   '신동헌',
+            //   '신현정',
+            //   '이희수',
+            //   '윤진',
+            //   '오득환',
+            //   '이현아',
+            //   '김사람',
+            //   '이사람',
+            //   '강소공',
+            //   'Zaki Mars Stewart',
+            //   '박지훈',
+            //   '박소공',
+            //   '김소공',
+            //   '김시관',
+            //   '김성렬',
+            //   '김선명',
+            //   '김민종',
+            //   '김효진',
+            //   '김초코',
+            //   '김커피',
+            //   '김생수',
+            //   '김에어',
+            //   '김지현',
+            // ]}
             parentCommentId={null}
+            projectId={projectId}
             postId={postId}
             setCommentList = {SetCommentList}
           />
@@ -138,8 +138,12 @@ const CommentList = ({ postId }) => {
 
 const CommentForm = (props) => {
   const classes = useStyles();
-  const { options, postId, parentCommentId, setCommentList } = props;
-  const [selectedUserList, setSelectedUserList] = useState([]);
+  const { /* options, */ projectid, postId, projectId, parentCommentId, setCommentList } = props;
+  const [options, setOptions] = useState([]);
+
+  useEffect(async () => {
+    setOptions(await getProjectMembers(projectId));
+  }, []);
 
   const [state, setState] = useState({
     activeOption: 0,
@@ -163,24 +167,6 @@ const CommentForm = (props) => {
       setMenuFocus(true);
     }
   };
-
-  // const CreateComment = (resetFunc) => { 
-  //   let comment = {
-  //     parentCommentId: parentCommentId,
-  //     writerId: 'string', // 이미 알고있어야 하는 아이디
-  //     postId: postId, 
-  //     contents: inputRef.current.value,
-  //     commentMentions: [] // 여기에 이제 해시태그...
-  //   }
-
-  //   // fetch('http://3.15.16.150:8090/api/comments/', {
-  //   //   method: 'POST',
-  //   //   headers: {
-  //   //     'Content-Type': 'application/json'
-  //   //   },
-  //   //   body: JSON.stringify(comment)
-  //   // }).then((res) => alert(res.status));
-  // }
 
   const onSelect = () => {
     let index = inputRef.current.selectionStart;
@@ -218,7 +204,8 @@ const CommentForm = (props) => {
       if (splitName.length == 0) return;
 
       const filteredOptions = options.filter(
-        (option) => option.toLowerCase().indexOf(splitName.toLowerCase()) > -1,
+        (option) => option.id.toLowerCase().indexOf(splitName.toLowerCase()) > -1 
+        || option.name.toLowerCase().indexOf(splitName.toLowerCase()) > -1,
       );
 
       setState({
@@ -254,7 +241,8 @@ const CommentForm = (props) => {
   const onClick = (e) => {
     setOpen(false);
     setAnchorEl(null);
-    const target = e.currentTarget.innerText;
+
+    const target = e.currentTarget.dataset.myValue;
 
     let startStr = userInput.substring(0, state.tagStartIndex);
     let midStr = '@' + target + ' ';
@@ -280,20 +268,22 @@ const CommentForm = (props) => {
   // 선택된 사용자 골라내기
   const setSelectedUser = (commentContent) => {
     const mentionSplitList = commentContent.split('@');
+    const selectedUserList = [];
 
     for(var i = 0; i < mentionSplitList.length; i = i + 1){
       const userSplit = mentionSplitList[i].split(' ')[0];
 
       const filteredUser = options.filter(
-        (option) => option.toLowerCase() === userSplit.toLowerCase()
+        (option) => option.id.toLowerCase() === userSplit.toLowerCase()
       );
 
-      if (filteredUser.length === 1 && !selectedUserList.includes(filteredUser[0])) {
-        setSelectedUserList(selectedUserList.concat(filteredUser[0]));
+      if (filteredUser.length === 1 && !selectedUserList.includes(filteredUser[0].id)) {
+        console.log(i);
+        selectedUserList.push(filteredUser[0].id);
       }
     }
 
-    console.log(selectedUserList);
+    return selectedUserList;
   }
 
   const { activeOption, filteredOptions, showOptions, userInput } = state;
@@ -360,9 +350,8 @@ const CommentForm = (props) => {
               variant="contained"
               color="primary"
               onClick = { async () => {
-                setSelectedUser(inputRef.current.value);
-                // await CreateComment(parentCommentId, 'string', postId, inputRef.current.value, selectedUserList);
-                // setCommentList();
+                await CreateComment(parentCommentId, 'string', postId, inputRef.current.value, setSelectedUser(inputRef.current.value));
+                setCommentList();
               }}
             >
               작성
@@ -408,20 +397,6 @@ const FriendList = (props) => {
   const classes = useStyles();
   const { options, onClick, autoFocus } = props;
 
-  /*
-  const isPc = useMediaQuery({
-    query: '(min-width:1024px)',
-  });
-  const isTablet = useMediaQuery({
-    query: '(min-width:768px) and (max-width:1023px)',
-  });
-  const isMobile = useMediaQuery({
-    query: '(max-width:767px)',
-  });
-  */
-
-  // 디바이스 구분?
-
   return (
     <Container disableGutters>
       <Box className={classes.friends}>
@@ -432,11 +407,12 @@ const FriendList = (props) => {
                 button
                 className="option-active"
                 key={item}
+                data-my-value={item.id}
                 onClick={onClick}>
                     <ListItemIcon>
                       <Avatar />
                     </ListItemIcon>
-                    <ListItemText primary={item} />
+                    <ListItemText primary={item.name} />
                   </MenuItem>
                 )): null
           }

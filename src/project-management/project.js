@@ -45,10 +45,10 @@ const Project = ({ id }) => {
 
   const sections = [
     { title: '홈', url: `/projects/${id}` },
-    { title: '포스트', url: `/projects/post/${id}` },
-    { title: '태스크', url: `/projects/task/${id}` },
-    { title: '멤버', url: `/projects/member/${id}` },
-    { title: '팔로워', url: `/projects/follower/${id}` },
+    { title: '포스트', url: `/projects/${id}/post` },
+    { title: '태스크', url: `/projects/${id}/task` },
+    { title: '멤버', url: `/projects/${id}/member` },
+    { title: '팔로워', url: `/projects/${id}/follower` },
   ];
 
   const TaskContainer = loadable(() => import('../task/TaskContainer'));
@@ -64,7 +64,7 @@ const Project = ({ id }) => {
           sections={sections}
         />
         <Route exact path="/projects/:id" component={ProjectMain} />
-        <Route exact path="/projects/task/:id" component={TaskContainer} />
+        <Route exact path="/projects/:id/task" component={TaskContainer} />
       </BrowserRouter>
       {/* <Route exact path="/" render={() => <ProjectMain projectInfo={project} />} />
         <Route path="/task" component={TestFile} />

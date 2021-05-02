@@ -237,7 +237,6 @@ const MediaList = (props) => {
 };
 
 export const Post = (props) => {
-    const MAX_COMMENT_SIZE = 2;
     const { postContents, maxWidth } = props;
 
     const [tagList, setTagList] = useState([]);
@@ -325,7 +324,7 @@ export const Post = (props) => {
           </Box>
         </Container>
         <Container disableGutters>
-          <CommentList postId = {postContents.id} /> 
+          <CommentList projectId = {postContents.project.id} postId = {postContents.id} /> 
           {/* {commentList
             ? commentList.map((item, index) => {
               if(index < MAX_COMMENT_SIZE){

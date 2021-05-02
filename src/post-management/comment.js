@@ -18,7 +18,7 @@ import Popper from '@material-ui/core/Popper';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
 import { useMediaQuery } from 'react-responsive';
-import PropTypes from 'prop-types';
+import PropTypes, { string } from 'prop-types';
 import UserInfo from './user';
 import { DateInfo } from './datetime';
 import { UserTag } from './tag';
@@ -58,11 +58,20 @@ const useStyles = makeStyles(() => ({
 }));
 
 const Content = (props) => {
-  const { contents } = props;
+  const { contents, tagList } = props;
+
+  const stringSplit = contents.split(' ');
+  console.log(stringSplit);
 
   return (
     <Box marginTop="0.5em" marginBottom="0.5em" display="inline-block">
-      {contents}
+      {stringSplit ? stringSplit.map((item) => {
+        if(item.charAt(0) === '@' && tagList.includes(item.split('@')[1])){
+          return <UserTag userId = {item.split('@')[1]} />
+        }
+        return <Box display="inline-block"> {item} </Box>
+      }) : []
+      }
     </Box>
   );
 };
@@ -151,10 +160,7 @@ export const Comment = (props) => {
         </Box>
         <Box>
           <Box display="inline-block" width="90%">
-            {tagList
-              ? tagList.map((item) => <UserTag userId={item.target_user_id} />)
-              : null}
-            <Content contents={contents} />
+            <Content contents={contents} tagList={tagList} />
           </Box>
         </Box>
       </Box>
