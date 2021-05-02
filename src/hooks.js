@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import ErrorContext from '../context/error';
+import ErrorContext from './context/error';
 
 const useFetchData = (url) => {
   const setError = useContext(ErrorContext);

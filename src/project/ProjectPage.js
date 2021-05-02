@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, Route, useRouteMatch } from 'react-router-dom';
-import { useFetchData } from './hooks';
+import { useFetchData } from '../hooks';
 
 // 프로젝트 페이지 헤더
 const ProjectPageHeader = () => {
