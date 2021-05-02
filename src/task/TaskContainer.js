@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Draggable, DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import {
   Grid,
   Chip,
@@ -157,8 +157,11 @@ const TaskContainer = () => {
         <DragDropContext onDragEnd={onDragEnd}>
           {state.map((el, ind) => (
             <Droppable key={ind} droppableId={`${ind}`}>
-              {(provided, snapshot) => (
+              {(provided) => (
                 <Grid
+                  item
+                  sm={3}
+                  xs={12}
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                 >
@@ -180,13 +183,7 @@ const TaskContainer = () => {
                     </Grid>
                   ) : null}
                   {el.map((item, index) => (
-                    <Draggable
-                      key={`${item.id}-${item.taskName}`}
-                      draggableId={`${item.id}-${item.taskName}`}
-                      index={index}
-                    >
-                      <TaskItem item={item} index={index} provided={provided} snapshot={snapshot} />
-                    </Draggable>
+                    <TaskItem item={item} index={index} />
                   ))}
                   {provided.placeholder}
                 </Grid>

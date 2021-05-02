@@ -1,5 +1,6 @@
 import React from 'react';
 import { Paper, Typography } from '@material-ui/core';
+import { Draggable } from 'react-beautiful-dnd';
 
 const getItemStyle = (isDragging, draggableStyle) => ({
   userSelect: 'none',
@@ -11,18 +12,26 @@ const getItemStyle = (isDragging, draggableStyle) => ({
   ...draggableStyle,
 });
 
-const TaskItem = ({ item, provided, snapshot }) => (
-  <Paper
-    elevation={3}
-    ref={provided.innerRef}
-    {...provided.draggableProps}
-    {...provided.dragHandleProps}
-    style={getItemStyle(
-      snapshot.isDragging,
-      provided.draggableProps.style,
-    )}
+const TaskItem = ({ item, index }) => (
+  <Draggable
+    key={`${item.id}-${item.taskName}`}
+    draggableId={`${item.id}-${item.taskName}`}
+    index={index}
   >
-    <Typography variant="body1">{item.taskName}</Typography>
-  </Paper>
+    {(provided, snapshot) => (
+      <Paper
+        elevation={3}
+        ref={provided.innerRef}
+        {...provided.draggableProps}
+        {...provided.dragHandleProps}
+        style={getItemStyle(
+          snapshot.isDragging,
+          provided.draggableProps.style,
+        )}
+      >
+        <Typography variant="body1">{item.taskName}</Typography>
+      </Paper>
+    )}
+  </Draggable>
 );
 export default TaskItem;
