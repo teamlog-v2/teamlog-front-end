@@ -30,5 +30,6 @@ module.exports = {
         'raect/destructuring-assignment': 0,
         'array-callback-return': 0,
         'consistent-return': 0,
+        'arrow-body-style': 0,
     },
 };

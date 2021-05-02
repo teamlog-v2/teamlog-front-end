@@ -22,7 +22,7 @@ import PropTypes from 'prop-types';
 import UserInfo from './user';
 import { DateInfo } from './datetime';
 import { UserTag } from './tag';
-import CommentForm from './commentform'
+// import CommentForm from './commentform'
 
 const useStyles = makeStyles(() => ({
   more: {
@@ -160,7 +160,7 @@ export const Comment = (props) => {
       </Box>
 
       <Box display={formVisibility}>
-        <CommentForm
+        {/* <CommentForm
           options={[
             '신동헌',
             '신현정',
@@ -175,7 +175,7 @@ export const Comment = (props) => {
           ]}
           parentCommentId={id}
           postId={postId}
-        />
+        /> */}
       </Box>
     </Box>
   );

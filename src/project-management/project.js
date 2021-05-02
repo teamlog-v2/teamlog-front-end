@@ -64,7 +64,6 @@ const Project = ({ id }) => {
           sections={sections}
         />
         <Route exact path="/projects/:id" component={ProjectMain} />
-        {/* <Route exact path="/projects/task/:id" component={TestFile} /> */}
         <Route exact path="/projects/task/:id" component={TaskContainer} />
       </BrowserRouter>
       {/* <Route exact path="/" render={() => <ProjectMain projectInfo={project} />} />
