@@ -27,9 +27,11 @@ const HashtagChooser = ({ hashtags, selectedTags, updateSelectedTags }) => {
   };
 
   useEffect(() => {
-    // const item = document.querySelector('.tags');
-    // item.style.backgroundColor = '#C16AF5';
-    // item.style.color = 'white';
+    const item = document.querySelectorAll('.tags');
+    selectedTags.forEach((index) => {
+      item[index].style.backgroundColor = '#C16AF5';
+      item[index].style.color = 'white';
+    });
   }, []);
 
   return (

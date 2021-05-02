@@ -352,14 +352,6 @@ export const CommentForm = ({ options }) => {
     }
   };
 
-  const theme = createMuiTheme({
-    palette: {
-      primary: {
-        main: 'rgb(220, 220, 220)',
-      },
-    },
-  });
-
   return (
     <Container>
       <Box
@@ -386,16 +378,13 @@ export const CommentForm = ({ options }) => {
           </Fragment>
         </Box>
         <Box width="20%" display="inline-block">
-          <ThemeProvider theme={theme}>
             <Button
               fullWidth
-              variant="contained"
-              bordercolor="purple"
+              variant="outlined"
               color="primary"
             >
               작성
             </Button>
-          </ThemeProvider>
         </Box>
       </Box>
       <Popper

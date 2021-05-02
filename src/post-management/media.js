@@ -16,43 +16,35 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export const Media = (props) => {
-  const { content, frameWidth, frameHeight } = props;
-
-  var fileName = content.toString();
-  var fileLength = fileName.length;
-  var startIdx = fileName.lastIndexOf('.');
-
-  var fileExtention = String(
-    fileName.substring(startIdx, fileLength).toLowerCase(),
-  );
-
+export const Media = ({ file }) => {
+  // const { content, frameWidth, frameHeight } = props;
+  const { contentType, fileName, fileDownloadUri } = file;
   // 확장자 판별
-  if (fileExtention == '.mp4') {
-    return <Video content={content} width="100%" />;
-  } else if (fileExtention == '.png' || fileExtention == '.jpg') {
-    return <ImageContent content={content} />;
+  if (contentType.includes('video')) {
+    return <Video file={file} width="100%"/>; //
+  } else if (contentType.includes('image')) {
+    return <ImageContent file={file}/>;
     // 조건 더 필요하긴 하겠지만...
   }
 };
 
-const ImageContent = (props) => {
-  const { content } = props;
+const ImageContent = ({ file }) => {
+  const { fileName, fileDownloadUri } = file;
   const classes = useStyles();
 
   const image = new Image();
-  image.src = content.toString();
+  image.src = fileDownloadUri;
 
   if (image.width >= image.height) {
     return (
       <Box width="100%" className={classes.align}>
-        <img src={content} width="100%" />
+        <img src={fileDownloadUri} width="100%" />
       </Box>
     );
   }
     return (
       <Box height="100%" className={classes.align}>
-        <img src={content} height="100%" />
+        <img src={fileDownloadUri} height="100%" />
       </Box>
     );
 };

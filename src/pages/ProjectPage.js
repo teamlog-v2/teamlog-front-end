@@ -85,6 +85,8 @@ const ProjectPage = () => {
   };
 
   const fetchPosts = (selected) => {
+    // 프로젝트에 존재하는 해시태그 get
+    // '스토리보드' 해시태그가 있는 게시물 get
     let newPosts;
     if (selected.length === 0) { // 아무것도 해시태그가 선택되지 않으면
       newPosts = [...postsMock]; // 전체가 저장됨.
@@ -110,10 +112,10 @@ const ProjectPage = () => {
         }
       });
     });
-    setIsLoaded(true);
     fetchPosts([0]); // 스토리보드
     setProjectHashtags(initProjectHashtags); // 똑같은 state라 하더라도 set을 하면
-                                            // rerendring, effect가 반복해서 수행됨.
+                                            // rerendering, effect가 반복해서 수행됨.
+    setIsLoaded(true);
   }, []);
 
   return !isLoaded
@@ -143,7 +145,6 @@ const ProjectPage = () => {
               xs={7}
               onChange={handleSelectChange}
               name="filter"
-              inputProps={{ 'aria-label': 'age' }}
             >
               <option value="new">최신 순</option>
               <option value="like">공감 순</option>

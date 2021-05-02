@@ -66,10 +66,10 @@ const Project = () => {
 
     let url = `/api/posts/project/${projectId}`;
 
-    if (selected) {
+    if (selected && selected.length !== 0) {
       // ❇️ 해시태그 선별 조회 시 프로젝트 내 선별조회이므로 프로젝트 id도 api에 함께 전송
       const names = selected.map((index) => projectHashtags[index]);
-      url += `/${{ names }}`;
+      url += `/hashtag/${names}`;
     } else if (keyword) {
       url += `/${keyword}`;
     }
@@ -78,7 +78,6 @@ const Project = () => {
       method: 'GET',
     }).then((res) => res.json()).then((res) => {
       if (res.length === 0) return;
-      res = res.splice(5, 15); // 렌더링이 느려서 임시로 잘라뒀음.
       if (!res) {
         console.log('데이터 없음');
         return;
@@ -134,7 +133,7 @@ const Project = () => {
     const initProjectHashtags = [];
 
     // '스토리보드' 포함된 게시물 get [홈]
-    // setSelectedTags(['스토리보드']);
+    // setSelectedTags([0]);
     // fetchPosts({ selected: [0] }, () => {
     //   setIsLoaded(true);
     // });

@@ -4,6 +4,7 @@ import './carousel-theme.css';
 import './carousel.css';
 import RoomIcon from '@material-ui/icons/Room';
 import Grow from '@material-ui/core/Grow';
+import Divider from '@material-ui/core/Divider';
 import Popper from '@material-ui/core/Popper';
 import Paper from '@material-ui/core/Paper';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
@@ -22,24 +23,46 @@ import { Button, Chip, Grid } from '@material-ui/core';
 
 import UserInfo from './user';
 import LikerCounter from './liker';
-import File from './file';
+import FileList from './fileList';
 import { Media } from './media';
-import { Tag } from './tag';
-import { DateInfo } from './datetime';
 import { Comment, CommentCounter, CommentForm } from './comment';
 
 // import dao from '../../src/media/dao.png';
 import ogu from '../media/ogu.PNG';
 
-// import cat from '../../src/media/cat.mp4';
-// import piano from '../../src/media/piano.mp4';
-
-import cat1 from '../media/cat1.PNG';
-import cat2 from '../media/cat2.PNG';
-import cat3 from '../media/cat3.PNG';
-// import cat4 from '../../src/media/cat4.PNG';
+const people = [
+  '신동헌',
+  '신현정',
+  '이희수',
+  '윤진',
+  '오득환',
+  '이현아',
+  '김사람',
+  '이사람',
+  '강소공',
+  'Zaki Mars Stewart',
+  '박지훈',
+  '박소공',
+  '김소공',
+  '김시관',
+  '김성렬',
+  '김선명',
+  '김민종',
+  '김효진',
+  '김초코',
+  '김커피',
+  '김생수',
+  '김에어',
+  '김지현',
+];
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    margin: '5% 0',
+  },
+  children: {
+    margin: '1% 0',
+  },
   paper: {
     display: 'flex',
     flexDirection: 'column',
@@ -52,11 +75,6 @@ const useStyles = makeStyles((theme) => ({
     display: 'inline-block',
     position: 'relative',
     width: '100%',
-  },
-  tags: {
-    width: '100%',
-    display: 'inline-block',
-    textAlign: 'left',
   },
   menu: {
     display: 'inline-block',
@@ -191,7 +209,7 @@ const PostMenu = () => {
   );
 };
 
-const MediaList = () => {
+const MediaList = ({ media }) => {
   const classes = useStyles();
 
   const isPc = useMediaQuery({
@@ -204,33 +222,22 @@ const MediaList = () => {
     query: '(max-width:767px)',
   });
 
-  let size = isPc ? '60em' : isTablet ? '45em' : '30em';
-
+  let size = isPc ? '60em' : isTablet ? '45em' : '30em';  
   return (
     <Box id="mediaBox" textAlign="center">
       <Carousel autoPlay={false} animation="slide" cycleNavigation={false}>
-        <Box className={classes.media} height={size}>
-          <Media content={cat1}></Media>
-          {/* <Box bgcolor='yellow' width='500px' left='10px'
-          display='inline-block'>sjfkjd</Box> */}
-        </Box>
-        <Box className={classes.media} height={size}>
-          <Media content={cat2}/>
-        </Box>
-        <Box className={classes.media} height={size}>
-          <Media content={cat3}/>
-        </Box>
-
-        {/* <Box className={classes.media}>
-            <Media content={piano}></Media>
-        </Box> */}
+        {
+          media.map((file) => ( <Box className={classes.media} height={size}>
+            <Media file={file} />
+            </Box>))
+          }
       </Carousel>
     </Box>
   );
 };
 
 export const Post = (props) => {
-    const { postContents, maxWidth } = props;
+    const { postContents } = props;
 
     // const [commentList, setCommentList] = useState([]);
     // 댓글 관련 일단 모두 주석처리
@@ -254,7 +261,7 @@ export const Post = (props) => {
   }, []);
 
   return (
-    <Container component="main" maxWidth={maxWidth} disableGutters>
+    <Container className={classes.root} component="main" disableGutters>
       <CssBaseline />
       <Box className={classes.paper}>
         <Container disableGutters>
@@ -271,7 +278,6 @@ export const Post = (props) => {
                   />
                 </Box>
                 <Box>
-                  {/* <DateInfo year="2021" month="04" date="06" fs="12px" /> */}
                   {new Date(postContents.writeTime).toLocaleTimeString(undefined, {
                     year: 'numeric',
                     month: 'long',
@@ -292,17 +298,15 @@ export const Post = (props) => {
             {postContents.location}
           </Box>
         </Container>
-        <Container disableGutters>
-          <Box>
-            <Box className={classes.tags}>
-            <Grid container direction="row" spacing={1}>
-              {postContents.tag_list
-                ? postContents.tag_list.map((item, index) => {
-                    return <Grid item>
-                        <Chip
+        <Grid className={classes.children}>
+          <Grid container direction="row" spacing={1}>
+            {postContents.hashtags
+              ? postContents.hashtags.map((item, index) => {
+                  return <Grid item>
+                          <Chip
                           className="tags"
                           key={index}
-                          label={`#${item.name}`}
+                          label={`#${item}`}
                           variant="outlined"
                           size="small"
                           onClick={() => {
@@ -310,44 +314,33 @@ export const Post = (props) => {
                             // handleToggle(index);
                           }}
                           color="primary"
-                        />
-                      </Grid>
+                          />
+                        </Grid>
                   })
                 : ''}
-                </Grid>
-            </Box>
-            {/* <Grid container direction="row" spacing={1}>
-            {postContents.tag_list.map((item, index) => (
-              <Grid item>
-                <Chip
-                  className="tags"
-                  key={index}
-                  label={`#${item.name}`}
-                  color="primary"
-                />
-              </Grid>
-              ))}
-          </Grid> */}
-          </Box>
-        </Container>
-        <Container disableGutters>
-          {/* <MediaList /> */}
-        </Container>
+            </Grid>
+        </Grid>
+        {
+          postContents.media.length === 0
+            ? null
+            : (<Container disableGutters>
+                <MediaList media={postContents.media}/>
+              </Container>)
+        }
+       
         <Container disableGutters>
           <Box className={classes.content}>
             <Typography>{postContents.contents}</Typography>
           </Box>
         </Container>
         <Container disableGutters>
-          <Box className={classes.files}>
-            <File file="오구.jpg" />
-          </Box>
-
+          <FileList className={classes.file} files={postContents.files}/>
           <Box className={classes.etc}>
             <LikerCounter count={postContents.post_liker_count} />
             <CommentCounter count={postContents.comment_count} />
           </Box>
         </Container>
+        <Divider />
         <Container disableGutters>
           {postContents.comment_list
             ? postContents.comment_list.map((item, index) => {
@@ -366,31 +359,7 @@ export const Post = (props) => {
         </Container>
         <Container disableGutters>
           <CommentForm
-            options={[
-              '신동헌',
-              '신현정',
-              '이희수',
-              '윤진',
-              '오득환',
-              '이현아',
-              '김사람',
-              '이사람',
-              '강소공',
-              'Zaki Mars Stewart',
-              '박지훈',
-              '박소공',
-              '김소공',
-              '김시관',
-              '김성렬',
-              '김선명',
-              '김민종',
-              '김효진',
-              '김초코',
-              '김커피',
-              '김생수',
-              '김에어',
-              '김지현',
-            ]}
+            options={people}
           />
         </Container>
       </Box>
