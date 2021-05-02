@@ -9,6 +9,7 @@
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
     "@material-ui/pickers": "^3.3.10",
+    "@reduxjs/toolkit": "^1.5.1",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -16,9 +17,13 @@
     "react": "^17.0.2",
     "react-beautiful-dnd": "^13.1.0",
     "react-dom": "^17.0.2",
+    "react-redux": "^7.2.3",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.3"
+    "react-scripts": "4.0.3",
+    "redux": "^4.0.5",
+    "redux-persist": "^6.0.0",
+    "swr": "^0.5.5"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -32,7 +37,7 @@
       "react-app/jest"
     ]
   },
-  "proxy": "http://localhost:8080/",
+  "proxy": "http://3.15.16.150:8090/",
   "browserslist": {
     "production": [
       ">0.2%",
@@ -44,5 +49,13 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint": "^7.25.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.23.2",
+    "eslint-plugin-react-hooks": "^4.2.0"
   }
 }
