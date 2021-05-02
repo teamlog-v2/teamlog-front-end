@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Typography, Box, Divider, Grid,
-  FormControl, NativeSelect, makeStyles } from '@material-ui/core';
+  FormControl, NativeSelect, makeStyles, CircularProgress } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
 // import Fab from '@material-ui/core/Fab';
 // import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
@@ -9,12 +9,28 @@ import Header from './header';
 import Introduction from './introduction';
 import Postlist from '../post-management/postlist';
 import HashtagChooser from '../organisms/HashtagChooser';
-import postsMock from '../mock/posts';
 
 const useStyles = makeStyles((theme) => ({
-  // arrowButton: {
-  //     zIndex: 'tooltip'
-  // },
+  /* 반응형 스타일 */
+  root: {
+    [theme.breakpoints.down('sm')]: {
+      margin: '0 0',
+      padding: '0 1%',
+    },
+    [theme.breakpoints.up('md')]: {
+      margin: '0 0',
+      padding: '0 15%',
+    },
+  },
+  children: {
+    [theme.breakpoints.down('sm')]: {
+      margin: '2% 0',
+    },
+    [theme.breakpoints.up('md')]: {
+      margin: '1% 0',
+    },
+  },
+  /* *** */
   mainGrid: {
     marginTop: theme.spacing(3),
   },
@@ -26,7 +42,6 @@ const useStyles = makeStyles((theme) => ({
     // 글씨 크기 등 적용할 예정
   },
 }));
-
 const sections = [
   { title: '홈', url: '#' },
   { title: '포스트', url: '/post' },
@@ -35,28 +50,58 @@ const sections = [
   { title: '팔로워', url: 'follower' },
 ];
 
+const projectId = 9;
+
 const Project = () => {
   const classes = useStyles();
 
   const [posts, setPosts] = useState([]);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [projectHashtags, setProjectHashtags] = useState(['스토리보드']);
-  const [selectedTags, setSelectedTags] = useState([0]);
+  const [isLoaded, setIsLoaded] = useState(false); // 프로젝트 전체에 대한 로드 상태
+  const [isPostsLoaded, setIsPostsLoaded] = useState(false); // 게시글에 대한 로드 상태
+  const [projectHashtags, setProjectHashtags] = useState([]);
+  const [selectedTags, setSelectedTags] = useState([]);
+
+  const fetchPosts = async ({ selected, keyword }, callback) => {
+    setIsPostsLoaded(false);
+
+    let url = `/api/posts/project/${projectId}`;
+
+    if (selected) {
+      // ❇️ 해시태그 선별 조회 시 프로젝트 내 선별조회이므로 프로젝트 id도 api에 함께 전송
+      const names = selected.map((index) => projectHashtags[index]);
+      url += `/${{ names }}`;
+    } else if (keyword) {
+      url += `/${keyword}`;
+    }
+
+    await fetch(url, {
+      method: 'GET',
+    }).then((res) => res.json()).then((res) => {
+      if (res.length === 0) return;
+      res = res.splice(5, 15); // 렌더링이 느려서 임시로 잘라뒀음.
+      if (!res) {
+        console.log('데이터 없음');
+        return;
+      }
+      setPosts(res);
+      setIsPostsLoaded(true);
+      if (callback) callback(res); // 포스트 결과를 한 번 더 활용해야하는 경우 매개변수로 전달
+    }).catch((error) => {
+      console.log(error);
+    });
+  };
 
   const handleInputChange = (event) => {
     const { value } = event.target;
 
-    // 전체 포스트 대상으로 검색
-    // @get fetch('/post?, { method: 'GET', })
-    // get에서 분기 ? or url다른 get 여러 개?
-    const newPosts = postsMock.filter(({ contents }) => contents.includes(value));
-    setPosts(newPosts);
-    setSelectedTags([]);
-
-    const tags = document.querySelectorAll('.tags');
-    tags.forEach((tag) => {
-      tag.style.backgroundColor = 'white';
-      tag.style.color = '#C16AF5';
+    fetchPosts({ keyword: value }, () => {
+      setSelectedTags([]);
+      // 해시태그 스타일 초기화
+      const tags = document.querySelectorAll('.tags');
+      tags.forEach((tag) => {
+        tag.style.backgroundColor = 'white';
+        tag.style.color = '#C16AF5';
+      });
     });
   };
 
@@ -65,60 +110,55 @@ const Project = () => {
     const newPosts = [...posts];
     if (value === 'new') {
       newPosts.sort((a, b) => {
-        if (a.write_time < b.write_time) return 1;
-        if (a.write_time > b.write_time) return -1;
+        if (a.writeTime < b.writeTime) return 1;
+        if (a.writeTime > b.writeTime) return -1;
         return 0;
       });
     } else if (value === 'like') {
       newPosts.sort((a, b) => {
-        if (a.like_count < b.like_count) return 1;
-        if (a.like_count > b.like_count) return -1;
+        if (a.likeCount < b.likeCount) return 1;
+        if (a.likeCount > b.likeCount) return -1;
         return 0;
       });
     } else if (value === 'comment') {
       newPosts.sort((a, b) => {
-        if (a.commen_count < b.comment_count) return 1;
-        if (a.comment_count > b.comment_count) return -1;
+        if (a.commentCount < b.commentCount) return 1;
+        if (a.commentCount > b.commentCount) return -1;
         return 0;
       });
     }
     setPosts(newPosts);
   };
 
-  const fetchPosts = (selected) => {
-    let newPosts;
-    if (selected.length === 0) { // 아무것도 해시태그가 선택되지 않으면
-      newPosts = [...postsMock]; // 전체가 저장됨.
-    } else {
-      newPosts = postsMock.filter(({ tag_list }) => (
-        selected.some((selectedIndex) => (
-          tag_list.some(({ name }) => name === projectHashtags[selectedIndex])
-      ))));
-    }
-    // 실제 request api 요청
-    // fetch('SERVER_ADDRESS', { method: 'GET', body: hashtags })
-    // return [] // 해시태그를 포함하는 포스트들
-    setPosts(newPosts);
-  };
-
-  useEffect(() => { // 특정 프로젝트에 대해 모든 해시태그 값들 get // @get('/post_hashtags/projectId')
+  useEffect(async () => {
     const initProjectHashtags = [];
 
-    postsMock.forEach(({ tag_list }) => { // 중복된 해시태그 거르고 해시태그 추출
-      tag_list.forEach(({ name }) => {
-        if (!initProjectHashtags.includes(name)) {
-          initProjectHashtags.push(name);
-        }
+    // '스토리보드' 포함된 게시물 get [홈]
+    // setSelectedTags(['스토리보드']);
+    // fetchPosts({ selected: [0] }, () => {
+    //   setIsLoaded(true);
+    // });
+
+    // 현재 프로젝트의 모든 해시태그 get => 모든 게시물 get [포스트]
+    fetchPosts({}, (result) => {
+      result.forEach(({ hashtags }) => { // 중복된 해시태그 거르고 해시태그 추출
+        hashtags.forEach((name) => {
+            if (!initProjectHashtags.includes(name)) {
+              initProjectHashtags.push(name);
+          }
+        });
       });
+      setProjectHashtags(initProjectHashtags);
+      setIsLoaded(true);
     });
-    fetchPosts([0]); // 스토리보드
-    setProjectHashtags(initProjectHashtags); // 똑같은 state라 하더라도 set을 하면
-                                            // rerendring, effect가 반복해서 수행됨.
-    setIsLoaded(true);
   }, []);
 
   return !isLoaded
-  ? <div>loading...</div>
+  ? (
+    <Grid container justify="center" alignItems="center" style={{ height: '100vh' }}>
+      <CircularProgress />
+    </Grid>
+  )
   : (
     <>
       <CssBaseline />
@@ -148,7 +188,7 @@ const Project = () => {
             selectedTags={selectedTags}
             updateSelectedTags={(selected) => {
               setSelectedTags(selected);
-              fetchPosts(selected);
+              fetchPosts({ selected });
           }}
           />
         </Grid>
@@ -168,7 +208,22 @@ const Project = () => {
         </Grid>
         <Container className={classes.partition} disableGutters>
           <Title title="스토리보드" />
-          <Postlist posts={posts} />
+          <Typography>
+            {
+              posts.length === 0
+                ? '검색된 게시물이 없습니다'
+                : `총 ${posts.length}개의 게시물을 찾았습니다`
+            }
+          </Typography>
+          {
+            isPostsLoaded
+              ? <Postlist posts={posts} />
+              : (
+                <Grid container justify="center" alignItems="center" style={{ height: '50vh' }}>
+                  <CircularProgress />
+                </Grid>
+                )
+          }
         </Container>
       </Container>
     </>

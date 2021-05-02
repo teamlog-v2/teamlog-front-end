@@ -390,7 +390,7 @@ export const CommentForm = ({ options }) => {
             <Button
               fullWidth
               variant="contained"
-              borderColor="purple"
+              bordercolor="purple"
               color="primary"
             >
               작성

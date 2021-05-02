@@ -27,18 +27,17 @@ const HashtagChooser = ({ hashtags, selectedTags, updateSelectedTags }) => {
   };
 
   useEffect(() => {
-    const item = document.querySelector('.tags');
-    item.style.backgroundColor = '#C16AF5';
-    item.style.color = 'white';
+    // const item = document.querySelector('.tags');
+    // item.style.backgroundColor = '#C16AF5';
+    // item.style.color = 'white';
   }, []);
 
   return (
     <Grid container direction="row" spacing={1}>
       {hashtags.map((item, index) => (
-        <Grid item>
+        <Grid key={`ht-${index}`} item>
           <Chip
             className="tags"
-            key={index}
             label={`#${item}`}
             variant="outlined"
             onClick={() => {
