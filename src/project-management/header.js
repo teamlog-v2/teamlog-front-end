@@ -107,13 +107,6 @@ const Header = (props) => {
   const classes = useStyles();
   const { sections, title, introduction } = props;
   const [value, setValue] = useState(0);
-  // const [response, setResponse] = useState();
-
-  // useEffect(() => {
-  //   fetch('/teamlog-api/project/1')
-  //   .then(response => response.json())
-  //   .then((data) => setResponse(data));
-  // }, []);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);

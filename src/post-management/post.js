@@ -18,14 +18,13 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { AmpStories, Block, Menu } from '@material-ui/icons';
-import { Button } from '@material-ui/core';
+import { Button, Chip, Grid } from '@material-ui/core';
 
+import FileList from './fileList';
 import CommentList from './commentlist';
 import UserInfo from './user';
 import LikerCounter from './liker';
-import File from './file';
 import { Media } from './media';
-import { Tag } from './tag';
 import { DateInfo } from './datetime';
 import { Comment, CommentCounter, MoreComment } from './comment';
 
@@ -41,6 +40,12 @@ import cat3 from '../media/cat3.PNG';
 // import cat4 from '../../src/media/cat4.PNG';
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    margin: '5% 0',
+  },
+  children: {
+    margin: '1% 0',
+  },
   paper: {
     display: 'flex',
     flexDirection: 'column',
@@ -205,9 +210,8 @@ const PostMenu = () => {
   );
 };
 
-const MediaList = (props) => {
+const MediaList = ({ media }) => {
   const classes = useStyles();
-  const {mediaList} = props;
 
   const isPc = useMediaQuery({
     query: '(min-width:1024px)',
@@ -219,18 +223,15 @@ const MediaList = (props) => {
     query: '(max-width:767px)',
   });
 
-  let size = isPc ? '60em' : isTablet ? '45em' : '30em';
-
+  let size = isPc ? '60em' : isTablet ? '45em' : '30em';  
   return (
     <Box id="mediaBox" textAlign="center">
       <Carousel autoPlay={false} animation="slide" cycleNavigation={false}>
-
-      {mediaList ? mediaList.map((item, index) => (
-        <Box className={classes.media} height={size}>
-          {/* <Media content={item}/> */}
-        </Box>
-      )
-      ) : null} 
+        {
+          media.map((file) => ( <Box className={classes.media} height={size}>
+            <Media file={file} />
+            </Box>))
+          }
       </Carousel>
     </Box>
   );
@@ -241,14 +242,11 @@ export const Post = (props) => {
 
     const [tagList, setTagList] = useState([]);
     const [commentList, setCommentList] = useState([]);
-    const [mediaList, setMediaList] = useState([]);
 
     const classes = useStyles();
 
     useEffect(() => {
       setTagList(postContents.hashtags);
-
-      setMediaList(postContents.media);
 
       var slides = document.getElementsByClassName('media');
 
@@ -263,8 +261,10 @@ export const Post = (props) => {
       }
     }, []);
 
+    console.log(postContents);
+
   return (
-    <Container component="main" maxWidth={maxWidth} disableGutters>
+    <Container className={classes.root} component="main" disableGutters madWidth={maxWidth}>
       <CssBaseline />
       <Box className={classes.paper}>
         <Container disableGutters>
@@ -297,17 +297,35 @@ export const Post = (props) => {
             {postContents.latitude}
           </Box>
         </Container>
-        <Container disableGutters>
-          <Box>
-            <Box className={classes.tags}>
-              {tagList
-                ? tagList.map((item, index) => <Tag name={item} />) : null}
-            </Box>
-          </Box>
-        </Container>
-        <Container disableGutters>
-          <MediaList mediaList = {mediaList}/>
-        </Container>
+        <Grid className={classes.children}>
+          <Grid container direction="row" spacing={1}>
+            {postContents.hashtags
+              ? postContents.hashtags.map((item, index) => {
+                  return <Grid item>
+                          <Chip
+                          className="tags"
+                          key={index}
+                          label={`#${item}`}
+                          variant="outlined"
+                          size="small"
+                          onClick={() => {
+                            // handleChipClick(index);
+                            // handleToggle(index);
+                          }}
+                          color="primary"
+                          />
+                        </Grid>
+                  })
+                : ''}
+            </Grid>
+        </Grid>
+        {
+          postContents.media.length === 0
+            ? null
+            : (<Container disableGutters>
+                <MediaList media={postContents.media}/>
+              </Container>)
+        }
         <Container disableGutters>
           <Box className={classes.content}>
             <Typography>{postContents.contents}</Typography>
@@ -315,7 +333,7 @@ export const Post = (props) => {
         </Container>
         <Container disableGutters>
           <Box className={classes.files}>
-            <File file="오구.jpg" />
+            <FileList className={classes.file} files={postContents.files}/>
           </Box>
 
           <Box className={classes.etc}>
@@ -325,60 +343,8 @@ export const Post = (props) => {
         </Container>
         <Container disableGutters>
           <CommentList projectId = {postContents.project.id} postId = {postContents.id} /> 
-          {/* {commentList
-            ? commentList.map((item, index) => {
-              if(index < MAX_COMMENT_SIZE){
-                return (
-                  <Comment
-                    id={item.id}
-                    postId={postContents.id}
-                    parentId={item.parentId}
-                    write_time={item.writeTime}
-                    writer_profile={item.writer_profile}
-                    userTag="null"
-                    comment_mention_list={item.comment_mention_list}
-                    content={item.contents}
-                    parent_comment_id={item.parent_comment_id}
-                  />
-                );
-              }
-
-              if(index === MAX_COMMENT_SIZE){
-                return (<MoreComment />);
-              }
-            })
-            : ''} */}
         </Container>
         <Container disableGutters>
-          {/* <CommentForm
-            options={[
-              '신동헌',
-              '신현정',
-              '이희수',
-              '윤진',
-              '오득환',
-              '이현아',
-              '김사람',
-              '이사람',
-              '강소공',
-              'Zaki Mars Stewart',
-              '박지훈',
-              '박소공',
-              '김소공',
-              '김시관',
-              '김성렬',
-              '김선명',
-              '김민종',
-              '김효진',
-              '김초코',
-              '김커피',
-              '김생수',
-              '김에어',
-              '김지현',
-            ]}
-            parentCommentId={null}
-            postId={postContents.id}
-          /> */}
         </Container>
       </Box>
     </Container>
