@@ -20,15 +20,6 @@ const useStyles = makeStyles(() => ({
 
 export const Media = (props) => {
   const { content, frameWidth, frameHeight } = props;
-  // alert(content.path);
-
-  // var fileName = content.toString();
-  // var fileLength = fileName.length;
-  // var startIdx = fileName.lastIndexOf('.');
-
-  // var fileExtention = String(
-  //   fileName.substring(startIdx, fileLength).toLowerCase(),
-  // );
 
   if(content.type === 'IMAGE'){
     return (
@@ -52,20 +43,6 @@ const ImageContent = (props) => {
   return(
        <img src = {process.env.PUBLIC_URL + '/media' + content.path}  height='100%' objectFit='contain'/> 
   );
-
-
-  // if (image.width >= image.height) {
-  //   return (
-  //     <Box width="100%" className={classes.align}>
-  //       <img src={process.env.PUBLIC_URL + '/media' + content.path} width="100%" />
-  //     </Box>
-  //   );
-  // }
-  //   return (
-  //     <Box height="100%" className={classes.align}>
-  //       <img src={process.env.PUBLIC_URL + '/media' + content.path} height="100%" />
-  //     </Box>
-  //   );
 };
 
 const VideoContent = (props) => {

@@ -247,20 +247,7 @@ export const Post = (props) => {
 
     useEffect(() => {
       setTagList(postContents.hashtags);
-
       setMediaList(postContents.media);
-
-      var slides = document.getElementsByClassName('media');
-
-      var pcDevice = 'win16|win32|win64|mac|macintel';
-
-      if (navigator.platform) {
-        if (pcDevice.indexOf(navigator.platform.toLowerCase()) < 0) {
-          // console.log('MOBILE');
-        } else {
-          // console.log('PC');
-        }
-      }
     }, []);
 
   return (
@@ -325,60 +312,8 @@ export const Post = (props) => {
         </Container>
         <Container disableGutters>
           <CommentList projectId = {postContents.project.id} postId = {postContents.id} /> 
-          {/* {commentList
-            ? commentList.map((item, index) => {
-              if(index < MAX_COMMENT_SIZE){
-                return (
-                  <Comment
-                    id={item.id}
-                    postId={postContents.id}
-                    parentId={item.parentId}
-                    write_time={item.writeTime}
-                    writer_profile={item.writer_profile}
-                    userTag="null"
-                    comment_mention_list={item.comment_mention_list}
-                    content={item.contents}
-                    parent_comment_id={item.parent_comment_id}
-                  />
-                );
-              }
-
-              if(index === MAX_COMMENT_SIZE){
-                return (<MoreComment />);
-              }
-            })
-            : ''} */}
         </Container>
         <Container disableGutters>
-          {/* <CommentForm
-            options={[
-              '신동헌',
-              '신현정',
-              '이희수',
-              '윤진',
-              '오득환',
-              '이현아',
-              '김사람',
-              '이사람',
-              '강소공',
-              'Zaki Mars Stewart',
-              '박지훈',
-              '박소공',
-              '김소공',
-              '김시관',
-              '김성렬',
-              '김선명',
-              '김민종',
-              '김효진',
-              '김초코',
-              '김커피',
-              '김생수',
-              '김에어',
-              '김지현',
-            ]}
-            parentCommentId={null}
-            postId={postContents.id}
-          /> */}
         </Container>
       </Box>
     </Container>

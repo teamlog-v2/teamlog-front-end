@@ -100,31 +100,6 @@ const CommentList = ({ projectId, postId }) => {
           
 }) : []}
         <CommentForm
-            // options={[
-            //   '신동헌',
-            //   '신현정',
-            //   '이희수',
-            //   '윤진',
-            //   '오득환',
-            //   '이현아',
-            //   '김사람',
-            //   '이사람',
-            //   '강소공',
-            //   'Zaki Mars Stewart',
-            //   '박지훈',
-            //   '박소공',
-            //   '김소공',
-            //   '김시관',
-            //   '김성렬',
-            //   '김선명',
-            //   '김민종',
-            //   '김효진',
-            //   '김초코',
-            //   '김커피',
-            //   '김생수',
-            //   '김에어',
-            //   '김지현',
-            // ]}
             parentCommentId={null}
             projectId={projectId}
             postId={postId}
@@ -195,7 +170,6 @@ const CommentForm = (props) => {
       state.tagStartIndex > -1 &&
       userInput.charAt(state.tagStartIndex) == '@'
     ) {
-      // const splitName = userInput.substring(state.tagStartIndex + 1).split(' ')[0];
       const splitName = userInput.substring(
         state.tagStartIndex + 1,
         inputRef.current.selectionStart,
@@ -296,10 +270,6 @@ const CommentForm = (props) => {
   };
 
   const handleClose = (event) => {
-    //   if (anchorRef.current && anchorRef.current.contains(event.target)) {
-    //     return;
-    //   }
-
     setOpen(false);
   };
 
