@@ -22,6 +22,7 @@ import PropTypes from 'prop-types';
 import UserInfo from './user';
 import { DateInfo } from './datetime';
 import { UserTag } from './tag';
+import CommentForm from './commentform'
 
 const useStyles = makeStyles(() => ({
   more: {
@@ -97,10 +98,16 @@ export const CommentCounter = (props) => {
 
 const CheckRoot = (type) => {
   if (type === 'child') {
-    return '1.5em'; // 대댓글 들여쓰기
+    return {
+      marginLeft: '1.5em', 
+      buttonDisplay: 'hidden'
+    }; 
   }
 
-  return '0.25em';
+  return {
+    marginLeft: '0.5em', 
+    buttonDisplay: 'block'
+  }; 
 };
 
 export const Comment = (props) => {
@@ -108,7 +115,7 @@ export const Comment = (props) => {
   const classes = useStyles();
   
   const [tagList, setTagList] = useState([]);
-  const [visibility, setVisibility] = useState('none');
+  const [formVisibility, setVisibility] = useState('none');
   
 
   useEffect(() => {
@@ -116,11 +123,11 @@ export const Comment = (props) => {
   }, []);
 
   
-  const marginLeft = CheckRoot(type);
+  const commentStyle = CheckRoot(type);
 
   return (
     <Box className={classes.comment}>
-      <Box marginLeft={marginLeft}>
+      <Box marginLeft={commentStyle.marginLeft}>
         <Box display="inline-block" width="90%">
           <Header userId={writer.id} imgPath={writer.profileImgPath} />
           <Box>
@@ -128,11 +135,11 @@ export const Comment = (props) => {
           </Box>
         </Box>
 
-        <Box className={classes.reply}>
+        <Box className={classes.reply} visibility={commentStyle.buttonDisplay}>
           <Box
             className={classes.icon}
             onClick={() => {
-              if (visibility === 'none') {
+              if (formVisibility === 'none') {
                 setVisibility('block');
               } else {
                 setVisibility('none');
@@ -152,7 +159,7 @@ export const Comment = (props) => {
         </Box>
       </Box>
 
-      <Box display={visibility}>
+      <Box display={formVisibility}>
         <CommentForm
           options={[
             '신동헌',
@@ -216,249 +223,249 @@ const FriendList = (props) => {
   );
 };
 
-export const CommentForm = (props) => {
-  const classes = useStyles();
-  const { options, postId, parentCommentId } = props;
+// export const CommentForm = (props) => {
+//   const classes = useStyles();
+//   const { options, postId, parentCommentId } = props;
 
-  const [state, setState] = useState({
-    activeOption: 0,
-    filteredOptions: [],
-    showOptions: false,
-    userInput: '',
-    tagStartIndex: -1,
-  });
+//   const [state, setState] = useState({
+//     activeOption: 0,
+//     filteredOptions: [],
+//     showOptions: false,
+//     userInput: '',
+//     tagStartIndex: -1,
+//   });
 
-  const inputRef = useRef();
-  const [menuFocus, setMenuFocus] = useState(false);
+//   const inputRef = useRef();
+//   const [menuFocus, setMenuFocus] = useState(false);
 
-  menuFocus
-    ? (document.body.style.overflow = 'hidden')
-    : (document.body.style.overflow = 'unset');
+//   menuFocus
+//     ? (document.body.style.overflow = 'hidden')
+//     : (document.body.style.overflow = 'unset');
     
 
-  const onKeyDown = (e) => {
-    // 위 화살표 or 아래 화살표
-    if ((state.showOptions && e.keyCode === 38) || e.keyCode === 40) {
-      setMenuFocus(true);
-    }
-  };
+//   const onKeyDown = (e) => {
+//     // 위 화살표 or 아래 화살표
+//     if ((state.showOptions && e.keyCode === 38) || e.keyCode === 40) {
+//       setMenuFocus(true);
+//     }
+//   };
 
-  const CreateComment = () => { 
-    let comment = {
-      parentCommentId: parentCommentId,
-      writerId: 'string', // 이미 알고있어야 하는 아이디
-      postId: postId, 
-      contents: inputRef.current.value
-    }
+//   const CreateComment = () => { 
+//     let comment = {
+//       parentCommentId: parentCommentId,
+//       writerId: 'string', // 이미 알고있어야 하는 아이디
+//       postId: postId, 
+//       contents: inputRef.current.value
+//     }
 
-    alert(parentCommentId + " " + postId);
+//     alert(parentCommentId + " " + postId);
 
-    fetch('http://localhost:8090/api/comments/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(comment)
-    }).then((res) => alert(res.status));
-  }
+//     fetch('http://localhost:8090/api/comments/', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json'
+//       },
+//       body: JSON.stringify(comment)
+//     }).then((res) => alert(res.status));
+//   }
 
-  const onSelect = () => {
-    let index = inputRef.current.selectionStart;
+//   const onSelect = () => {
+//     let index = inputRef.current.selectionStart;
 
-    setMenuFocus(false);
+//     setMenuFocus(false);
 
-    if (state.userInput.charAt(index - 2) == '@') {
-      setState({
-        ...state,
-        tagStartIndex: index - 2,
-      });
-    }
-  };
+//     if (state.userInput.charAt(index - 2) == '@') {
+//       setState({
+//         ...state,
+//         tagStartIndex: index - 2,
+//       });
+//     }
+//   };
 
-  const onChange = (e) => {
-    const userInput = e.currentTarget.value;
+//   const onChange = (e) => {
+//     const userInput = e.currentTarget.value;
 
-    setState({
-      ...state,
-      userInput: e.currentTarget.value,
-    });
+//     setState({
+//       ...state,
+//       userInput: e.currentTarget.value,
+//     });
 
-    let index = inputRef.current.selectionStart;
+//     let index = inputRef.current.selectionStart;
 
-    if (
-      state.tagStartIndex > -1 &&
-      userInput.charAt(state.tagStartIndex) == '@'
-    ) {
-      // const splitName = userInput.substring(state.tagStartIndex + 1).split(' ')[0];
-      const splitName = userInput.substring(
-        state.tagStartIndex + 1,
-        inputRef.current.selectionStart,
-      );
+//     if (
+//       state.tagStartIndex > -1 &&
+//       userInput.charAt(state.tagStartIndex) == '@'
+//     ) {
+//       // const splitName = userInput.substring(state.tagStartIndex + 1).split(' ')[0];
+//       const splitName = userInput.substring(
+//         state.tagStartIndex + 1,
+//         inputRef.current.selectionStart,
+//       );
 
-      if (splitName.length == 0) return;
+//       if (splitName.length == 0) return;
 
-      const filteredOptions = options.filter(
-        (option) => option.toLowerCase().indexOf(splitName.toLowerCase()) > -1,
-      );
+//       const filteredOptions = options.filter(
+//         (option) => option.toLowerCase().indexOf(splitName.toLowerCase()) > -1,
+//       );
 
-      setState({
-        ...state,
-        activeOption: 0,
-        filteredOptions,
-        showOptions: true,
-        userInput: e.currentTarget.value,
-      });
+//       setState({
+//         ...state,
+//         activeOption: 0,
+//         filteredOptions,
+//         showOptions: true,
+//         userInput: e.currentTarget.value,
+//       });
 
-      if (filteredOptions.length > 0) {
-        setOpen(true);
-        setAnchorEl(e.currentTarget);
-      } else {
-        setOpen(false);
-        setAnchorEl(null);
-      }
-    } else {
-      setOpen(false);
-      setAnchorEl(null);
+//       if (filteredOptions.length > 0) {
+//         setOpen(true);
+//         setAnchorEl(e.currentTarget);
+//       } else {
+//         setOpen(false);
+//         setAnchorEl(null);
+//       }
+//     } else {
+//       setOpen(false);
+//       setAnchorEl(null);
 
-      setState({
-        ...state,
-        activeOption: 0,
-        filteredOptions: [],
-        showOptions: false,
-        userInput: e.currentTarget.value,
-      });
-    }
-  };
+//       setState({
+//         ...state,
+//         activeOption: 0,
+//         filteredOptions: [],
+//         showOptions: false,
+//         userInput: e.currentTarget.value,
+//       });
+//     }
+//   };
 
-  const onClick = (e) => {
-    setOpen(false);
-    setAnchorEl(null);
+//   const onClick = (e) => {
+//     setOpen(false);
+//     setAnchorEl(null);
 
-    let startStr = userInput.substring(0, state.tagStartIndex);
-    let midStr = '@' + e.currentTarget.innerText + ' ';
-    let lastStr = userInput.substring(
-      inputRef.current.selectionStart,
-      userInput.length,
-    );
+//     let startStr = userInput.substring(0, state.tagStartIndex);
+//     let midStr = '@' + e.currentTarget.innerText + ' ';
+//     let lastStr = userInput.substring(
+//       inputRef.current.selectionStart,
+//       userInput.length,
+//     );
 
-    setState({
-      activeOption: 0,
-      filteredOptions: [],
-      showOptions: false,
-      userInput: startStr + midStr + lastStr,
-      tagStartIndex: -1,
-    });
+//     setState({
+//       activeOption: 0,
+//       filteredOptions: [],
+//       showOptions: false,
+//       userInput: startStr + midStr + lastStr,
+//       tagStartIndex: -1,
+//     });
 
-    setMenuFocus(false);
+//     setMenuFocus(false);
 
-    inputRef.current.focus();
-  };
+//     inputRef.current.focus();
+//   };
 
-  const { activeOption, filteredOptions, showOptions, userInput } = state;
+//   const { activeOption, filteredOptions, showOptions, userInput } = state;
 
-  const [open, setOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
+//   const [open, setOpen] = useState(false);
+//   const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleToggle = () => {
-    setOpen((prevOpen) => !prevOpen);
-  };
+//   const handleToggle = () => {
+//     setOpen((prevOpen) => !prevOpen);
+//   };
 
-  const handleClose = (event) => {
-    //   if (anchorRef.current && anchorRef.current.contains(event.target)) {
-    //     return;
-    //   }
+//   const handleClose = (event) => {
+//     //   if (anchorRef.current && anchorRef.current.contains(event.target)) {
+//     //     return;
+//     //   }
 
-    setOpen(false);
-  };
+//     setOpen(false);
+//   };
 
-  const handleListKeyDown = (event) => {
-    if (event.key === 'Tab') {
-      event.preventDefault();
-      setOpen(false);
-    }
-  };
+//   const handleListKeyDown = (event) => {
+//     if (event.key === 'Tab') {
+//       event.preventDefault();
+//       setOpen(false);
+//     }
+//   };
 
-  const theme = createMuiTheme({
-    palette: {
-      primary: {
-        main: 'rgb(220, 220, 220)',
-      },
-    },
-  });
+//   const theme = createMuiTheme({
+//     palette: {
+//       primary: {
+//         main: 'rgb(220, 220, 220)',
+//       },
+//     },
+//   });
 
-  return (
-    <Container>
-      <Box
-        component="form"
-        marginTop="1em"
-        marginBottom="1em"
-        width="auto"
-        height="auto"
-      >
-        <Box width="80%" display="inline-block">
-          <Fragment>
-            <InputBase
-              name="reply"
-              className={classes.input}
-              placeholder="댓글을 입력하세요."
-              multiline
-              fullWidth
-              inputRef={inputRef}
-              onChange={onChange}
-              onSelect={onSelect}
-              onKeyDown={onKeyDown}
-              value={state.userInput}
-            />
-          </Fragment>
-        </Box>
-        <Box width="20%" display="inline-block">
-          <ThemeProvider theme={theme}>
-            <Button
-              parentCommentId = '1'
-              fullWidth
-              variant="contained"
-              color="primary"
-              onClick = {CreateComment}
-            >
-              작성
-            </Button>
-          </ThemeProvider>
-        </Box>
-      </Box>
-      <Popper
-        open={open}
-        disablePortal
-        style={{ zIndex: 1 }}
-        anchorEl={anchorEl}
-        placement="top-start"
-        role={undefined}
-        transition
-        disablePortal
-      >
-        {({ TransitionProps, placement }) => (
-          <Grow
-            {...TransitionProps}
-            style={{
-              transformOrigin:
-                placement === 'bottom' ? 'center top' : 'center bottom',
-            }}
-          >
-            <Paper className={classes.postMenu}>
-              <ClickAwayListener onClickAway={handleClose}>
-                <FriendList
-                  autoFocus={menuFocus}
-                  options={filteredOptions}
-                  onClick={onClick}
-                />
-              </ClickAwayListener>
-            </Paper>
-          </Grow>
-        )}
-      </Popper>
-    </Container>
-  );
-};
+//   return (
+//     <Container>
+//       <Box
+//         component="form"
+//         marginTop="1em"
+//         marginBottom="1em"
+//         width="auto"
+//         height="auto"
+//       >
+//         <Box width="80%" display="inline-block">
+//           <Fragment>
+//             <InputBase
+//               name="reply"
+//               className={classes.input}
+//               placeholder="댓글을 입력하세요."
+//               multiline
+//               fullWidth
+//               inputRef={inputRef}
+//               onChange={onChange}
+//               onSelect={onSelect}
+//               onKeyDown={onKeyDown}
+//               value={state.userInput}
+//             />
+//           </Fragment>
+//         </Box>
+//         <Box width="20%" display="inline-block">
+//           <ThemeProvider theme={theme}>
+//             <Button
+//               parentCommentId = '1'
+//               fullWidth
+//               variant="contained"
+//               color="primary"
+//               onClick = {CreateComment}
+//             >
+//               작성
+//             </Button>
+//           </ThemeProvider>
+//         </Box>
+//       </Box>
+//       <Popper
+//         open={open}
+//         disablePortal
+//         style={{ zIndex: 1 }}
+//         anchorEl={anchorEl}
+//         placement="top-start"
+//         role={undefined}
+//         transition
+//         disablePortal
+//       >
+//         {({ TransitionProps, placement }) => (
+//           <Grow
+//             {...TransitionProps}
+//             style={{
+//               transformOrigin:
+//                 placement === 'bottom' ? 'center top' : 'center bottom',
+//             }}
+//           >
+//             <Paper className={classes.postMenu}>
+//               <ClickAwayListener onClickAway={handleClose}>
+//                 <FriendList
+//                   autoFocus={menuFocus}
+//                   options={filteredOptions}
+//                   onClick={onClick}
+//                 />
+//               </ClickAwayListener>
+//             </Paper>
+//           </Grow>
+//         )}
+//       </Popper>
+//     </Container>
+//   );
+// };
 
-CommentForm.propTypes = {
-  options: PropTypes.instanceOf(Array),
-};
+// CommentForm.propTypes = {
+//   options: PropTypes.instanceOf(Array),
+// };

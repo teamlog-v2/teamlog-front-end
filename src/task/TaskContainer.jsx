@@ -148,7 +148,7 @@ const TaskContainer = () => {
                       <Typography>{state[ind].length}</Typography>
                     </Grid>
                   </Grid>
-                  {state[ind].length === 0 ? <Grid> <p>없어요</p></Grid> : null}
+                  {state[ind].length === 0 ? <Grid> <p>태크스 없음.</p></Grid> : null}
                   {el.map((item, index) => (
                     <TaskItem item={item} index={index} />
                   ))}

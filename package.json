@@ -55,6 +55,8 @@
     "src/post-management/tag.js",
     "src/file/filetest.js",
     "src/project-management/projectmain.js",
+    "src/post-management/commentlist.js",
+    "src/post-management/commentForm.js",
     "src/task/MultiTimePicker.jsx",
     "src/task/TaskContainer.jsx",
     "src/task/TaskCreateForm.jsx",

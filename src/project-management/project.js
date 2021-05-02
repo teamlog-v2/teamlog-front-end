@@ -5,12 +5,15 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 // import Fab from '@material-ui/core/Fab';
 // import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 // import Container from '@material-ui/core/Container';
+import loadable from '@loadable/component';
 
 import { BrowserRouter, Route } from 'react-router-dom';
+
 // import ProjectMain from './projectmain';
-import TestFile from './testfile';
+// import TestFile from './testfile';
 import Header from './header';
 import ProjectMain from './projectmain';
+// import TaskContainer from '../task/TaskContainer';
 
 // import Introduction from './introduction';
 // import Postlist from '../post-management/postlist';
@@ -48,6 +51,8 @@ const Project = ({ id }) => {
     { title: '팔로워', url: `/projects/follower/${id}` },
   ];
 
+  const TaskContainer = loadable(() => import('../task/TaskContainer'));
+
   return (
     <>
       <CssBaseline />
@@ -59,7 +64,8 @@ const Project = ({ id }) => {
           sections={sections}
         />
         <Route exact path="/projects/:id" component={ProjectMain} />
-        <Route exact path="/projects/task/:id" component={TestFile} />
+        {/* <Route exact path="/projects/task/:id" component={TestFile} /> */}
+        <Route exact path="/projects/task/:id" component={TaskContainer} />
       </BrowserRouter>
       {/* <Route exact path="/" render={() => <ProjectMain projectInfo={project} />} />
         <Route path="/task" component={TestFile} />

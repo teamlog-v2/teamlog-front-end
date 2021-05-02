@@ -27,7 +27,7 @@ import File from './file';
 import { Media } from './media';
 import { Tag } from './tag';
 import { DateInfo } from './datetime';
-import { Comment, CommentCounter, CommentForm, MoreComment } from './comment';
+import { Comment, CommentCounter, MoreComment } from './comment';
 
 // import dao from '../../src/media/dao.png';
 // import ogu from '../../public/media/ogu.PNG';;
@@ -351,7 +351,7 @@ export const Post = (props) => {
             : ''} */}
         </Container>
         <Container disableGutters>
-          <CommentForm
+          {/* <CommentForm
             options={[
               '신동헌',
               '신현정',
@@ -379,7 +379,7 @@ export const Post = (props) => {
             ]}
             parentCommentId={null}
             postId={postContents.id}
-          />
+          /> */}
         </Container>
       </Box>
     </Container>
