@@ -14,7 +14,7 @@ import {
 import MultiTimePicker from './MultiTimePicker';
 import { createTask } from './taskService';
 
-const TaskCreateForm = (props) => {
+const TaskCreateForm = ({ projectId, addTaskInContainer }) => {
   const [taskName, setTaskName] = useState('');
   const [status, setStatus] = useState('0');
   const [deadline, setDeadline] = useState(new Date());
@@ -38,13 +38,13 @@ const TaskCreateForm = (props) => {
       status,
     };
     try {
-      const response = await createTask(data);
+      const response = await createTask(projectId, data);
       const res = await response.json();
       console.log(res);
+      addTaskInContainer(data);
     } catch (err) {
       console.error('Error');
     }
-    props.addTaskInContainer(data);
   };
 
   return (

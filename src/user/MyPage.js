@@ -43,7 +43,7 @@ const MyPage = () => {
     (async () => {
       let userInfo;
       try {
-        const response = await getUser('hamchu');
+        const response = await getUser('string');
         userInfo = await response.json();
       } catch (err) {
         alert(err);

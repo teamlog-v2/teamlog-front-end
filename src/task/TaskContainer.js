@@ -36,9 +36,10 @@ const move = (source, destination, droppableSource, droppableDestination) => {
 
 const TaskContainer = () => {
   const [state, setState] = useState([[], [], [], []]);
-  const [status] = useState(['진행 전', '진행 중', '완료', '실패']);
   const [open, setOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const status = ['진행 전', '진행 중', '완료', '실패'];
+  const projectId = 9;
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -48,8 +49,6 @@ const TaskContainer = () => {
   };
 
   const addTaskInContainer = (task) => {
-    console.log(task.updateTime.toString());
-
     const newState = [...state];
     newState[task.status].push(task);
     setState(newState);
@@ -65,7 +64,7 @@ const TaskContainer = () => {
       setState(newState);
       let tasks;
       try {
-        const response = await getTasksByProject();
+        const response = await getTasksByProject(projectId);
         tasks = await response.json();
       } catch (err) {
         alert(err);
@@ -151,7 +150,7 @@ const TaskContainer = () => {
             </IconButton>
           </Box>
         </Box>
-        <TaskCreateForm addTaskInContainer={addTaskInContainer} />
+        <TaskCreateForm addTaskInContainer={addTaskInContainer} projectId={projectId} />
       </Dialog>
       <Grid container spacing={2}>
         <DragDropContext onDragEnd={onDragEnd}>

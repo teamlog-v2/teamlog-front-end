@@ -1,11 +1,11 @@
 const headersData = { 'Content-Type': 'application/json' };
 
-const getTasksByProject = () => fetch('/api/projects/1/tasks', {
+const getTasksByProject = (projectId) => fetch(`/api/projects/${projectId}/tasks`, {
     method: 'Get',
     headers: headersData,
   });
 
-const createTask = (data) => fetch('/api/projects/1/tasks/hamchu', {
+const createTask = (projectId, data) => fetch(`/api/projects/${projectId}/tasks`, {
     method: 'Post',
     body: JSON.stringify(data),
     headers: headersData,
