@@ -30,3 +30,6 @@ yarn-error.log*
 
 # mock images
 public/images
+
+package-lock.json
+yarn.lock
