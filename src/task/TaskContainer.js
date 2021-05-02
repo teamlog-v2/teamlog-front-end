@@ -34,12 +34,12 @@ const move = (source, destination, droppableSource, droppableDestination) => {
   return result;
 };
 
-const TaskContainer = () => {
+const TaskContainer = ({match}) => {
   const [state, setState] = useState([[], [], [], []]);
   const [open, setOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const status = ['진행 전', '진행 중', '완료', '실패'];
-  const projectId = 9;
+  const projectId = match.params.id;
 
   const handleClickOpen = () => {
     setOpen(true);
