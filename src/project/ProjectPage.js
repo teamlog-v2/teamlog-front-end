@@ -1,13 +1,13 @@
 import React from 'react';
 import { Link, Route, useRouteMatch } from 'react-router-dom';
-import { useProject, useProjectPosts } from './hooks';
+import { useFetchData } from './hooks';
 
 // 프로젝트 페이지 헤더
 const ProjectPageHeader = () => {
   const match = useRouteMatch();
   const { projectId } = match.params;
 
-  const [project, isProjectLoaded] = useProject(projectId);
+  const [project, isProjectLoaded] = useFetchData(`/api/projects/${projectId}`);
 
   if (!isProjectLoaded) {
     return '프로젝트 헤더 로딩...';
@@ -42,7 +42,7 @@ const ProjectPostsPage = () => {
   const match = useRouteMatch();
   const { projectId } = match.params;
 
-  const [posts, isPostsLoaded] = useProjectPosts(projectId);
+  const [posts, isPostsLoaded] = useFetchData(`/api/posts/project/${projectId}`);
 
   if (!isPostsLoaded) {
     return '프로젝트 포스트 로딩...';
