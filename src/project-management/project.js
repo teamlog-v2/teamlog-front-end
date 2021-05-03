@@ -34,21 +34,21 @@ import ProjectMain from './projectmain';
 //   },
 // }));
 
-const Project = ({ id }) => {
+const Project = ({ match }) => {
   // const classes = useStyles();
   const [project, setProject] = useState([]);
 
   useEffect(() => {
-    fetch(`http://3.15.16.150:8090/api/projects/${id}`)
+    fetch(`http://3.15.16.150:8090/api/projects/${match.params.id}`)
     .then((res) => res.json()).then((info) => setProject(info));
   }, []);
 
   const sections = [
-    { title: '홈', url: `/projects/${id}` },
-    { title: '포스트', url: `/projects/${id}/post` },
-    { title: '태스크', url: `/projects/${id}/task` },
-    { title: '멤버', url: `/projects/${id}/member` },
-    { title: '팔로워', url: `/projects/${id}/follower` },
+    { title: '홈', url: `/projects/${match.params.id}` },
+    { title: '포스트', url: `/projects/${match.params.id}/post` },
+    { title: '태스크', url: `/projects/${match.params.id}/task` },
+    { title: '멤버', url: `/projects/${match.params.id}/member` },
+    { title: '팔로워', url: `/projects/${match.params.id}/follower` },
   ];
 
   const TaskContainer = loadable(() => import('../task/TaskContainer'));

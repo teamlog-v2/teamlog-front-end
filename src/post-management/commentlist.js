@@ -52,16 +52,14 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const CommentList = ({ projectId, postId }) => {
+export const CommentList = ({ projectId, postId }) => {
   const [commentList, setCommentList] = useState([]);
 
   const SetCommentList = useCallback(async() => {
     setCommentList(await GetComment(postId));
-  })
+  });
 
   useEffect(async () => {   
-    // fetch(`http://3.15.16.150:8090/api/comments/${postId}`)
-    //   .then((res) => res.json()).then((info) => setCommentList(info));
     setCommentList(await GetComment(postId));
   }, []);
 
@@ -73,6 +71,7 @@ const CommentList = ({ projectId, postId }) => {
           return (<>
             <Comment
               id={item.id}
+              projectId={projectId}
               contents={item.contents}
               writer={item.writer}
               commentMentions={item.commentMentions}
@@ -90,55 +89,29 @@ const CommentList = ({ projectId, postId }) => {
                 commentMentions={childItem.commentMentions}
                 postId={postId}
                 writeTime={childItem.writeTime}
+                setCommentList = {SetCommentList}
                 type="child"
               />
                 );
-                
               }) : []
             }
           </>);
-          
 }) : []}
         <CommentForm
-            // options={[
-            //   '신동헌',
-            //   '신현정',
-            //   '이희수',
-            //   '윤진',
-            //   '오득환',
-            //   '이현아',
-            //   '김사람',
-            //   '이사람',
-            //   '강소공',
-            //   'Zaki Mars Stewart',
-            //   '박지훈',
-            //   '박소공',
-            //   '김소공',
-            //   '김시관',
-            //   '김성렬',
-            //   '김선명',
-            //   '김민종',
-            //   '김효진',
-            //   '김초코',
-            //   '김커피',
-            //   '김생수',
-            //   '김에어',
-            //   '김지현',
-            // ]}
             parentCommentId={null}
             projectId={projectId}
             postId={postId}
             setCommentList = {SetCommentList}
-          />
+        />
     </>
   );
 };
 
 //////////
 
-const CommentForm = (props) => {
+export const CommentForm = (props) => {
   const classes = useStyles();
-  const { /* options, */ projectid, postId, projectId, parentCommentId, setCommentList } = props;
+  const { /* options, */ postId, projectId, parentCommentId, setCommentList } = props;
   const [options, setOptions] = useState([]);
 
   useEffect(async () => {
@@ -160,7 +133,6 @@ const CommentForm = (props) => {
     ? (document.body.style.overflow = 'hidden')
     : (document.body.style.overflow = 'unset');
     
-
   const onKeyDown = (e) => {
     // 위 화살표 or 아래 화살표
     if ((state.showOptions && e.keyCode === 38) || e.keyCode === 40) {
@@ -195,7 +167,7 @@ const CommentForm = (props) => {
       state.tagStartIndex > -1 &&
       userInput.charAt(state.tagStartIndex) == '@'
     ) {
-      // const splitName = userInput.substring(state.tagStartIndex + 1).split(' ')[0];
+
       const splitName = userInput.substring(
         state.tagStartIndex + 1,
         inputRef.current.selectionStart,
@@ -296,10 +268,6 @@ const CommentForm = (props) => {
   };
 
   const handleClose = (event) => {
-    //   if (anchorRef.current && anchorRef.current.contains(event.target)) {
-    //     return;
-    //   }
-
     setOpen(false);
   };
 
@@ -421,6 +389,3 @@ const FriendList = (props) => {
     </Container>
   );
 };
-
-
-export default CommentList;

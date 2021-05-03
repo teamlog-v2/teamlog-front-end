@@ -22,7 +22,7 @@ import PropTypes, { string } from 'prop-types';
 import UserInfo from './user';
 import { DateInfo } from './datetime';
 import { UserTag } from './tag';
-// import CommentForm from './commentform'
+import { CommentForm } from './commentlist'
 
 const useStyles = makeStyles(() => ({
   more: {
@@ -120,18 +120,17 @@ const CheckRoot = (type) => {
 };
 
 export const Comment = (props) => {
-  const { id, type ,postId, writeTime, writer, commentMentions, contents} = props;
+  const { id, projectId, type, postId, writeTime, writer, commentMentions, contents, SetCommentList} = props;
+  console.log(id + " " + projectId + " " + postId);
   const classes = useStyles();
   
   const [tagList, setTagList] = useState([]);
-  const [formVisibility, setVisibility] = useState('none');
+  const [formVisibility, setFormVisibility] = useState('none');
   
-
   useEffect(() => {
     setTagList(commentMentions);
   }, []);
 
-  
   const commentStyle = CheckRoot(type);
 
   return (
@@ -148,11 +147,11 @@ export const Comment = (props) => {
           <Box
             className={classes.icon}
             onClick={() => {
-              if (formVisibility === 'none') {
-                setVisibility('block');
-              } else {
-                setVisibility('none');
-              }
+              if (formVisibility === 'none'){
+                setFormVisibility('block');
+              } else{
+                setFormVisibility('none')
+              } 
             }}
           >
             <ReplyIcon color="action" />
@@ -165,24 +164,14 @@ export const Comment = (props) => {
         </Box>
       </Box>
 
-      <Box display={formVisibility}>
-        {/* <CommentForm
-          options={[
-            '신동헌',
-            '신현정',
-            '이희수',
-            '윤진',
-            '오득환',
-            '이현아',
-            '김사람',
-            '이사람',
-            '강소공',
-            'pink',
-          ]}
-          parentCommentId={id}
-          postId={postId}
-        /> */}
-      </Box>
+      {/* <Box display={formVisibility}>
+        <CommentForm
+            parentCommentId={id}
+            projectId={projectId}
+            postId={postId}
+            setCommentList = {SetCommentList}
+        />
+      </Box> */}
     </Box>
   );
 };
@@ -190,20 +179,6 @@ export const Comment = (props) => {
 const FriendList = (props) => {
   const classes = useStyles();
   const { options, onClick, autoFocus } = props;
-
-  /*
-  const isPc = useMediaQuery({
-    query: '(min-width:1024px)',
-  });
-  const isTablet = useMediaQuery({
-    query: '(min-width:768px) and (max-width:1023px)',
-  });
-  const isMobile = useMediaQuery({
-    query: '(max-width:767px)',
-  });
-  */
-
-  // 디바이스 구분?
 
   return (
     <Container disableGutters>
@@ -228,250 +203,3 @@ const FriendList = (props) => {
     </Container>
   );
 };
-
-// export const CommentForm = (props) => {
-//   const classes = useStyles();
-//   const { options, postId, parentCommentId } = props;
-
-//   const [state, setState] = useState({
-//     activeOption: 0,
-//     filteredOptions: [],
-//     showOptions: false,
-//     userInput: '',
-//     tagStartIndex: -1,
-//   });
-
-//   const inputRef = useRef();
-//   const [menuFocus, setMenuFocus] = useState(false);
-
-//   menuFocus
-//     ? (document.body.style.overflow = 'hidden')
-//     : (document.body.style.overflow = 'unset');
-    
-
-//   const onKeyDown = (e) => {
-//     // 위 화살표 or 아래 화살표
-//     if ((state.showOptions && e.keyCode === 38) || e.keyCode === 40) {
-//       setMenuFocus(true);
-//     }
-//   };
-
-//   const CreateComment = () => { 
-//     let comment = {
-//       parentCommentId: parentCommentId,
-//       writerId: 'string', // 이미 알고있어야 하는 아이디
-//       postId: postId, 
-//       contents: inputRef.current.value
-//     }
-
-//     alert(parentCommentId + " " + postId);
-
-//     fetch('http://localhost:8090/api/comments/', {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json'
-//       },
-//       body: JSON.stringify(comment)
-//     }).then((res) => alert(res.status));
-//   }
-
-//   const onSelect = () => {
-//     let index = inputRef.current.selectionStart;
-
-//     setMenuFocus(false);
-
-//     if (state.userInput.charAt(index - 2) == '@') {
-//       setState({
-//         ...state,
-//         tagStartIndex: index - 2,
-//       });
-//     }
-//   };
-
-//   const onChange = (e) => {
-//     const userInput = e.currentTarget.value;
-
-//     setState({
-//       ...state,
-//       userInput: e.currentTarget.value,
-//     });
-
-//     let index = inputRef.current.selectionStart;
-
-//     if (
-//       state.tagStartIndex > -1 &&
-//       userInput.charAt(state.tagStartIndex) == '@'
-//     ) {
-//       // const splitName = userInput.substring(state.tagStartIndex + 1).split(' ')[0];
-//       const splitName = userInput.substring(
-//         state.tagStartIndex + 1,
-//         inputRef.current.selectionStart,
-//       );
-
-//       if (splitName.length == 0) return;
-
-//       const filteredOptions = options.filter(
-//         (option) => option.toLowerCase().indexOf(splitName.toLowerCase()) > -1,
-//       );
-
-//       setState({
-//         ...state,
-//         activeOption: 0,
-//         filteredOptions,
-//         showOptions: true,
-//         userInput: e.currentTarget.value,
-//       });
-
-//       if (filteredOptions.length > 0) {
-//         setOpen(true);
-//         setAnchorEl(e.currentTarget);
-//       } else {
-//         setOpen(false);
-//         setAnchorEl(null);
-//       }
-//     } else {
-//       setOpen(false);
-//       setAnchorEl(null);
-
-//       setState({
-//         ...state,
-//         activeOption: 0,
-//         filteredOptions: [],
-//         showOptions: false,
-//         userInput: e.currentTarget.value,
-//       });
-//     }
-//   };
-
-//   const onClick = (e) => {
-//     setOpen(false);
-//     setAnchorEl(null);
-
-//     let startStr = userInput.substring(0, state.tagStartIndex);
-//     let midStr = '@' + e.currentTarget.innerText + ' ';
-//     let lastStr = userInput.substring(
-//       inputRef.current.selectionStart,
-//       userInput.length,
-//     );
-
-//     setState({
-//       activeOption: 0,
-//       filteredOptions: [],
-//       showOptions: false,
-//       userInput: startStr + midStr + lastStr,
-//       tagStartIndex: -1,
-//     });
-
-//     setMenuFocus(false);
-
-//     inputRef.current.focus();
-//   };
-
-//   const { activeOption, filteredOptions, showOptions, userInput } = state;
-
-//   const [open, setOpen] = useState(false);
-//   const [anchorEl, setAnchorEl] = useState(null);
-
-//   const handleToggle = () => {
-//     setOpen((prevOpen) => !prevOpen);
-//   };
-
-//   const handleClose = (event) => {
-//     //   if (anchorRef.current && anchorRef.current.contains(event.target)) {
-//     //     return;
-//     //   }
-
-//     setOpen(false);
-//   };
-
-//   const handleListKeyDown = (event) => {
-//     if (event.key === 'Tab') {
-//       event.preventDefault();
-//       setOpen(false);
-//     }
-//   };
-
-//   const theme = createMuiTheme({
-//     palette: {
-//       primary: {
-//         main: 'rgb(220, 220, 220)',
-//       },
-//     },
-//   });
-
-//   return (
-//     <Container>
-//       <Box
-//         component="form"
-//         marginTop="1em"
-//         marginBottom="1em"
-//         width="auto"
-//         height="auto"
-//       >
-//         <Box width="80%" display="inline-block">
-//           <Fragment>
-//             <InputBase
-//               name="reply"
-//               className={classes.input}
-//               placeholder="댓글을 입력하세요."
-//               multiline
-//               fullWidth
-//               inputRef={inputRef}
-//               onChange={onChange}
-//               onSelect={onSelect}
-//               onKeyDown={onKeyDown}
-//               value={state.userInput}
-//             />
-//           </Fragment>
-//         </Box>
-//         <Box width="20%" display="inline-block">
-//           <ThemeProvider theme={theme}>
-//             <Button
-//               parentCommentId = '1'
-//               fullWidth
-//               variant="contained"
-//               color="primary"
-//               onClick = {CreateComment}
-//             >
-//               작성
-//             </Button>
-//           </ThemeProvider>
-//         </Box>
-//       </Box>
-//       <Popper
-//         open={open}
-//         disablePortal
-//         style={{ zIndex: 1 }}
-//         anchorEl={anchorEl}
-//         placement="top-start"
-//         role={undefined}
-//         transition
-//         disablePortal
-//       >
-//         {({ TransitionProps, placement }) => (
-//           <Grow
-//             {...TransitionProps}
-//             style={{
-//               transformOrigin:
-//                 placement === 'bottom' ? 'center top' : 'center bottom',
-//             }}
-//           >
-//             <Paper className={classes.postMenu}>
-//               <ClickAwayListener onClickAway={handleClose}>
-//                 <FriendList
-//                   autoFocus={menuFocus}
-//                   options={filteredOptions}
-//                   onClick={onClick}
-//                 />
-//               </ClickAwayListener>
-//             </Paper>
-//           </Grow>
-//         )}
-//       </Popper>
-//     </Container>
-//   );
-// };
-
-// CommentForm.propTypes = {
-//   options: PropTypes.instanceOf(Array),
-// };

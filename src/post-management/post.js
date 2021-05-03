@@ -21,7 +21,7 @@ import { AmpStories, Block, Menu } from '@material-ui/icons';
 import { Button, Chip, Grid } from '@material-ui/core';
 
 import FileList from './fileList';
-import CommentList from './commentlist';
+import { CommentList } from './commentlist';
 import UserInfo from './user';
 import LikerCounter from './liker';
 import { Media } from './media';

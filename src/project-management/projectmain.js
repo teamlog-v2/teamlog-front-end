@@ -72,7 +72,7 @@ const ProjectMain = ({ match }) => {
       let url = `/api/posts/project/${projectId}`;
       const names = ['스토리보드'];
         url += `/hashtag/${names}`;
-  
+
       await fetch(url, {
         method: 'GET',
       }).then((res) => res.json()).then((res) => {
@@ -81,6 +81,7 @@ const ProjectMain = ({ match }) => {
           console.log('데이터 없음');
           return;
         }
+        console.log(res);
         setPosts(res);
         setIsPostsLoaded(true);
         if (callback) callback(res); // 포스트 결과를 한 번 더 활용해야하는 경우 매개변수로 전달
@@ -150,12 +151,6 @@ const ProjectMain = ({ match }) => {
     : (
       <>
         <CssBaseline />
-{/*   
-        <Header
-          title="도쿄 여행 프로젝트"
-          introduction="동창 친구 넷이서 떠나는 도쿄 여행"
-          sections={sections}
-        /> */}
   
         <Container maxWidth="md">
           <Container className={classes.partition} disableGutters>
