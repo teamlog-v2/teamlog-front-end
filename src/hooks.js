@@ -1,6 +1,109 @@
 import { useContext, useEffect, useState } from 'react';
 import ErrorContext from './context/error';
 
+function Publisher(url) {
+  this.url = url;
+  this.data = null;
+  this.error = null;
+  this.subscribers = [];
+  this.isLoaded = false;
+  this.isLoading = false;
+}
+
+Publisher.prototype.subscribe = function (callback) {
+  this.subscribers.push(callback);
+  if (this.isLoaded) {
+    callback(this.data);
+  }
+  this.update();
+};
+
+Publisher.prototype.unsubscribe = function (callback) {
+  const index = this.subscribers.indexOf(callback);
+  if (index !== -1) {
+    this.subscribers.splice(index, 1);
+  }
+};
+
+Publisher.prototype.publish = function () {
+  this.subscribers.forEach((callback) => {
+    callback(this.data);
+  });
+};
+
+Publisher.prototype.update = async function () {
+  if (this.isLoading) {
+    return;
+  }
+  this.isLoading = true;
+
+  let result;
+
+  try {
+    result = await fetch(this.url);
+  } catch (err) {
+    this.isLoading = false;
+    return;
+  }
+
+  switch (result.status) {
+    case 200:
+      break;
+    case 401:
+    case 403:
+    case 404:
+    default:
+      this.isLoading = false;
+      return;
+  }
+
+  try {
+    result = await result.json();
+  } catch (err) {
+    this.isLoading = false;
+    return;
+  }
+
+  this.data = result;
+  this.isLoaded = true;
+  this.publish();
+  this.isLoading = false;
+};
+
+const publisherManager = {
+  publishers: {},
+  getPublisher(url) {
+    if (!this.publishers[url]) {
+      this.publishers[url] = new Publisher(url);
+    }
+    return this.publishers[url];
+  },
+};
+
+const useSubscribeData = (url) => {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    setIsLoaded(false);
+
+    const handleUpdateData = (updatedData) => {
+      setData(updatedData);
+      setIsLoaded(true);
+    };
+
+    const publisher = publisherManager.getPublisher(url);
+
+    publisher.subscribe(handleUpdateData);
+
+    return () => {
+      publisher.unsubscribe(handleUpdateData);
+    };
+  }, [url]);
+
+  return [data, isLoaded];
+};
+
 const useFetchData = (url) => {
   const setError = useContext(ErrorContext);
 
@@ -8,6 +111,8 @@ const useFetchData = (url) => {
   const [data, setData] = useState(null);
 
   useEffect(() => {
+    let isMounted = true;
+
     (async () => {
       setIsLoaded(false);
 
@@ -16,7 +121,14 @@ const useFetchData = (url) => {
       try {
         result = await fetch(url);
       } catch (err) {
+        if (!isMounted) {
+          return;
+        }
+
         setError(err);
+        return;
+      }
+      if (!isMounted) {
         return;
       }
 
@@ -34,7 +146,14 @@ const useFetchData = (url) => {
       try {
         result = await result.json();
       } catch (err) {
+        if (!isMounted) {
+          return;
+        }
+
         setError(err);
+        return;
+      }
+      if (!isMounted) {
         return;
       }
 
@@ -43,11 +162,11 @@ const useFetchData = (url) => {
     })();
 
     return () => {
-      setIsLoaded(false);
+      isMounted = false;
     };
   }, [url]);
 
   return [data, isLoaded];
 };
 
-export { useFetchData };
+export { useFetchData, useSubscribeData };

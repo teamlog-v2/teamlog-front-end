@@ -1,13 +1,20 @@
 import React from 'react';
-import { Link, Route, useRouteMatch } from 'react-router-dom';
-import { useFetchData } from '../hooks';
+import {
+  Link,
+  Route,
+  Switch,
+  useParams,
+  useRouteMatch,
+} from 'react-router-dom';
+import { useSubscribeData } from '../hooks';
 
 // 프로젝트 페이지 헤더
 const ProjectPageHeader = () => {
   const match = useRouteMatch();
-  const { projectId } = match.params;
 
-  const [project, isProjectLoaded] = useFetchData(`/api/projects/${projectId}`);
+  const { projectId } = useParams();
+
+  const [project, isProjectLoaded] = useSubscribeData(`/api/projects/${projectId}`);
 
   if (!isProjectLoaded) {
     return '프로젝트 헤더 로딩...';
@@ -39,10 +46,11 @@ const ProjectHomePage = () => {
 
 // 프로젝트 포스트 페이지
 const ProjectPostsPage = () => {
-  const match = useRouteMatch();
-  const { projectId } = match.params;
+  const { projectId } = useParams();
 
-  const [posts, isPostsLoaded] = useFetchData(`/api/posts/project/${projectId}`);
+  const [posts, isPostsLoaded] = useSubscribeData(
+    `/api/posts/project/${projectId}`,
+  );
 
   if (!isPostsLoaded) {
     return '프로젝트 포스트 로딩...';
@@ -73,9 +81,19 @@ const ProjectPage = () => {
     <>
       <ProjectPageHeader />
       <hr />
-      <Route exact path={`${match.path}`} component={ProjectHomePage} />
-      <Route exact path={`${match.path}/posts`} component={ProjectPostsPage} />
-      <Route exact path={`${match.path}/tasks`} component={ProjectTasksPage} />
+      <Switch>
+        <Route exact path={`${match.path}`} component={ProjectHomePage} />
+        <Route
+          exact
+          path={`${match.path}/posts`}
+          component={ProjectPostsPage}
+        />
+        <Route
+          exact
+          path={`${match.path}/tasks`}
+          component={ProjectTasksPage}
+        />
+      </Switch>
     </>
   );
 };
