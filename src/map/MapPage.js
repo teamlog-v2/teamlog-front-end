@@ -5,7 +5,7 @@
 import React, { useState } from 'react';
 import GoogleMapReact from 'google-map-react';
 import useSupercluster from 'use-supercluster';
-import { useSubscribeData } from '../hooks';
+import { useSubscribeData } from '../hooks/hooks';
 import SimpleMarker from './SimpleMarker';
 import Cluster from './Cluster';
 import PostExplorer from './PostExplorer';

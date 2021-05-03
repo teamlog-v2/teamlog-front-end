@@ -3,7 +3,7 @@ import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import ProjectListContainer from './project/ProjectListContainer';
 import Project from './project-management/project';
 import MyPage from './user/MyPage';
-import { ErrorProvider } from './context/error';
+import { ErrorProvider } from './contexts/error';
 import ErrorPage from './pages/ErrorPage';
 import MapPage from './map/MapPage';
 

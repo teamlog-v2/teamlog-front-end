@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import ErrorContext from './context/error';
+import ErrorContext from '../contexts/error';
 
 function Publisher(url) {
   this.url = url;
