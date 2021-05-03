@@ -150,7 +150,7 @@ const TaskContainer = ({match}) => {
             </IconButton>
           </Box>
         </Box>
-        <TaskCreateForm addTaskInContainer={addTaskInContainer} projectId={projectId} />
+        <TaskCreateForm handleClose={handleClose} addTaskInContainer={addTaskInContainer} projectId={projectId} />
       </Dialog>
       <Grid container spacing={2}>
         <DragDropContext onDragEnd={onDragEnd}>
