@@ -1,21 +1,13 @@
-import './App.css';
 import React from 'react';
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
-// import loadable from '@loadable/component';
-// import Project from './project-management/project';
 import ProjectListContainer from './project/ProjectListContainer';
 import Project from './project-management/project';
 import MyPage from './user/MyPage';
 import { ErrorProvider } from './context/error';
-import ErrorPage from './ErrorPage';
+import ErrorPage from './pages/ErrorPage';
 import MapPage from './map/MapPage';
 
-// import FileTest from './file/filetest';
-
-function App() {
-  // const TaskContainer = loadable(() => import('./task/TaskContainer'));
-
-  // 실험차원에서 프로젝트 리스트 컴포넌트 페이지에서 시작
+const App = () => {
   return (
     <BrowserRouter>
       <ErrorProvider>
@@ -32,6 +24,6 @@ function App() {
       </ErrorProvider>
     </BrowserRouter>
   );
-}
+};
 
 export default App;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import ErrorPage from '../ErrorPage';
+import ErrorPage from '../pages/ErrorPage';
 
 const ErrorContext = React.createContext(null);
 
