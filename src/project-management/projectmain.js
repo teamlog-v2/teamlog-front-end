@@ -12,6 +12,8 @@ import Header from './header';
 import Introduction from './introduction';
 import Postlist from '../post-management/postlist';
 import HashtagChooser from '../organisms/HashtagChooser';
+import { Route } from 'react-router';
+import MyPage from '../user/MyPage';
 
 const useStyles = makeStyles((theme) => ({
     /* 반응형 스타일 */

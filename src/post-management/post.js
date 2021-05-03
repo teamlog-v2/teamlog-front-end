@@ -26,6 +26,7 @@ import UserInfo from './user';
 import LikerCounter from './liker';
 import { Media } from './media';
 import { DateInfo } from './datetime';
+import MyPage from '../user/MyPage';
 import { Comment, CommentCounter, MoreComment } from './comment';
 
 // import dao from '../../src/media/dao.png';
@@ -37,6 +38,7 @@ import { Comment, CommentCounter, MoreComment } from './comment';
 import cat1 from '../media/cat1.PNG';
 import cat2 from '../media/cat2.PNG';
 import cat3 from '../media/cat3.PNG';
+import { Route } from 'react-router';
 // import cat4 from '../../src/media/cat4.PNG';
 
 const useStyles = makeStyles((theme) => ({
@@ -247,23 +249,13 @@ export const Post = (props) => {
 
     useEffect(() => {
       setTagList(postContents.hashtags);
-
-      var slides = document.getElementsByClassName('media');
-
-      var pcDevice = 'win16|win32|win64|mac|macintel';
-
-      if (navigator.platform) {
-        if (pcDevice.indexOf(navigator.platform.toLowerCase()) < 0) {
-          // console.log('MOBILE');
-        } else {
-          // console.log('PC');
-        }
-      }
     }, []);
 
     console.log(postContents);
 
   return (
+    <>
+    <Route exact path="/users/:userId" component={MyPage} />
     <Container className={classes.root} component="main" disableGutters madWidth={maxWidth}>
       <CssBaseline />
       <Box className={classes.paper}>
@@ -348,5 +340,6 @@ export const Post = (props) => {
         </Container>
       </Box>
     </Container>
+    </>
   );
 };

@@ -9,6 +9,7 @@ import ProjectItem from './ProjectItem';
 // thumbnail: 'https://source.unsplash.com/random',
 
 const ProjectListContainer = ({ userId }) => {
+  userId = 'jduckling1024'; // 임시로 설정
   const [isLoaded, setIsLoaded] = useState(false);
   const [projects, setProjects] = useState([]);
 

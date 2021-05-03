@@ -13,15 +13,13 @@ const comment = {
     commentMentions: commentMentionsVal, // 여기에 이제 해시태그...
     };
 
-    console.log(comment);
-
-    // await fetch('http://3.15.16.150:8090/api/comments/', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(comment),
-    // }).then((res) => { console.log(res.status); });
+    await fetch('http://3.15.16.150:8090/api/comments/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(comment),
+    }).then((res) => { console.log(res.status); });
 };
 
 export const GetComment = async (postId) => {

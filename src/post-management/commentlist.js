@@ -250,7 +250,6 @@ export const CommentForm = (props) => {
       );
 
       if (filteredUser.length === 1 && !selectedUserList.includes(filteredUser[0].id)) {
-        console.log(i);
         selectedUserList.push(filteredUser[0].id);
       }
     }

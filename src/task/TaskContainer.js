@@ -13,7 +13,7 @@ import {
 import CloseIcon from '@material-ui/icons/Close';
 import TaskItem from './TaskItem';
 import TaskCreateForm from './TaskCreateForm';
-import { getTasksByProject, updateTaskStatus } from './taskService';
+import { getTasksByProject, updateTaskStatus } from './TaskService';
 
 const reorder = (list, droppableSource, droppableDestination) => {
   const result = Array.from(list);
@@ -34,7 +34,7 @@ const move = (source, destination, droppableSource, droppableDestination) => {
   return result;
 };
 
-const TaskContainer = ({match}) => {
+const TaskContainer = ({ match }) => {
   const [state, setState] = useState([[], [], [], []]);
   const [open, setOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);

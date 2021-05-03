@@ -11,7 +11,7 @@ import {
 import { TabContext, TabList, TabPanel } from '@material-ui/lab';
 import React, { useEffect, useState } from 'react';
 import ProjectListContainer from '../project/ProjectListContainer';
-import { getUser } from './userService';
+import { getUser } from './UserService';
 
 const useStyles = makeStyles((theme) => ({
   large: {
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const MyPage = () => {
+const MyPage = ({ match }) => {
   const classes = useStyles();
   const [isLoaded, setIsLoaded] = useState(false);
   const [value, setValue] = useState('1');
@@ -43,7 +43,7 @@ const MyPage = () => {
     (async () => {
       let userInfo;
       try {
-        const response = await getUser('string');
+        const response = await getUser(match.params.userId);
         userInfo = await response.json();
       } catch (err) {
         alert(err);

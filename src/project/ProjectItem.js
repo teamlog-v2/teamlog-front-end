@@ -3,7 +3,7 @@ import { Card, CardContent, CardMedia, Typography } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
 const ProjectItem = ({ project }) => (
-  <Link to="/signUp" style={{ textDecoration: 'none' }}>
+  <Link to={`/projects/${project.id}`} style={{ textDecoration: 'none' }}>
     <Card elevation={2}>
       <CardMedia
         style={{ height: 180 }}

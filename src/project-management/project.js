@@ -15,25 +15,6 @@ import Header from './header';
 import ProjectMain from './projectmain';
 // import TaskContainer from '../task/TaskContainer';
 
-// import Introduction from './introduction';
-// import Postlist from '../post-management/postlist';
-
-// const useStyles = makeStyles((theme) => ({
-//   // arrowButton: {
-//   //     zIndex: 'tooltip'
-//   // },
-//   mainGrid: {
-//     marginTop: theme.spacing(3),
-//   },
-//   partition: {
-//     marginTop: '2.5em',
-//     marginBottom: '2.5em',
-//   },
-//   subtitle: {
-//     // 글씨 크기 등 적용할 예정
-//   },
-// }));
-
 const Project = ({ match }) => {
   // const classes = useStyles();
   const [project, setProject] = useState([]);
@@ -66,49 +47,8 @@ const Project = ({ match }) => {
         <Route exact path="/projects/:id" component={ProjectMain} />
         <Route exact path="/projects/:id/task" component={TaskContainer} />
       </BrowserRouter>
-      {/* <Route exact path="/" render={() => <ProjectMain projectInfo={project} />} />
-        <Route path="/task" component={TestFile} />
-      </BrowserRouter> */}
-      {/* <Container maxWidth="md">
-        <Container className={classes.partition} disableGutters>
-          <Title title={project.name} />
-          <Introduction
-            name={project.name}
-            masterUserId={project.master_user_id}
-            createTime={project.create_time}
-            followerCount={15}
-            memberCount={60}
-          />
-        </Container>
-        <Divider light />
-        <Container className={classes.partition} disableGutters>
-          <Title title="스토리보드" />
-          <Postlist />
-        </Container>
-      </Container> */}
     </>
   );
 };
-
-// const UpwardButton = () => {
-//   const classes = useStyles();
-//   return (
-//     <Box className={classes.arrowButton}>
-//       <Fab color="primary" aria-label="add">
-//         <ArrowUpwardIcon />
-//       </Fab>
-//     </Box>
-//   );
-// };
-
-// const Title = (props) => {
-//   const { title } = props;
-
-//   return (
-//     <Box margin="0.5em">
-//       <Typography variant="h6">{title}</Typography>
-//     </Box>
-//   );
-// };
 
 export default Project;

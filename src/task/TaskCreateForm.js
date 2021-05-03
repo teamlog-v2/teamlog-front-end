@@ -12,7 +12,7 @@ import {
   FormLabel,
 } from '@material-ui/core';
 import MultiTimePicker from './MultiTimePicker';
-import { createTask } from './taskService';
+import { createTask } from './TaskService';
 
 const TaskCreateForm = ({ projectId, addTaskInContainer }) => {
   const [taskName, setTaskName] = useState('');

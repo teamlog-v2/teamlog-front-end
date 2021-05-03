@@ -10,7 +10,7 @@ import {
   Link,
 } from '@material-ui/core';
 import FaceIcon from '@material-ui/icons/Face';
-import { createUser } from './userService';
+import { createUser } from './UserService';
 
 const SignUp = () => {
   const [id, setId] = useState('');

@@ -61,7 +61,6 @@ const Content = (props) => {
   const { contents, tagList } = props;
 
   const stringSplit = contents.split(' ');
-  console.log(stringSplit);
 
   return (
     <Box marginTop="0.5em" marginBottom="0.5em" display="inline-block">
@@ -121,7 +120,6 @@ const CheckRoot = (type) => {
 
 export const Comment = (props) => {
   const { id, projectId, type, postId, writeTime, writer, commentMentions, contents, SetCommentList} = props;
-  console.log(id + " " + projectId + " " + postId);
   const classes = useStyles();
   
   const [tagList, setTagList] = useState([]);
