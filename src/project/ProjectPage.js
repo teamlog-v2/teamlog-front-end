@@ -6,7 +6,7 @@ import {
   useParams,
   useRouteMatch,
 } from 'react-router-dom';
-import { useSubscribeData } from '../hooks';
+import { useFetchData, useSubscribeData } from '../hooks';
 
 // 프로젝트 페이지 헤더
 const ProjectPageHeader = () => {
@@ -14,7 +14,7 @@ const ProjectPageHeader = () => {
 
   const { projectId } = useParams();
 
-  const [project, isProjectLoaded] = useSubscribeData(`/api/projects/${projectId}`);
+  const [project, isProjectLoaded] = useFetchData(`/api/projects/${projectId}`);
 
   if (!isProjectLoaded) {
     return '프로젝트 헤더 로딩...';

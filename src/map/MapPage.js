@@ -40,6 +40,10 @@ const MapPage = () => {
           language: 'ko',
           region: 'KR',
         }}
+        options={{
+          zoomControl: false,
+          fullscreenControl: false,
+        }}
         defaultCenter={{
           lat: 0.0,
           lng: 0.0,
