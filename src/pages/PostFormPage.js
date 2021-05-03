@@ -43,8 +43,8 @@ const PostForm = (props) => {
   const classes = useStyles();
   const [isLoaded, setIsLoaded] = useState(false);
   const [isFormLoaded, setIsFormLoaded] = useState(false);
-  const [isPostPrivate, setIsPostPrivate] = useState(false); // PUBLIC, PRIVATE
-  const [isCommentPrivate, setIsCommentPrivate] = useState(false); // PUBLIC, PRIVATE
+  const [isPostPublic, setIsPostPublic] = useState(false);
+  const [isCommentPublic, setIsCommentPublic] = useState(false);
   const [address, setAddress] = useState('');
   const [location, setLocation] = useState({});
   const contentRef = useRef(null); // contents
@@ -66,8 +66,8 @@ const PostForm = (props) => {
       projectId: id,
       contents: contentRef.current.value,
       writerId: 'string',
-      accessModifier: !isPostPrivate ? 'PUBLIC' : 'PRIVATE',
-      commentModifier: !isCommentPrivate ? 'PUBLIC' : 'PRIVATE',
+      accessModifier: isPostPublic ? 'PUBLIC' : 'PRIVATE',
+      commentModifier: isCommentPublic ? 'PUBLIC' : 'PRIVATE',
       latitude: location.latitude,
       longitude: location.longitude,
       hashtags: hashtags,
@@ -75,8 +75,9 @@ const PostForm = (props) => {
 
     formData.append('key', new Blob([JSON.stringify(data)], { type: "application/json" }));
 
+    console.log(data);
+
     setIsFormLoaded(true);
-    props.history.push(`/projects/${id}`);
     await fetch('/api/posts', {
       method: 'POST',
       body: formData,
@@ -86,14 +87,14 @@ const PostForm = (props) => {
       setIsFormLoaded(false); // 버튼 활성화
       if (res.status === 201) { // get res with http status code
         console.log('성공적으로 등록');
-        props.history(`/projects/${id}`);
+        props.history.push(`/projects/${id}`);
       } else {
         console.log('에러 감지');
       }
     }).catch((error) => { // 요청이 비정상적으로 처리
       console.log(error);
     });
-  };
+     };
 
   useEffect(() => {
     setTimeout(() => {
@@ -122,8 +123,8 @@ const PostForm = (props) => {
                         <TextField value={address} fullWidth/>
                       </Grid>
                     </Grid>
-                    <AccessModifier isPostPrivate={isPostPrivate} updateIsPostPrivate={setIsPostPrivate} />
-                    <CommentModifier isCommentPrivate={isCommentPrivate} updateIsCommentPrivate={setIsCommentPrivate} />
+                    <AccessModifier isPostPublic={isPostPublic} updateIsPostPublic={setIsPostPublic} />
+                    <CommentModifier isCommentPublic={isCommentPublic} updateIsCommentPublic={setIsCommentPublic} />
                   </Grid>
                   <Grid container item spacing={1}>
                     <AttachmentUploader files={attachedFiles} updateFiles={setAttachedFiles}/>

@@ -5,13 +5,13 @@ import {
 } from '@material-ui/core';
 import { Lock, LockOpen } from '@material-ui/icons';
 
-const CommentModifier = ({ isCommentPrivate, updateIsCommentPrivate }) => (
+const CommentModifier = ({ isCommentPublic, updateIsCommentPublic }) => (
   <Grid container item justify="flex-end">
-    {!isCommentPrivate ? (
+    {!isCommentPublic ? (
       <Grid
         item
         onClick={() => {
-          updateIsCommentPrivate(!isCommentPrivate);
+          updateIsCommentPublic(!isCommentPublic);
         }}
         style={{ cursor: 'pointer' }}
       >
@@ -30,7 +30,7 @@ const CommentModifier = ({ isCommentPrivate, updateIsCommentPrivate }) => (
       <Grid
         item
         onClick={() => {
-          updateIsCommentPrivate(!isCommentPrivate);
+          updateIsCommentPublic(!isCommentPublic);
         }}
         style={{ cursor: 'pointer' }}
       >
