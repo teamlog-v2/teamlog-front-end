@@ -5,10 +5,11 @@ import {
 import IconButton from '@material-ui/core/IconButton';
 import Create from '@material-ui/icons/Create';
 
-const Post = ({ handleSubmit }) => (
+const Post = ({ updateIsFormUploaded, handleSubmit }) => (
   <Grid container item>
     <Grid container justify="flex-end">
       <IconButton
+        disable={updateIsFormUploaded}
         color="primary"
         onClick={() => {
             handleSubmit();

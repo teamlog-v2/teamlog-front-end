@@ -38,8 +38,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const PostForm = (props) => {
+  const { id } = props.match.params;
+
   const classes = useStyles();
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isFormLoaded, setIsFormLoaded] = useState(false);
   const [isPostPrivate, setIsPostPrivate] = useState(false); // PUBLIC, PRIVATE
   const [isCommentPrivate, setIsCommentPrivate] = useState(false); // PUBLIC, PRIVATE
   const [address, setAddress] = useState('');
@@ -60,7 +63,7 @@ const PostForm = (props) => {
     })
 
     const data = {
-      projectId: 9,
+      projectId: id,
       contents: contentRef.current.value,
       writerId: 'string',
       accessModifier: !isPostPrivate ? 'PUBLIC' : 'PRIVATE',
@@ -72,14 +75,18 @@ const PostForm = (props) => {
 
     formData.append('key', new Blob([JSON.stringify(data)], { type: "application/json" }));
 
+    setIsFormLoaded(true);
+    props.history.push(`/projects/${id}`);
     await fetch('/api/posts', {
       method: 'POST',
       body: formData,
       headers: {},
     }).then((res) => { // spring으로부터 json형태의 response를 받음.
       console.log(res);
+      setIsFormLoaded(false); // 버튼 활성화
       if (res.status === 201) { // get res with http status code
         console.log('성공적으로 등록');
+        props.history(`/projects/${id}`);
       } else {
         console.log('에러 감지');
       }
@@ -181,7 +188,7 @@ const PostForm = (props) => {
                         </Grid>
                       </Grid>
                       <Grid />
-                      <PostCreator handleSubmit={handleSubmit}/>
+                      <PostCreator updateIsFormUploaded={setIsFormLoaded} handleSubmit={handleSubmit}/>
                     </Grid>
                   </Grid>
                 </Grid>

@@ -73,8 +73,6 @@ const ProjectMain = ({ match }) => {
   const [posts, setPosts] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false); // 프로젝트 전체에 대한 로드 상태
   const [isPostsLoaded, setIsPostsLoaded] = useState(false); // 게시글에 대한 로드 상태
-  const [projectHashtags, setProjectHashtags] = useState([]);
-  const [selectedTags, setSelectedTags] = useState([]);
 
   const fetchPosts = async (callback) => {
     setIsPostsLoaded(false);
@@ -88,58 +86,15 @@ const ProjectMain = ({ match }) => {
     })
       .then((res) => res.json())
       .then((res) => {
-        if (res.length === 0) return;
-        if (!res) {
-          console.log('데이터 없음');
-          return;
+        if (res.length >= 0) {
+          setPosts(res);
         }
-        console.log(res);
-        setPosts(res);
         setIsPostsLoaded(true);
         if (callback) callback(res); // 포스트 결과를 한 번 더 활용해야하는 경우 매개변수로 전달
       })
       .catch((error) => {
         console.log(error);
       });
-  };
-
-  const handleInputChange = (event) => {
-    const { value } = event.target;
-
-    fetchPosts({ keyword: value }, () => {
-      setSelectedTags([]);
-      // 해시태그 스타일 초기화
-      const tags = document.querySelectorAll('.tags');
-      tags.forEach((tag) => {
-        tag.style.backgroundColor = 'white';
-        tag.style.color = '#C16AF5';
-      });
-    });
-  };
-
-  const handleSelectChange = (event) => {
-    const { value } = event.target;
-    const newPosts = [...posts];
-    if (value === 'new') {
-      newPosts.sort((a, b) => {
-        if (a.writeTime < b.writeTime) return 1;
-        if (a.writeTime > b.writeTime) return -1;
-        return 0;
-      });
-    } else if (value === 'like') {
-      newPosts.sort((a, b) => {
-        if (a.likeCount < b.likeCount) return 1;
-        if (a.likeCount > b.likeCount) return -1;
-        return 0;
-      });
-    } else if (value === 'comment') {
-      newPosts.sort((a, b) => {
-        if (a.commentCount < b.commentCount) return 1;
-        if (a.commentCount > b.commentCount) return -1;
-        return 0;
-      });
-    }
-    setPosts(newPosts);
   };
 
   const fetchProject = () => {

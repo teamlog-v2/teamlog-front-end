@@ -6,17 +6,36 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 // import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 // import Container from '@material-ui/core/Container';
 import loadable from '@loadable/component';
+import { makeStyles } from '@material-ui/core';
 
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Link } from 'react-router-dom';
+import Fab from '@material-ui/core/Fab';
+import EditIcon from '@material-ui/icons/Edit';
 
 // import ProjectMain from './projectmain';
 // import TestFile from './testfile';
 import Header from './header';
 import ProjectMain from './projectmain';
+import PostMain from './postmain';
 // import TaskContainer from '../task/TaskContainer';
 
+const useStyles = makeStyles((theme) => ({
+  button: {
+    position: 'fixed',
+    zIndex: 999,
+    [theme.breakpoints.down('sm')]: {
+      left: '90%',
+      top: '90%',
+    },
+    [theme.breakpoints.up('md')]: {
+      left: '80%',
+      top: '90%',
+    },
+  },
+}));
+
 const Project = ({ match }) => {
-  // const classes = useStyles();
+  const classes = useStyles();
   const [project, setProject] = useState([]);
 
   useEffect(() => {
@@ -37,6 +56,14 @@ const Project = ({ match }) => {
   return (
     <>
       <CssBaseline />
+      <Link to={`/projects/${match.params.id}/new`}>
+        <Fab
+          className={classes.button}
+          color="primary"
+        >
+          <EditIcon />
+        </Fab>
+      </Link>
 
       <BrowserRouter>
         <Header
@@ -45,6 +72,7 @@ const Project = ({ match }) => {
           sections={sections}
         />
         <Route exact path="/projects/:id" component={ProjectMain} />
+        <Route exact path="/projects/:id/post" component={PostMain} />
         <Route exact path="/projects/:id/task" component={TaskContainer} />
       </BrowserRouter>
     </>
