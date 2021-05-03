@@ -1,10 +1,10 @@
 import React from 'react';
 import { Motion, spring } from 'react-motion';
 
-const SimpleMarker = (props) => {
-  const { $hover } = props;
+const Cluster = (props) => {
+  const { pointCount, $hover } = props;
 
-  const K_SIZE = 24;
+  const K_SIZE = 48;
 
   const greatPlaceStyle = {
     position: 'absolute',
@@ -13,9 +13,13 @@ const SimpleMarker = (props) => {
     left: -K_SIZE / 2,
     top: -K_SIZE / 2,
 
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+
     // border: '5px solid #f44336',
     borderRadius: K_SIZE,
-    backgroundColor: '#3f51b5',
+    backgroundColor: 'white',
     color: '#3f51b5',
     fontSize: 16,
     fontWeight: 'bold',
@@ -48,7 +52,9 @@ const SimpleMarker = (props) => {
                 },
                 ...($hover ? greatPlaceStyleHover : greatPlaceStyle),
               }}
-            />
+            >
+              {pointCount}
+            </div>
           )}
         </Motion>
       ) : (
@@ -70,7 +76,9 @@ const SimpleMarker = (props) => {
                 },
                 ...($hover ? greatPlaceStyleHover : greatPlaceStyle),
               }}
-            />
+            >
+              {pointCount}
+            </div>
           )}
         </Motion>
       )}
@@ -78,4 +86,4 @@ const SimpleMarker = (props) => {
   );
 };
 
-export default SimpleMarker;
+export default Cluster;

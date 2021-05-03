@@ -7,6 +7,7 @@ import GoogleMapReact from 'google-map-react';
 import useSupercluster from 'use-supercluster';
 import { useSubscribeData } from '../hooks';
 import SimpleMarker from './SimpleMarker';
+import Cluster from './Cluster';
 
 const MapPage = () => {
   const [posts] = useSubscribeData('api/posts/with-location');
@@ -54,6 +55,10 @@ const MapPage = () => {
             currentBounds.nw.lat,
           ]);
         }}
+        onChildClick={(w1, w2) => {
+          console.log(w1);
+          console.log(w2.postIds);
+        }}
       >
         {clusters.map((cluster) => {
           const [lng, lat] = cluster.geometry.coordinates;
@@ -63,26 +68,28 @@ const MapPage = () => {
           } = cluster.properties;
 
           if (isCluster) {
+            const postIds = supercluster
+              .getLeaves(cluster.id, Infinity)
+              .map((point) => point.properties.postId);
+
             return (
-              <h1
-                key={`cluster-${cluster.id}`}
+              <Cluster
+                key={`${postIds}`}
                 lat={lat}
                 lng={lng}
-                onClick={() => {
-                  console.log(supercluster.getLeaves(cluster.id, Infinity));
-                }}
-              >
-                {pointCount}
-              </h1>
+                pointCount={pointCount}
+                postIds={postIds}
+              />
             );
           }
 
+          const postIds = [cluster.properties.postId];
           return (
             <SimpleMarker
-              key={`post-${cluster.properties.postId}`}
+              key={`${postIds}`}
               lat={lat}
               lng={lng}
-              postId={cluster.properties.postId}
+              postIds={postIds}
             />
           );
         })}
