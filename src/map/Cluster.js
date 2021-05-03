@@ -21,7 +21,7 @@ const Cluster = (props) => {
     borderRadius: K_SIZE,
     backgroundColor: 'white',
     color: '#3f51b5',
-    fontSize: 16,
+    fontSize: 32,
     fontWeight: 'bold',
   };
 
@@ -35,9 +35,9 @@ const Cluster = (props) => {
     <>
       {!$hover ? (
         <Motion
-          defaultStyle={{ scale: 2 }}
+          defaultStyle={{ scale: 1 }}
           style={{
-            scale: spring(1, {
+            scale: spring(0.8, {
               stiffness: 320,
               damping: 8,
               precision: 0.001,
@@ -59,9 +59,9 @@ const Cluster = (props) => {
         </Motion>
       ) : (
         <Motion
-          defaultStyle={{ scale: 1 }}
+          defaultStyle={{ scale: 0.8 }}
           style={{
-            scale: spring(2, {
+            scale: spring(1, {
               stiffness: 320,
               damping: 8,
               precision: 0.001,
