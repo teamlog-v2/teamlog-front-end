@@ -81,18 +81,18 @@ const publisherManager = {
 };
 
 const useSubscribeData = (url) => {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [data, setData] = useState(null);
+  const publisher = publisherManager.getPublisher(url);
+
+  const [isLoaded, setIsLoaded] = useState(publisher.isLoaded);
+  const [data, setData] = useState(publisher.data);
 
   useEffect(() => {
-    setIsLoaded(false);
+    setIsLoaded(publisher.isLoaded);
 
     const handleUpdateData = (updatedData) => {
       setData(updatedData);
       setIsLoaded(true);
     };
-
-    const publisher = publisherManager.getPublisher(url);
 
     publisher.subscribe(handleUpdateData);
 
