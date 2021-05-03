@@ -304,6 +304,7 @@ export const CommentForm = (props) => {
               fullWidth
               inputRef={inputRef}
               onChange={onChange}
+              value={state.userInput}
               onSelect={onSelect}
               onKeyDown={onKeyDown}
               value={state.userInput}
@@ -319,6 +320,7 @@ export const CommentForm = (props) => {
               onClick = { async () => {
                 await CreateComment(parentCommentId, 'string', postId, inputRef.current.value, setSelectedUser(inputRef.current.value));
                 setCommentList();
+                setState({...state, userInput: ""});
               }}
             >
               작성

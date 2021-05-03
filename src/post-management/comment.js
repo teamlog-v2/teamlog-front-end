@@ -1,5 +1,5 @@
 import React, { useEffect, useState, Fragment, useRef } from 'react';
-import { Container, MenuItem, MenuList, Box, Avatar } from '@material-ui/core';
+import { Container, MenuItem, MenuList, Box, Avatar, Chip, Grid } from '@material-ui/core';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import {
   makeStyles,
@@ -63,15 +63,23 @@ const Content = (props) => {
   const stringSplit = contents.split(' ');
 
   return (
-    <Box marginTop="0.5em" marginBottom="0.5em" display="inline-block">
+    <Grid container direction="row" spacing={1}>
       {stringSplit ? stringSplit.map((item) => {
         if(item.charAt(0) === '@' && tagList.includes(item.split('@')[1])){
-          return <UserTag userId = {item.split('@')[1]} />
-        }
-        return <Box display="inline-block"> {item} </Box>
+          return (<Grid item>
+                    <Chip
+                      className="tags"
+                      label={item.split('@')[1]}
+                      // variant="outlined"
+                      size="small"
+                      color="primary"
+                    />
+                  </Grid>);
+        } 
+        return <Box display="inline-block"> {`${item}`} </Box>
       }) : []
       }
-    </Box>
+    </Grid>
   );
 };
 

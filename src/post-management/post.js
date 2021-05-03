@@ -28,18 +28,7 @@ import { Media } from './media';
 import { DateInfo } from './datetime';
 import MyPage from '../user/MyPage';
 import { Comment, CommentCounter, MoreComment } from './comment';
-
-// import dao from '../../src/media/dao.png';
-// import ogu from '../../public/media/ogu.PNG';;
-
-// import cat from '../../src/media/cat.mp4';
-// import piano from '../../src/media/piano.mp4';
-
-import cat1 from '../media/cat1.PNG';
-import cat2 from '../media/cat2.PNG';
-import cat3 from '../media/cat3.PNG';
 import { Route } from 'react-router';
-// import cat4 from '../../src/media/cat4.PNG';
 
 const useStyles = makeStyles((theme) => ({
   root: {
