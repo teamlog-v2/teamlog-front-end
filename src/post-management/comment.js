@@ -76,7 +76,7 @@ const Content = (props) => {
                     />
                   </Grid>);
         } 
-        return <Box display="inline-block"> {`${item}`} </Box>
+        return <Box display="inline-block"> {`${item}`}&nbsp; </Box>
       }) : []
       }
     </Grid>
@@ -127,7 +127,7 @@ const CheckRoot = (type) => {
 };
 
 export const Comment = (props) => {
-  const { id, projectId, type, postId, writeTime, writer, commentMentions, contents, SetCommentList} = props;
+  const { id, projectId, type, postId, writeTime, writer, commentMentions, contents, setReplyOption} = props;
   const classes = useStyles();
   
   const [tagList, setTagList] = useState([]);
@@ -153,11 +153,7 @@ export const Comment = (props) => {
           <Box
             className={classes.icon}
             onClick={() => {
-              if (formVisibility === 'none'){
-                setFormVisibility('block');
-              } else{
-                setFormVisibility('none')
-              } 
+              setReplyOption(id, writer.id); 
             }}
           >
             <ReplyIcon color="action" />

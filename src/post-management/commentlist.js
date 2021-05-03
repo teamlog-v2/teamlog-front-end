@@ -50,17 +50,37 @@ const useStyles = makeStyles(() => ({
     zIndex: '500',
     overflow: 'auto',
   },
+  replyTarget: {
+    marginLeft: '0.25em',
+    padding: '0.25em'
+  }
 }));
 
 export const CommentList = ({ projectId, postId }) => {
+  const classes = useStyles();
   const [commentList, setCommentList] = useState([]);
+  const [parentReplyInfo, setParentReplyInfo] = useState([]);
 
   const SetCommentList = useCallback(async() => {
     setCommentList(await GetComment(postId));
   });
 
+  const SetReplyOption = useCallback(async(id, userId) => {
+    setParentReplyInfo({
+      parentId: id,
+      parentReplyUserId: userId,
+      visibility: 'block',
+    });
+  });
+  
+
   useEffect(async () => {   
     setCommentList(await GetComment(postId));
+    setParentReplyInfo({
+      parentId: null,
+      parentReplyUserId: null,
+      visibility: 'none',
+    });
   }, []);
 
   return (
@@ -77,6 +97,7 @@ export const CommentList = ({ projectId, postId }) => {
               commentMentions={item.commentMentions}
               postId={postId}
               writeTime={item.writeTime}
+              setReplyOption = {SetReplyOption}
               type="parent"
             />
             {
@@ -89,7 +110,6 @@ export const CommentList = ({ projectId, postId }) => {
                 commentMentions={childItem.commentMentions}
                 postId={postId}
                 writeTime={childItem.writeTime}
-                setCommentList = {SetCommentList}
                 type="child"
               />
                 );
@@ -97,8 +117,12 @@ export const CommentList = ({ projectId, postId }) => {
             }
           </>);
 }) : []}
+        <Container disableGutters>
+          <Box className={classes.replyTarget} display={parentReplyInfo.visibility}>{parentReplyInfo.parentReplyUserId}님의 댓글에 답글을 작성 중입니다. . .
+          </Box>
+        </Container>
         <CommentForm
-            parentCommentId={null}
+            parentCommentId={parentReplyInfo.parentId}
             projectId={projectId}
             postId={postId}
             setCommentList = {SetCommentList}
@@ -318,7 +342,7 @@ export const CommentForm = (props) => {
               variant="contained"
               color="primary"
               onClick = { async () => {
-                await CreateComment(parentCommentId, 'string', postId, inputRef.current.value, setSelectedUser(inputRef.current.value));
+                await CreateComment(parentCommentId, 'jduckling1024', postId, inputRef.current.value, setSelectedUser(inputRef.current.value));
                 setCommentList();
                 setState({...state, userInput: ""});
               }}

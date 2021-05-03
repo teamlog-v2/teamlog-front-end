@@ -65,7 +65,7 @@ const PostForm = (props) => {
     const data = {
       projectId: id,
       contents: contentRef.current.value,
-      writerId: 'string',
+      writerId: 'jduckling1024',
       accessModifier: !isPostPrivate ? 'PUBLIC' : 'PRIVATE',
       commentModifier: !isCommentPrivate ? 'PUBLIC' : 'PRIVATE',
       latitude: location.latitude,

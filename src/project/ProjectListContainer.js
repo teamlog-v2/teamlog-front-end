@@ -24,6 +24,7 @@ const ProjectListContainer = ({ userId }) => {
           method: 'Get',
           headers: { 'Content-Type': 'application/json' },
         });
+        console.log(response.json());
         result = await response.json();
       } catch (error) {
         setIsLoaded(false);

@@ -240,8 +240,6 @@ export const Post = (props) => {
       setTagList(postContents.hashtags);
     }, []);
 
-    console.log(postContents);
-
   return (
     <>
     <Route exact path="/users/:userId" component={MyPage} />
