@@ -1,6 +1,6 @@
 import { IconButton } from '@material-ui/core';
 import { Close, NavigateBefore, NavigateNext } from '@material-ui/icons';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Motion, spring } from 'react-motion';
 import { Link } from 'react-router-dom';
 import { Post } from '../post-management/post';
@@ -8,6 +8,7 @@ import { Post } from '../post-management/post';
 const PostExplorer = ({ posts, postIds, setSelectedPostIds }) => {
   const [index, setIndex] = useState(0);
   const [prevPostIds] = useState(postIds);
+  const ref = useRef(null);
 
   if (prevPostIds !== postIds) {
     setSelectedPostIds(null);
@@ -69,6 +70,7 @@ const PostExplorer = ({ posts, postIds, setSelectedPostIds }) => {
           </div>
 
           <div
+            ref={ref}
             style={{
               height: '100%',
               overflow: 'auto',
@@ -91,7 +93,8 @@ const PostExplorer = ({ posts, postIds, setSelectedPostIds }) => {
               >
                 <div
                   style={{
-                    width: '900px',
+                    width: '80vw',
+                    maxWidth: '900px',
                   }}
                 >
                   <Post maxWidth="lg" postContents={currentPost} />
@@ -113,6 +116,7 @@ const PostExplorer = ({ posts, postIds, setSelectedPostIds }) => {
               <IconButton
                 disabled={index === 0}
                 onClick={() => {
+                  ref.current.scrollTo(0, 0);
                   setIndex(index - 1);
                 }}
               >
@@ -122,6 +126,7 @@ const PostExplorer = ({ posts, postIds, setSelectedPostIds }) => {
               <IconButton
                 disabled={index === postIds.length - 1}
                 onClick={() => {
+                  ref.current.scrollTo(0, 0);
                   setIndex(index + 1);
                 }}
               >

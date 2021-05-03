@@ -76,7 +76,7 @@ const MapPage = () => {
             lat: 36.119485,
             lng: 128.3445734,
           }}
-          defaultZoom={3}
+          defaultZoom={4}
           hoverDistance={20}
           onChange={({ zoom: curruntZoom, bounds: currentBounds }) => {
             setZoom(curruntZoom);
