@@ -6,6 +6,8 @@ import { Switch, Route, Redirect, BrowserRouter } from 'react-router-dom';
 import ProjectListContainer from './project/ProjectListContainer';
 import Project from './project-management/project';
 import MyPage from './user/MyPage';
+import { ErrorProvider } from './context/error';
+import ErrorPage from './ErrorPage';
 
 // import FileTest from './file/filetest';
 
@@ -16,13 +18,18 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Switch>
-          <Redirect exact path="/" to="/project" />
-          {/* <Route path="/task" component={TaskContainer} /> */}
-          <Route path="/project" component={ProjectListContainer} />
-          <Route exact path="/projects/:id" component={Project} />
-          <Route exact path="/users/:userId" component={MyPage} />
-        </Switch>
+        <ErrorProvider>
+          <Switch>
+            <Redirect exact path="/" to="/project" />
+            {/* <Route path="/task" component={TaskContainer} /> */}
+            <Route path="/project" component={ProjectListContainer} />
+            <Route exact path="/projects/:id" component={Project} />
+            <Route exact path="/users/:userId" component={MyPage} />
+            <Route>
+              <ErrorPage error="404" />
+            </Route>
+          </Switch>
+        </ErrorProvider>
       </BrowserRouter>
     </div>
   );

@@ -1,3 +1,6 @@
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable react/jsx-props-no-spreading */
+
 import React from 'react';
 import { Paper, Typography } from '@material-ui/core';
 import { Draggable } from 'react-beautiful-dnd';
