@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, CardContent, CardMedia, Typography } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import { ManufactureDate } from '../post-management/datetime';
 
 const ProjectItem = ({ project }) => (
   <Link to={`/projects/${project.id}`} style={{ textDecoration: 'none' }}>
@@ -17,8 +18,8 @@ const ProjectItem = ({ project }) => (
           {project.postCount} 개의 게시물
         </Typography>
         <Typography variant="body2" color="textSecondary">
-          마지막 업데이트&nbsp;
-          {project.updateTime}
+          마지막 업데이트&nbsp;·&nbsp;
+          {ManufactureDate(project.updateTime)}
         </Typography>
       </CardContent>
     </Card>
