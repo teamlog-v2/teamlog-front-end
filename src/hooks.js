@@ -42,6 +42,7 @@ Publisher.prototype.update = async function () {
   try {
     result = await fetch(this.url);
   } catch (err) {
+    this.error = err;
     this.isLoading = false;
     return;
   }
@@ -53,6 +54,7 @@ Publisher.prototype.update = async function () {
     case 403:
     case 404:
     default:
+      this.error = result.status;
       this.isLoading = false;
       return;
   }
@@ -60,10 +62,12 @@ Publisher.prototype.update = async function () {
   try {
     result = await result.json();
   } catch (err) {
+    this.error = err;
     this.isLoading = false;
     return;
   }
 
+  this.error = null;
   this.data = result;
   this.isLoaded = true;
   this.publish();
@@ -89,8 +93,8 @@ const useSubscribeData = (url) => {
   useEffect(() => {
     setIsLoaded(publisher.isLoaded);
 
-    const handleUpdateData = (updatedData) => {
-      setData(updatedData);
+    const handleUpdateData = (currentData) => {
+      setData(currentData);
       setIsLoaded(true);
     };
 
