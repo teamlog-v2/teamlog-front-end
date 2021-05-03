@@ -1,2 +1,0 @@
-# Teamlog-client
-Teamlog-client
