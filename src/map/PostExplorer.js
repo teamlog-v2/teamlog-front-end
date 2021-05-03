@@ -3,7 +3,7 @@ import { Close, NavigateBefore, NavigateNext } from '@material-ui/icons';
 import React, { useState } from 'react';
 import { Motion, spring } from 'react-motion';
 import { Link } from 'react-router-dom';
-// import { Post } from '../post-management/post';
+import { Post } from '../post-management/post';
 
 const PostExplorer = ({ posts, postIds, setSelectedPostIds }) => {
   const [index, setIndex] = useState(0);
@@ -36,7 +36,7 @@ const PostExplorer = ({ posts, postIds, setSelectedPostIds }) => {
             transform: `translate3D(0,0,0) scale(${scale}, ${scale})`,
             display: 'flex',
             flexDirection: 'column',
-            height: 360,
+            height: '90vh',
           }}
         >
           <div
@@ -89,41 +89,12 @@ const PostExplorer = ({ posts, postIds, setSelectedPostIds }) => {
                   backgroundColor: '#FFFFFF',
                 }}
               >
-                {/* <Post maxWidth="md" postContents={currentPost} /> */}
-                <div>
-                  Content
-                  <br />
-                  ContententifneContent
-                  <br />
-                  ContententifneContent
-                  <br />
-                  <br />
-                  ContententifneContent ContententifneContent
-                  <br />
-                  ContententifneContent
-                  <br />
-                  <br />
-                  ContententifneContent
-                  <br />
-                  ContententifneContent
-                  <br />
-                  ContententifneContent
-                  <br />
-                  <br />
-                  ContententifneContent
-                  <br />
-                  <br />
-                  ContententifneContent Content
-                  <br />
-                  <br />
-                  ContententifneContent
-                  <br />
-                  ContententifneContent Content
-                  <br />
-                  ContententifneContent
-                  <br />
-                  ContententifneContent
-                  <br />
+                <div
+                  style={{
+                    width: '900px',
+                  }}
+                >
+                  <Post maxWidth="lg" postContents={currentPost} />
                 </div>
               </div>
             </div>

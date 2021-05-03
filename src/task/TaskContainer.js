@@ -16,7 +16,7 @@ import {
 import CloseIcon from '@material-ui/icons/Close';
 import TaskItem from './TaskItem';
 import TaskCreateForm from './TaskCreateForm';
-import { getTasksByProject, updateTaskStatus } from './TaskService';
+import { getTasksByProject, updateTaskStatus } from './taskService';
 
 const reorder = (list, droppableSource, droppableDestination) => {
   const result = Array.from(list);
@@ -153,7 +153,11 @@ const TaskContainer = ({ match }) => {
             </IconButton>
           </Box>
         </Box>
-        <TaskCreateForm handleClose={handleClose} addTaskInContainer={addTaskInContainer} projectId={projectId} />
+        <TaskCreateForm
+          handleClose={handleClose}
+          addTaskInContainer={addTaskInContainer}
+          projectId={projectId}
+        />
       </Dialog>
       <Grid container spacing={2}>
         <DragDropContext onDragEnd={onDragEnd}>
