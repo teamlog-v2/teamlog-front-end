@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box } from '@material-ui/core';
+import { Box, Chip } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -24,15 +24,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const Tag = (props) => {
-  const classes = useStyles();
-  const { name } = props;
-  return (
-    <Box className={classes.tag} display="inline-block">
-      # {name}
-    </Box>
-  );
-};
+// export const Tag = (props) => {
+//   const classes = useStyles();
+//   const { name } = props;
+  
+// };
 
 export const UserTag = (props) => {
   const classes = useStyles();

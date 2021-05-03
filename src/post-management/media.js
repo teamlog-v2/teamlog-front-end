@@ -13,39 +13,43 @@ const useStyles = makeStyles(() => ({
     left: '50%',
     transform: 'translate(-50%, -50%)',
     objectFit: 'contain',
-    backgroundColor: 'pink',
-    color: 'white'
   },
 }));
 
-export const Media = (props) => {
-  const { content, frameWidth, frameHeight } = props;
-
-  if(content.type === 'IMAGE'){
-    return (
-      <ImageContent content={content} />
-    );
-    
-  }else if(content.type === 'VIDEO'){
-    return (
-      <VideoContent content={content} />
-    );
+export const Media = ({ file }) => {
+  // const { content, frameWidth, frameHeight } = props;
+  const { contentType, fileName, fileDownloadUri } = file;
+  // 확장자 판별
+  if (contentType.includes('video')) {
+    return <Video file={file} width="100%"/>; //
+  } else if (contentType.includes('image')) {
+    return <ImageContent file={file}/>;
+    // 조건 더 필요하긴 하겠지만...
   }
 };
 
-const ImageContent = (props) => {
-  const { content } = props;
+const ImageContent = ({ file }) => {
+  const { fileName, fileDownloadUri } = file;
   const classes = useStyles();
 
   const image = new Image();
-  image.src = content.path.toString();
+  image.src = fileDownloadUri;
 
-  return(
-       <img src = {process.env.PUBLIC_URL + '/media' + content.path}  height='100%' objectFit='contain'/> 
-  );
+  if (image.width >= image.height) {
+    return (
+      <Box width="100%" className={classes.align}>
+        <img src={fileDownloadUri} width="100%" />
+      </Box>
+    );
+  }
+    return (
+      <Box height="100%" className={classes.align}>
+        <img src={fileDownloadUri} height="100%" />
+      </Box>
+    );
 };
 
-const VideoContent = (props) => {
+const Video = (props) => {
   const { content, width, height } = props;
   const classes = useStyles();
 
@@ -56,7 +60,7 @@ const VideoContent = (props) => {
   return (
     <Box>
       <video className={classes.align} controls>
-        <source src={content.path}></source>
+        <source src={content}></source>
       </video>
     </Box>
   );

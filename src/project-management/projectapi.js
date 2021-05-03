@@ -6,5 +6,5 @@ export const getProjectMembers = async (projectId) => {
 };
 
 export const getProject = async (projectId) => {
-    console.log(projectId);
+    alert(projectId);
 };

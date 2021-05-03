@@ -52,16 +52,14 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const CommentList = ({ projectId, postId }) => {
+export const CommentList = ({ projectId, postId }) => {
   const [commentList, setCommentList] = useState([]);
 
   const SetCommentList = useCallback(async() => {
     setCommentList(await GetComment(postId));
-  })
+  });
 
   useEffect(async () => {   
-    // fetch(`http://3.15.16.150:8090/api/comments/${postId}`)
-    //   .then((res) => res.json()).then((info) => setCommentList(info));
     setCommentList(await GetComment(postId));
   }, []);
 
@@ -73,6 +71,7 @@ const CommentList = ({ projectId, postId }) => {
           return (<>
             <Comment
               id={item.id}
+              projectId={projectId}
               contents={item.contents}
               writer={item.writer}
               commentMentions={item.commentMentions}
@@ -90,30 +89,29 @@ const CommentList = ({ projectId, postId }) => {
                 commentMentions={childItem.commentMentions}
                 postId={postId}
                 writeTime={childItem.writeTime}
+                setCommentList = {SetCommentList}
                 type="child"
               />
                 );
-                
               }) : []
             }
           </>);
-          
 }) : []}
         <CommentForm
             parentCommentId={null}
             projectId={projectId}
             postId={postId}
             setCommentList = {SetCommentList}
-          />
+        />
     </>
   );
 };
 
 //////////
 
-const CommentForm = (props) => {
+export const CommentForm = (props) => {
   const classes = useStyles();
-  const { /* options, */ projectid, postId, projectId, parentCommentId, setCommentList } = props;
+  const { /* options, */ postId, projectId, parentCommentId, setCommentList } = props;
   const [options, setOptions] = useState([]);
 
   useEffect(async () => {
@@ -135,7 +133,6 @@ const CommentForm = (props) => {
     ? (document.body.style.overflow = 'hidden')
     : (document.body.style.overflow = 'unset');
     
-
   const onKeyDown = (e) => {
     // 위 화살표 or 아래 화살표
     if ((state.showOptions && e.keyCode === 38) || e.keyCode === 40) {
@@ -170,6 +167,7 @@ const CommentForm = (props) => {
       state.tagStartIndex > -1 &&
       userInput.charAt(state.tagStartIndex) == '@'
     ) {
+
       const splitName = userInput.substring(
         state.tagStartIndex + 1,
         inputRef.current.selectionStart,
@@ -252,7 +250,6 @@ const CommentForm = (props) => {
       );
 
       if (filteredUser.length === 1 && !selectedUserList.includes(filteredUser[0].id)) {
-        console.log(i);
         selectedUserList.push(filteredUser[0].id);
       }
     }
@@ -391,6 +388,3 @@ const FriendList = (props) => {
     </Container>
   );
 };
-
-
-export default CommentList;

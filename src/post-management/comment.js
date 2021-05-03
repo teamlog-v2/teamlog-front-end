@@ -22,7 +22,7 @@ import PropTypes, { string } from 'prop-types';
 import UserInfo from './user';
 import { DateInfo } from './datetime';
 import { UserTag } from './tag';
-// import CommentForm from './commentform'
+import { CommentForm } from './commentlist'
 
 const useStyles = makeStyles(() => ({
   more: {
@@ -61,7 +61,6 @@ const Content = (props) => {
   const { contents, tagList } = props;
 
   const stringSplit = contents.split(' ');
-  console.log(stringSplit);
 
   return (
     <Box marginTop="0.5em" marginBottom="0.5em" display="inline-block">
@@ -120,18 +119,16 @@ const CheckRoot = (type) => {
 };
 
 export const Comment = (props) => {
-  const { id, type ,postId, writeTime, writer, commentMentions, contents} = props;
+  const { id, projectId, type, postId, writeTime, writer, commentMentions, contents, SetCommentList} = props;
   const classes = useStyles();
   
   const [tagList, setTagList] = useState([]);
-  const [formVisibility, setVisibility] = useState('none');
+  const [formVisibility, setFormVisibility] = useState('none');
   
-
   useEffect(() => {
     setTagList(commentMentions);
   }, []);
 
-  
   const commentStyle = CheckRoot(type);
 
   return (
@@ -148,11 +145,11 @@ export const Comment = (props) => {
           <Box
             className={classes.icon}
             onClick={() => {
-              if (formVisibility === 'none') {
-                setVisibility('block');
-              } else {
-                setVisibility('none');
-              }
+              if (formVisibility === 'none'){
+                setFormVisibility('block');
+              } else{
+                setFormVisibility('none')
+              } 
             }}
           >
             <ReplyIcon color="action" />
@@ -165,8 +162,14 @@ export const Comment = (props) => {
         </Box>
       </Box>
 
-      <Box display={formVisibility}>
-      </Box>
+      {/* <Box display={formVisibility}>
+        <CommentForm
+            parentCommentId={id}
+            projectId={projectId}
+            postId={postId}
+            setCommentList = {SetCommentList}
+        />
+      </Box> */}
     </Box>
   );
 };
