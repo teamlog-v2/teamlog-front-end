@@ -5,6 +5,7 @@ export const CreateComment = async (
     contentsVal,
     commentMentionsVal,
     ) => {
+    console.log(commentMentionsVal);
 const comment = {
     parentCommentId: parentCommentIdVal,
     writerId: writerIdVal, // 이미 알고있어야 하는 아이디

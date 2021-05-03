@@ -1,20 +1,8 @@
 import React from 'react';
-import { Card, CardContent, CardMedia, makeStyles, Typography } from '@material-ui/core';
-import { getProject } from '../project-management/projectapi';
-import { Link } from 'react-router-dom';
+import { Card, CardContent, CardMedia, Typography } from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    cursor: 'pointer',
-  },
-}));
-
-const ProjectItem = (props) => {
-  const classes = useStyles();
-  
-  return(
-    <Link to = {`projects/${props.project.id}`}>
-    <Card elevation={2} className={classes.root}>
+const ProjectItem = (props) => (
+  <Card elevation={2}>
     <CardMedia style={{ height: 180 }} image={props.project.thumbnail} />
     <CardContent>
       <Typography gutterBottom variant="h6">
@@ -28,8 +16,6 @@ const ProjectItem = (props) => {
       </Typography>
     </CardContent>
   </Card>
-  </Link>
-  );
-};
+    );
 
 export default ProjectItem;

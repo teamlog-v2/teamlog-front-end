@@ -24,6 +24,8 @@ const UserImage = (props) => {
 
   const { imgPath } = props;
 
+  // const src = `${process.env.PUBLIC_URL} /media ${imgPath}`;
+
   return <Avatar className={classes.small} src={`${process.env.PUBLIC_URL}/media${imgPath}`} />;
 };
 
@@ -40,11 +42,13 @@ const UserId = (props) => {
 const UserInfo = (props) => {
   const classes = useStyles();
   const { userId, imgWidth, imgHeight, imgPath, fontSize } = props;
+
   return (
     <Box display="inline-block" className={classes.user}>
       <UserImage imgWidth={imgWidth} imgHeight={imgHeight} imgPath={imgPath} />
       <UserId userId={userId} fontSize={fontSize} />
     </Box>
+    // 나는 정보만 줄테니 css는 네가 알아서 하든가... (이런 의도로 작성하고 싶은데...)
   );
 };
 
