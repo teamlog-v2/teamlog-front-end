@@ -1,5 +1,5 @@
 import { useMediaQuery } from 'react-responsive';
-import Carousel from 'react-material-ui-carousel';
+// import Carousel from 'react-material-ui-carousel';
 // import './carousel-theme.css';
 // import './carousel.css';
 import RoomIcon from '@material-ui/icons/Room';
@@ -19,6 +19,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { AmpStories, Block, Menu } from '@material-ui/icons';
 import { Button, Chip, Grid } from '@material-ui/core';
+import { Carousel } from 'react-responsive-carousel';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 import FileList from './fileList';
 import { CommentList } from './commentlist';
@@ -217,12 +219,12 @@ const MediaList = ({ media }) => {
   let size = isPc ? '60em' : isTablet ? '45em' : '30em';  
   return (
     <Box id="mediaBox" textAlign="center">
-      <Carousel autoPlay={false} animation="slide" cycleNavigation={false}>
-        {
-          media.map((file) => ( <Box className={classes.media} height={size}>
-            <Media file={file} />
-            </Box>))
-          }
+      <Carousel autoPlay={false} useKeyboardArrows>
+      {media.map((item, i) => (
+        <Box className={classes.media} height={size}>
+          <Media key={i} file={item} />
+        </Box>
+      ))}
       </Carousel>
     </Box>
   );
