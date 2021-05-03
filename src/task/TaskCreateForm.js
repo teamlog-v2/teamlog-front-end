@@ -46,10 +46,10 @@ const TaskCreateForm = ({ projectId, addTaskInContainer, handleClose }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    let performerId = selectedUsers.map(({ id }) => id)    
+    let performersId = selectedUsers.map(({ id }) => id);
     const data = {
       taskName,
-      performerId,
+      performersId,
       deadline,
       status,
     };
