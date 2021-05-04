@@ -18,7 +18,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { AmpStories, Block, Menu, FiberManualRecordRounded } from '@material-ui/icons';
-import { Button, Chip, Grid } from '@material-ui/core';
+import { Avatar, Button, Chip, Grid } from '@material-ui/core';
 
 import FileList from './fileList';
 import { CommentList } from './commentlist';
