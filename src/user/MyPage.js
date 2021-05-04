@@ -11,7 +11,7 @@ import {
 import { TabContext, TabList, TabPanel } from '@material-ui/lab';
 import React, { useEffect, useState } from 'react';
 import ProjectListContainer from '../project/ProjectListContainer';
-import { getUser } from './userService';
+import { getUser } from './UserService';
 
 const useStyles = makeStyles((theme) => ({
   large: {

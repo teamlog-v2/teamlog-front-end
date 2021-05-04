@@ -102,7 +102,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '0.5em',
     marginBottom: '0.5em',
     textAlign: 'left',
-    marginLeft: '0.25em'
+    marginLeft: '0.25em',
   },
   files: {
     marginTop: '0.5em',
@@ -228,7 +228,7 @@ const MediaList = ({ media }) => {
     query: '(max-width:767px)',
   });
 
-  let size = isPc ? '60em' : isTablet ? '45em' : '30em';  
+  let size = isPc ? '60em' : isTablet ? '45em' : '30em';
   return (
     <>
       <Grid container direction="row-reverse">
@@ -239,24 +239,24 @@ const MediaList = ({ media }) => {
       </Grid>
       <Box id="mediaBox" textAlign="center">
         <Carousel
-        onChange={(index, active) => {
-          setCurIndex(index + 1);
-        }}
-        autoPlay={false}
-        animation='slide'
-        cycleNavigation={false}
-        indicatorIconButtonProps={{
-        }}
-        activeIndicatorIconButtonProps={{
-            style: {
-                color: '#C16AF5' // 2
-            }
-        }}>
-        {media.map((item, i) => (
-          <Box className={classes.media} height={size}>
-            <Media key={i} file={item} />
-          </Box>
-        ))}
+          onChange={(index, active) => {
+            setCurIndex(index + 1);
+          }}
+          autoPlay={false}
+          animation='slide'
+          cycleNavigation={false}
+          indicatorIconButtonProps={{
+          }}
+          activeIndicatorIconButtonProps={{
+              style: {
+                  color: '#C16AF5' // 2
+              }
+          }}>
+          {media.map((item, i) => (
+            <Box className={classes.media} height={size}>
+              <Media key={i} file={item} />
+            </Box>
+          ))}
         </Carousel>
       </Box>
     </>
@@ -264,61 +264,67 @@ const MediaList = ({ media }) => {
 };
 
 export const Post = (props) => {
-    const { postContents, maxWidth } = props;
+  const { postContents, maxWidth } = props;
 
-    const [tagList, setTagList] = useState([]);
-    const [commentList, setCommentList] = useState([]);
+  const [tagList, setTagList] = useState([]);
+  const [commentList, setCommentList] = useState([]);
 
-    const classes = useStyles();
+  const classes = useStyles();
 
-    useEffect(() => {
-      setTagList(postContents.hashtags);
-    }, []);
+  useEffect(() => {
+    setTagList(postContents.hashtags);
+  }, []);
 
-    console.log(postContents);
+  console.log(postContents);
 
   return (
     <>
-    <Route exact path="/users/:userId" component={MyPage} />
-    <Container className={classes.root} component="main" disableGutters madWidth={maxWidth}>
-      <CssBaseline />
-      <Box className={classes.paper}>
-        <Container disableGutters>
-          <Box bgcolor="rgb(245, 212, 255)">
-            <Box className={classes.header}>
-              <Box display="inline-block" marginLeft="0.25em">
-                <Box>
-                  <UserInfo
-                    userId={postContents.writer.name}
-                    imgWidth="30px"
-                    imgHeight="30px"
-                    imgPath={postContents.writer.profileImgPath}
-                    fontSize="16px"
-                  />
+      <Route exact path="/users/:userId" component={MyPage} />
+      <Container
+        className={classes.root}
+        component="main"
+        disableGutters
+        madWidth={maxWidth}
+      >
+        <CssBaseline />
+        <Box className={classes.paper}>
+          <Container disableGutters>
+            <Box bgcolor="rgb(245, 212, 255)">
+              <Box className={classes.header}>
+                <Box display="inline-block" marginLeft="0.25em">
+                  <Box>
+                    <UserInfo
+                      userId={postContents.writer.name}
+                      imgWidth="30px"
+                      imgHeight="30px"
+                      imgPath={postContents.writer.profileImgPath}
+                      fontSize="16px"
+                    />
+                  </Box>
+                  <Box>
+                    <DateInfo dateTime={postContents.writeTime} fs="12px" />
+                  </Box>
                 </Box>
-                <Box>
-                  <DateInfo dateTime = {postContents.writeTime} fs="12px" />
-                </Box>
-              </Box>
 
-              <Box className={classes.menu}>
-                <PostMenu />
+                <Box className={classes.menu}>
+                  <PostMenu />
+                </Box>
               </Box>
             </Box>
-          </Box>
-        </Container>
-        <Container disableGutters>
-          <Box className={classes.location}>
-            <RoomIcon />
-            {postContents.latitude}
-          </Box>
-        </Container>
-        <Grid className={classes.children}>
-          <Grid container direction="row" spacing={1}>
-            {postContents.hashtags
-              ? postContents.hashtags.map((item, index) => {
-                  return <Grid item>
-                          <Chip
+          </Container>
+          <Container disableGutters>
+            <Box className={classes.location}>
+              <RoomIcon />
+              {postContents.latitude}
+            </Box>
+          </Container>
+          <Grid className={classes.children}>
+            <Grid container direction="row" spacing={1}>
+              {postContents.hashtags
+                ? postContents.hashtags.map((item, index) => {
+                    return (
+                      <Grid item>
+                        <Chip
                           className="tags"
                           key={index}
                           label={`#${item}`}
@@ -329,41 +335,116 @@ export const Post = (props) => {
                             // handleToggle(index);
                           }}
                           color="primary"
-                          />
-                        </Grid>
+                        />
+                      </Grid>
+                    );
                   })
                 : ''}
             </Grid>
-        </Grid>
-        {
-          postContents.media.length === 0
-            ? null
-            : (<Container disableGutters>
-                <MediaList media={postContents.media}/>
-              </Container>)
-        }
-        <Container disableGutters>
-          <Box className={classes.content}>
-            <Typography>{postContents.contents}</Typography>
-          </Box>
-        </Container>
-        <Container disableGutters>
-          <Box className={classes.files}>
-            <FileList className={classes.file} files={postContents.files}/>
-          </Box>
+          </Grid>
+          {postContents.media.length === 0 ? null : (
+            <Container disableGutters>
+              <MediaList media={postContents.media} />
+            </Container>
+          )}
+          <Container disableGutters>
+            <Box className={classes.content}>
+              <Typography>{postContents.contents}</Typography>
+            </Box>
+          </Container>
+          <Container disableGutters>
+            <Box className={classes.files}>
+              <FileList className={classes.file} files={postContents.files} />
+            </Box>
 
-          <Box className={classes.etc}>
-            <LikerCounter count={postContents.likeCount} />
-            <CommentCounter count={postContents.commentCount} />
+            <Box className={classes.etc}>
+              <LikerCounter count={postContents.likeCount} />
+              <CommentCounter count={postContents.commentCount} />
+            </Box>
+          </Container>
+          <Container disableGutters>
+            <CommentList
+              projectId={postContents.project.id}
+              postId={postContents.id}
+            />
+          </Container>
+          <Container disableGutters></Container>
+        </Box>
+      </Container>
+    </>
+  );
+};
+
+//
+
+export const CompressedPost = (props) => {
+  const { post } = props;
+
+  const classes = useStyles();
+
+  return (
+    <>
+      {/* 사용자 정보 */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          margin: '16px',
+        }}
+      >
+        <Avatar src={post.writer.profileImgPath} />
+        <Typography>{post.writer.name}</Typography>
+      </div>
+
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '8px',
+          margin: '16px',
+        }}
+      >
+      <Carousel useKeyboardArrows autoPlay={false} showStatus={false} showThumbs={false}>
+        {post.media.map((file) => (
+          <Box key={file.fileDownloadUri} className={classes.media} height={'30em'}>
+            <Media file={file} />
           </Box>
-        </Container>
-        <Container disableGutters>
-          <CommentList projectId = {postContents.project.id} postId = {postContents.id} /> 
-        </Container>
-        <Container disableGutters>
-        </Container>
-      </Box>
-    </Container>
+        ))}
+      </Carousel>
+
+      {/* 날짜 */}
+      <DateInfo dateTime={post.writeTime} fs="12px" />
+
+      {/* 해쉬태그들 */}
+      <div style={{ display: 'flex', gap: '8px' }}>
+        {post.hashtags.map((item, index) => {
+          return (
+            <Chip
+              className="tags"
+              key={item}
+              label={`#${item}`}
+              variant="outlined"
+              size="small"
+              color="primary"
+            />
+          );
+        })}
+      </div>
+
+      {/* 본문 */}
+      <Typography>{post.contents}</Typography>
+
+      {/* 첨부 파일 및 좋아요 댓글 개수 */}
+      <div style={{ display: 'flex', gap: '8px' }}>
+        <FileList className={classes.file} files={post.files} />
+        <LikerCounter count={post.likeCount} />
+        <CommentCounter count={post.commentCount} />
+      </div>
+
+      {/* 댓글 */}
+      {/* <CommentList projectId={post.project.id} postId={post.id} /> */}
+      </div>
     </>
   );
 };

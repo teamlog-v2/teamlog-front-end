@@ -76,7 +76,7 @@ const Content = (props) => {
                     />
                   </Grid>);
         } 
-        return <Box display="inline-block"> {`${item}`} </Box>
+        return <Box display="inline-block"> {`${item}`}&nbsp; </Box>
       }) : []
       }
     </Grid>
