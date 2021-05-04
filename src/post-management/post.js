@@ -2,6 +2,7 @@ import { useMediaQuery } from 'react-responsive';
 import Carousel from 'react-material-ui-carousel';
 import './carousel-theme.css';
 import './carousel.css';
+import './hrefStyle.css';
 import RoomIcon from '@material-ui/icons/Room';
 import Grow from '@material-ui/core/Grow';
 import Popper from '@material-ui/core/Popper';
@@ -28,7 +29,8 @@ import { Media } from './media';
 import { DateInfo } from './datetime';
 import MyPage from '../user/MyPage';
 import { Comment, CommentCounter, MoreComment } from './comment';
-import { Route } from 'react-router';
+import { useHistory } from 'react-router';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -265,6 +267,7 @@ const MediaList = ({ media }) => {
 
 export const Post = (props) => {
   const { postContents, maxWidth } = props;
+  const history = useHistory();
 
   const [tagList, setTagList] = useState([]);
   const [commentList, setCommentList] = useState([]);
@@ -279,7 +282,6 @@ export const Post = (props) => {
 
   return (
     <>
-      <Route exact path="/users/:userId" component={MyPage} />
       <Container
         className={classes.root}
         component="main"
@@ -292,15 +294,17 @@ export const Post = (props) => {
             <Box bgcolor="rgb(245, 212, 255)">
               <Box className={classes.header}>
                 <Box display="inline-block" marginLeft="0.25em">
+                  <a href={`/users/${postContents.writer.id}`}> 
                   <Box>
                     <UserInfo
-                      userId={postContents.writer.name}
+                      userId={postContents.writer.id}
                       imgWidth="30px"
                       imgHeight="30px"
                       imgPath={postContents.writer.profileImgPath}
                       fontSize="16px"
                     />
                   </Box>
+                  </a>
                   <Box>
                     <DateInfo dateTime={postContents.writeTime} fs="12px" />
                   </Box>

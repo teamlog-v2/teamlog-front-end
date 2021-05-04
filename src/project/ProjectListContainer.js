@@ -11,7 +11,6 @@ import ProjectItem from './ProjectItem';
 // thumbnail: 'https://source.unsplash.com/random',
 
 const ProjectListContainer = ({ userId }) => {
-  userId = 'jduckling1024'; // 임시로 설정
   const [isLoaded, setIsLoaded] = useState(false);
   const [projects, setProjects] = useState([]);
 
@@ -24,7 +23,7 @@ const ProjectListContainer = ({ userId }) => {
           method: 'Get',
           headers: { 'Content-Type': 'application/json' },
         });
-        console.log(response.json());
+        console.log(response.status);
         result = await response.json();
       } catch (error) {
         setIsLoaded(false);

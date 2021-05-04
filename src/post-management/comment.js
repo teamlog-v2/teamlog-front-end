@@ -70,7 +70,6 @@ const Content = (props) => {
                     <Chip
                       className="tags"
                       label={item.split('@')[1]}
-                      // variant="outlined"
                       size="small"
                       color="primary"
                     />
