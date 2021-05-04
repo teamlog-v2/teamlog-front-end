@@ -138,7 +138,6 @@ const TaskContainer = ({ match }) => {
 
   return (
     <>
-      <Typography variant="h3">태스크 목록</Typography>
       <Box padding="10px">
         <Button variant="outlined" color="primary" onClick={handleClickOpen}>
           + 태스크 생성

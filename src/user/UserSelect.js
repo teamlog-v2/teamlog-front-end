@@ -94,12 +94,13 @@ const UserSelect = ({
   };
 
   return (
-    <>
+    <Container minWidth="sm">
       <Box display="flex" justifyContent="center">
         <Typography>{`${selectedUserIds.length}명 선택됨`}</Typography>
       </Box>
 
       <Box
+        width="23vw"
         display="flex"
         flexWrap="wrap"
         justifyContent="center"
@@ -184,7 +185,7 @@ const UserSelect = ({
           취소
         </Button>
       </Box>
-    </>
+    </Container>
   );
 };
 

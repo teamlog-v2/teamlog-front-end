@@ -318,7 +318,7 @@ export const CommentForm = (props) => {
               variant="contained"
               color="primary"
               onClick = { async () => {
-                await CreateComment(parentCommentId, 'string', postId, inputRef.current.value, setSelectedUser(inputRef.current.value));
+                await CreateComment(parentCommentId, 'jduckling1024', postId, inputRef.current.value, setSelectedUser(inputRef.current.value));
                 setCommentList();
                 setState({...state, userInput: ""});
               }}

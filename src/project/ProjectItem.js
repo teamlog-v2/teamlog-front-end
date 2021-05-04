@@ -8,7 +8,7 @@ const ProjectItem = ({ project }) => (
     <Card elevation={2}>
       <CardMedia
         style={{ height: 180 }}
-        image="https://images.unsplash.com/photo-1617143777034-fe4c261ac738?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max"
+        image={project.thumbnail}
       />
       <CardContent>
         <Typography gutterBottom variant="h6">
