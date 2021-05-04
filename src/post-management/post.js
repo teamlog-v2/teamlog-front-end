@@ -349,7 +349,9 @@ export const Post = (props) => {
           )}
           <Container disableGutters>
             <Box className={classes.content}>
-              <Typography>{postContents.contents}</Typography>
+              <Typography>
+                <pre>{postContents.contents}</pre>
+              </Typography>
             </Box>
           </Container>
           <Container disableGutters>
