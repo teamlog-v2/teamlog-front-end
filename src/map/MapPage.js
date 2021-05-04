@@ -50,7 +50,7 @@ const MapPage = () => {
               position: 'absolute',
               zIndex: 1,
               // backgroundColor: '#FFFFFF',
-              // width: '100%',
+              width: '100%',
               maxWidth: 1024,
             }}
           >

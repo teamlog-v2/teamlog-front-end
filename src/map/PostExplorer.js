@@ -3,7 +3,7 @@ import { Close, NavigateBefore, NavigateNext } from '@material-ui/icons';
 import React, { useRef, useState } from 'react';
 import { Motion, spring } from 'react-motion';
 import { Link } from 'react-router-dom';
-import { Post } from '../post-management/post';
+import { CompressedPost } from '../post-management/post';
 
 const PostExplorer = ({ posts, postIds, setSelectedPostIds }) => {
   const [index, setIndex] = useState(0);
@@ -37,7 +37,7 @@ const PostExplorer = ({ posts, postIds, setSelectedPostIds }) => {
             transform: `translate3D(0,0,0) scale(${scale}, ${scale})`,
             display: 'flex',
             flexDirection: 'column',
-            height: '90vh',
+            height: '80vh',
           }}
         >
           <div
@@ -91,14 +91,7 @@ const PostExplorer = ({ posts, postIds, setSelectedPostIds }) => {
                   backgroundColor: '#FFFFFF',
                 }}
               >
-                <div
-                  style={{
-                    width: '80vw',
-                    maxWidth: '900px',
-                  }}
-                >
-                  <Post maxWidth="lg" postContents={currentPost} />
-                </div>
+                <CompressedPost post={currentPost} />
               </div>
             </div>
           </div>
