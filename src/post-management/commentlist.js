@@ -11,6 +11,7 @@ import {Reac, useEffect, useState, Fragment, useRef, useCallback } from 'react';
 import { Container, MenuItem, MenuList, Box, Avatar } from '@material-ui/core';
 import { CreateComment, GetComment } from './commentapi';
 import { getProjectMembers } from '../project-management/projectapi';
+import CloseIcon from '@material-ui/icons/Close';
 import {
     makeStyles,
     createMuiTheme,
@@ -53,6 +54,11 @@ const useStyles = makeStyles(() => ({
   replyTarget: {
     marginLeft: '0.25em',
     padding: '0.25em'
+  },
+  closeReply: {
+    display: 'inline-block',
+    right: '1em',
+    cursor: 'pointer'
   }
 }));
 
@@ -70,6 +76,14 @@ export const CommentList = ({ projectId, postId }) => {
       parentId: id,
       parentReplyUserId: userId,
       visibility: 'block',
+    });
+  });
+
+  const ResetReplyOption = useCallback(() => {
+    setParentReplyInfo({
+      parentId: null,
+      parentReplyUserId: null,
+      visibility: 'none',
     });
   });
   
@@ -118,7 +132,13 @@ export const CommentList = ({ projectId, postId }) => {
           </>);
 }) : []}
         <Container disableGutters>
-          <Box className={classes.replyTarget} display={parentReplyInfo.visibility}>{parentReplyInfo.parentReplyUserId}님의 댓글에 답글을 작성 중입니다. . .
+          <Box className={classes.replyTarget} display={parentReplyInfo.visibility}>
+            <Box width='90%' display='inline-block'>
+              {parentReplyInfo.parentReplyUserId}님의 댓글에 답글을 작성 중입니다...
+            </Box>
+            <Box width='10%' display='inline-block' textAlign='right'>
+              <CloseIcon className={classes.closeReply} fontSize="small" onClick={() => {ResetReplyOption()}} />
+            </Box>
           </Box>
         </Container>
         <CommentForm
@@ -126,6 +146,7 @@ export const CommentList = ({ projectId, postId }) => {
             projectId={projectId}
             postId={postId}
             setCommentList = {SetCommentList}
+            resetReplyOption = {ResetReplyOption}
         />
     </>
   );
@@ -135,7 +156,7 @@ export const CommentList = ({ projectId, postId }) => {
 
 export const CommentForm = (props) => {
   const classes = useStyles();
-  const { /* options, */ postId, projectId, parentCommentId, setCommentList } = props;
+  const { /* options, */ postId, projectId, parentCommentId, setCommentList, resetReplyOption } = props;
   const [options, setOptions] = useState([]);
 
   useEffect(async () => {
@@ -345,6 +366,7 @@ export const CommentForm = (props) => {
                 await CreateComment(parentCommentId, 'jduckling1024', postId, inputRef.current.value, setSelectedUser(inputRef.current.value));
                 setCommentList();
                 setState({...state, userInput: ""});
+                resetReplyOption()
               }}
             >
               작성
