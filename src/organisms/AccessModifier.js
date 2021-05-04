@@ -5,13 +5,13 @@ import {
 } from '@material-ui/core';
 import { Lock, LockOpen } from '@material-ui/icons';
 
-const AccessModifier = ({ isPostPrivate, updateIsPostPrivate }) => (
+const AccessModifier = ({ isPostPublic, updateIsPostPublic }) => (
   <Grid container item justify="flex-end">
-    {!isPostPrivate ? (
+    {!isPostPublic ? (
       <Grid
         item
         onClick={() => {
-          updateIsPostPrivate(!isPostPrivate);
+          updateIsPostPublic(!isPostPublic);
         }}
         style={{ cursor: 'pointer' }}
       >
@@ -30,7 +30,7 @@ const AccessModifier = ({ isPostPrivate, updateIsPostPrivate }) => (
       <Grid
         item
         onClick={() => {
-          updateIsPostPrivate(!isPostPrivate);
+          updateIsPostPublic(!isPostPublic);
         }}
         style={{ cursor: 'pointer' }}
       >

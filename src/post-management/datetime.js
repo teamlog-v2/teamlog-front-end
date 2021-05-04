@@ -8,10 +8,9 @@ export const modifyString = () => {
 export const ManufactureDate = (dateTime) => {
     const defaultVal = 1;
     if (dateTime !== undefined) {
-    const dateString = dateTime.toString().split('-');
-    const year = dateString[0];
-    const month = dateString[1];
-    const date = dateString[2].split('T')[0];
+    const year = dateTime[0];
+    const month = dateTime[1];
+    const date = dateTime[2];
     return `${year}년 ${month}월 ${date}일`;
   }
 

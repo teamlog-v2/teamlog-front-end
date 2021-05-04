@@ -50,7 +50,7 @@ const MapPage = () => {
               position: 'absolute',
               zIndex: 1,
               // backgroundColor: '#FFFFFF',
-              // width: '100%',
+              width: '100%',
               maxWidth: 1024,
             }}
           >
@@ -62,21 +62,21 @@ const MapPage = () => {
           </div>
         )}
         <GoogleMapReact
-          // bootstrapURLKeys={{
-          //   key: 'AIzaSyD19HDfecIVKOhxEa0a81aC9AV5_2LrgDY',
-          //   version: 'weekly',
-          //   language: 'ko',
-          //   region: 'KR',
-          // }}
+          bootstrapURLKeys={{
+            key: 'AIzaSyD19HDfecIVKOhxEa0a81aC9AV5_2LrgDY',
+            version: 'weekly',
+            language: 'ko',
+            region: 'KR',
+          }}
           options={{
             zoomControl: false,
             fullscreenControl: false,
           }}
           defaultCenter={{
-            lat: 0.0,
-            lng: 0.0,
+            lat: 36.119485,
+            lng: 128.3445734,
           }}
-          defaultZoom={3}
+          defaultZoom={4}
           hoverDistance={20}
           onChange={({ zoom: curruntZoom, bounds: currentBounds }) => {
             setZoom(curruntZoom);
