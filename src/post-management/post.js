@@ -1,7 +1,7 @@
 import { useMediaQuery } from 'react-responsive';
-// import Carousel from 'react-material-ui-carousel';
-// import './carousel-theme.css';
-// import './carousel.css';
+import Carousel from 'react-material-ui-carousel';
+import './carousel-theme.css';
+import './carousel.css';
 import RoomIcon from '@material-ui/icons/Room';
 import Grow from '@material-ui/core/Grow';
 import Popper from '@material-ui/core/Popper';
@@ -17,10 +17,8 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { AmpStories, Block, Menu } from '@material-ui/icons';
+import { AmpStories, Block, Menu, FiberManualRecordRounded } from '@material-ui/icons';
 import { Button, Chip, Grid } from '@material-ui/core';
-import { Carousel } from 'react-responsive-carousel';
-import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 import FileList from './fileList';
 import { CommentList } from './commentlist';
@@ -38,6 +36,18 @@ const useStyles = makeStyles((theme) => ({
   },
   children: {
     margin: '1% 0',
+  },
+  chip: {
+    zIndex: 1,
+    position: 'absolute',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 'small',
+      margin: '2%',
+    },
+    [theme.breakpoints.up('md')]: {
+      fontSize: 'medium',
+      margin: '1%',
+    },
   },
   paper: {
     display: 'flex',
@@ -206,6 +216,8 @@ const PostMenu = () => {
 const MediaList = ({ media }) => {
   const classes = useStyles();
 
+  const [curIndex, setCurIndex] = useState(1);
+
   const isPc = useMediaQuery({
     query: '(min-width:1024px)',
   });
@@ -218,15 +230,36 @@ const MediaList = ({ media }) => {
 
   let size = isPc ? '60em' : isTablet ? '45em' : '30em';  
   return (
-    <Box id="mediaBox" textAlign="center">
-      <Carousel autoPlay={false} useKeyboardArrows>
-      {media.map((item, i) => (
-        <Box className={classes.media} height={size}>
-          <Media key={i} file={item} />
-        </Box>
-      ))}
-      </Carousel>
-    </Box>
+    <>
+      <Grid container direction="row-reverse">
+        <Chip
+          className={classes.chip}
+          label={`${curIndex}/${media.length}`}
+        />
+      </Grid>
+      <Box id="mediaBox" textAlign="center">
+        <Carousel
+        onChange={(index, active) => {
+          setCurIndex(index + 1);
+        }}
+        autoPlay={false}
+        animation='slide'
+        cycleNavigation={false}
+        indicatorIconButtonProps={{
+        }}
+        activeIndicatorIconButtonProps={{
+            style: {
+                color: '#C16AF5' // 2
+            }
+        }}>
+        {media.map((item, i) => (
+          <Box className={classes.media} height={size}>
+            <Media key={i} file={item} />
+          </Box>
+        ))}
+        </Carousel>
+      </Box>
+    </>
   );
 };
 
