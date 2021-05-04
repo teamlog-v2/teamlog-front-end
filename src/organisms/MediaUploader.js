@@ -1,12 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import {
   Grid,
   Button,
 } from '@material-ui/core';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
+import { isValidSize } from '../utils';
 
 const MediaUploader = ({ files, updateFiles }) => {
-  const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef(null);
 
   const getTypeofFile = (name) => {
@@ -19,57 +19,36 @@ const MediaUploader = ({ files, updateFiles }) => {
   };
 
   const handleInputChange = (event) => { // click trigger
-    const loadedFilesLength = [...event.target.files].length;
+    const uploadedFiles = [...event.target.files];
+    const loadedFilesLength = uploadedFiles.length;
     if ([...files].length + loadedFilesLength > 10) {
-      alert('미디어 파일은 최대 10개까지 업로드 가능합니다.');
+      alert('사진 및 동영상은 최대 10개까지 업로드 가능합니다.');
       return;
     }
+
+    // 용량도
     const fileWithThumbnail = [];
     let newFiles = [...files];
 
-    setIsUploading(true);
-    let cnt = 0;
+    if (!isValidSize(files, uploadedFiles, 200000)) { // 동영상은 얼마나 압축하는게 좋을까요
+      alert('첨부파일 최대 용량은 200MB 입니다.');
+      return;
+    }
 
     [...event.target.files].forEach((file) => {
-      const fileReader = new FileReader();
-
-      fileReader.onloadstart = () => {
-        if (cnt === 0) {
-          setIsUploading(true);
-        }
-      };
-
-      fileReader.onloadend = () => {
-        console.log('load end');
-        console.log(fileReader.result);
-
-        fileWithThumbnail.push({
-          url: URL.createObjectURL(file), // 일시적 URL
-          file,
-          type: getTypeofFile(file.name),
-          base64: fileReader.result,
-        });
-        cnt += 1;
-        if (loadedFilesLength === cnt) {
-          setIsUploading(false);
-          newFiles = newFiles.concat(fileWithThumbnail);
-          updateFiles(newFiles);
-        }
-      };
-      // 바이트 배열로 변환해서 서버에 저장.
-      // base64 인코딩 // 안전한 문자임!
-      fileReader.readAsDataURL(file); // 동기
-      console.log('read');
+      fileWithThumbnail.push({
+        url: URL.createObjectURL(file), // 일시적 URL
+        file,
+        type: getTypeofFile(file.name),
+      });
     });
+    newFiles = newFiles.concat(fileWithThumbnail);
+    updateFiles(newFiles);
   };
 
   const handleButtonClick = () => {
     fileInputRef.current.click();
   };
-
-  useEffect(() => {
-    console.log('렌더링 완료');
-  }, [isUploading]);
 
   return (
     <Grid item>
@@ -78,7 +57,6 @@ const MediaUploader = ({ files, updateFiles }) => {
         color="primary"
         size="large"
         onClick={handleButtonClick}
-        disabled={isUploading}
         style={{ width: '160px', textAlign: 'center' }}
       >
         <PhotoCamera fontSize="medium" />
@@ -90,10 +68,11 @@ const MediaUploader = ({ files, updateFiles }) => {
         type="file"
         multiple
         ref={fileInputRef}
-        accept='"image/*,video/*"' // 모바일 필터링 ?
+        accept="image/*, video/*" // 모바일 필터링 ?
         style={{ display: 'none' }}
         onChange={handleInputChange}
       />
+      <span>사진 및 동영상은 최대 10개까지 업로드 가능합니다.</span>
     </Grid>
     );
 };
