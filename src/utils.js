@@ -21,8 +21,8 @@ const isDuplicateData = (list, value) => {
  */
 const isValidSize = (files, newFiles, value) => {
   let totalSize = 0;
-  files.forEach(({ size }) => {
-    totalSize += size / 1000;
+  files.forEach(({ file }) => {
+    totalSize += file.size / 1000;
   });
   newFiles.forEach(({ size }) => {
     totalSize += size / 1000;
