@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Typography,
   Grid,
@@ -84,6 +84,34 @@ const ProjectMain = () => {
   // posts fetch를 이 hook에서 처리한다.
   const { posts, isLoading: isPostsLoading, fetchPosts } = useFetchPosts(url);
 
+  // 스크롤 감지
+  useEffect(() => {
+    const handleScroll = (event) => {
+      if (event.deltaY < 0) {
+        return;
+      }
+      if (isPostsLoading) {
+        return;
+      }
+
+      const { innerHeight } = window;
+      const { scrollHeight } = document.body;
+      const scrollTop = window.pageYOffset
+        || document.documentElement.scrollTop
+        || document.body.scrollTop
+        || 0;
+      // 스크롤링 했을때, 브라우저의 가장 밑에서 100정도 높이가 남았을 때
+      if (scrollHeight - innerHeight - scrollTop < 100) {
+        fetchPosts();
+      }
+    };
+
+    window.addEventListener('wheel', handleScroll);
+    return () => {
+      window.removeEventListener('wheel', handleScroll);
+    };
+  }, [isPostsLoading, fetchPosts]);
+
   return !isHashtagsLoaded ? (
     <Grid
       container
@@ -130,31 +158,22 @@ const ProjectMain = () => {
         </Grid>
         <Container className={classes.partition} disableGutters>
           <Typography>
-            {posts.length === 0
+            {posts.length === 0 // 서버 대응 수정이 필요함
               ? '검색된 게시물이 없습니다'
-              : '총 ?개의 게시물'}
+              : `총 ?개의 검색된 게시물 중 ${posts.length}개`}
           </Typography>
 
           <Postlist posts={posts} />
-          {isPostsLoading ? (
-            <Grid
-              container
-              justify="center"
-              alignItems="center"
-              style={{ height: '50vh' }}
-            >
+          <Grid
+            container
+            justify="center"
+            alignItems="center"
+            style={{ height: '20vh' }}
+          >
+            {isPostsLoading && (
               <CircularProgress />
-            </Grid>
-          ) : (
-            <button
-              type="button"
-              onClick={() => {
-                fetchPosts();
-              }}
-            >
-              <h1>더 보기</h1>
-            </button>
-          )}
+            )}
+          </Grid>
         </Container>
       </Container>
     </>

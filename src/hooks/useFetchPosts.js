@@ -38,15 +38,15 @@ const useFetchPosts = (url) => {
           throw res.status;
         }
 
-        // 테스트를 위한 딜레이 추가
-        promise = new Promise((resolve) => {
-          setTimeout(resolve, 200);
-        });
-        promiseRef.current = promise;
-        await promise;
-        if (promiseRef.current !== promise || !isMounted) {
-          return;
-        }
+        // 테스트를 위한 딜레이
+        // promise = new Promise((resolve) => {
+        //   setTimeout(resolve, 200);
+        // });
+        // promiseRef.current = promise;
+        // await promise;
+        // if (promiseRef.current !== promise || !isMounted) {
+        //   return;
+        // }
 
         promise = res.json();
         promiseRef.current = promise;
