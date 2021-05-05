@@ -27,9 +27,7 @@ import UserInfo from './user';
 import LikerCounter from './liker';
 import { Media } from './media';
 import { DateInfo } from './datetime';
-import MyPage from '../user/MyPage';
-import { Comment, CommentCounter, MoreComment } from '../comment/comment';
-import { useHistory } from 'react-router';
+import { CommentCounter } from '../comment/comment';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -225,11 +223,17 @@ const MediaList = ({ media }) => {
   const isTablet = useMediaQuery({
     query: '(min-width:768px) and (max-width:1023px)',
   });
-  const isMobile = useMediaQuery({
-    query: '(max-width:767px)',
-  });
 
-  let size = isPc ? '60em' : isTablet ? '45em' : '30em';
+  let size = null;
+
+  if (isPc) {
+    size = '60em';
+  } else if (isTablet) {
+    size = '45em';
+  } else {
+    size = '30em';
+  }
+
   return (
     <>
       <Grid container direction="row-reverse">
@@ -237,7 +241,7 @@ const MediaList = ({ media }) => {
       </Grid>
       <Box id="mediaBox" textAlign="center">
         <Carousel
-          onChange={(index, active) => {
+          onChange={(index) => {
             setCurIndex(index + 1);
           }}
           autoPlay={false}
@@ -263,16 +267,8 @@ const MediaList = ({ media }) => {
 
 export const Post = (props) => {
   const { postContents, maxWidth } = props;
-  const history = useHistory();
-
-  const [tagList, setTagList] = useState([]);
-  const [commentList, setCommentList] = useState([]);
 
   const classes = useStyles();
-
-  useEffect(() => {
-    setTagList(postContents.hashtags);
-  }, []);
 
   return (
     <>
@@ -366,7 +362,7 @@ export const Post = (props) => {
               postId={postContents.id}
             />
           </Container>
-          <Container disableGutters></Container>
+          <Container disableGutters />
         </Box>
       </Container>
     </>
@@ -413,7 +409,7 @@ export const CompressedPost = (props) => {
             <Box
               key={file.fileDownloadUri}
               className={classes.media}
-              height={'30em'}
+              height="30em"
             >
               <Media file={file} />
             </Box>
@@ -425,7 +421,7 @@ export const CompressedPost = (props) => {
 
         {/* 해쉬태그들 */}
         <div style={{ display: 'flex', gap: '8px' }}>
-          {post.hashtags.map((item, index) => {
+          {post.hashtags.map((item) => {
             return (
               <Chip
                 className="tags"

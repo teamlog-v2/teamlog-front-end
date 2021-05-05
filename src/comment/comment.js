@@ -182,7 +182,7 @@ export const Comment = (props) => {
           parentCommentId={id}
           projectId={projectId}
           postId={postId}
-          renewCommentList={RenewCommentList} // 함수 하나 필요할 듯
+          renewCommentList={RenewCommentList}
         />
       </Box>
     </Box>
