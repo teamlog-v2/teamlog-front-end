@@ -29,7 +29,7 @@ const useFetch = (projectId) => {
       try {
         // 서버 api 추가 시 대응 수정이 필요한 부분
         promise = fetch(
-          `http://3.15.16.150:8090/api/posts/project/${projectId}`,
+          `/api/posts/project/${projectId}`,
         );
         promiseRef.current = promise;
         const res = await promise;
@@ -42,7 +42,7 @@ const useFetch = (projectId) => {
 
         // 테스트를 위한 딜레이 추가
         promise = new Promise((resolve) => {
-          setTimeout(resolve, 2000);
+          setTimeout(resolve, 200);
         });
         promiseRef.current = promise;
         await promise;
