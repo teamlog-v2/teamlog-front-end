@@ -32,21 +32,21 @@ const ImageContent = ({ file }) => {
   const { fileName, fileDownloadUri } = file;
   const classes = useStyles();
 
-  const image = new Image();
-  image.src = fileDownloadUri;
+  // const image = new Image();
+  // image.src = fileDownloadUri;
 
-  if (image.width >= image.height) {
+  // if (image.width >= image.height) {
     return (
       <Box width="100%" className={classes.align}>
         <img src={fileDownloadUri} width="100%" />
       </Box>
     );
-  }
-    return (
-      <Box height="100%" className={classes.align}>
-        <img src={fileDownloadUri} height="100%" />
-      </Box>
-    );
+  // }
+  //   return (
+  //     <Box height="100%" className={classes.align}>
+  //       <img src={fileDownloadUri} height="100%" />
+  //     </Box>
+  //   );
 };
 
 const Video = (props) => {
