@@ -16,10 +16,10 @@ const App = () => {
         <Switch>
           <Route exact path="/" component={MapPage} />
           {/* <Route path="/task" component={TaskContainer} /> */}
-          <Route path="/project" component={ProjectListContainer} />
-          <Route exact path="/projects/:id" component={Project} />
-          <Route exact path="/users/:userId" component={MyPage} />
+          <Route exact path="/project" component={ProjectListContainer} />
           <Route exact path="/projects/:id/new" component={PostFormPage} />
+          <Route path="/projects/:id" component={Project} />
+          <Route path="/users/:userId" component={MyPage} />
           <Route exact path="/signup" component={SignUp} />
           <Route>
             <ErrorPage error="404" />
