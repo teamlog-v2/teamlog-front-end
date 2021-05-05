@@ -43,6 +43,16 @@ const UserList = () => {
     })();
   }, []);
 
+  const followUser = (target) => {
+    const newUsers = users.map((user) => (user.id === target.id ? { ...user, isFollow: 1 } : user));
+    setUsers(newUsers);
+  };
+
+  const unfollowUser = (target) => {
+    const newUsers = users.map((user) => (user.id === target.id ? { ...user, isFollow: 0 } : user));
+    setUsers(newUsers);
+  };
+
   return (
     <Container maxWidth="md">
       <Grid container spacing={1}>
@@ -61,19 +71,29 @@ const UserList = () => {
                           className={classes.profileImg}
                           src={user.profileImgPath}
                         />
-                        <Typography variant="body6" color="textPrimary">
+                        <Typography variant="body1" color="textPrimary">
                           {user.name}
                         </Typography>
                       </Box>
                     </Link>
                   </Box>
                   <Box margin="10px" display="flex" alignItems="center">
-                    {user.isFollow ? (
-                      <Button size="small" variant="outlined" color="primary">
-                        언팔로우
+                    {user.isFollow === 1 ? (
+                      <Button
+                        size="small"
+                        variant="outlined"
+                        color="primary"
+                        onClick={() => unfollowUser(user)}
+                      >
+                        팔로잉
                       </Button>
                     ) : (
-                      <Button size="small" variant="contained" color="primary">
+                      <Button
+                        size="small"
+                        variant="contained"
+                        color="primary"
+                        onClick={() => followUser(user)}
+                      >
                         팔로우
                       </Button>
                     )}
