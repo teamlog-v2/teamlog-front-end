@@ -6,7 +6,7 @@ const defaultState = {
   error: null,
 };
 
-const useFetch = (projectId) => {
+const useFetchPosts = (url) => {
   // '비동기 컴포넌트 상태 변경' 제어를 위한 변수
   const isMounted = useRef(true);
   const promiseRef = useRef(null);
@@ -28,9 +28,7 @@ const useFetch = (projectId) => {
       let promise;
       try {
         // 서버 api 추가 시 대응 수정이 필요한 부분
-        promise = fetch(
-          `/api/posts/project/${projectId}`,
-        );
+        promise = fetch(url);
         promiseRef.current = promise;
         const res = await promise;
         if (promiseRef.current !== promise || !isMounted) {
@@ -76,7 +74,7 @@ const useFetch = (projectId) => {
 
   useLayoutEffect(() => {
     fetchPosts(true);
-  }, [projectId]);
+  }, [url]);
 
   useEffect(() => {
     return () => {
@@ -87,4 +85,4 @@ const useFetch = (projectId) => {
   return { ...state, fetchPosts };
 };
 
-export default useFetch;
+export default useFetchPosts;
