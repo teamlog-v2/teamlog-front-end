@@ -1,23 +1,28 @@
 // import { Post } from './post';
 // import data from './datalist';
-import { Comment } from './comment';
-import { Button, ListItemIcon, ListItemText } from '@material-ui/core';
+import { Button, ListItemIcon, ListItemText, Container, MenuItem, MenuList, Box, Avatar } from '@material-ui/core';
 import InputBase from '@material-ui/core/InputBase';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
-import {Reac, useEffect, useState, Fragment, useRef, useCallback } from 'react';
-import { Container, MenuItem, MenuList, Box, Avatar } from '@material-ui/core';
-import { CreateComment, GetComment } from './commentapi';
-import { getProjectMembers } from '../project-management/projectapi';
+import {
+  React,
+  useEffect,
+  useState,
+  Fragment,
+  useRef,
+  useCallback,
+} from 'react';
 import CloseIcon from '@material-ui/icons/Close';
 import {
-    makeStyles,
-    createMuiTheme,
-    ThemeProvider,
-  } from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
+  makeStyles,
+  createMuiTheme,
+  ThemeProvider,
+} from '@material-ui/core/styles';
+import { getProjectMembers } from '../project-management/projectapi';
+import { CreateComment, GetComment } from './commentapi';
+import { Comment } from './comment';
 // import CommentForm from './commentform';
 
 const useStyles = makeStyles(() => ({
@@ -53,13 +58,13 @@ const useStyles = makeStyles(() => ({
   },
   replyTarget: {
     marginLeft: '0.25em',
-    padding: '0.25em'
+    padding: '0.25em',
   },
   closeReply: {
     display: 'inline-block',
     right: '1em',
-    cursor: 'pointer'
-  }
+    cursor: 'pointer',
+  },
 }));
 
 export const CommentList = ({ projectId, postId }) => {
@@ -67,11 +72,11 @@ export const CommentList = ({ projectId, postId }) => {
   const [commentList, setCommentList] = useState([]);
   const [parentReplyInfo, setParentReplyInfo] = useState([]);
 
-  const SetCommentList = useCallback(async() => {
+  const SetCommentList = useCallback(async () => {
     setCommentList(await GetComment(postId));
   });
 
-  const SetReplyOption = useCallback(async(id, userId) => {
+  const SetReplyOption = useCallback(async (id, userId) => {
     setParentReplyInfo({
       parentId: id,
       parentReplyUserId: userId,
@@ -86,9 +91,8 @@ export const CommentList = ({ projectId, postId }) => {
       visibility: 'none',
     });
   });
-  
 
-  useEffect(async () => {   
+  useEffect(async () => {
     setCommentList(await GetComment(postId));
     setParentReplyInfo({
       parentId: null,
@@ -101,62 +105,81 @@ export const CommentList = ({ projectId, postId }) => {
     <>
       {commentList
         ? commentList.map((item) => {
-          let childCommentList = item.childComments;
-          return (<>
-            <Comment
-              id={item.id}
-              projectId={projectId}
-              contents={item.contents}
-              writer={item.writer}
-              commentMentions={item.commentMentions}
-              postId={postId}
-              writeTime={item.writeTime}
-              setReplyOption = {SetReplyOption}
-              type="parent"
-            />
-            {
-              childCommentList ? childCommentList.map((childItem) => {
-                return(
-                  <Comment
-                id={childItem.id}
-                contents={childItem.contents}
-                writer={childItem.writer}
-                commentMentions={childItem.commentMentions}
-                postId={postId}
-                writeTime={childItem.writeTime}
-                type="child"
-              />
-                );
-              }) : []
-            }
-          </>);
-}) : []}
-        <Container disableGutters>
-          <Box className={classes.replyTarget} display={parentReplyInfo.visibility}>
-            <Box width='90%' display='inline-block'>
-              {parentReplyInfo.parentReplyUserId}님의 댓글에 답글을 작성 중입니다...
-            </Box>
-            <Box width='10%' display='inline-block' textAlign='right'>
-              <CloseIcon className={classes.closeReply} fontSize="small" onClick={() => {ResetReplyOption()}} />
-            </Box>
+            const childCommentList = item.childComments;
+            return (
+              <>
+                <Comment
+                  id={item.id}
+                  projectId={projectId}
+                  contents={item.contents}
+                  writer={item.writer}
+                  commentMentions={item.commentMentions}
+                  postId={postId}
+                  writeTime={item.writeTime}
+                  setReplyOption={SetReplyOption}
+                  type="parent"
+                />
+                {childCommentList
+                  ? childCommentList.map((childItem) => {
+                      return (
+                        <Comment
+                          id={childItem.id}
+                          contents={childItem.contents}
+                          writer={childItem.writer}
+                          commentMentions={childItem.commentMentions}
+                          postId={postId}
+                          writeTime={childItem.writeTime}
+                          type="child"
+                        />
+                      );
+                    })
+                  : []}
+              </>
+            );
+          })
+        : []}
+      <Container disableGutters>
+        <Box
+          className={classes.replyTarget}
+          display={parentReplyInfo.visibility}
+        >
+          <Box width="90%" display="inline-block">
+            {parentReplyInfo.parentReplyUserId}님의 댓글에 답글을 작성
+            중입니다...
           </Box>
-        </Container>
-        <CommentForm
-            parentCommentId={parentReplyInfo.parentId}
-            projectId={projectId}
-            postId={postId}
-            setCommentList = {SetCommentList}
-            resetReplyOption = {ResetReplyOption}
-        />
+          <Box width="10%" display="inline-block" textAlign="right">
+            <CloseIcon
+              className={classes.closeReply}
+              fontSize="small"
+              onClick={() => {
+                ResetReplyOption();
+              }}
+            />
+          </Box>
+        </Box>
+      </Container>
+      <CommentForm
+        parentCommentId={parentReplyInfo.parentId}
+        projectId={projectId}
+        postId={postId}
+        setCommentList={SetCommentList}
+        resetReplyOption={ResetReplyOption}
+      />
     </>
   );
 };
 
-//////////
+/// ///////
 
 export const CommentForm = (props) => {
   const classes = useStyles();
-  const { /* options, */ postId, projectId, parentCommentId, setCommentList, resetReplyOption } = props;
+  const {
+    /* options, */ postId,
+    projectId,
+    parentCommentId,
+    setCommentList,
+    resetReplyOption,
+  } = props;
   const [options, setOptions] = useState([]);
 
   useEffect(async () => {
@@ -173,11 +196,9 @@ export const CommentForm = (props) => {
 
   const inputRef = useRef();
   const [menuFocus, setMenuFocus] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
 
-  menuFocus
-    ? (document.body.style.overflow = 'hidden')
-    : (document.body.style.overflow = 'unset');
-    
   const onKeyDown = (e) => {
     // 위 화살표 or 아래 화살표
     if ((state.showOptions && e.keyCode === 38) || e.keyCode === 40) {
@@ -185,12 +206,13 @@ export const CommentForm = (props) => {
     }
   };
 
+  // 커서 위치에 따른 멘션 시작점 설정용
   const onSelect = () => {
-    let index = inputRef.current.selectionStart;
+    const index = inputRef.current.selectionStart;
 
     setMenuFocus(false);
 
-    if (state.userInput.charAt(index - 2) == '@') {
+    if (state.userInput.charAt(index - 2) === '@') {
       setState({
         ...state,
         tagStartIndex: index - 2,
@@ -198,31 +220,29 @@ export const CommentForm = (props) => {
     }
   };
 
+  // 입력할 때
   const onChange = (e) => {
-    const userInput = e.currentTarget.value;
+    const userCurrentInput = e.currentTarget.value;
 
     setState({
       ...state,
       userInput: e.currentTarget.value,
     });
 
-    let index = inputRef.current.selectionStart;
-
     if (
-      state.tagStartIndex > -1 &&
-      userInput.charAt(state.tagStartIndex) == '@'
+      state.tagStartIndex > -1
+      && userCurrentInput.charAt(state.tagStartIndex) === '@'
     ) {
-
-      const splitName = userInput.substring(
+      const splitName = userCurrentInput.substring(
         state.tagStartIndex + 1,
         inputRef.current.selectionStart,
       );
 
-      if (splitName.length == 0) return;
+      if (splitName.length === 0) return;
 
       const filteredOptions = options.filter(
-        (option) => option.id.toLowerCase().indexOf(splitName.toLowerCase()) > -1 
-        || option.name.toLowerCase().indexOf(splitName.toLowerCase()) > -1,
+        (option) => option.id.toLowerCase().indexOf(splitName.toLowerCase()) > -1
+          || option.name.toLowerCase().indexOf(splitName.toLowerCase()) > -1,
       );
 
       setState({
@@ -261,11 +281,11 @@ export const CommentForm = (props) => {
 
     const target = e.currentTarget.dataset.myValue;
 
-    let startStr = userInput.substring(0, state.tagStartIndex);
-    let midStr = '@' + target + ' ';
-    let lastStr = userInput.substring(
+    const startStr = state.userInput.substring(0, state.tagStartIndex);
+    const midStr = `@${target} `;
+    const lastStr = state.userInput.substring(
       inputRef.current.selectionStart,
-      userInput.length,
+      state.userInput.length,
     );
 
     setState({
@@ -281,45 +301,31 @@ export const CommentForm = (props) => {
     inputRef.current.focus();
   };
 
-
-  // 선택된 사용자 골라내기
+  // 댓글 등록 시 언급된 사용자 골라내기
   const setSelectedUser = (commentContent) => {
     const mentionSplitList = commentContent.split('@');
     const selectedUserList = [];
 
-    for(var i = 0; i < mentionSplitList.length; i = i + 1){
+    for (let i = 0; i < mentionSplitList.length; i += 1) {
       const userSplit = mentionSplitList[i].split(' ')[0];
 
       const filteredUser = options.filter(
-        (option) => option.id.toLowerCase() === userSplit.toLowerCase()
+        (option) => option.id.toLowerCase() === userSplit.toLowerCase(),
       );
 
-      if (filteredUser.length === 1 && !selectedUserList.includes(filteredUser[0].id)) {
+      if (
+        filteredUser.length === 1
+        && !selectedUserList.includes(filteredUser[0].id)
+      ) {
         selectedUserList.push(filteredUser[0].id);
       }
     }
 
     return selectedUserList;
-  }
-
-  const { activeOption, filteredOptions, showOptions, userInput } = state;
-
-  const [open, setOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const handleToggle = () => {
-    setOpen((prevOpen) => !prevOpen);
   };
 
-  const handleClose = (event) => {
+  const handleClose = () => {
     setOpen(false);
-  };
-
-  const handleListKeyDown = (event) => {
-    if (event.key === 'Tab') {
-      event.preventDefault();
-      setOpen(false);
-    }
   };
 
   const theme = createMuiTheme({
@@ -340,7 +346,7 @@ export const CommentForm = (props) => {
         height="auto"
       >
         <Box width="80%" display="inline-block">
-          <Fragment>
+          <>
             <InputBase
               name="reply"
               className={classes.input}
@@ -352,9 +358,8 @@ export const CommentForm = (props) => {
               value={state.userInput}
               onSelect={onSelect}
               onKeyDown={onKeyDown}
-              value={state.userInput}
             />
-          </Fragment>
+          </>
         </Box>
         <Box width="20%" display="inline-block">
           <ThemeProvider theme={theme}>
@@ -362,11 +367,17 @@ export const CommentForm = (props) => {
               fullWidth
               variant="contained"
               color="primary"
-              onClick = { async () => {
-                await CreateComment(parentCommentId, 'jduckling1024', postId, inputRef.current.value, setSelectedUser(inputRef.current.value));
+              onClick={async () => {
+                await CreateComment(
+                  parentCommentId,
+                  'jduckling1024', // 나중에 변경 필요
+                  postId,
+                  inputRef.current.value,
+                  setSelectedUser(inputRef.current.value),
+                );
                 setCommentList();
-                setState({...state, userInput: ""});
-                resetReplyOption()
+                setState({ ...state, userInput: '' });
+                resetReplyOption();
               }}
             >
               작성
@@ -382,7 +393,6 @@ export const CommentForm = (props) => {
         placement="top-start"
         role={undefined}
         transition
-        disablePortal
       >
         {({ TransitionProps, placement }) => (
           <Grow
@@ -396,7 +406,7 @@ export const CommentForm = (props) => {
               <ClickAwayListener onClickAway={handleClose}>
                 <FriendList
                   autoFocus={menuFocus}
-                  options={filteredOptions}
+                  options={state.filteredOptions}
                   onClick={onClick}
                 />
               </ClickAwayListener>
@@ -418,19 +428,20 @@ const FriendList = (props) => {
         <MenuList autoFocusItem={autoFocus} variant="selectedMenu">
           {options
             ? options.map((item) => (
-              <MenuItem 
+              <MenuItem
                 button
                 className="option-active"
                 key={item}
                 data-my-value={item.id}
-                onClick={onClick}>
-                    <ListItemIcon>
-                      <Avatar />
-                    </ListItemIcon>
-                    <ListItemText primary={item.name} />
-                  </MenuItem>
-                )): null
-          }
+                onClick={onClick}
+              >
+                <ListItemIcon>
+                  <Avatar />
+                </ListItemIcon>
+                <ListItemText primary={item.name} />
+              </MenuItem>
+              ))
+            : null}
         </MenuList>
       </Box>
     </Container>

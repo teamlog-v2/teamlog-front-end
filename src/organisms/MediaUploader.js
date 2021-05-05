@@ -1,8 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  Grid,
-  Button,
-} from '@material-ui/core';
+import { Grid, Button } from '@material-ui/core';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 
 const MediaUploader = ({ files, updateFiles }) => {
@@ -18,7 +15,8 @@ const MediaUploader = ({ files, updateFiles }) => {
     return 'IMAGE';
   };
 
-  const handleInputChange = (event) => { // click trigger
+  const handleInputChange = (event) => {
+    // click trigger
     const loadedFilesLength = [...event.target.files].length;
     if ([...files].length + loadedFilesLength > 10) {
       alert('미디어 파일은 최대 10개까지 업로드 가능합니다.');
@@ -95,7 +93,7 @@ const MediaUploader = ({ files, updateFiles }) => {
         onChange={handleInputChange}
       />
     </Grid>
-    );
+  );
 };
 
 export default MediaUploader;

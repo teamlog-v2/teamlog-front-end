@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  Grid,
-} from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import Cancel from '@material-ui/icons/Cancel';
 
 const AttachmentList = ({ files, updateFiles }) => (
@@ -14,13 +12,13 @@ const AttachmentList = ({ files, updateFiles }) => (
             style={{ cursor: 'pointer' }}
             fontSize="small"
             onClick={() => {
-            const newFiles = files.filter((e, i) => index !== i);
-            updateFiles(newFiles);
-          }}
+              const newFiles = files.filter((e, i) => index !== i);
+              updateFiles(newFiles);
+            }}
           />
         </div>
       </Grid>
-      ))}
+    ))}
   </Grid>
 );
 

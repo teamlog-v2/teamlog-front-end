@@ -1,28 +1,17 @@
-import React, { useEffect, useState, Fragment, useRef } from 'react';
-import { Container, MenuItem, MenuList, Box, Avatar, Chip, Grid } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import {
+  Box,
+  Chip,
+  Grid,
+} from '@material-ui/core';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import {
   makeStyles,
-  createMuiTheme,
-  ThemeProvider,
 } from '@material-ui/core/styles';
 
-import Button from '@material-ui/core/Button';
 import ReplyIcon from '@material-ui/icons/Reply';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-
-import InputBase from '@material-ui/core/InputBase';
-import Paper from '@material-ui/core/Paper';
-import Popper from '@material-ui/core/Popper';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Grow from '@material-ui/core/Grow';
-import { useMediaQuery } from 'react-responsive';
-import PropTypes, { string } from 'prop-types';
-import UserInfo from './user';
-import { DateInfo } from './datetime';
-import { UserTag } from './tag';
-import { CommentForm } from './commentlist'
+import UserInfo from '../post-management/user';
+import { DateInfo } from '../post-management/datetime';
 
 const useStyles = makeStyles(() => ({
   more: {
@@ -64,20 +53,26 @@ const Content = (props) => {
 
   return (
     <Grid container direction="row" spacing={1}>
-      {stringSplit ? stringSplit.map((item) => {
-        if(item.charAt(0) === '@' && tagList.includes(item.split('@')[1])){
-          return (<Grid item>
-                    <Chip
-                      className="tags"
-                      label={item.split('@')[1]}
-                      size="small"
-                      color="primary"
-                    />
-                  </Grid>);
-        } 
-        return <Box display="inline-block"> {`${item}`}&nbsp; </Box>
-      }) : []
-      }
+      {stringSplit
+        ? stringSplit.map((item) => {
+            if (
+              item.charAt(0) === '@'
+              && tagList.includes(item.split('@')[1])
+            ) {
+              return (
+                <Grid item>
+                  <Chip
+                    className="tags"
+                    label={item.split('@')[1]}
+                    size="small"
+                    color="primary"
+                  />
+                </Grid>
+              );
+            }
+            return <Box display="inline-block"> {`${item}`}&nbsp; </Box>;
+          })
+        : []}
     </Grid>
   );
 };
@@ -94,12 +89,8 @@ const Header = (props) => {
 export const MoreComment = () => {
   const classes = useStyles();
 
-  return(
-    <Box className = {classes.more}>
-      댓글 더 보기 . . .
-    </Box>
-  );
-}
+  return <Box className={classes.more}>댓글 더 보기 . . .</Box>;
+};
 
 export const CommentCounter = (props) => {
   const { count } = props;
@@ -114,24 +105,31 @@ export const CommentCounter = (props) => {
 const CheckRoot = (type) => {
   if (type === 'child') {
     return {
-      marginLeft: '1.5em', 
-      buttonDisplay: 'hidden'
-    }; 
+      marginLeft: '1.5em',
+      buttonDisplay: 'hidden',
+    };
   }
 
   return {
-    marginLeft: '0.5em', 
-    buttonDisplay: 'block'
-  }; 
+    marginLeft: '0.5em',
+    buttonDisplay: 'block',
+  };
 };
 
 export const Comment = (props) => {
-  const { id, projectId, type, postId, writeTime, writer, commentMentions, contents, setReplyOption} = props;
+  const {
+    id,
+    type,
+    writeTime,
+    writer,
+    commentMentions,
+    contents,
+    setReplyOption,
+  } = props;
   const classes = useStyles();
-  
+
   const [tagList, setTagList] = useState([]);
-  const [formVisibility, setFormVisibility] = useState('none');
-  
+
   useEffect(() => {
     setTagList(commentMentions);
   }, []);
@@ -144,7 +142,7 @@ export const Comment = (props) => {
         <Box display="inline-block" width="90%">
           <Header userId={writer.id} imgPath={writer.profileImgPath} />
           <Box>
-           <DateInfo dateTime = {writeTime} fs="11px" />
+            <DateInfo dateTime={writeTime} fs="11px" />
           </Box>
         </Box>
 
@@ -152,7 +150,7 @@ export const Comment = (props) => {
           <Box
             className={classes.icon}
             onClick={() => {
-              setReplyOption(id, writer.id); 
+              setReplyOption(id, writer.id);
             }}
           >
             <ReplyIcon color="action" />
@@ -174,33 +172,5 @@ export const Comment = (props) => {
         />
       </Box> */}
     </Box>
-  );
-};
-
-const FriendList = (props) => {
-  const classes = useStyles();
-  const { options, onClick, autoFocus } = props;
-
-  return (
-    <Container disableGutters>
-      <Box className={classes.friends}>
-        <MenuList autoFocusItem={autoFocus} variant="selectedMenu">
-          {options
-            ? options.map((item) => (
-              <MenuItem 
-                button
-                className="option-active"
-                key={item}
-                onClick={onClick}>
-                    <ListItemIcon>
-                      <Avatar />
-                    </ListItemIcon>
-                    <ListItemText primary={item} />
-                  </MenuItem>
-                )): null
-          }
-        </MenuList>
-      </Box>
-    </Container>
   );
 };

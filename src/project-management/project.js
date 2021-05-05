@@ -40,7 +40,8 @@ const Project = ({ match }) => {
 
   useEffect(() => {
     fetch(`http://3.15.16.150:8090/api/projects/${match.params.id}`)
-    .then((res) => res.json()).then((info) => setProject(info));
+      .then((res) => res.json())
+      .then((info) => setProject(info));
   }, []);
 
   const sections = [
@@ -57,10 +58,7 @@ const Project = ({ match }) => {
     <>
       <CssBaseline />
       <Link to={`/projects/${match.params.id}/new`}>
-        <Fab
-          className={classes.button}
-          color="primary"
-        >
+        <Fab className={classes.button} color="primary">
           <EditIcon />
         </Fab>
       </Link>

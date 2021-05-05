@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-  Grid,
-  Typography,
-} from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import { Lock, LockOpen } from '@material-ui/icons';
 
 const CommentModifier = ({ isCommentPublic, updateIsCommentPublic }) => (
@@ -20,9 +17,7 @@ const CommentModifier = ({ isCommentPublic, updateIsCommentPublic }) => (
             <Lock />
           </Grid>
           <Grid item>
-            <Typography>
-              내부 멤버만 댓글 작성
-            </Typography>
+            <Typography>내부 멤버만 댓글 작성</Typography>
           </Grid>
         </Grid>
       </Grid>
@@ -39,9 +34,7 @@ const CommentModifier = ({ isCommentPublic, updateIsCommentPublic }) => (
             <LockOpen />
           </Grid>
           <Grid item>
-            <Typography>
-              외부인도 댓글 작성
-            </Typography>
+            <Typography>외부인도 댓글 작성</Typography>
           </Grid>
         </Grid>
       </Grid>

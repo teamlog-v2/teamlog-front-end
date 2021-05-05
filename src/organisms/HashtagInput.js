@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  Grid,
-} from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import styled from 'styled-components';
 import { isDuplicateData } from '../utils';
 
@@ -39,10 +37,12 @@ const HashtagInput = ({ hashtags, updateHashtags }) => {
     const { keyCode, target } = event;
     const { value } = target;
 
-    if (keyCode === 8 && value === '') { // backspace
-        event.preventDefault();
-        deleteHashtag(hashtags.length - 1, 1);
-    } else if (keyCode === 13) { // enter
+    if (keyCode === 8 && value === '') {
+      // backspace
+      event.preventDefault();
+      deleteHashtag(hashtags.length - 1, 1);
+    } else if (keyCode === 13) {
+      // enter
       const newHashtags = [...hashtags];
       if (value === '') return;
       if (isDuplicateData(hashtags, value)) {
@@ -59,26 +59,32 @@ const HashtagInput = ({ hashtags, updateHashtags }) => {
     <Grid container item>
       <Grid container direction="row" spacing={1}>
         {hashtags.length > 0
-            ? hashtags.map((item, index) => (
-              <Grid item>
-                <StyledChip
-                  key={index}
-                  type="text"
-                  value={item}
-                  color="primary"
-                  readOnly
-                  onClick={() => {
+          ? hashtags.map((item, index) => (
+            <Grid item>
+              <StyledChip
+                key={index}
+                type="text"
+                value={item}
+                color="primary"
+                readOnly
+                onClick={() => {
                     handleClick(index);
                   }}
-                />
-              </Grid>
-            )) : null }
+              />
+            </Grid>
+            ))
+          : null}
         <Grid item>
-          <StyledChip isInput type="text" onKeyDown={handleInput} color="primary" />
+          <StyledChip
+            isInput
+            type="text"
+            onKeyDown={handleInput}
+            color="primary"
+          />
         </Grid>
       </Grid>
     </Grid>
-    );
+  );
 };
 
 export default HashtagInput;

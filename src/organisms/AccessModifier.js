@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-  Grid,
-  Typography,
-} from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import { Lock, LockOpen } from '@material-ui/icons';
 
 const AccessModifier = ({ isPostPublic, updateIsPostPublic }) => (
@@ -20,9 +17,7 @@ const AccessModifier = ({ isPostPublic, updateIsPostPublic }) => (
             <Lock />
           </Grid>
           <Grid item>
-            <Typography>
-              내부 멤버만
-            </Typography>
+            <Typography>내부 멤버만</Typography>
           </Grid>
         </Grid>
       </Grid>
@@ -39,9 +34,7 @@ const AccessModifier = ({ isPostPublic, updateIsPostPublic }) => (
             <LockOpen />
           </Grid>
           <Grid item>
-            <Typography>
-              외부에도 공개
-            </Typography>
+            <Typography>외부에도 공개</Typography>
           </Grid>
         </Grid>
       </Grid>
