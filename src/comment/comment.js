@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   Box,
   Chip,
@@ -12,6 +12,7 @@ import {
 import ReplyIcon from '@material-ui/icons/Reply';
 import UserInfo from '../post-management/user';
 import { DateInfo } from '../post-management/datetime';
+import CommentForm from './commentform';
 
 const useStyles = makeStyles(() => ({
   more: {
@@ -119,22 +120,31 @@ const CheckRoot = (type) => {
 export const Comment = (props) => {
   const {
     id,
+    projectId,
+    postId,
     type,
     writeTime,
     writer,
     commentMentions,
+    renewCommentList,
     contents,
-    setReplyOption,
   } = props;
   const classes = useStyles();
 
   const [tagList, setTagList] = useState([]);
+  const [formVisibility, setFormVisibility] = useState([]);
 
   useEffect(() => {
     setTagList(commentMentions);
+    setFormVisibility('none');
   }, []);
 
   const commentStyle = CheckRoot(type);
+
+  const RenewCommentList = useCallback(async () => {
+    renewCommentList();
+    setFormVisibility('none');
+  });
 
   return (
     <Box className={classes.comment}>
@@ -150,7 +160,11 @@ export const Comment = (props) => {
           <Box
             className={classes.icon}
             onClick={() => {
-              setReplyOption(id, writer.id);
+              if (formVisibility === 'none') {
+                setFormVisibility('block');
+              } else {
+                setFormVisibility('none');
+              }
             }}
           >
             <ReplyIcon color="action" />
@@ -163,14 +177,14 @@ export const Comment = (props) => {
         </Box>
       </Box>
 
-      {/* <Box display={formVisibility}>
+      <Box display={formVisibility}>
         <CommentForm
-            parentCommentId={id}
-            projectId={projectId}
-            postId={postId}
-            setCommentList = {SetCommentList}
+          parentCommentId={id}
+          projectId={projectId}
+          postId={postId}
+          renewCommentList={RenewCommentList} // 함수 하나 필요할 듯
         />
-      </Box> */}
+      </Box>
     </Box>
   );
 };

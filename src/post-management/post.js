@@ -22,7 +22,7 @@ import { Menu } from '@material-ui/icons';
 import { Avatar, Button, Chip, Grid } from '@material-ui/core';
 
 import FileList from './fileList';
-import { CommentList } from '../comment/commentlist';
+import CommentList from '../comment/commentlist';
 import UserInfo from './user';
 import LikerCounter from './liker';
 import { Media } from './media';

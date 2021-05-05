@@ -67,7 +67,7 @@ const PostForm = (props) => {
 
       latitude: location.latitude,
       longitude: location.longitude,
-      hashtags: hashtags,
+      hashtags,
     };
 
     formData.append(
