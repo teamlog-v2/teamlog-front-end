@@ -25,11 +25,27 @@ export const CreateComment = async (
 };
 
 export const GetComment = async (postId) => {
-  let response = [];
-  response = await fetch(
-    `http://3.15.16.150:8090/api/comments/${postId}`,
+  const response = await fetch(
+    `http://3.15.16.150:8090/api/posts/${postId}/parent-comments/`,
   ).then((res) => res.json());
   return response;
 };
 
-export const DeleteComment = () => {};
+export const GetChildComment = async (commentId) => {
+  const response = await fetch(
+    `http://3.15.16.150:8090/api/comments/${commentId}/child-comments`,
+  ).then((res) => res.json());
+  return response;
+};
+
+export const DeleteComment = async (commentId) => {
+  const status = await fetch(
+    `http://3.15.16.150:8090/api/comments/${commentId}`, { method: 'DELETE' },
+    ).then((res) => {
+      if (res.status === 200) {
+      return true;
+    }
+      return false;
+    }); // 예외처리를 위한 틀
+    return status;
+};

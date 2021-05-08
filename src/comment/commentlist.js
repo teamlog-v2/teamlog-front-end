@@ -4,16 +4,20 @@ import {
   useState,
   Fragment,
   useCallback,
+  // useRef,
 } from 'react';
+import ChildCommentList from './childcommentlist';
 import { Comment } from './comment';
 import { GetComment } from './commentapi';
 import CommentForm from './commentform';
 
 const CommentList = ({ projectId, postId }) => {
+  // const childRef = useRef(); // 대댓 리스트 갱신을 위한 ref
   const [commentList, setCommentList] = useState([]);
 
   const RenewCommentList = useCallback(async () => {
     setCommentList(await GetComment(postId));
+    // childRef.current.SetChildCommentList();
   });
 
   useEffect(async () => {
@@ -22,9 +26,8 @@ const CommentList = ({ projectId, postId }) => {
 
   return (
     <>
-      {commentList
-        ? commentList.map((item) => {
-            const childCommentList = item.childComments;
+      {commentList.content
+        ? commentList.content.map((item) => {
             return (
               <>
                 <Comment
@@ -36,23 +39,16 @@ const CommentList = ({ projectId, postId }) => {
                   postId={postId}
                   writeTime={item.writeTime}
                   renewCommentList={RenewCommentList}
+                  commentList={commentList}
                   type="parent"
                 />
-                {childCommentList
-                  ? childCommentList.map((childItem) => {
-                      return (
-                        <Comment
-                          id={childItem.id}
-                          contents={childItem.contents}
-                          writer={childItem.writer}
-                          commentMentions={childItem.commentMentions}
-                          postId={postId}
-                          writeTime={childItem.writeTime}
-                          type="child"
-                        />
-                      );
-                    })
-                  : []}
+                <ChildCommentList
+                  projectId={projectId}
+                  postId={postId}
+                  commentId={item.id}
+                  // ref={childRef}
+                  commentList={commentList}
+                />
               </>
             );
           })

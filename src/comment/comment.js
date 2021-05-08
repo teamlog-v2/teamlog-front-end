@@ -10,9 +10,11 @@ import {
 } from '@material-ui/core/styles';
 
 import ReplyIcon from '@material-ui/icons/Reply';
+import CloseIcon from '@material-ui/icons/Close';
 import UserInfo from '../post-management/user';
 import { DateInfo } from '../post-management/datetime';
 import CommentForm from './commentform';
+import { DeleteComment } from './commentapi';
 
 const useStyles = makeStyles(() => ({
   more: {
@@ -30,8 +32,13 @@ const useStyles = makeStyles(() => ({
     // display='inline-block' right='0px' width='10%' textAlign='right'
     display: 'inline-block',
     right: '0px',
-    width: '10%',
+    width: '30%',
     textAlign: 'right',
+  },
+  userInfo: {
+    width: '70%',
+    display: 'inline-block',
+    backgroundColor: 'rgb(245, 245, 245)',
   },
   icon: {
     cursor: 'pointer',
@@ -55,35 +62,26 @@ const Content = (props) => {
   return (
     <Grid container direction="row" spacing={1}>
       {stringSplit
-        ? stringSplit.map((item) => {
+        ? stringSplit.map((string) => {
             if (
-              item.charAt(0) === '@'
-              && tagList.includes(item.split('@')[1])
+              string.charAt(0) === '@'
+              && tagList.includes(string.split('@')[1])
             ) {
               return (
                 <Grid item>
                   <Chip
                     className="tags"
-                    label={item.split('@')[1]}
+                    label={string.split('@')[1]}
                     size="small"
                     color="primary"
                   />
                 </Grid>
               );
             }
-            return <Box display="inline-block"> {`${item}`}&nbsp; </Box>;
+            return <Box display="inline-block"> {`${string}`}&nbsp; </Box>;
           })
         : []}
     </Grid>
-  );
-};
-
-const Header = (props) => {
-  const { userId, imgPath } = props;
-  return (
-    <Box>
-      <UserInfo userId={userId} imgPath={imgPath} />
-    </Box>
   );
 };
 
@@ -128,6 +126,7 @@ export const Comment = (props) => {
     commentMentions,
     renewCommentList,
     contents,
+    commentList,
   } = props;
   const classes = useStyles();
 
@@ -137,7 +136,7 @@ export const Comment = (props) => {
   useEffect(() => {
     setTagList(commentMentions);
     setFormVisibility('none');
-  }, []);
+  }, [commentList]);
 
   const commentStyle = CheckRoot(type);
 
@@ -149,29 +148,46 @@ export const Comment = (props) => {
   return (
     <Box className={classes.comment}>
       <Box marginLeft={commentStyle.marginLeft}>
-        <Box display="inline-block" width="90%">
-          <Header userId={writer.id} imgPath={writer.profileImgPath} />
+        <Box>
+          <Box>
+            <Box className={classes.userInfo}>
+              <UserInfo userId={writer.id} imgPath={writer.profileImgPath} />
+            </Box>
+            <Box className={classes.reply} visibility={commentStyle.buttonDisplay}>
+              <Box
+                className={classes.icon}
+                onClick={() => {
+                  if (formVisibility === 'none') {
+                    setFormVisibility('block');
+                  } else {
+                    setFormVisibility('none');
+                  }
+                }}
+              >
+                <ReplyIcon color="action" fontSize="small" />
+              </Box>
+              <Box
+                className={classes.icon}
+                onClick={async () => {
+                  if (window.confirm('정말로 삭제하시겠습니까?')) {
+                    const status = await DeleteComment(id);
+                    if (status) {
+                      renewCommentList();
+                    }
+                  }
+                }}
+              >
+                <CloseIcon color="action" fontSize="small" />
+              </Box>
+            </Box>
+          </Box>
+          {/* <Header userId={writer.id} imgPath={writer.profileImgPath} /> */}
           <Box>
             <DateInfo dateTime={writeTime} fs="11px" />
           </Box>
         </Box>
-
-        <Box className={classes.reply} visibility={commentStyle.buttonDisplay}>
-          <Box
-            className={classes.icon}
-            onClick={() => {
-              if (formVisibility === 'none') {
-                setFormVisibility('block');
-              } else {
-                setFormVisibility('none');
-              }
-            }}
-          >
-            <ReplyIcon color="action" />
-          </Box>
-        </Box>
         <Box>
-          <Box display="inline-block" width="90%">
+          <Box display="inline-block">
             <Content contents={contents} tagList={tagList} />
           </Box>
         </Box>
