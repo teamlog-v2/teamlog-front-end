@@ -275,8 +275,6 @@ export const Post = (props) => {
     setTagList(postContents.hashtags);
   }, []);
 
-  console.log(postContents);
-
   return (
     <>
       <Route exact path="/users/:userId" component={MyPage} />
@@ -350,7 +348,7 @@ export const Post = (props) => {
           <Container disableGutters>
             <Box className={classes.content}>
               <Typography>
-                <pre>{postContents.contents}</pre>
+                <p style={{ whiteSpace: 'pre-wrap' }}>{postContents.contents}</p>
               </Typography>
             </Box>
           </Container>
