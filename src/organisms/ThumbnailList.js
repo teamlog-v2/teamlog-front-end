@@ -26,8 +26,10 @@ const ThumbnailList = ({ files, updateFiles }) => {
     if (!destination) { // 삭제
       const current = document.querySelectorAll('.media')[index];
       current.style.border = 'none';
-      const newFiles = files.filter((file, i) => index !== i);
-      // URL.revokeObjectURL(newFiles[index].url); // blob url 해제
+      const newFiles = files.filter((file, i) => {
+        if (index === i) URL.revokeObjectURL(file.url); // blob url 해제
+        return index !== i;
+      });
       updateFiles(newFiles);
       return;
     }
