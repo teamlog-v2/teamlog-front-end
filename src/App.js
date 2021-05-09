@@ -8,6 +8,7 @@ import PostFormPage from './pages/PostFormPage';
 import ErrorPage from './pages/ErrorPage';
 import MapPage from './map/MapPage';
 import SignUp from './user/SignUp';
+import SignIn from './user/SignIn';
 
 const App = () => {
   return (
@@ -15,12 +16,12 @@ const App = () => {
       <ErrorProvider>
         <Switch>
           <Route exact path="/" component={MapPage} />
-          {/* <Route path="/task" component={TaskContainer} /> */}
           <Route path="/project" component={ProjectListContainer} />
           <Route exact path="/projects/:id" component={Project} />
           <Route exact path="/users/:userId" component={MyPage} />
           <Route exact path="/projects/:id/new" component={PostFormPage} />
           <Route exact path="/signup" component={SignUp} />
+          <Route exact path="/login" component={SignIn} />
           <Route>
             <ErrorPage error="404" />
           </Route>
