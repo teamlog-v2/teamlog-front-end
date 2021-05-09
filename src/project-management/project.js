@@ -39,7 +39,7 @@ const Project = ({ match }) => {
   const [project, setProject] = useState([]);
 
   useEffect(() => {
-    fetch(`http://3.15.16.150:8090/api/projects/${match.params.id}`)
+    fetch(`/api/projects/${match.params.id}`)
     .then((res) => res.json()).then((info) => setProject(info));
   }, []);
 
