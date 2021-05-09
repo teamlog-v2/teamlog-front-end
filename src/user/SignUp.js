@@ -77,7 +77,7 @@ const SignUp = () => {
   }, []);
 
   if (isLogin) {
-    return <Redirect to="/" />;
+    return <Redirect to="/main" />;
   }
 
   if (isSuccess) {

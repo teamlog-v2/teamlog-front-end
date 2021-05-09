@@ -69,7 +69,7 @@ const SignIn = () => {
   }, []);
 
   if (isLogin) {
-    return <Redirect to="/" />;
+    return <Redirect to="/main" />;
   }
 
   if (!isLoaded) {

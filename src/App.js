@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, BrowserRouter } from 'react-router-dom';
+import { Switch, Route, BrowserRouter, Redirect } from 'react-router-dom';
 import ProjectListContainer from './project/ProjectListContainer';
 import Project from './project-management/project';
 import MyPage from './user/MyPage';
@@ -15,7 +15,8 @@ const App = () => {
     <BrowserRouter>
       <ErrorProvider>
         <Switch>
-          <Route exact path="/" component={MapPage} />
+          <Redirect exact path="/" to="/login" />
+          <Route exact path="/main" component={MapPage} />
           <Route path="/project" component={ProjectListContainer} />
           <Route exact path="/projects/:id" component={Project} />
           <Route exact path="/users/:userId" component={MyPage} />
