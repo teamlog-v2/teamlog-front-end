@@ -1,4 +1,4 @@
-// import { Post } from './post';
+  // import { Post } from './post';
 // import data from './datalist';
 import { Comment } from './comment';
 import { Button, ListItemIcon, ListItemText } from '@material-ui/core';

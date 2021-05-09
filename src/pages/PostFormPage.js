@@ -10,6 +10,7 @@ import MediaUploader from '../organisms/MediaUploader';
 import AttachmentUploader from '../organisms/AttachmentUploader';
 import AttachmentList from '../organisms/AttachmentList';
 import CommentModifier from '../organisms/CommentModifier';
+import ImageResize from 'image-resize';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,7 +38,6 @@ const PostForm = (props) => {
 
   const classes = useStyles();
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isFormLoaded, setIsFormLoaded] = useState(false);
   const [isPostPublic, setIsPostPublic] = useState(false);
   const [isCommentPublic, setIsCommentPublic] = useState(false);
   const [address, setAddress] = useState('');
@@ -46,26 +46,20 @@ const PostForm = (props) => {
   const [hashtags, setHashtags] = useState([]); // tag_list
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [attachedFiles, setAttachedFiles] = useState([]);
+  const [isFormLoaded, setIsFormLoaded] = useState(false);
   const [recommendedHashtags, setRecommendedHashtags] = useState([]);
 
   const handleSubmit = async () => {
     const formData = new FormData();
-    uploadedFiles.forEach(({ file }) => {
-      formData.append('media', file);
-    });
-    attachedFiles.forEach(({ file }) => {
-      formData.append('files', file);
-    });
 
     const data = {
       projectId: id,
       contents: contentRef.current.value,
-      writerId: 'jduckling1024',
       accessModifier: isPostPublic ? 'PUBLIC' : 'PRIVATE',
       commentModifier: isPostPublic ? 'PUBLIC' : 'PRIVATE',
       latitude: location.latitude,
       longitude: location.longitude,
-      hashtags: hashtags,
+      hashtags,
     };
 
     formData.append(
@@ -73,37 +67,54 @@ const PostForm = (props) => {
       new Blob([JSON.stringify(data)], { type: 'application/json' }),
     );
 
-    setIsFormLoaded(true);
-    await fetch('/api/posts', {
-      method: 'POST',
-      body: formData,
-      headers: {},
-    })
-      .then((res) => {
-        // spring으로부터 json형태의 response를 받음.
-        console.log(res);
-        setIsFormLoaded(false); // 버튼 활성화
-        if (res.status === 201) {
-          // get res with http status code
-          console.log('성공적으로 등록');
-          uploadedFiles.forEach((file) => {
-            URL.revokeObjectURL(file.url);
-          })
-          props.history.push(`/projects/${id}`);
-        } else {
-          console.log('에러 감지');
-        }
-      })
-      .catch((error) => {
-        // 요청이 비정상적으로 처리
-        console.log(error);
+    attachedFiles.forEach(({ file }) => {
+      formData.append('files', file);
+    });
+
+    // 이미지 압축
+    const imageResize = new ImageResize({
+      format: 'jpg', // png also
+      outputType: 'blob',
+      quality: 1,
+      width: 500,
+    });
+
+    try {
+      // promise배열 결과와 uploadedFiles결과 대응
+      const blobs = await Promise.all(uploadedFiles.map(({ url }) => imageResize.play(url)));
+      uploadedFiles.forEach(({ file }, index) => {
+        const blobToFile = new File([blobs[index]], file.name, { type: file.type });
+        formData.append('media', blobToFile);
       });
+    } catch (error) {
+      console.log(error);
+      return;
+    }
+    setIsFormLoaded(true);
+
+    try {
+      const res = await fetch('/api/posts', {
+        method: 'POST',
+        body: formData,
+        headers: {},
+      });
+      setIsFormLoaded(false); // 버튼 활성화
+      if (res.status === 201) {
+        console.log('성공적으로 등록');
+        uploadedFiles.forEach((file) => {
+          URL.revokeObjectURL(file.url);
+        });
+        props.history.push(`/projects/${id}`);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
     setTimeout(() => {
       setRecommendedHashtags([
-        // fetch로 해시태그 추천 결과
+        // hashtag 추천 api 필요
         {
           key: '1',
           name: '스토리보드',
@@ -234,7 +245,7 @@ const PostForm = (props) => {
             </Grid>
             <Grid />
             <PostCreator
-              updateIsFormUploaded={setIsFormLoaded}
+              isFormLoaded={isFormLoaded}
               handleSubmit={handleSubmit}
             />
           </Grid>
