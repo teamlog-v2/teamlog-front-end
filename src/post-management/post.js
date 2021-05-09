@@ -2,7 +2,6 @@ import { useMediaQuery } from 'react-responsive';
 import Carousel from 'react-material-ui-carousel';
 import './carousel-theme.css';
 import './carousel.css';
-import './hrefStyle.css';
 import RoomIcon from '@material-ui/icons/Room';
 import Grow from '@material-ui/core/Grow';
 import Popper from '@material-ui/core/Popper';
@@ -22,12 +21,14 @@ import { Menu } from '@material-ui/icons';
 import { Avatar, Button, Chip, Grid } from '@material-ui/core';
 
 import FileList from './fileList';
-import CommentList from '../comment/commentlist';
+import { CommentList } from './commentlist';
 import UserInfo from './user';
 import LikerCounter from './liker';
 import { Media } from './media';
 import { DateInfo } from './datetime';
-import { CommentCounter } from '../comment/comment';
+import MyPage from '../user/MyPage';
+import { Comment, CommentCounter, MoreComment } from './comment';
+import { Route } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -223,37 +224,34 @@ const MediaList = ({ media }) => {
   const isTablet = useMediaQuery({
     query: '(min-width:768px) and (max-width:1023px)',
   });
+  const isMobile = useMediaQuery({
+    query: '(max-width:767px)',
+  });
 
-  let size = null;
-
-  if (isPc) {
-    size = '60em';
-  } else if (isTablet) {
-    size = '45em';
-  } else {
-    size = '30em';
-  }
-
+  let size = isPc ? '60em' : isTablet ? '45em' : '30em';
   return (
     <>
       <Grid container direction="row-reverse">
-        <Chip className={classes.chip} label={`${curIndex}/${media.length}`} />
+        <Chip
+          className={classes.chip}
+          label={`${curIndex}/${media.length}`}
+        />
       </Grid>
       <Box id="mediaBox" textAlign="center">
         <Carousel
-          onChange={(index) => {
+          onChange={(index, active) => {
             setCurIndex(index + 1);
           }}
           autoPlay={false}
-          animation="slide"
+          animation='slide'
           cycleNavigation={false}
-          indicatorIconButtonProps={{}}
-          activeIndicatorIconButtonProps={{
-            style: {
-              color: '#C16AF5', // 2
-            },
+          indicatorIconButtonProps={{
           }}
-        >
+          activeIndicatorIconButtonProps={{
+              style: {
+                  color: '#C16AF5' // 2
+              }
+          }}>
           {media.map((item, i) => (
             <Box className={classes.media} height={size}>
               <Media key={i} file={item} />
@@ -268,10 +266,18 @@ const MediaList = ({ media }) => {
 export const Post = (props) => {
   const { postContents, maxWidth } = props;
 
+  const [tagList, setTagList] = useState([]);
+  const [commentList, setCommentList] = useState([]);
+
   const classes = useStyles();
+
+  useEffect(() => {
+    setTagList(postContents.hashtags);
+  }, []);
 
   return (
     <>
+      <Route exact path="/users/:userId" component={MyPage} />
       <Container
         className={classes.root}
         component="main"
@@ -284,17 +290,15 @@ export const Post = (props) => {
             <Box bgcolor="rgb(245, 212, 255)">
               <Box className={classes.header}>
                 <Box display="inline-block" marginLeft="0.25em">
-                  <a href={`/users/${postContents.writer.id}`}>
-                    <Box>
-                      <UserInfo
-                        userId={postContents.writer.id}
-                        imgWidth="30px"
-                        imgHeight="30px"
-                        imgPath={postContents.writer.profileImgPath}
-                        fontSize="16px"
-                      />
-                    </Box>
-                  </a>
+                  <Box>
+                    <UserInfo
+                      userId={postContents.writer.name}
+                      imgWidth="30px"
+                      imgHeight="30px"
+                      imgPath={postContents.writer.profileImgPath}
+                      fontSize="16px"
+                    />
+                  </Box>
                   <Box>
                     <DateInfo dateTime={postContents.writeTime} fs="12px" />
                   </Box>
@@ -343,7 +347,9 @@ export const Post = (props) => {
           )}
           <Container disableGutters>
             <Box className={classes.content}>
-              <Typography>{postContents.contents}</Typography>
+              <Typography>
+                <p style={{ whiteSpace: 'pre-wrap' }}>{postContents.contents}</p>
+              </Typography>
             </Box>
           </Container>
           <Container disableGutters>
@@ -362,7 +368,7 @@ export const Post = (props) => {
               postId={postContents.id}
             />
           </Container>
-          <Container disableGutters />
+          <Container disableGutters></Container>
         </Box>
       </Container>
     </>
@@ -399,54 +405,45 @@ export const CompressedPost = (props) => {
           margin: '16px',
         }}
       >
-        <Carousel
-          useKeyboardArrows
-          autoPlay={false}
-          showStatus={false}
-          showThumbs={false}
-        >
-          {post.media.map((file) => (
-            <Box
-              key={file.fileDownloadUri}
-              className={classes.media}
-              height="30em"
-            >
-              <Media file={file} />
-            </Box>
-          ))}
-        </Carousel>
+      <Carousel useKeyboardArrows autoPlay={false} showStatus={false} showThumbs={false}>
+        {post.media.map((file) => (
+          <Box key={file.fileDownloadUri} className={classes.media} height={'30em'}>
+            <Media file={file} />
+          </Box>
+        ))}
+      </Carousel>
 
-        {/* 날짜 */}
-        <DateInfo dateTime={post.writeTime} fs="12px" />
+      {/* 날짜 */}
+      <DateInfo dateTime={post.writeTime} fs="12px" />
 
-        {/* 해쉬태그들 */}
-        <div style={{ display: 'flex', gap: '8px' }}>
-          {post.hashtags.map((item) => {
-            return (
-              <Chip
-                className="tags"
-                key={item}
-                label={`#${item}`}
-                variant="outlined"
-                size="small"
-                color="primary"
-              />
-            );
-          })}
-        </div>
+      {/* 해쉬태그들 */}
+      <div style={{ display: 'flex', gap: '8px' }}>
+        {post.hashtags.map((item, index) => {
+          return (
+            <Chip
+              className="tags"
+              key={item}
+              label={`#${item}`}
+              variant="outlined"
+              size="small"
+              color="primary"
+            />
+          );
+        })}
+      </div>
 
-        {/* 본문 */}
-        <Typography>{post.contents}</Typography>
+      {/* 본문 */}
+      <Typography>{post.contents}</Typography>
 
-        {/* 첨부 파일 및 좋아요 댓글 개수 */}
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <FileList className={classes.file} files={post.files} />
-          <LikerCounter count={post.likeCount} />
-          <CommentCounter count={post.commentCount} />
-        </div>
+      {/* 첨부 파일 및 좋아요 댓글 개수 */}
+      <div style={{ display: 'flex', gap: '8px' }}>
+        <FileList className={classes.file} files={post.files} />
+        <LikerCounter count={post.likeCount} />
+        <CommentCounter count={post.commentCount} />
+      </div>
 
-        {/* 댓글 */}
-        {/* <CommentList projectId={post.project.id} postId={post.id} /> */}
+      {/* 댓글 */}
+      {/* <CommentList projectId={post.project.id} postId={post.id} /> */}
       </div>
     </>
   );

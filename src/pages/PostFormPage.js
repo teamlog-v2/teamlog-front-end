@@ -75,8 +75,6 @@ const PostForm = (props) => {
       new Blob([JSON.stringify(data)], { type: 'application/json' }),
     );
 
-    console.log(data);
-
     setIsFormLoaded(true);
     await fetch('/api/posts', {
       method: 'POST',
@@ -90,6 +88,9 @@ const PostForm = (props) => {
         if (res.status === 201) {
           // get res with http status code
           console.log('성공적으로 등록');
+          uploadedFiles.forEach((file) => {
+            URL.revokeObjectURL(file.url);
+          })
           props.history.push(`/projects/${id}`);
         } else {
           console.log('에러 감지');

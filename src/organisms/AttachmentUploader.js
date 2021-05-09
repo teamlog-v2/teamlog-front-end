@@ -1,26 +1,16 @@
 import React, { useRef, useState } from 'react';
 import { Grid, Button } from '@material-ui/core';
 import Attachment from '@material-ui/icons/Attachment';
+import { isValidSize } from '../utils';
 
 const AttachUploader = ({ files, updateFiles }) => {
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef(null);
 
-  const isValidSize = (newFiles) => {
-    let totalSize = 0;
-    files.forEach(({ size }) => {
-      totalSize += size / 1000;
-    });
-    newFiles.forEach(({ size }) => {
-      totalSize += size / 1000;
-    });
-    return totalSize <= 10000;
-  };
-
   const handleInputChange = (event) => {
     const uploadedFiles = [...event.target.files];
     const newFiles = [...files];
-    if (!isValidSize(newFiles)) {
+    if (!isValidSize(files, uploadedFiles, 10000)) {
       alert('첨부파일 최대 용량은 10MB 입니다.');
       return;
     }
@@ -42,7 +32,7 @@ const AttachUploader = ({ files, updateFiles }) => {
           updateFiles(newFiles);
         }
       };
-      fileReader.readAsDataURL(file); // 동기
+      fileReader.readAsDataURL(file);
     });
   };
 

@@ -4,14 +4,22 @@ import {
   Typography,
   Container,
   makeStyles,
+  Button,
   Divider,
   AppBar,
   Tab,
 } from '@material-ui/core';
 import { TabContext, TabList, TabPanel } from '@material-ui/lab';
 import React, { useEffect, useState } from 'react';
+import { Redirect } from 'react-router-dom';
 import ProjectListContainer from '../project/ProjectListContainer';
-import { getUser } from './UserService';
+import UserList from './UserList';
+import {
+  logout,
+  getUser,
+  getUserFollower,
+  getUserFollowing,
+} from './userService';
 
 const useStyles = makeStyles((theme) => ({
   large: {
@@ -32,6 +40,7 @@ const MyPage = ({ match }) => {
   const classes = useStyles();
   const [isLoaded, setIsLoaded] = useState(false);
   const [value, setValue] = useState('1');
+  const [isLogin, setIsLogin] = useState(true);
   const [user, setUser] = useState({
     id: '',
     name: '',
@@ -44,6 +53,9 @@ const MyPage = ({ match }) => {
       let userInfo;
       try {
         const response = await getUser(match.params.userId);
+        if (response.status === 401) {
+          setIsLogin(false);
+        }
         userInfo = await response.json();
       } catch (err) {
         alert(err);
@@ -58,8 +70,25 @@ const MyPage = ({ match }) => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  const handleLogout = async () => {
+    await logout();
+    setIsLogin(false);
+  };
+
+  if (!isLogin) {
+    return <Redirect to="/login" />;
+  }
+
+  if (!isLoaded) {
+    return <div />;
+  }
+
   return (
     <Container component="main" maxWidth="md">
+      <Button variant="outlined" onClick={handleLogout}>
+        로그아웃
+      </Button>
       <Grid container spacing={2}>
         <Grid item xs={12} align="center">
           <Avatar className={classes.large} src={user.profileImgPath} />
@@ -83,12 +112,20 @@ const MyPage = ({ match }) => {
           <TabList onChange={handleChange}>
             <Tab label="프로젝트" value="1" />
             <Tab label="팀" value="2" />
+            <Tab label="팔로워" value="3" />
+            <Tab label="팔로잉" value="4" />
           </TabList>
         </AppBar>
         <TabPanel value="1" className={classes.tab}>
-          {isLoaded ? <ProjectListContainer userId={user.id} /> : null}
+          <ProjectListContainer userId={user.id} />
         </TabPanel>
         <TabPanel value="2">없음</TabPanel>
+        <TabPanel value="3">
+          <UserList userId={user.id} fetchData={getUserFollower} />
+        </TabPanel>
+        <TabPanel value="4">
+          <UserList userId={user.id} fetchData={getUserFollowing} />
+        </TabPanel>
       </TabContext>
     </Container>
   );

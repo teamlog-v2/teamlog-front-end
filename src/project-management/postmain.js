@@ -39,10 +39,6 @@ const useStyles = makeStyles((theme) => ({
   mainGrid: {
     marginTop: theme.spacing(3),
   },
-  partition: {
-    marginTop: '2.5em',
-    marginBottom: '2.5em',
-  },
 }));
 
 // posts order 로직 코드는 백엔드 api 결합이 불가능해보여서 제거함. 추후 다시 생성 요망.
@@ -51,29 +47,18 @@ const useStyles = makeStyles((theme) => ({
 // 2. posts 페이지네이션 api
 // 3. posts 정렬 api
 //
-const ProjectMain = () => {
+const PostMain = () => {
   const classes = useStyles();
   const projectId = useParams().id;
 
-  // 프로젝트의 해시태그들을 가져오기 위한 임시 처리, 백엔드 api 추가 시 대응 수정할 것
-  const [tempPosts, isHashtagsLoaded] = useFetchData(
-    `/api/posts/project/${projectId}`,
-  );
-  const hashtags = [];
-  (tempPosts || []).forEach((post) => {
-    // 중복된 해시태그 거르고 해시태그 추출
-    post.hashtags.forEach((name) => {
-      if (!hashtags.includes(name)) {
-        hashtags.push(name);
-      }
-    });
-  });
+  const [hashtags, isHashtagsLoaded] = useFetchData(`/api/projects/${projectId}/hashtags`);
 
   // posts를 선별 조회하기 위한 states
   const [selectedTags, setSelectedTags] = useState([]);
   const [keyword, setKeyword] = useState('');
 
   // fetch를 위한 url을 해시태그와 키워드 검색을 토대로 생성한다.
+
   let url = `/api/posts/project/${projectId}`;
   if (selectedTags.length !== 0) {
     url += `/hashtag/${selectedTags.map((index) => hashtags[index])}`;
@@ -83,6 +68,7 @@ const ProjectMain = () => {
 
   // posts fetch를 이 hook에서 처리한다.
   const { posts, isLoading: isPostsLoading, fetchPosts } = useFetchPosts(url);
+  console.log(posts);
 
   // 스크롤 감지
   useEffect(() => {
@@ -105,7 +91,6 @@ const ProjectMain = () => {
         fetchPosts();
       }
     };
-
     window.addEventListener('wheel', handleScroll);
     return () => {
       window.removeEventListener('wheel', handleScroll);
@@ -126,58 +111,59 @@ const ProjectMain = () => {
       <CssBaseline />
 
       <Container maxWidth="md">
-        <Grid className={classes.children} container direction="row-reverse">
-          <TextField
-            placeholder="검색어를 입력하세요."
-            InputProps={{
-              endAdornment: (
-                <InputAdornment>
-                  <Search />
-                </InputAdornment>
-              ),
-            }}
-            onChange={(event) => {
-              setKeyword(event.target.value);
-            }}
-          />
-        </Grid>
-        <Grid
-          className={classes.children}
-          item
-          container
-          direction="row"
-          xs={12}
-        >
-          <HashtagChooser
-            hashtags={hashtags}
-            selectedTags={selectedTags}
-            updateSelectedTags={(selected) => {
-              setSelectedTags(selected);
-            }}
-          />
-        </Grid>
-        <Container className={classes.partition} disableGutters>
-          <Typography>
-            {posts.length === 0 // 서버 대응 수정이 필요함
-              ? '검색된 게시물이 없습니다'
-              : `총 ?개의 검색된 게시물 중 ${posts.length}개`}
-          </Typography>
-
-          <Postlist posts={posts} />
-          <Grid
-            container
-            justify="center"
-            alignItems="center"
-            style={{ height: '20vh' }}
-          >
-            {isPostsLoading && (
-              <CircularProgress />
-            )}
+        <Grid container md={10} justify="center" direction="column" style={{ margin: '0 auto' }}>
+          <Grid className={classes.children} item container direction="row-reverse">
+            <TextField
+              placeholder="검색어를 입력하세요."
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment>
+                    <Search />
+                  </InputAdornment>
+                ),
+              }}
+              onChange={(event) => {
+                setKeyword(event.target.value);
+              }}
+            />
           </Grid>
-        </Container>
+          <Grid
+            className={classes.children}
+            item
+            container
+            direction="row"
+          >
+            <HashtagChooser
+              hashtags={hashtags}
+              selectedTags={selectedTags}
+              updateSelectedTags={(selected) => {
+                setSelectedTags(selected);
+              }}
+            />
+          </Grid>
+          <Grid className={classes.children} item>
+            <Typography>
+              {posts.length === 0 // 서버 대응 수정이 필요함 ok...
+                ? '검색된 게시물이 없습니다'
+                : `총 ?개의 검색된 게시물 중 ${posts.length}개`}
+            </Typography>
+
+            <Postlist posts={posts} />
+            <Grid
+              container
+              justify="center"
+              alignItems="center"
+              style={{ height: '20vh' }}
+            >
+              {isPostsLoading && (
+                <CircularProgress />
+              )}
+            </Grid>
+          </Grid>
+        </Grid>
       </Container>
     </>
   );
 };
 
-export default ProjectMain;
+export default PostMain;
