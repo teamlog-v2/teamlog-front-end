@@ -11,6 +11,7 @@ import {
 import { Skeleton } from '@material-ui/lab';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { follow, unfollow } from './userService';
 
 const useStyles = makeStyles(() => ({
   profileImg: {
@@ -20,7 +21,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const UserList = () => {
+const UserList = ({ userId, fetchData }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [users, setUsers] = useState([]);
   const classes = useStyles();
@@ -29,11 +30,9 @@ const UserList = () => {
     (async () => {
       let result;
       try {
-        const response = await fetch('/api/projects/1343/members', {
-          method: 'Get',
-          headers: { 'Content-Type': 'application/json' },
-        });
+        const response = await fetchData(userId);
         result = await response.json();
+        console.log(result);
       } catch (error) {
         setIsLoaded(false);
         return;
@@ -44,12 +43,30 @@ const UserList = () => {
   }, []);
 
   const followUser = (target) => {
-    const newUsers = users.map((user) => (user.id === target.id ? { ...user, isFollow: 1 } : user));
+    const newUsers = users.map((user) => (user.id === target.id ? { ...user, isFollow: true }
+                                                                 : user));
+    let result = null;
+    try {
+      const response = follow(target.id);
+      result = response.json();
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
     setUsers(newUsers);
   };
 
   const unfollowUser = (target) => {
-    const newUsers = users.map((user) => (user.id === target.id ? { ...user, isFollow: 0 } : user));
+    const newUsers = users.map((user) => (user.id === target.id ? { ...user, isFollow: false }
+                                                                  : user));
+    let result = null;
+    try {
+      const response = unfollow(target.id);
+      result = response.json();
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
     setUsers(newUsers);
   };
 
@@ -78,7 +95,7 @@ const UserList = () => {
                     </Link>
                   </Box>
                   <Box margin="10px" display="flex" alignItems="center">
-                    {user.isFollow === 1 ? (
+                    {user.isFollow === true ? (
                       <Button
                         size="small"
                         variant="outlined"
