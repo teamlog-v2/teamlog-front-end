@@ -20,15 +20,15 @@ import Container from '@material-ui/core/Container';
 import { Menu } from '@material-ui/icons';
 import { Avatar, Button, Chip, Grid } from '@material-ui/core';
 
+import { Route } from 'react-router';
 import FileList from './fileList';
-import { CommentList } from './commentlist';
+import CommentList from '../comment/commentlist';
 import UserInfo from './user';
 import LikerCounter from './liker';
 import { Media } from './media';
 import { DateInfo } from './datetime';
 import MyPage from '../user/MyPage';
-import { Comment, CommentCounter, MoreComment } from './comment';
-import { Route } from 'react-router';
+import { CommentCounter } from '../comment/comment';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -228,7 +228,15 @@ const MediaList = ({ media }) => {
     query: '(max-width:767px)',
   });
 
-  let size = isPc ? '60em' : isTablet ? '45em' : '30em';
+  let size = null;
+  if (isPc) {
+    size = '60em';
+  } else if (isTablet) {
+    size = '45em';
+  } else if (isMobile) {
+    size = '30em';
+  }
+
   return (
     <>
       <Grid container direction="row-reverse">
@@ -239,19 +247,20 @@ const MediaList = ({ media }) => {
       </Grid>
       <Box id="mediaBox" textAlign="center">
         <Carousel
-          onChange={(index, active) => {
+          onChange={(index) => {
             setCurIndex(index + 1);
           }}
           autoPlay={false}
-          animation='slide'
+          animation="slide"
           cycleNavigation={false}
           indicatorIconButtonProps={{
           }}
           activeIndicatorIconButtonProps={{
               style: {
-                  color: '#C16AF5' // 2
-              }
-          }}>
+                  color: '#C16AF5', // 2
+              },
+          }}
+        >
           {media.map((item, i) => (
             <Box className={classes.media} height={size}>
               <Media key={i} file={item} />
@@ -266,14 +275,7 @@ const MediaList = ({ media }) => {
 export const Post = (props) => {
   const { postContents, maxWidth } = props;
 
-  const [tagList, setTagList] = useState([]);
-  const [commentList, setCommentList] = useState([]);
-
   const classes = useStyles();
-
-  useEffect(() => {
-    setTagList(postContents.hashtags);
-  }, []);
 
   return (
     <>
@@ -368,7 +370,7 @@ export const Post = (props) => {
               postId={postContents.id}
             />
           </Container>
-          <Container disableGutters></Container>
+          <Container disableGutters />
         </Box>
       </Container>
     </>
@@ -405,20 +407,20 @@ export const CompressedPost = (props) => {
           margin: '16px',
         }}
       >
-      <Carousel useKeyboardArrows autoPlay={false} showStatus={false} showThumbs={false}>
-        {post.media.map((file) => (
-          <Box key={file.fileDownloadUri} className={classes.media} height={'30em'}>
-            <Media file={file} />
-          </Box>
+        <Carousel useKeyboardArrows autoPlay={false} showStatus={false} showThumbs={false}>
+          {post.media.map((file) => (
+            <Box key={file.fileDownloadUri} className={classes.media} height="30em">
+              <Media file={file} />
+            </Box>
         ))}
-      </Carousel>
+        </Carousel>
 
-      {/* 날짜 */}
-      <DateInfo dateTime={post.writeTime} fs="12px" />
+        {/* 날짜 */}
+        <DateInfo dateTime={post.writeTime} fs="12px" />
 
-      {/* 해쉬태그들 */}
-      <div style={{ display: 'flex', gap: '8px' }}>
-        {post.hashtags.map((item, index) => {
+        {/* 해쉬태그들 */}
+        <div style={{ display: 'flex', gap: '8px' }}>
+          {post.hashtags.map((item) => {
           return (
             <Chip
               className="tags"
@@ -430,20 +432,20 @@ export const CompressedPost = (props) => {
             />
           );
         })}
-      </div>
+        </div>
 
-      {/* 본문 */}
-      <Typography>{post.contents}</Typography>
+        {/* 본문 */}
+        <Typography>{post.contents}</Typography>
 
-      {/* 첨부 파일 및 좋아요 댓글 개수 */}
-      <div style={{ display: 'flex', gap: '8px' }}>
-        <FileList className={classes.file} files={post.files} />
-        <LikerCounter count={post.likeCount} />
-        <CommentCounter count={post.commentCount} />
-      </div>
+        {/* 첨부 파일 및 좋아요 댓글 개수 */}
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <FileList className={classes.file} files={post.files} />
+          <LikerCounter count={post.likeCount} />
+          <CommentCounter count={post.commentCount} />
+        </div>
 
-      {/* 댓글 */}
-      {/* <CommentList projectId={post.project.id} postId={post.id} /> */}
+        {/* 댓글 */}
+        {/* <CommentList projectId={post.project.id} postId={post.id} /> */}
       </div>
     </>
   );

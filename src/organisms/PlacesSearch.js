@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
-import {
-  Grid,
-  Typography,
-  Dialog,
-} from '@material-ui/core';
+import { Grid, Typography, Dialog } from '@material-ui/core';
 import LocationOn from '@material-ui/icons/LocationOn';
-import PlaceSearchApi from './PlacesSearchApi';
+// eslint-disable-next-line import/no-named-as-default
+import PlaceSearchApi from './PlacesSearchApi'; // 왜 빨간 줄이지...
 
 const SimpleDialog = (props) => {
   const { onClose, open, updateAddress, updateLocation } = props;
@@ -41,9 +38,7 @@ const PlacesSearch = ({ updateLocation, updateAddress }) => {
             <LocationOn />
           </Grid>
           <Grid item>
-            <Typography>
-              어디를 방문하셨나요?
-            </Typography>
+            <Typography>어디를 방문하셨나요?</Typography>
           </Grid>
         </Grid>
       </Grid>
@@ -54,7 +49,7 @@ const PlacesSearch = ({ updateLocation, updateAddress }) => {
         updateAddress={updateAddress}
       />
     </>
-    );
+  );
 };
 
 export default PlacesSearch;

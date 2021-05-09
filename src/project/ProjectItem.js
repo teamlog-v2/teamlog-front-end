@@ -6,10 +6,7 @@ import { ManufactureDate } from '../post-management/datetime';
 const ProjectItem = ({ project }) => (
   <Link to={`/projects/${project.id}`} style={{ textDecoration: 'none' }}>
     <Card elevation={2}>
-      <CardMedia
-        style={{ height: 180 }}
-        image={project.thumbnail}
-      />
+      <CardMedia style={{ height: 180 }} image={project.thumbnail} />
       <CardContent>
         <Typography gutterBottom variant="h6">
           {project.name}

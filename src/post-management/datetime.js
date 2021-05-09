@@ -6,8 +6,8 @@ export const modifyString = () => {
 };
 
 export const ManufactureDate = (dateTime) => {
-    const defaultVal = 1;
-    if (dateTime !== undefined) {
+  const defaultVal = 1;
+  if (dateTime !== undefined) {
     const year = dateTime[0];
     const month = dateTime[1];
     const date = dateTime[2];

@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  Grid,
-} from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import Create from '@material-ui/icons/Create';
 
@@ -12,7 +10,7 @@ const Post = ({ isFormUploaded, handleSubmit }) => (
         disable={isFormUploaded}
         color="primary"
         onClick={() => {
-            handleSubmit();
+          handleSubmit();
         }}
       >
         <Create style={{ fontSize: 'larger', color: '#C16AF5' }} />

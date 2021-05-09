@@ -1,8 +1,5 @@
 import React, { useRef, useState } from 'react';
-import {
-  Grid,
-  Button,
-} from '@material-ui/core';
+import { Grid, Button } from '@material-ui/core';
 import Attachment from '@material-ui/icons/Attachment';
 import { isValidSize } from '../utils';
 
@@ -66,7 +63,7 @@ const AttachUploader = ({ files, updateFiles }) => {
         onChange={handleInputChange}
       />
     </Grid>
-    );
+  );
 };
 
 export default AttachUploader;

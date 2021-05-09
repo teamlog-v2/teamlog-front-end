@@ -1,8 +1,5 @@
 import React, { useEffect } from 'react';
-import {
-  Grid,
-  Chip,
-} from '@material-ui/core';
+import { Grid, Chip } from '@material-ui/core';
 
 const HashtagChooser = ({ hashtags, selectedTags, updateSelectedTags }) => {
   const handleChipClick = (index) => {
@@ -50,7 +47,7 @@ const HashtagChooser = ({ hashtags, selectedTags, updateSelectedTags }) => {
             color="primary"
           />
         </Grid>
-        ))}
+      ))}
     </Grid>
   );
 };

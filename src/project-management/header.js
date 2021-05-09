@@ -1,6 +1,6 @@
-import {React, useEffect, useState} from 'react';
+import { React, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import {Router, Link} from 'react-router-dom';
+import { Router, Link } from 'react-router-dom';
 import {
   fade,
   makeStyles,
@@ -81,7 +81,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
 const ProjectTitle = (props) => {
   const classes = useStyles();
   const { title, introduction } = props;
@@ -135,11 +134,9 @@ const Header = (props) => {
             textColor="primary"
             centered
           >
-          
             {sections.map((section) => (
-                <Tab label={section.title} component={Link} to={section.url}/> 
+              <Tab label={section.title} component={Link} to={section.url} />
             ))}
-           
           </Tabs>
         </ThemeProvider>
       </Paper>
