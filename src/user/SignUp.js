@@ -1,21 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Button,
   Container,
+  Backdrop,
+  CircularProgress,
   Grid,
   TextField,
   Typography,
   Avatar,
   Box,
-  Link,
+  makeStyles,
 } from '@material-ui/core';
+import { Link, Redirect } from 'react-router-dom';
 import FaceIcon from '@material-ui/icons/Face';
-import { createUser } from './userService';
+import { createUser, validateLogin } from './userService';
+
+const useStyles = makeStyles((theme) => ({
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
+}));
 
 const SignUp = () => {
+  const classes = useStyles();
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
 
   const handleIdChange = (event) => {
     setId(event.target.value);
@@ -29,23 +44,55 @@ const SignUp = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsProcessing(true);
     const data = {
       id,
       password,
       name,
     };
     try {
+      console.log(data);
       const response = await createUser(data);
-      const res = await response.json();
-      console.log(res);
-      alert('회원가입을 축하합니다 ^^');
+      setIsProcessing(false);
+      if (response.status === 201) {
+        setIsSuccess(true);
+        alert('회원가입을 축하합니다 ^^');
+      }
     } catch (err) {
       console.error('Error');
+      setIsProcessing(false);
     }
   };
 
+  useEffect(async () => {
+    try {
+      const response = await validateLogin();
+      if (response.status === 200) {
+        setIsLogin(true);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+    setIsLoaded(true);
+  }, []);
+
+  if (isLogin) {
+    return <Redirect to="/main" />;
+  }
+
+  if (isSuccess) {
+    return <Redirect to="/login" />;
+  }
+
+  if (!isLoaded) {
+    return <div />;
+  }
+
   return (
     <>
+      <Backdrop className={classes.backdrop} open={isProcessing}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <Container component="main" maxWidth="xs">
         <div>
           <form onSubmit={handleSubmit} noValidate>
@@ -108,8 +155,10 @@ const SignUp = () => {
               </Button>
             </Box>
             <Box display="flex" paddingBottom="15px" justifyContent="flex-end">
-              <Link href="/user" variant="body2">
-                이미 계정이 있으신가요? 로그인 하기
+              <Link to="/login" style={{ textDecoration: 'none' }}>
+                <Typography variant="body1" color="textSecondary">
+                  이미 계정이 있으신가요? 로그인 하기
+                </Typography>
               </Link>
             </Box>
           </form>
