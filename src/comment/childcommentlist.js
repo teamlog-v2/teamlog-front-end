@@ -1,23 +1,10 @@
-import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Comment } from './comment';
 import { GetChildComment } from './commentapi';
 
-const ChildCommentList = forwardRef((props, ref) => {
+const ChildCommentList = (props) => {
     const [childCommentList, setChildCommentList] = useState([]);
     const { projectId, postId, commentId, commentList } = props;
-
-    useImperativeHandle(ref, () => ({
-        SetChildCommentList: async () => {
-            const response = await GetChildComment(commentId);
-            if (response.size !== undefined) {
-                await setChildCommentList(response);
-            }
-        },
-    }));
-
-    const RenewChildCommentList = useCallback(async () => {
-        setChildCommentList(await GetChildComment(commentId));
-      });
 
     useEffect(async () => {
         setChildCommentList(await GetChildComment(commentId));
@@ -37,7 +24,6 @@ const ChildCommentList = forwardRef((props, ref) => {
                   commentMentions={item.commentMentions}
                   postId={postId}
                   writeTime={item.writeTime}
-                  renewCommentList={RenewChildCommentList}
                   commentList={childCommentList}
                   type="child"
                 />
@@ -47,6 +33,6 @@ const ChildCommentList = forwardRef((props, ref) => {
         : []}
       </>
     );
-});
+};
 
 export default ChildCommentList;

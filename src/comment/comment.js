@@ -85,12 +85,6 @@ const Content = (props) => {
   );
 };
 
-export const MoreComment = () => {
-  const classes = useStyles();
-
-  return <Box className={classes.more}>댓글 더 보기 . . .</Box>;
-};
-
 export const CommentCounter = (props) => {
   const { count } = props;
   return (
@@ -181,7 +175,6 @@ export const Comment = (props) => {
               </Box>
             </Box>
           </Box>
-          {/* <Header userId={writer.id} imgPath={writer.profileImgPath} /> */}
           <Box>
             <DateInfo dateTime={writeTime} fs="11px" />
           </Box>

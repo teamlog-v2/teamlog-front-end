@@ -258,7 +258,6 @@ const CommentForm = (props) => {
                 onClick={async () => {
                   await CreateComment(
                     parentCommentId,
-                    'jduckling1024', // 나중에 변경 필요
                     postId,
                     inputRef.current.value,
                     setSelectedUser(inputRef.current.value),

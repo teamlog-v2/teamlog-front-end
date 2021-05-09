@@ -37,9 +37,20 @@ const useStyles = makeStyles((theme) => ({
 const Project = ({ match }) => {
   const classes = useStyles();
   const [project, setProject] = useState([]);
+  // const [isLogin, setIsLogin] = useState(true);
+
+  // const [isLoaded, setIsLoaded] = useState(false);
+  // const [value, setValue] = useState('1');
+  // const [isLogin, setIsLogin] = useState(true);
+  // const [user, setUser] = useState({
+  //   id: '',
+  //   name: '',
+  //   profileImgPath: '',
+  //   introduction: '',
+  // });
 
   useEffect(() => {
-    fetch(`http://3.15.16.150:8090/api/projects/${match.params.id}`)
+    fetch(`/api/projects/${match.params.id}`)
       .then((res) => res.json())
       .then((info) => setProject(info));
   }, []);

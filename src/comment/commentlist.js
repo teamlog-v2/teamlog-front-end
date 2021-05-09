@@ -1,3 +1,4 @@
+import { Box, Button } from '@material-ui/core';
 import {
   React,
   useEffect,
@@ -12,12 +13,13 @@ import { GetComment } from './commentapi';
 import CommentForm from './commentform';
 
 const CommentList = ({ projectId, postId }) => {
-  // const childRef = useRef(); // 대댓 리스트 갱신을 위한 ref
   const [commentList, setCommentList] = useState([]);
+  // const [moreVisibility, setMoreVisibility] = useState([]);
+  // const [commentPage, setCommentPage] = useState(0);
+  // const size = 5; // 사이즈는 개발자 마음
 
   const RenewCommentList = useCallback(async () => {
     setCommentList(await GetComment(postId));
-    // childRef.current.SetChildCommentList();
   });
 
   useEffect(async () => {
@@ -46,13 +48,31 @@ const CommentList = ({ projectId, postId }) => {
                   projectId={projectId}
                   postId={postId}
                   commentId={item.id}
-                  // ref={childRef}
                   commentList={commentList}
                 />
               </>
             );
           })
         : []}
+      <Box display="none">
+        <Button
+          fullWidth
+          size="small"
+          variant="text"
+          onClick={async () => {
+            // setCommentPage(commentPage + 1);
+            // const response = await GetComment(postId, commentPage, size);
+            // response.content = commentList.content.concat(response.content);
+            // setCommentList(response);
+            // if (response.last) {
+            //   setMoreVisibility('none');
+            // }
+            // response 변경된다면 코드 및 위치 바뀔 것으로 예상됨...
+          }}
+        >
+          댓글 더 보기...
+        </Button>
+      </Box>
       <CommentForm
         parentCommentId={null}
         projectId={projectId}

@@ -1,19 +1,18 @@
 export const CreateComment = async (
   parentCommentIdVal,
-  writerIdVal,
   postIdVal,
   contentsVal,
   commentMentionsVal,
 ) => {
   const comment = {
     parentCommentId: parentCommentIdVal,
-    writerId: writerIdVal, // 이미 알고있어야 하는 아이디
+    writerId: null, // 이미 알고있어야 하는 아이디
     postId: postIdVal,
     contents: contentsVal,
     commentMentions: commentMentionsVal, // 여기에 이제 해시태그...
   };
 
-  await fetch('http://3.15.16.150:8090/api/comments/', {
+  await fetch('/api/comments/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -24,23 +23,47 @@ export const CreateComment = async (
   });
 };
 
-export const GetComment = async (postId) => {
+export const GetComment = async (postId, page, size) => {
+  console.log(page, size);
   const response = await fetch(
-    `http://3.15.16.150:8090/api/posts/${postId}/parent-comments/`,
-  ).then((res) => res.json());
-  return response;
+  //   `/api/posts/${postId}/parent-comments?page=${page}&size=${size}`, {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   },
+  // ).then((res) => res.json());
+  // return response;
+  `/api/posts/${postId}/parent-comments`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  },
+).then((res) => res.json());
+return response;
 };
 
 export const GetChildComment = async (commentId) => {
   const response = await fetch(
-    `http://3.15.16.150:8090/api/comments/${commentId}/child-comments`,
+    `/api/comments/${commentId}/child-comments`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    },
   ).then((res) => res.json());
   return response;
 };
 
 export const DeleteComment = async (commentId) => {
   const status = await fetch(
-    `http://3.15.16.150:8090/api/comments/${commentId}`, { method: 'DELETE' },
+    `/api/comments/${commentId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    },
     ).then((res) => {
       if (res.status === 200) {
       return true;

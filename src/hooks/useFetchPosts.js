@@ -63,7 +63,8 @@ const useFetchPosts = (url) => {
         return;
       }
       // 서버 api 추가 시 대응 수정이 필요한 부분
-      result = result.slice(0, posts.length + 3);
+      // response 변경에 따라 result.slice => result.content.slice로 변경
+      result = result.content.slice(0, posts.length + 3);
       setState({
         isLoading: false,
         posts: result,
