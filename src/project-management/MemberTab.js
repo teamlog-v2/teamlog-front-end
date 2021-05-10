@@ -7,7 +7,7 @@ export default function MemberTab() {
   const { id: projectId } = useParams();
 
   const [members, isMemebersLoaded, membersLoadError] = useFetchData(
-    `/api/projeddcts/${projectId}/members`,
+    `/api/projects/${projectId}/members`,
   );
 
   const { useHandleError } = useContext(ErrorContext);
