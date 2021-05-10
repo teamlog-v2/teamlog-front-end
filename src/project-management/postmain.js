@@ -121,6 +121,7 @@ const PostMain = () => {
 
   return (
     <>
+      <CssBaseline />
       {!isHashtagsLoaded ? (
         <Grid
           container
@@ -132,8 +133,6 @@ const PostMain = () => {
         </Grid>
       ) : (
         <>
-          <CssBaseline />
-
           <Container maxWidth="md">
             <Grid
               container
@@ -194,13 +193,13 @@ const PostMain = () => {
                 </FormControl>
               </Grid>
               <Grid className={classes.children} item>
-                {!isPostsLoading && (
-                  <Typography>
-                    {posts.length === 0 // 서버 대응 수정이 필요함 ok...
-                      ? '검색된 게시물이 없습니다'
-                      : `총 ${postsTotalCount}개의 검색된 게시물 중 ${posts.length}개`}
-                  </Typography>
-                )}
+                <Typography>
+                  {posts.length === 0 &&
+                    !isPostsLoading &&
+                    '검색된 게시물이 없습니다'}
+                  {posts.length !== 0 &&
+                    `총 ${postsTotalCount}개의 검색된 게시물 중 ${posts.length}개`}
+                </Typography>
 
                 <Postlist posts={posts} />
                 <Grid
