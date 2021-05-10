@@ -27,7 +27,10 @@ const useFetchPosts = (url) => {
       let result;
       let promise;
       try {
-        promise = fetch(url);
+        const query = posts.length
+          ? `&cursor=${posts[posts.length - 1].id}`
+          : '';
+        promise = fetch(`${url}${query}&size=3`);
 
         promiseRef.current = promise;
         const res = await promise;
@@ -62,12 +65,9 @@ const useFetchPosts = (url) => {
         });
         return;
       }
-      // 서버 api 추가 시 대응 수정이 필요한 부분
-      // console.log(result);
-      // result = result.content.slice(0, posts.length + 3);
       setState({
         isLoading: false,
-        posts: result.content,
+        posts: [...posts, ...result.content],
         error: null,
       });
     })();

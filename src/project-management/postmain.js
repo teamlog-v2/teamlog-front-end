@@ -58,12 +58,12 @@ const PostMain = () => {
   const [keyword, setKeyword] = useState('');
 
   // fetch를 위한 url을 해시태그와 키워드 검색을 토대로 생성한다.
-
-  let url = `/api/posts/project/${projectId}`;
+  let url = `/api/posts/project/${projectId}?`;
   if (selectedTags.length !== 0) {
-    url += `/hashtag/${selectedTags.map((index) => hashtags[index])}`;
-  } else if (keyword) {
-    url += `/${keyword}`;
+    url += `&hashtag=${selectedTags.map((index) => hashtags[index])}`;
+  }
+  if (keyword) {
+    url += `&keyword=${keyword}`;
   }
 
   // posts fetch를 이 hook에서 처리한다.
@@ -91,9 +91,9 @@ const PostMain = () => {
         fetchPosts();
       }
     };
-    window.addEventListener('wheel', handleScroll);
+    window.addEventListener('scroll', handleScroll);
     return () => {
-      window.removeEventListener('wheel', handleScroll);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, [isPostsLoading, fetchPosts]);
 
