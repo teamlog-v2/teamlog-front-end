@@ -11,6 +11,7 @@ import AttachmentUploader from '../organisms/AttachmentUploader';
 import AttachmentList from '../organisms/AttachmentList';
 import CommentModifier from '../organisms/CommentModifier';
 import ImageResize from 'image-resize';
+import { getFormat } from '../utils';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -71,17 +72,31 @@ const PostForm = (props) => {
       formData.append('files', file);
     });
 
-    // 이미지 압축
-    const imageResize = new ImageResize({
-      format: 'jpg', // png also
-      outputType: 'blob',
-      quality: 1,
-      width: 500,
-    });
+    const imageResize = new ImageResize();
 
+    // 이미지 압축
     try {
-      // promise배열 결과와 uploadedFiles결과 대응
-      const blobs = await Promise.all(uploadedFiles.map(({ url }) => imageResize.play(url)));
+      const blobs = await Promise.all(uploadedFiles.map(async ({ file, url }) => {
+        const width = await new Promise((resolve, reject) => {
+          const image = new Image();
+          image.src = url;
+          image.onload = () => (resolve(image.width));
+          image.onerror = () => (reject('이미지 읽는 중 오류 발생'));
+        });
+
+        let newWidth = 0;
+
+        if (file.size > 300000)  {
+          newWidth = Math.ceil(width * Math.sqrt(300000/file.size)); // 목표: 약 300kb
+        } else newWidth = width;
+
+        return imageResize.updateOptions({
+          format: getFormat(file.type),
+          outputType: 'blob',
+          quality: 0.85,
+          width: newWidth,
+        }).play(url);
+      }));
       uploadedFiles.forEach(({ file }, index) => {
         const blobToFile = new File([blobs[index]], file.name, { type: file.type });
         formData.append('media', blobToFile);

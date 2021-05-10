@@ -30,4 +30,21 @@ const isValidSize = (files, newFiles, value) => {
   return totalSize <= value;
 };
 
-module.exports = { isDuplicateData, isValidSize };
+/**
+ * 파일 타입을 받아 단축된 포맷 반환
+ * @param {String} type 파일 객체의 type
+ * @returns {String} 단축된 포맷
+ */
+const getFormat = (type) => {
+  switch (type) {
+    case 'image/jpeg':
+    case 'image/jpg':
+      return 'jpg';
+    case 'image/png':
+      return 'png';
+    default:
+      return 'jpg';
+  }
+};
+
+module.exports = { isDuplicateData, isValidSize, getFormat };
