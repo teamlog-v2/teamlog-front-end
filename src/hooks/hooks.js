@@ -1,5 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
-import ErrorContext from '../contexts/error';
+import { useEffect, useState } from 'react';
 
 function Publisher(url) {
   this.url = url;
@@ -109,17 +108,24 @@ const useSubscribeData = (url) => {
 };
 
 const useFetchData = (url) => {
-  const setError = useContext(ErrorContext);
-
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(null);
   const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
+
+  // getDerivedStateFromProps
+  const [prevUrl, setPrevUrl] = useState(null);
+  if (url !== prevUrl) {
+    setPrevUrl(url);
+
+    // state 합치는 것도 고민
+    setIsLoaded(false);
+    setError(null);
+  }
 
   useEffect(() => {
     let isMounted = true;
 
     (async () => {
-      setIsLoaded(false);
-
       let result;
 
       try {
@@ -170,7 +176,7 @@ const useFetchData = (url) => {
     };
   }, [url]);
 
-  return [data, isLoaded];
+  return [data, isLoaded, error];
 };
 
 export { useFetchData, useSubscribeData };
