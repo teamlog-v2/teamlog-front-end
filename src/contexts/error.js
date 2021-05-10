@@ -20,12 +20,22 @@ const ErrorProvider = ({ children }) => {
     };
   }, [history]);
 
+  const useHandleError = (err) => {
+    useEffect(() => {
+      if (err) {
+        setError(err);
+      }
+    }, [err]);
+  };
+
   if (error) {
     return <ErrorPage error={error} />;
   }
 
   return (
-    <ErrorContext.Provider value={setError}>{children}</ErrorContext.Provider>
+    <ErrorContext.Provider value={{ error, setError, useHandleError }}>
+      {children}
+    </ErrorContext.Provider>
   );
 };
 

@@ -17,6 +17,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import Header from './header';
 import ProjectMain from './projectmain';
 import PostMain from './postmain';
+import MemberTab from './MemberTab';
 // import TaskContainer from '../task/TaskContainer';
 
 const useStyles = makeStyles((theme) => ({
@@ -74,6 +75,7 @@ const Project = ({ match }) => {
         <Route exact path="/projects/:id" component={ProjectMain} />
         <Route exact path="/projects/:id/post" component={PostMain} />
         <Route exact path="/projects/:id/task" component={TaskContainer} />
+        <Route exact path="/projects/:id/member" component={MemberTab} />
       </BrowserRouter>
     </>
   );
