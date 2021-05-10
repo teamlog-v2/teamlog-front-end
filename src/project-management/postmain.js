@@ -4,6 +4,8 @@ import {
   Grid,
   makeStyles,
   CircularProgress,
+  FormControl,
+  NativeSelect,
 } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
@@ -41,21 +43,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// posts order 로직 코드는 백엔드 api 결합이 불가능해보여서 제거함. 추후 다시 생성 요망.
-// 새로 필요한 api
-// 1. 프로젝트의 모든 해시태그를 가져오는 api
-// 2. posts 페이지네이션 api
-// 3. posts 정렬 api
+//
+//
 //
 const PostMain = () => {
   const classes = useStyles();
   const projectId = useParams().id;
 
-  const [hashtags, isHashtagsLoaded] = useFetchData(`/api/projects/${projectId}/hashtags`);
+  const [hashtags, isHashtagsLoaded] = useFetchData(
+    `/api/projects/${projectId}/hashtags`,
+  );
 
   // posts를 선별 조회하기 위한 states
   const [selectedTags, setSelectedTags] = useState([]);
   const [keyword, setKeyword] = useState('');
+  const [order, setOrder] = useState(1);
 
   // fetch를 위한 url을 해시태그와 키워드 검색을 토대로 생성한다.
   let url = `/api/posts/project/${projectId}?`;
@@ -65,10 +67,15 @@ const PostMain = () => {
   if (keyword) {
     url += `&keyword=${keyword}`;
   }
+  url += `&order=${order}`;
 
   // posts fetch를 이 hook에서 처리한다.
-  const { posts, isLoading: isPostsLoading, fetchPosts } = useFetchPosts(url);
-  console.log(posts);
+  const {
+    posts,
+    isLoading: isPostsLoading,
+    fetchPosts,
+    totalCount: postsTotalCount,
+  } = useFetchPosts(url);
 
   // 스크롤 감지
   useEffect(() => {
@@ -82,10 +89,11 @@ const PostMain = () => {
 
       const { innerHeight } = window;
       const { scrollHeight } = document.body;
-      const scrollTop = window.pageYOffset
-        || document.documentElement.scrollTop
-        || document.body.scrollTop
-        || 0;
+      const scrollTop =
+        window.pageYOffset ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop ||
+        0;
       // 스크롤링 했을때, 브라우저의 가장 밑에서 100정도 높이가 남았을 때
       if (scrollHeight - innerHeight - scrollTop < 100) {
         fetchPosts();
@@ -111,8 +119,19 @@ const PostMain = () => {
       <CssBaseline />
 
       <Container maxWidth="md">
-        <Grid container md={10} justify="center" direction="column" style={{ margin: '0 auto' }}>
-          <Grid className={classes.children} item container direction="row-reverse">
+        <Grid
+          container
+          md={10}
+          justify="center"
+          direction="column"
+          style={{ margin: '0 auto' }}
+        >
+          <Grid
+            className={classes.children}
+            item
+            container
+            direction="row-reverse"
+          >
             <TextField
               placeholder="검색어를 입력하세요."
               InputProps={{
@@ -127,12 +146,7 @@ const PostMain = () => {
               }}
             />
           </Grid>
-          <Grid
-            className={classes.children}
-            item
-            container
-            direction="row"
-          >
+          <Grid className={classes.children} item container direction="row">
             <HashtagChooser
               hashtags={hashtags}
               selectedTags={selectedTags}
@@ -141,12 +155,36 @@ const PostMain = () => {
               }}
             />
           </Grid>
+          <Grid
+            className={classes.children}
+            container
+            item
+            justify="flex-end"
+            xs={12}
+          >
+            <FormControl>
+              <NativeSelect
+                xs={7}
+                onChange={(event) => {
+                  setOrder(event.target.value);
+                }}
+                name="filter"
+                inputProps={{ 'aria-label': 'age' }}
+              >
+                <option value="1">최신 순</option>
+                <option value="-1">오래된 순</option>
+                <option value="like">좋아요 순(미구현)</option>
+              </NativeSelect>
+            </FormControl>
+          </Grid>
           <Grid className={classes.children} item>
-            <Typography>
-              {posts.length === 0 // 서버 대응 수정이 필요함 ok...
-                ? '검색된 게시물이 없습니다'
-                : `총 ?개의 검색된 게시물 중 ${posts.length}개`}
-            </Typography>
+            {!isPostsLoading && (
+              <Typography>
+                {posts.length === 0 // 서버 대응 수정이 필요함 ok...
+                  ? '검색된 게시물이 없습니다'
+                  : `총 ${postsTotalCount}개의 검색된 게시물 중 ${posts.length}개`}
+              </Typography>
+            )}
 
             <Postlist posts={posts} />
             <Grid
@@ -155,9 +193,7 @@ const PostMain = () => {
               alignItems="center"
               style={{ height: '20vh' }}
             >
-              {isPostsLoading && (
-                <CircularProgress />
-              )}
+              {isPostsLoading && <CircularProgress />}
             </Grid>
           </Grid>
         </Grid>

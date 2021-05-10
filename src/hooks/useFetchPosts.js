@@ -12,6 +12,7 @@ const useFetchPosts = (url) => {
   const promiseRef = useRef(null);
 
   const [state, setState] = useState(defaultState);
+  const [totalCount, setTotalCount] = useState(null);
 
   // TODO: useCallback 사용 고려하기
   const fetchPosts = (init = false) => {
@@ -65,6 +66,7 @@ const useFetchPosts = (url) => {
         });
         return;
       }
+      setTotalCount(result.totalElements);
       setState({
         isLoading: false,
         posts: [...posts, ...result.content],
@@ -83,7 +85,7 @@ const useFetchPosts = (url) => {
     };
   });
 
-  return { ...state, fetchPosts };
+  return { ...state, fetchPosts, totalCount };
 };
 
 export default useFetchPosts;
