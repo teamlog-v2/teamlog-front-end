@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from 'react';
+import { React, useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Router, Link, useParams, useLocation } from 'react-router-dom';
 import {
@@ -14,6 +14,7 @@ import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { useFetchData } from '../hooks/hooks';
+import ErrorContext from '../contexts/error';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -107,9 +108,12 @@ const Header = ({ sections }) => {
   const { id: projectId } = useParams();
   const { pathname } = useLocation();
 
-  const [project] = useFetchData(`/api/projects/${projectId}`);
+  const [project, isProjectLoaded, projectLoadError] = useFetchData(`/api/projects/${projectId}`);
   const title = project?.name;
   const introduction = project?.introduction;
+
+  const { useHandleError } = useContext(ErrorContext);
+  useHandleError(projectLoadError);
 
   const selectedTabIndex = sections.findIndex(
     (section) => pathname === `/projects/${projectId}${section.url}`,

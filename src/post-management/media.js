@@ -38,7 +38,7 @@ const ImageContent = ({ file }) => {
   // if (image.width >= image.height) {
   return (
     <Box width="100%" className={classes.align}>
-      <img src={fileDownloadUri} width="100%" />
+      <img src={fileDownloadUri.slice(fileDownloadUri.indexOf('/resources'))} width="100%" />
     </Box>
   );
   // }
