@@ -18,10 +18,10 @@ const App = () => {
         <Switch>
           <Redirect exact path="/" to="/login" />
           {/* <Route exact path="/main" component={MapPage} /> */}
-          <Route path="/proj" component={ProjectListContainer} />
+          <Route path="/project" component={ProjectListContainer} />
+          <Route exact path="/projects/:id/new" component={PostFormPage} />
           <Route path="/projects/:id" component={Project} />
           <Route exact path="/users/:userId" component={MyPage} />
-          <Route exact path="/projects/:id/new" component={PostFormPage} />
           <Route exact path="/signup" component={SignUp} />
           <Route exact path="/login" component={SignIn} />
           <Route>
