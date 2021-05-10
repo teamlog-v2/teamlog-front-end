@@ -1,6 +1,6 @@
 import { React, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Router, Link } from 'react-router-dom';
+import { Router, Link, useParams, useLocation } from 'react-router-dom';
 import {
   fade,
   makeStyles,
@@ -13,6 +13,7 @@ import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import { useFetchData } from '../hooks/hooks';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -102,14 +103,19 @@ const ProjectTitle = (props) => {
   );
 };
 
-const Header = (props) => {
-  const classes = useStyles();
-  const { sections, title, introduction } = props;
-  const [value, setValue] = useState(0);
+const Header = ({ sections }) => {
+  const { id: projectId } = useParams();
+  const { pathname } = useLocation();
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  const [project] = useFetchData(`/api/projects/${projectId}`);
+  const title = project?.name;
+  const introduction = project?.introduction;
+
+  const selectedTabIndex = sections.findIndex(
+    (section) => pathname === `/projects/${projectId}${section.url}`,
+  );
+
+  const classes = useStyles();
 
   const theme = createMuiTheme({
     palette: {
@@ -128,14 +134,18 @@ const Header = (props) => {
       <Paper className={classes.root}>
         <ThemeProvider theme={theme}>
           <Tabs
-            value={value}
-            onChange={handleChange}
+            value={selectedTabIndex}
             indicatorColor="primary"
             textColor="primary"
             centered
           >
-            {sections.map((section) => (
-              <Tab label={section.title} component={Link} to={section.url} />
+            {sections.map((section, index) => (
+              <Tab
+                key={index}
+                label={section.title}
+                component={Link}
+                to={`/projects/${projectId}${section.url}`}
+              />
             ))}
           </Tabs>
         </ThemeProvider>
