@@ -156,12 +156,10 @@ const Header = ({ sections }) => {
 
 Header.propTypes = {
   sections: PropTypes.array,
-  title: PropTypes.string,
 };
 
 Header.defaultProps = {
   sections: [],
-  title: PropTypes.string,
 };
 
 export default Header;

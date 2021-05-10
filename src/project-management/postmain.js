@@ -6,13 +6,15 @@ import {
   CircularProgress,
   FormControl,
   NativeSelect,
+  Fab,
 } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
 import Search from '@material-ui/icons/Search';
-import { useParams } from 'react-router-dom';
+import { Edit } from '@material-ui/icons';
+import { Link, useParams } from 'react-router-dom';
 import Postlist from '../post-management/postlist';
 import HashtagChooser from '../organisms/HashtagChooser';
 import useFetchPosts from '../hooks/useFetchPosts';
@@ -40,6 +42,18 @@ const useStyles = makeStyles((theme) => ({
   },
   mainGrid: {
     marginTop: theme.spacing(3),
+  },
+  button: {
+    position: 'fixed',
+    zIndex: 999,
+    [theme.breakpoints.down('sm')]: {
+      left: '90%',
+      top: '90%',
+    },
+    [theme.breakpoints.up('md')]: {
+      left: '80%',
+      top: '90%',
+    },
   },
 }));
 
@@ -105,99 +119,109 @@ const PostMain = () => {
     };
   }, [isPostsLoading, fetchPosts]);
 
-  return !isHashtagsLoaded ? (
-    <Grid
-      container
-      justify="center"
-      alignItems="center"
-      style={{ height: '100vh' }}
-    >
-      <CircularProgress />
-    </Grid>
-  ) : (
+  return (
     <>
-      <CssBaseline />
-
-      <Container maxWidth="md">
+      {!isHashtagsLoaded ? (
         <Grid
           container
-          md={10}
           justify="center"
-          direction="column"
-          style={{ margin: '0 auto' }}
+          alignItems="center"
+          style={{ height: '100vh' }}
         >
-          <Grid
-            className={classes.children}
-            item
-            container
-            direction="row-reverse"
-          >
-            <TextField
-              placeholder="검색어를 입력하세요."
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment>
-                    <Search />
-                  </InputAdornment>
-                ),
-              }}
-              onChange={(event) => {
-                setKeyword(event.target.value);
-              }}
-            />
-          </Grid>
-          <Grid className={classes.children} item container direction="row">
-            <HashtagChooser
-              hashtags={hashtags}
-              selectedTags={selectedTags}
-              updateSelectedTags={(selected) => {
-                setSelectedTags(selected);
-              }}
-            />
-          </Grid>
-          <Grid
-            className={classes.children}
-            container
-            item
-            justify="flex-end"
-            xs={12}
-          >
-            <FormControl>
-              <NativeSelect
-                xs={7}
-                onChange={(event) => {
-                  setOrder(event.target.value);
-                }}
-                name="filter"
-                inputProps={{ 'aria-label': 'age' }}
-              >
-                <option value="1">최신 순</option>
-                <option value="-1">오래된 순</option>
-                <option value="like">좋아요 순(미구현)</option>
-              </NativeSelect>
-            </FormControl>
-          </Grid>
-          <Grid className={classes.children} item>
-            {!isPostsLoading && (
-              <Typography>
-                {posts.length === 0 // 서버 대응 수정이 필요함 ok...
-                  ? '검색된 게시물이 없습니다'
-                  : `총 ${postsTotalCount}개의 검색된 게시물 중 ${posts.length}개`}
-              </Typography>
-            )}
+          <CircularProgress />
+        </Grid>
+      ) : (
+        <>
+          <CssBaseline />
 
-            <Postlist posts={posts} />
+          <Container maxWidth="md">
             <Grid
               container
+              md={10}
               justify="center"
-              alignItems="center"
-              style={{ height: '20vh' }}
+              direction="column"
+              style={{ margin: '0 auto' }}
             >
-              {isPostsLoading && <CircularProgress />}
+              <Grid
+                className={classes.children}
+                item
+                container
+                direction="row-reverse"
+              >
+                <TextField
+                  placeholder="검색어를 입력하세요."
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment>
+                        <Search />
+                      </InputAdornment>
+                    ),
+                  }}
+                  onChange={(event) => {
+                    setKeyword(event.target.value);
+                  }}
+                />
+              </Grid>
+              <Grid className={classes.children} item container direction="row">
+                <HashtagChooser
+                  hashtags={hashtags}
+                  selectedTags={selectedTags}
+                  updateSelectedTags={(selected) => {
+                    setSelectedTags(selected);
+                  }}
+                />
+              </Grid>
+              <Grid
+                className={classes.children}
+                container
+                item
+                justify="flex-end"
+                xs={12}
+              >
+                <FormControl>
+                  <NativeSelect
+                    xs={7}
+                    onChange={(event) => {
+                      setOrder(event.target.value);
+                    }}
+                    name="filter"
+                    inputProps={{ 'aria-label': 'age' }}
+                  >
+                    <option value="1">최신 순</option>
+                    <option value="-1">오래된 순</option>
+                    <option value="like">좋아요 순(미구현)</option>
+                  </NativeSelect>
+                </FormControl>
+              </Grid>
+              <Grid className={classes.children} item>
+                {!isPostsLoading && (
+                  <Typography>
+                    {posts.length === 0 // 서버 대응 수정이 필요함 ok...
+                      ? '검색된 게시물이 없습니다'
+                      : `총 ${postsTotalCount}개의 검색된 게시물 중 ${posts.length}개`}
+                  </Typography>
+                )}
+
+                <Postlist posts={posts} />
+                <Grid
+                  container
+                  justify="center"
+                  alignItems="center"
+                  style={{ height: '20vh' }}
+                >
+                  {isPostsLoading && <CircularProgress />}
+                </Grid>
+              </Grid>
             </Grid>
-          </Grid>
-        </Grid>
-      </Container>
+          </Container>
+        </>
+      )}
+
+      <Link to={`/projects/${projectId}/new`}>
+        <Fab className={classes.button} color="primary">
+          <Edit />
+        </Fab>
+      </Link>
     </>
   );
 };
