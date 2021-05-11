@@ -16,7 +16,7 @@ import { DateInfo } from '../post-management/datetime';
 import CommentForm from './commentform';
 import { DeleteComment } from './commentapi';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   more: {
     marginLeft: '0.25em',
     color: 'rgb(180, 180, 180)',
@@ -27,6 +27,7 @@ const useStyles = makeStyles(() => ({
   comment: {
     backgroundColor: 'rgb(245, 245, 245)',
     textAlign: 'left',
+    borderTop: `1px solid ${theme.palette.divider}`,
   },
   reply: {
     // display='inline-block' right='0px' width='10%' textAlign='right'

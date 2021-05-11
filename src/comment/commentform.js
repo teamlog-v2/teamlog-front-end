@@ -263,7 +263,7 @@ const CommentForm = (props) => {
                     setSelectedUser(inputRef.current.value),
                   );
                   setState({ ...state, userInput: '' });
-                  renewCommentList();
+                  renewCommentList(parentCommentId);
                 }}
               >
                 작성

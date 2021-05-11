@@ -19,34 +19,28 @@ export const CreateComment = async (
     },
     body: JSON.stringify(comment),
   }).then((res) => {
-    console.log(res.status);
+    if (res !== 201) {
+      console.log('error');
+    }
   });
 };
 
-export const GetComment = async (postId, page, size) => {
-  console.log(page, size);
+export const GetComment = async (postId, size) => {
+  // size만 바뀌는 쪽으로 진행
   const response = await fetch(
-  //   `/api/posts/${postId}/parent-comments?page=${page}&size=${size}`, {
-  //     method: 'GET',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //   },
-  // ).then((res) => res.json());
-  // return response;
-  `/api/posts/${postId}/parent-comments`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
+    `/api/posts/${postId}/parent-comments?page=0&size=${size}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
     },
-  },
-).then((res) => res.json());
-return response;
+  ).then((res) => res.json());
+  return response;
 };
 
-export const GetChildComment = async (commentId) => {
+export const GetChildComment = async (commentId, size) => {
   const response = await fetch(
-    `/api/comments/${commentId}/child-comments`, {
+    `/api/comments/${commentId}/child-comments?page=0&size=${size}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
