@@ -14,21 +14,32 @@ import CommentForm from './commentform';
 
 const CommentList = ({ projectId, postId }) => {
   const [commentList, setCommentList] = useState([]);
-  // const [moreVisibility, setMoreVisibility] = useState([]);
-  // const [commentPage, setCommentPage] = useState(0);
-  // const size = 5; // 사이즈는 개발자 마음
+  const [moreVisibility, setMoreVisibility] = useState([]);
+  const [commentSize, setCommentSize] = useState(5); // 5의 배수
 
   const RenewCommentList = useCallback(async () => {
-    setCommentList(await GetComment(postId));
+      const response = await GetComment(postId, commentSize);
+
+      if (response.last) {
+        setMoreVisibility('none');
+      } else {
+        setMoreVisibility('block');
+      }
+      setCommentList(response);
   });
 
   useEffect(async () => {
-    setCommentList(await GetComment(postId));
-  }, []);
+    const response = await GetComment(postId, commentSize);
+    setCommentList(response);
+      if (response.last) {
+        setMoreVisibility('none');
+      }
+  }, [commentSize]);
 
   return (
     <>
-      {commentList.content
+      {
+      commentList.content
         ? commentList.content.map((item) => {
             return (
               <>
@@ -53,21 +64,15 @@ const CommentList = ({ projectId, postId }) => {
               </>
             );
           })
-        : []}
-      <Box display="none">
+        : []
+}
+      <Box display={moreVisibility}>
         <Button
           fullWidth
           size="small"
           variant="text"
           onClick={async () => {
-            // setCommentPage(commentPage + 1);
-            // const response = await GetComment(postId, commentPage, size);
-            // response.content = commentList.content.concat(response.content);
-            // setCommentList(response);
-            // if (response.last) {
-            //   setMoreVisibility('none');
-            // }
-            // response 변경된다면 코드 및 위치 바뀔 것으로 예상됨...
+            setCommentSize(commentSize + 5);
           }}
         >
           댓글 더 보기...
