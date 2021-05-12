@@ -1,45 +1,23 @@
 import React from 'react';
-import { Grid, Typography } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import { Lock, LockOpen } from '@material-ui/icons';
 
 const CommentModifier = ({ isCommentPublic, updateIsCommentPublic }) => (
-  <Grid container item justify="flex-end">
-    {!isCommentPublic ? (
-      <Grid
-        item
-        onClick={() => {
-          updateIsCommentPublic(!isCommentPublic);
-        }}
-        style={{ cursor: 'pointer' }}
-      >
-        <Grid container alignItems="center">
-          <Grid item>
-            <Lock />
-          </Grid>
-          <Grid item>
-            <Typography>내부 멤버만 댓글 작성</Typography>
-          </Grid>
-        </Grid>
-      </Grid>
-    ) : (
-      <Grid
-        item
-        onClick={() => {
-          updateIsCommentPublic(!isCommentPublic);
-        }}
-        style={{ cursor: 'pointer' }}
-      >
-        <Grid container alignItems="center">
-          <Grid item>
-            <LockOpen />
-          </Grid>
-          <Grid item>
-            <Typography>외부인도 댓글 작성</Typography>
-          </Grid>
-        </Grid>
-      </Grid>
-    )}
-  </Grid>
+  <Button
+    size="small"
+    variant="outlined"
+    startIcon={isCommentPublic ? <LockOpen /> : <Lock />}
+    onClick={() => {
+      updateIsCommentPublic(!isCommentPublic);
+    }}
+    style={{ margin: '0.5%' }}
+  >
+    {
+      isCommentPublic ? '댓글 전체 공개' : '댓글 내부 공개'
+    }
+    &nbsp;
+    &nbsp;
+  </Button>
 );
 
 export default CommentModifier;

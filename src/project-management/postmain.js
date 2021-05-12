@@ -6,9 +6,9 @@ import {
   CircularProgress,
   FormControl,
   NativeSelect,
-  Fab,
+ Fab,
 } from '@material-ui/core';
-import CssBaseline from '@material-ui/core/CssBaseline';
+// import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
@@ -57,9 +57,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-//
-//
-//
 const PostMain = () => {
   const classes = useStyles();
   const projectId = useParams().id;
@@ -121,7 +118,7 @@ const PostMain = () => {
 
   return (
     <>
-      <CssBaseline />
+      {/* <CssBaseline /> */}
       {!isHashtagsLoaded ? (
         <Grid
           container
@@ -215,7 +212,6 @@ const PostMain = () => {
           </Container>
         </>
       )}
-
       <Link to={`/projects/${projectId}/new`}>
         <Fab className={classes.button} color="primary">
           <Edit />

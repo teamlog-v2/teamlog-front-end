@@ -1,45 +1,21 @@
 import React from 'react';
-import { Grid, Typography } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import { Lock, LockOpen } from '@material-ui/icons';
 
 const AccessModifier = ({ isPostPublic, updateIsPostPublic }) => (
-  <Grid container item justify="flex-end">
-    {!isPostPublic ? (
-      <Grid
-        item
-        onClick={() => {
-          updateIsPostPublic(!isPostPublic);
-        }}
-        style={{ cursor: 'pointer' }}
-      >
-        <Grid container alignItems="center">
-          <Grid item>
-            <Lock />
-          </Grid>
-          <Grid item>
-            <Typography>내부 멤버만</Typography>
-          </Grid>
-        </Grid>
-      </Grid>
-    ) : (
-      <Grid
-        item
-        onClick={() => {
-          updateIsPostPublic(!isPostPublic);
-        }}
-        style={{ cursor: 'pointer' }}
-      >
-        <Grid container alignItems="center">
-          <Grid item>
-            <LockOpen />
-          </Grid>
-          <Grid item>
-            <Typography>외부에도 공개</Typography>
-          </Grid>
-        </Grid>
-      </Grid>
-    )}
-  </Grid>
+  <Button
+    size="small"
+    variant="outlined"
+    startIcon={isPostPublic ? <LockOpen /> : <Lock />}
+    onClick={() => {
+      updateIsPostPublic(!isPostPublic);
+    }}
+    style={{ margin: '0.5%' }}
+  >
+    {
+      isPostPublic ? '포스트 전체 공개' : '포스트 내부 공개'
+    }
+  </Button>
 );
 
 export default AccessModifier;
