@@ -63,6 +63,7 @@ const MediaUploader = ({ files, updateFiles }) => {
         &nbsp;
         <strong>사진 / 동영상</strong>
       </Button>
+      <div style={{ fontSize: 13, color: 'gray' }}>사진 및 동영상은 최대 10개까지 업로드 가능합니다</div>
       <input
         id="media-upload"
         type="file"
@@ -72,7 +73,6 @@ const MediaUploader = ({ files, updateFiles }) => {
         style={{ display: 'none' }}
         onChange={handleInputChange}
       />
-      <span>사진 및 동영상은 최대 10개까지 업로드 가능합니다.</span>
     </Grid>
     );
 };
