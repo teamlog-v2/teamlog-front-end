@@ -12,7 +12,6 @@ import MenuList from '@material-ui/core/MenuList';
 
 import React, { useState, useEffect, useRef } from 'react';
 
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -286,7 +285,6 @@ export const Post = (props) => {
         disableGutters
         madWidth={maxWidth}
       >
-        <CssBaseline />
         <Box className={classes.paper}>
           <Container disableGutters>
             <Box bgcolor="rgb(245, 212, 255)">
