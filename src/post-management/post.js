@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     display: 'flex',
     flexDirection: 'column',
-    border: `1px solid ${theme.palette.divider}`,
+    border: '1px solid #eee',
   },
   header: {
     height: '4.5em',

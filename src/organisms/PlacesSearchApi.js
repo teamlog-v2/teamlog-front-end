@@ -53,8 +53,9 @@ class PlaceSearchApi extends React.Component {
           {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
             <Grid style={{ position: 'relative' }} xs={12}>
               <Grid container xs={12} direction="row">
-                <Grid xs={3}>
+                <Grid xs={4}>
                   <TextField
+                    size="small"
                     fullWidth
                     inputRef={this.inputRef}
                     variant="standard"
@@ -80,7 +81,7 @@ class PlaceSearchApi extends React.Component {
               </Grid>
               <Grid
                 container
-                style={{ width: '500px', position: 'absolute', zIndex: 999 }}
+                style={{ width: '300px', position: 'absolute', zIndex: 999 }}
                 direction="column"
               >
                 {loading && <Typography style={{ color: 'gray' }}>장소를 찾는 중입니다 -</Typography>}
@@ -94,8 +95,8 @@ class PlaceSearchApi extends React.Component {
                         : 'suggestion-item';
                       // inline style for demonstration purpose
                       const style = suggestion.active
-                        ? { backgroundColor: '#EDEDED', cursor: 'pointer' }
-                        : { backgroundColor: '#ffffff', cursor: 'pointer' };
+                        ? { cursor: 'pointer', color: '#C16AF5' }
+                        : { cursor: 'pointer' };
                       return (
                         <Grid
                           item
@@ -104,9 +105,11 @@ class PlaceSearchApi extends React.Component {
                             style,
                           })}
                         >
-                          <Grid container alignItems="center" style={{ padding: '10px 0' }}>
+                          <Grid container direction="row">
                             <LocationOn />
-                            <Typography>{suggestion.description}</Typography>
+                          <div style={{  }}>
+                            <Typography gutterBottom style={{ fontSize: 15 }}>{suggestion.description}</Typography>
+                          </div>
                           </Grid>
                         </Grid>
                       );

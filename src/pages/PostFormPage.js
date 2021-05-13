@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Grid, TextField, Paper, makeStyles, Typography, InputAdornment, Button, Divider, Tooltip } from '@material-ui/core';
+import { Grid, TextField, Paper, makeStyles, Typography, InputAdornment, Button, Divider, Tooltip, InputBase } from '@material-ui/core';
 import PlacesSearchApi from '../organisms/PlacesSearchApi';
 import ThumbnailList from '../organisms/ThumbnailList';
 import AccessModifier from '../organisms/AccessModifier';
@@ -12,21 +12,23 @@ import CommentModifier from '../organisms/CommentModifier';
 import ImageResize from 'image-resize';
 import { getFormat } from '../utils';
 import { Backspace, LocationOn } from '@material-ui/icons';
+import { useParams } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    backgroundColor: 'white',
     [theme.breakpoints.down('sm')]: {
       margin: '0 0',
       padding: '0 1%',
     },
     [theme.breakpoints.up('md')]: {
       margin: '0 0',
-      padding: '0 15%',
+      padding: '5%',
     },
   },
   children: {
     [theme.breakpoints.down('sm')]: {
-      margin: '2% 0',
+      margin: '3% 0',
     },
     [theme.breakpoints.up('md')]: {
       margin: '1% 0',
@@ -35,7 +37,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const PostForm = (props) => {
-  const { id } = props.match.params;
+  const { id } = useParams();
+  const { updateOpen, updatePostLoading, updateFormData } = props;
 
   const classes = useStyles();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -52,6 +55,12 @@ const PostForm = (props) => {
   const [isSearching, setIsSearching] = useState(false);
 
   const handleSubmit = async () => {
+
+    if (contentRef.current.value === '') {
+      alert('등록할 내용이 없습니다.');
+      return;
+    };
+
     const formData = new FormData();
 
     const data = {
@@ -93,7 +102,7 @@ const PostForm = (props) => {
 
         const format = getFormat(file.type);
 
-        if (file.size > 300000 && format === 'jpg' || format === 'png') {
+        if (file.size > 300000 && (format === 'jpg' || format === 'png')) {
           return imageResize.updateOptions({
             format: getFormat(file.type),
             outputType: 'blob',
@@ -101,8 +110,7 @@ const PostForm = (props) => {
             width: newWidth,
           }).play(url);
         }
-        console.log('no resize');
-          return new Blob([file]);
+        return new Blob([file]);
       }));
       mediaFiles.forEach(({ file }, index) => {
         const blobToFile = new File([blobs[index]], file.name, { type: file.type });
@@ -112,25 +120,13 @@ const PostForm = (props) => {
       console.log(error);
       return;
     }
+    mediaFiles.forEach((file) => {
+      URL.revokeObjectURL(file.url);
+    });
     setIsFormLoaded(true);
-
-    try {
-      const res = await fetch('/api/posts', {
-        method: 'POST',
-        body: formData,
-        headers: {},
-      });
-      setIsFormLoaded(false); // 버튼 활성화
-      if (res.status === 201) {
-        console.log('성공적으로 등록');
-        mediaFiles.forEach((file) => {
-          URL.revokeObjectURL(file.url);
-        });
-        props.history.push(`/projects/${id}`);
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    updateFormData(formData);
+    updatePostLoading(true);
+    updateOpen(false);
   };
 
   useEffect(() => {
@@ -164,20 +160,21 @@ const PostForm = (props) => {
               {
                 !isSearching ? (
                   <>
-                    <Grid item xs={3}>
+                    <Grid item xs={4}>
                       <TextField
-                      variant="standard"
-                      fullWidth
-                      helperText="필드를 눌러 장소를 검색하세요."
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment>
-                            <LocationOn color="primary" style={{ paddingBottom: '2px' }}/>
-                          </InputAdornment>
-                        )
-                      }}
-                      value={address}
-                      onClick={() => { setIsSearching(true); }}
+                        size="small"
+                        variant="standard"
+                        fullWidth
+                        helperText="필드를 눌러 장소를 검색하세요."
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment>
+                              <LocationOn color="primary" style={{ paddingBottom: '2px' }}/>
+                            </InputAdornment>
+                          )
+                        }}
+                        value={address}
+                        onClick={() => { setIsSearching(true); }}
                     />
                   </Grid>
                   <Tooltip title="취소">
@@ -256,7 +253,7 @@ const PostForm = (props) => {
         <Grid item xs={12}>
           <TextField
             variant="outlined"
-            rows={10}
+            rows={5}
             rowsMax={Infinity}
             multiline
             fullWidth
