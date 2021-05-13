@@ -42,6 +42,8 @@ const getFormat = (type) => {
       return 'jpg';
     case 'image/png':
       return 'png';
+    case 'image/gif':
+        return 'gif';
     default:
       return 'jpg';
   }
