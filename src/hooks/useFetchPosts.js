@@ -67,6 +67,51 @@ const useFetchPosts = (url) => {
         return;
       }
       setTotalCount(result.totalElements);
+      console.log('post 로드');
+      setState({
+        isLoading: false,
+        posts: [...posts, ...result.content],
+        error: null,
+      });
+    })();
+  };
+
+  const initPosts = () => {
+    const posts = [];
+
+    (async () => {
+      let result;
+      let promise;
+      try {
+        const query = posts.length
+          ? `&cursor=${posts[posts.length - 1].id}`
+          : '';
+        promise = fetch(`${url}${query}&size=3`);
+
+        promiseRef.current = promise;
+        const res = await promise;
+        if (promiseRef.current !== promise || !isMounted) {
+          return;
+        }
+        if (res.status !== 200) {
+          throw res.status;
+        }
+
+        promise = res.json();
+        promiseRef.current = promise;
+        result = await promise;
+        if (promiseRef.current !== promise || !isMounted) {
+          return;
+        }
+      } catch (error) {
+        setState({
+          isLoading: false,
+          posts,
+          error,
+        });
+        return;
+      }
+      setTotalCount(result.totalElements);
       setState({
         isLoading: false,
         posts: [...posts, ...result.content],
@@ -85,7 +130,7 @@ const useFetchPosts = (url) => {
     };
   });
 
-  return { ...state, fetchPosts, totalCount };
+  return { ...state, fetchPosts, totalCount, initPosts };
 };
 
 export default useFetchPosts;
