@@ -4,7 +4,6 @@ import ProjectListContainer from './project/ProjectListContainer';
 import Project from './project-management/project';
 import MyPage from './user/MyPage';
 import { ErrorProvider } from './contexts/error';
-import PostFormPage from './pages/PostFormPage';
 import ErrorPage from './pages/ErrorPage';
 // import MapPage from './map/MapPage';
 import SignUp from './user/SignUp';
@@ -19,7 +18,6 @@ const App = () => {
           <Redirect exact path="/" to="/login" />
           {/* <Route exact path="/main" component={MapPage} /> */}
           <Route path="/project" component={ProjectListContainer} />
-          <Route exact path="/projects/:id/new" component={PostFormPage} />
           <Route path="/projects/:id" component={Project} />
           <Route exact path="/users/:userId" component={MyPage} />
           <Route exact path="/signup" component={SignUp} />
