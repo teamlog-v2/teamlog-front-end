@@ -16,7 +16,7 @@ import {
   ThemeProvider,
 } from '@material-ui/core/styles';
 import { getProjectMembers } from '../project-management/projectapi';
-import { CreateComment } from './commentapi';
+import { CreateComment, /* GetComment, */ UpdateComment } from './commentapi';
 
 const useStyles = makeStyles(() => ({
     more: {
@@ -63,17 +63,18 @@ const useStyles = makeStyles(() => ({
 const CommentForm = (props) => {
     const classes = useStyles();
     const {
-      /* options, */ postId,
+      id,
+      postId,
       projectId,
-      parentCommentId,
       renewCommentList,
+      forUpdate,
+      contents,
     } = props;
     const [options, setOptions] = useState([]);
-
-    useEffect(async () => {
-      setOptions(await getProjectMembers(projectId));
-    }, []);
-
+    const inputRef = useRef();
+    const [menuFocus, setMenuFocus] = useState(false);
+    const [open, setOpen] = useState(false);
+    const [anchorEl, setAnchorEl] = useState(null);
     const [state, setState] = useState({
       activeOption: 0,
       filteredOptions: [],
@@ -82,10 +83,14 @@ const CommentForm = (props) => {
       tagStartIndex: -1,
     });
 
-    const inputRef = useRef();
-    const [menuFocus, setMenuFocus] = useState(false);
-    const [open, setOpen] = useState(false);
-    const [anchorEl, setAnchorEl] = useState(null);
+    useEffect(async () => {
+      if (forUpdate) {
+        setState({ ...state, userInput: contents });
+      } else {
+        setState({ ...state, userInput: '' });
+      }
+      setOptions(await getProjectMembers(projectId));
+    }, [forUpdate]);
 
     const onKeyDown = (e) => {
       // 위 화살표 or 아래 화살표
@@ -256,15 +261,35 @@ const CommentForm = (props) => {
                 variant="contained"
                 color="primary"
                 onClick={async () => {
-                  await CreateComment(
-                    parentCommentId,
-                    postId,
-                    inputRef.current.value,
-                    setSelectedUser(inputRef.current.value),
-                  );
-                  setState({ ...state, userInput: '' });
-                  renewCommentList(parentCommentId);
-                }}
+                  if (forUpdate) {
+                    // 댓글 수정
+                    const status = await UpdateComment(
+                      id,
+                      postId,
+                      inputRef.current.value,
+                      setSelectedUser(inputRef.current.value),
+                    );
+
+                    if (status === 200) {
+                      setState({ ...state, userInput: '' });
+                      renewCommentList(id);
+                    }
+                  } else {
+                    // 댓글 등록
+                    const status = await CreateComment(
+                      id,
+                      postId,
+                      inputRef.current.value,
+                      setSelectedUser(inputRef.current.value),
+                    );
+
+                    if (status === 201) {
+                      // console.log(await GetComment(postId, 5));
+                        renewCommentList();
+                        setState({ ...state, userInput: '' });
+                    }
+                    }
+                  }}
               >
                 작성
               </Button>

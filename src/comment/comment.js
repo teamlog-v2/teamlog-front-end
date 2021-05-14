@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   Box,
   Chip,
@@ -11,6 +11,7 @@ import {
 
 import ReplyIcon from '@material-ui/icons/Reply';
 import CloseIcon from '@material-ui/icons/Close';
+import BorderColorIcon from '@material-ui/icons/BorderColor';
 import UserInfo from '../post-management/user';
 import { DateInfo } from '../post-management/datetime';
 import CommentForm from './commentform';
@@ -33,11 +34,11 @@ const useStyles = makeStyles((theme) => ({
     // display='inline-block' right='0px' width='10%' textAlign='right'
     display: 'inline-block',
     right: '0px',
-    width: '30%',
+    width: '40%',
     textAlign: 'right',
   },
   userInfo: {
-    width: '70%',
+    width: '60%',
     display: 'inline-block',
     backgroundColor: 'rgb(245, 245, 245)',
   },
@@ -56,13 +57,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Content = (props) => {
-  const { contents, tagList } = props;
+  const { visibility, contents, tagList } = props;
 
   const stringSplit = contents.split(' ');
 
   return (
-    <Grid container direction="row" spacing={1}>
-      {stringSplit
+    <Box display={visibility}>
+      <Grid container direction="row" spacing={1}>
+        {stringSplit
         ? stringSplit.map((string) => {
             if (
               string.charAt(0) === '@'
@@ -82,7 +84,8 @@ const Content = (props) => {
             return <Box display="inline-block"> {`${string}`}&nbsp; </Box>;
           })
         : []}
-    </Grid>
+      </Grid>
+    </Box>
   );
 };
 
@@ -121,23 +124,25 @@ export const Comment = (props) => {
     commentMentions,
     renewCommentList,
     contents,
-    commentList,
+    /* commentList, */
   } = props;
   const classes = useStyles();
 
-  const [tagList, setTagList] = useState([]);
-  const [formVisibility, setFormVisibility] = useState([]);
-
-  useEffect(() => {
-    setTagList(commentMentions);
-    setFormVisibility('none');
-  }, [commentList]);
+  // const [tagList, setTagList] = useState([]);
+  const [visibility, setVisibility] = useState({
+    form: 'none',
+    content: 'block',
+  });
+  const [forUpdate, setForUpdate] = useState(false);
 
   const commentStyle = CheckRoot(type);
 
   const RenewCommentList = useCallback(async () => {
     renewCommentList();
-    setFormVisibility('none');
+    setVisibility({
+      form: 'none',
+      content: 'block',
+    });
   });
 
   return (
@@ -148,14 +153,27 @@ export const Comment = (props) => {
             <Box className={classes.userInfo}>
               <UserInfo userId={writer.id} imgPath={writer.profileImgPath} />
             </Box>
-            <Box className={classes.reply} visibility={commentStyle.buttonDisplay}>
+            <Box className={classes.reply}>
               <Box
+                visibility={commentStyle.buttonDisplay}
                 className={classes.icon}
                 onClick={() => {
-                  if (formVisibility === 'none') {
-                    setFormVisibility('block');
+                  setForUpdate(false);
+                  if (visibility.form === 'none') {
+                    setVisibility({
+                      form: 'block',
+                      content: 'block', // 대댓글 -> 수정 전환 대비
+                    });
+                  } else if (visibility.form === 'block' && visibility.content === 'none') {
+                    setVisibility({
+                      form: 'block',
+                      content: 'block',
+                    });
                   } else {
-                    setFormVisibility('none');
+                    setVisibility({
+                      form: 'none',
+                      content: 'block',
+                    });
                   }
                 }}
               >
@@ -164,10 +182,30 @@ export const Comment = (props) => {
               <Box
                 className={classes.icon}
                 onClick={async () => {
+                  if (visibility.content === 'block') {
+                    setForUpdate(true);
+                    setVisibility({
+                      form: 'block',
+                      content: 'none',
+                    });
+                  } else {
+                    setForUpdate(false);
+                    setVisibility({
+                      form: 'none',
+                      content: 'block',
+                    });
+                  }
+                }}
+              >
+                <BorderColorIcon color="action" fontSize="small" />
+              </Box>
+              <Box
+                className={classes.icon}
+                onClick={async () => {
                   if (window.confirm('정말로 삭제하시겠습니까?')) {
                     const status = await DeleteComment(id);
-                    if (status) {
-                      renewCommentList();
+                    if (status === 200) {
+                        renewCommentList();
                     }
                   }
                 }}
@@ -182,17 +220,23 @@ export const Comment = (props) => {
         </Box>
         <Box>
           <Box display="inline-block">
-            <Content contents={contents} tagList={tagList} />
+            <Content
+              visibility={visibility.content}
+              contents={contents}
+              tagList={commentMentions}
+            />
           </Box>
         </Box>
       </Box>
 
-      <Box display={formVisibility}>
+      <Box display={visibility.form}>
         <CommentForm
-          parentCommentId={id}
+          id={id}
           projectId={projectId}
           postId={postId}
           renewCommentList={RenewCommentList}
+          contents={contents}
+          forUpdate={forUpdate}
         />
       </Box>
     </Box>

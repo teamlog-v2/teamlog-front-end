@@ -1,5 +1,5 @@
 import { Box, Button } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Comment } from './comment';
 import { GetChildComment } from './commentapi';
 
@@ -30,6 +30,15 @@ const ChildCommentList = (props) => {
       }
     }, [commentList, commentState.size]); // 부모 댓글 변경 및 개수 변화에 대한 useEffect
 
+    const RenewCommentList = useCallback(async () => {
+      const response = await GetChildComment(commentId, commentState.size);
+
+      setChildCommentList(response);
+      if (response.last && response.totalElements - commentState.size <= 0) {
+        setMoreVisibility('none');
+      }
+  });
+
     return (
       <>
         {childCommentList.content
@@ -45,6 +54,7 @@ const ChildCommentList = (props) => {
                   postId={postId}
                   writeTime={item.writeTime}
                   commentList={childCommentList}
+                  renewCommentList={RenewCommentList}
                   type="child"
                 />
               </>

@@ -1,4 +1,4 @@
-export const CreateComment = async (
+export const CreateComment = (
   parentCommentIdVal,
   postIdVal,
   contentsVal,
@@ -6,23 +6,46 @@ export const CreateComment = async (
 ) => {
   const comment = {
     parentCommentId: parentCommentIdVal,
-    writerId: null, // 이미 알고있어야 하는 아이디
+    writerId: null,
     postId: postIdVal,
     contents: contentsVal,
-    commentMentions: commentMentionsVal, // 여기에 이제 해시태그...
+    commentMentions: commentMentionsVal,
   };
 
-  await fetch('/api/comments/', {
+  const status = fetch('/api/comments/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(comment),
-  }).then((res) => {
-    if (res !== 201) {
-      console.log('error');
-    }
+  }).then((res) => res.status);
+
+  return status;
+};
+
+export const UpdateComment = async (
+  parentCommentIdVal,
+  postIdVal,
+  contentsVal,
+  commentMentionsVal,
+) => {
+  const comment = {
+    parentCommentId: parentCommentIdVal,
+    writerId: null,
+    postId: postIdVal,
+    contents: contentsVal,
+    commentMentions: commentMentionsVal,
+  };
+
+  const status = await fetch(`/api/comments/${comment.parentCommentId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(comment),
   });
+
+  return status;
 };
 
 export const GetComment = async (postId, size) => {
@@ -35,6 +58,7 @@ export const GetComment = async (postId, size) => {
       },
     },
   ).then((res) => res.json());
+
   return response;
 };
 
@@ -58,11 +82,6 @@ export const DeleteComment = async (commentId) => {
         'Content-Type': 'application/json',
       },
     },
-    ).then((res) => {
-      if (res.status === 200) {
-      return true;
-    }
-      return false;
-    }); // 예외처리를 위한 틀
-    return status;
+  ).then((res) => res.status);
+  return status;
 };

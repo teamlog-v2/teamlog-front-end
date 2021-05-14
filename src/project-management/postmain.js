@@ -8,7 +8,6 @@ import {
   NativeSelect,
   Fab,
 } from '@material-ui/core';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
@@ -121,7 +120,6 @@ const PostMain = () => {
 
   return (
     <>
-      <CssBaseline />
       {!isHashtagsLoaded ? (
         <Grid
           container

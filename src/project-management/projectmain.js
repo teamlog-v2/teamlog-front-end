@@ -9,7 +9,6 @@ import {
   makeStyles,
   CircularProgress,
 } from '@material-ui/core';
-import CssBaseline from '@material-ui/core/CssBaseline';
 // import Fab from '@material-ui/core/Fab';
 // import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import Container from '@material-ui/core/Container';
@@ -122,8 +121,6 @@ const ProjectMain = ({ match }) => {
     </Grid>
   ) : (
     <>
-      <CssBaseline />
-
       <Container maxWidth="md">
         <Container className={classes.partition} disableGutters>
           <Title title={project.name} />
