@@ -5,8 +5,6 @@ import styled from 'styled-components';
 const getPassedTime = (date) => {
   const today = new Date();
 
-  date.setMonth(date.getUTCMonth() - 1);
-
   const diff = Math.ceil((today.getTime() - date.getTime()) / 1000); // 초 단위 날짜차이값
 
   const OneMinute = 60;
@@ -61,6 +59,8 @@ export const ManufactureDate = (dateTime) => {
 export const DateInfo = (props) => {
   const { dateTime } = props;
   const date = new Date(...dateTime);
+
+  date.setMonth(date.getUTCMonth() - 1);
 
   return (
     <Tooltip title={date.toLocaleString()}>
