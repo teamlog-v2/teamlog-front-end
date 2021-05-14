@@ -43,7 +43,7 @@ export const UpdateComment = async (
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(comment),
-  });
+  }).then((res) => res.status);
 
   return status;
 };

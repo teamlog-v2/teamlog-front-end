@@ -272,7 +272,7 @@ const CommentForm = (props) => {
 
                     if (status === 200) {
                       setState({ ...state, userInput: '' });
-                      renewCommentList(id);
+                      renewCommentList();
                     }
                   } else {
                     // 댓글 등록
@@ -284,7 +284,6 @@ const CommentForm = (props) => {
                     );
 
                     if (status === 201) {
-                      // console.log(await GetComment(postId, 5));
                         renewCommentList();
                         setState({ ...state, userInput: '' });
                     }
