@@ -71,7 +71,7 @@ const PostMain = () => {
   const classes = useStyles();
   const projectId = useParams().id;
   const [open, setOpen] = useState(false);
-  const [isPostLoading, setIsPostLoading] = useState(true);
+  const [isPostLoading, setIsPostLoading] = useState(false);
   const [formData, setFormData] = useState(null);
 
   const [hashtags, isHashtagsLoaded] = useFetchData(
