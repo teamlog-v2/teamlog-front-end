@@ -13,11 +13,13 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
 import Search from '@material-ui/icons/Search';
 import { Edit } from '@material-ui/icons';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Postlist from '../post-management/postlist';
 import HashtagChooser from '../organisms/HashtagChooser';
 import useFetchPosts from '../hooks/useFetchPosts';
 import { useFetchData } from '../hooks/hooks';
+import PostFormPage from '../pages/PostFormPage';
+import ResponsiveDialog from '../organisms/ResponsiveDialog';
 
 const useStyles = makeStyles((theme) => ({
   /* 반응형 스타일 */
@@ -42,26 +44,34 @@ const useStyles = makeStyles((theme) => ({
   mainGrid: {
     marginTop: theme.spacing(3),
   },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
   button: {
     position: 'fixed',
-    zIndex: 999,
+    zIndex: 3,
     [theme.breakpoints.down('sm')]: {
       left: '90%',
       top: '90%',
     },
     [theme.breakpoints.up('md')]: {
-      left: '80%',
+      left: '100%',
+      top: '90%',
+    },
+    [theme.breakpoints.up('lg')]: {
+      left: '70%',
       top: '90%',
     },
   },
 }));
 
-//
-//
-//
 const PostMain = () => {
   const classes = useStyles();
   const projectId = useParams().id;
+  const [open, setOpen] = useState(false);
+  const [isPostLoading, setIsPostLoading] = useState(false);
+  const [formData, setFormData] = useState(null);
 
   const [hashtags, isHashtagsLoaded] = useFetchData(
     `/api/projects/${projectId}/hashtags`,
@@ -88,6 +98,7 @@ const PostMain = () => {
     isLoading: isPostsLoading,
     fetchPosts,
     totalCount: postsTotalCount,
+    initPosts,
   } = useFetchPosts(url);
 
   // 스크롤 감지
@@ -117,6 +128,29 @@ const PostMain = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, [isPostsLoading, fetchPosts]);
+
+  useEffect(async () => {
+    if (!formData) return;
+
+    setIsPostLoading(true);
+    window.scrollTo({ top: 200, behavior: 'smooth' });
+    try {
+      const res = await fetch('/api/posts', {
+        method: 'POST',
+        body: formData,
+        headers: {},
+      });
+      if (res.status === 201) {
+        // const post = await res.json();
+        console.log('성공적으로 등록');
+        setIsPostLoading(false);
+        setFormData(null);
+        initPosts();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [formData]);
 
   return (
     <>
@@ -198,7 +232,22 @@ const PostMain = () => {
                   {posts.length !== 0 &&
                     `총 ${postsTotalCount}개의 검색된 게시물 중 ${posts.length}개`}
                 </Typography>
-
+                {
+                  isPostLoading ? (
+                    <Grid
+                      className={classes.children}
+                      item
+                      container
+                      alignItems="center"
+                      style={{ border: '1px solid #eee', padding: '1%' }}
+                      xs={12}
+                    >
+                      <CircularProgress />
+                      &nbsp;업로드 중
+                    </Grid>
+                  )
+                  : null
+                }
                 <Postlist posts={posts} />
                 <Grid
                   container
@@ -213,12 +262,21 @@ const PostMain = () => {
           </Container>
         </>
       )}
-
-      <Link to={`/projects/${projectId}/new`}>
+      <Fab className={classes.button} color="primary" onClick={() => { setOpen(true); }}>
+        <Edit />
+      </Fab>
+      <ResponsiveDialog open={open} updateOpen={setOpen}>
+        <PostFormPage
+          updateOpen={setOpen}
+          updatePostLoading={setIsPostLoading}
+          updateFormData={setFormData}
+        />
+      </ResponsiveDialog>
+      {/* <Link to={`/projects/${projectId}/new`}>
         <Fab className={classes.button} color="primary">
           <Edit />
         </Fab>
-      </Link>
+      </Link> */}
     </>
   );
 };

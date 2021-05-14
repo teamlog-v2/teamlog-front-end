@@ -1,32 +1,34 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Grid, TextField, Paper, makeStyles } from '@material-ui/core';
-import PlacesSearch from '../organisms/PlacesSearch';
+import { Grid, TextField, Paper, makeStyles, Typography, InputAdornment, Button, Divider, Tooltip, InputBase } from '@material-ui/core';
+import PlacesSearchApi from '../organisms/PlacesSearchApi';
 import ThumbnailList from '../organisms/ThumbnailList';
 import AccessModifier from '../organisms/AccessModifier';
 import HashtagInput from '../organisms/HashtagInput';
 import HashtagRecommender from '../organisms/HashtagRecommender';
 import PostCreator from '../organisms/PostCreator';
-import MediaUploader from '../organisms/MediaUploader';
-import AttachmentUploader from '../organisms/AttachmentUploader';
+import Uploader from '../organisms/Uploader';
 import AttachmentList from '../organisms/AttachmentList';
 import CommentModifier from '../organisms/CommentModifier';
 import ImageResize from 'image-resize';
 import { getFormat } from '../utils';
+import { Backspace, LocationOn } from '@material-ui/icons';
+import { useParams } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    backgroundColor: 'white',
     [theme.breakpoints.down('sm')]: {
       margin: '0 0',
       padding: '0 1%',
     },
     [theme.breakpoints.up('md')]: {
       margin: '0 0',
-      padding: '0 15%',
+      padding: '5%',
     },
   },
   children: {
     [theme.breakpoints.down('sm')]: {
-      margin: '2% 0',
+      margin: '3% 0',
     },
     [theme.breakpoints.up('md')]: {
       margin: '1% 0',
@@ -35,7 +37,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const PostForm = (props) => {
-  const { id } = props.match.params;
+  const { id } = useParams();
+  const { updateOpen, updatePostLoading, updateFormData } = props;
 
   const classes = useStyles();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -43,14 +46,21 @@ const PostForm = (props) => {
   const [isCommentPublic, setIsCommentPublic] = useState(false);
   const [address, setAddress] = useState('');
   const [location, setLocation] = useState({});
-  const contentRef = useRef(null); // contents
-  const [hashtags, setHashtags] = useState([]); // tag_list
-  const [uploadedFiles, setUploadedFiles] = useState([]);
+  const contentRef = useRef(null);
+  const [hashtags, setHashtags] = useState([]); 
+  const [mediaFiles, setMediaFiles] = useState([]);
   const [attachedFiles, setAttachedFiles] = useState([]);
   const [isFormLoaded, setIsFormLoaded] = useState(false);
   const [recommendedHashtags, setRecommendedHashtags] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
 
   const handleSubmit = async () => {
+
+    if (contentRef.current.value === '') {
+      alert('등록할 내용이 없습니다.');
+      return;
+    };
+
     const formData = new FormData();
 
     const data = {
@@ -76,7 +86,7 @@ const PostForm = (props) => {
 
     // 이미지 압축
     try {
-      const blobs = await Promise.all(uploadedFiles.map(async ({ file, url }) => {
+      const blobs = await Promise.all(mediaFiles.map(async ({ file, url }) => {
         const width = await new Promise((resolve, reject) => {
           const image = new Image();
           image.src = url;
@@ -88,16 +98,21 @@ const PostForm = (props) => {
 
         if (file.size > 300000)  {
           newWidth = Math.ceil(width * Math.sqrt(300000/file.size)); // 목표: 약 300kb
-        } else newWidth = width;
+        }
 
-        return imageResize.updateOptions({
-          format: getFormat(file.type),
-          outputType: 'blob',
-          quality: 0.85,
-          width: newWidth,
-        }).play(url);
+        const format = getFormat(file.type);
+
+        if (file.size > 300000 && (format === 'jpg' || format === 'png')) {
+          return imageResize.updateOptions({
+            format: getFormat(file.type),
+            outputType: 'blob',
+            quality: 0.85,
+            width: newWidth,
+          }).play(url);
+        }
+        return new Blob([file]);
       }));
-      uploadedFiles.forEach(({ file }, index) => {
+      mediaFiles.forEach(({ file }, index) => {
         const blobToFile = new File([blobs[index]], file.name, { type: file.type });
         formData.append('media', blobToFile);
       });
@@ -105,25 +120,13 @@ const PostForm = (props) => {
       console.log(error);
       return;
     }
+    mediaFiles.forEach((file) => {
+      URL.revokeObjectURL(file.url);
+    });
     setIsFormLoaded(true);
-
-    try {
-      const res = await fetch('/api/posts', {
-        method: 'POST',
-        body: formData,
-        headers: {},
-      });
-      setIsFormLoaded(false); // 버튼 활성화
-      if (res.status === 201) {
-        console.log('성공적으로 등록');
-        uploadedFiles.forEach((file) => {
-          URL.revokeObjectURL(file.url);
-        });
-        props.history.push(`/projects/${id}`);
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    updateFormData(formData);
+    updatePostLoading(true);
+    updateOpen(false);
   };
 
   useEffect(() => {
@@ -152,72 +155,105 @@ const PostForm = (props) => {
     >
       <Grid container spacing={3}>
         <Grid container item direction="row" justify="space-between">
-          <Grid container item direction="column" spacing={1}>
-            <Grid item>
-              <PlacesSearch
-                updateLocation={setLocation}
-                updateAddress={setAddress}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField value={address} fullWidth />
-            </Grid>
-          </Grid>
-          <AccessModifier
-            isPostPublic={isPostPublic}
-            updateIsPostPublic={setIsPostPublic}
-          />
-          <CommentModifier
-            isCommentPublic={isCommentPublic}
-            updateIsCommentPublic={setIsCommentPublic}
-          />
-        </Grid>
-        <Grid container item spacing={1}>
-          <AttachmentUploader
-            files={attachedFiles}
-            updateFiles={setAttachedFiles}
-          />
-          <Grid item xs={12}>
-            <Paper
-              elevation={0}
-              style={{ backgroundColor: '#F8F8F8', padding: '1%' }}
-            >
-              {(() => {
-                if (attachedFiles.length > 0) {
-                  return (
-                    <AttachmentList
-                      files={attachedFiles}
-                      updateFiles={setAttachedFiles}
+          <Grid container item direction="column">
+            <Grid item container direction="row" style={{ height: '50px' }} >
+              {
+                !isSearching ? (
+                  <>
+                    <Grid item xs={4}>
+                      <TextField
+                        size="small"
+                        variant="standard"
+                        fullWidth
+                        helperText="필드를 눌러 장소를 검색하세요."
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment>
+                              <LocationOn color="primary" style={{ paddingBottom: '2px' }}/>
+                            </InputAdornment>
+                          )
+                        }}
+                        value={address}
+                        onClick={() => { setIsSearching(true); }}
                     />
-                  );
-                }
-                return <span>업로드된 파일이 없어요.</span>;
-              })()}
-            </Paper>
+                  </Grid>
+                  <Tooltip title="취소">
+                    <Backspace
+                      onClick={() => { setAddress(''); setLocation({}); }}
+                      style={{ margin: '5px 0', color: '#DBDBDB', cursor: 'pointer' }}
+                    />
+                  </Tooltip>
+                </>
+                )
+                : (
+                  <PlacesSearchApi
+                  address={address}
+                  updateIsSearching={setIsSearching}
+                  updateLocation={setLocation}
+                  updateAddress={setAddress}
+                  />
+                )
+              }
+            </Grid>
+          </Grid>
+          <Grid item container xs={12} justify="flex-end">
+            <AccessModifier
+              isPostPublic={isPostPublic}
+              updateIsPostPublic={setIsPostPublic}
+            />
+            <CommentModifier
+              isCommentPublic={isCommentPublic}
+              updateIsCommentPublic={setIsCommentPublic}
+            />
+          </Grid>
+        </Grid>
+        <Grid item xs={12}>
+          <Uploader
+            attachedFiles={attachedFiles}
+            updateAttachedFiles={setAttachedFiles}
+            mediaFiles={mediaFiles}
+            updateMediaFiles={setMediaFiles}
+          />
+          <Divider className={classes.children}/>
+        </Grid>
+        <Grid container item spacing={1}>
+          <Grid item xs={12}>
+            {
+              attachedFiles.length > 0 ? (
+                <Paper
+                  elevation={0}
+                  style={{ backgroundColor: '#F8F8F8', padding: '1%' }}
+                >
+                <AttachmentList
+                  files={attachedFiles}
+                  updateFiles={setAttachedFiles}
+                />
+                 </Paper>
+              ) : null
+            }
           </Grid>
         </Grid>
         <Grid container item spacing={1}>
-          <MediaUploader files={uploadedFiles} updateFiles={setUploadedFiles} />
           <Grid item xs={12}>
-            <Paper
-              elevation={0}
-              style={{ backgroundColor: '#F8F8F8', padding: '1%' }}
-            >
-              {uploadedFiles.length > 0 ? (
+            {
+              mediaFiles.length > 0 ? (
+                <Paper
+                  elevation={0}
+                  style={{ backgroundColor: '#F8F8F8', padding: '1%' }}
+                >
                 <ThumbnailList
-                  files={uploadedFiles}
-                  updateFiles={setUploadedFiles}
+                  files={mediaFiles}
+                  updateFiles={setMediaFiles}
                 />
-              ) : (
-                <span>업로드된 파일이 없어요.</span>
-              )}
-            </Paper>
+                 </Paper>
+              ) : null
+            }
           </Grid>
         </Grid>
         <Grid item xs={12}>
           <TextField
             variant="outlined"
-            rows={10}
+            rows={5}
             rowsMax={Infinity}
             multiline
             fullWidth

@@ -1,15 +1,5 @@
 import { React } from 'react';
-// import { Typography, Box, Divider } from '@material-ui/core';
-// import { makeStyles } from '@material-ui/core/styles';
-// import Fab from '@material-ui/core/Fab';
-// import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
-// import Container from '@material-ui/core/Container';
-// import { makeStyles } from '@material-ui/core';
-
 import { Switch, Route } from 'react-router-dom';
-
-// import ProjectMain from './projectmain';
-// import TestFile from './testfile';
 import Header from './header';
 import ProjectMain from './projectmain';
 import PostMain from './postmain';
