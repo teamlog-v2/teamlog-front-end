@@ -13,6 +13,7 @@ import ReplyIcon from '@material-ui/icons/Reply';
 import CloseIcon from '@material-ui/icons/Close';
 import BorderColorIcon from '@material-ui/icons/BorderColor';
 import UserInfo from '../post-management/user';
+import { UserImage, UserId } from '../post-management/user';
 import { DateInfo } from '../post-management/datetime';
 import CommentForm from './commentform';
 import { DeleteComment } from './commentapi';
@@ -149,11 +150,17 @@ export const Comment = (props) => {
     <Box className={classes.comment}>
       <Box marginLeft={commentStyle.marginLeft}>
         <Box>
-          <Box>
-            <Box className={classes.userInfo}>
-              <UserInfo userId={writer.id} imgPath={writer.profileImgPath} />
-            </Box>
-            <Box className={classes.reply}>
+          <Grid container direction="row" xs={12} justify="space-between" style={{ padding: '1% 0' }}>
+            <Grid item container direction="row" xs={10}>
+              <Grid item>
+                <UserImage imgPath={writer.profileImgPath} />
+              </Grid>
+              <Grid item container direction="column" xs={2}>
+                <UserId userId={writer.id} />
+                <DateInfo dateTime={writeTime} />
+              </Grid>
+            </Grid>
+            <Grid item visibility={commentStyle.buttonDisplay}>
               <Box
                 visibility={commentStyle.buttonDisplay}
                 className={classes.icon}
@@ -212,23 +219,19 @@ export const Comment = (props) => {
               >
                 <CloseIcon color="action" fontSize="small" />
               </Box>
-            </Box>
-          </Box>
-          <Box>
-            <DateInfo dateTime={writeTime} fs="11px" />
-          </Box>
+            </Grid>
+          </Grid>
         </Box>
         <Box>
-          <Box display="inline-block">
+          <Grid item style={{ padding: '1%' }}>
             <Content
               visibility={visibility.content}
               contents={contents}
               tagList={commentMentions}
             />
-          </Box>
+            </Grid>
         </Box>
       </Box>
-
       <Box display={visibility.form}>
         <CommentForm
           id={id}

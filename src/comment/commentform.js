@@ -258,8 +258,8 @@ const CommentForm = (props) => {
             <ThemeProvider theme={theme}>
               <Button
                 fullWidth
-                variant="contained"
                 color="primary"
+                variant="contained"
                 onClick={async () => {
                   if (forUpdate) {
                     // 댓글 수정

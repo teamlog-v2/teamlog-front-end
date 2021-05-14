@@ -17,12 +17,12 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Menu } from '@material-ui/icons';
-import { Avatar, Button, Chip, Grid } from '@material-ui/core';
+import { Avatar, Button, Card, Chip, Grid } from '@material-ui/core';
 
 import { Route } from 'react-router';
 import FileList from './fileList';
 import CommentList from '../comment/commentlist';
-import UserInfo from './user';
+import { UserImage, UserId } from './user';
 import LikerCounter from './liker';
 import { Media } from './media';
 import { DateInfo } from './datetime';
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     margin: '5% 0',
   },
   children: {
-    margin: '1% 0',
+    padding: '1%',
   },
   chip: {
     zIndex: 1,
@@ -54,12 +54,7 @@ const useStyles = makeStyles((theme) => ({
     border: '1px solid #eee',
   },
   header: {
-    height: '4.5em',
-    paddingTop: '0.5em',
-    textAlign: 'left',
-    display: 'inline-block',
     position: 'relative',
-    width: '100%',
   },
   tags: {
     width: '100%',
@@ -71,11 +66,6 @@ const useStyles = makeStyles((theme) => ({
     cursor: 'pointer',
     position: 'absolute',
     right: 0,
-  },
-  location: {
-    paddingTop: '0.25em',
-    paddingBottom: '0.25em',
-    cursor: 'pointer',
   },
   postMenu: {
     zIndex: 5,
@@ -285,37 +275,31 @@ export const Post = (props) => {
         disableGutters
         madWidth={maxWidth}
       >
-        <Box className={classes.paper}>
+        <Card className={classes.paper} elevation={0}>
           <Container disableGutters>
-            <Box bgcolor="rgb(245, 212, 255)">
-              <Box className={classes.header}>
-                <Box display="inline-block" marginLeft="0.25em">
-                  <Box>
-                    <UserInfo
-                      userId={postContents.writer.name}
-                      imgWidth="30px"
-                      imgHeight="30px"
-                      imgPath={postContents.writer.profileImgPath}
-                      fontSize="16px"
-                    />
-                  </Box>
-                  <Box>
-                    <DateInfo dateTime={postContents.writeTime} fs="12px" />
-                  </Box>
-                </Box>
-
-                <Box className={classes.menu}>
+            <Box className={classes.children}>
+              <Grid container className={classes.header} xs={12} direction="row">
+                <Grid item xs={10}>
+                  <Grid container className={classes.user} alignItems="center">
+                    <Grid item>
+                      <UserImage imgPath={postContents.imgPath} />
+                    </Grid>
+                    <Grid item container direction="column" xs={2}>
+                      <UserId userId={postContents.writer.name} />
+                      <DateInfo dateTime={postContents.writeTime} />
+                    </Grid>
+                  </Grid>
+                </Grid>
+                <Grid item className={classes.menu} xs={2}>
                   <PostMenu />
-                </Box>
-              </Box>
+                </Grid>
+              </Grid>
             </Box>
           </Container>
-          <Container disableGutters>
-            <Box className={classes.location}>
-              <RoomIcon />
-              {postContents.latitude}
-            </Box>
-          </Container>
+          <Grid className={classes.children} container alignItems="center">
+            <RoomIcon color="primary" />
+            {postContents.latitude}
+          </Grid>
           <Grid className={classes.children}>
             <Grid container direction="row" spacing={1}>
               {postContents.hashtags
@@ -369,7 +353,7 @@ export const Post = (props) => {
             />
           </Container>
           <Container disableGutters />
-        </Box>
+        </Card>
       </Container>
     </>
   );
