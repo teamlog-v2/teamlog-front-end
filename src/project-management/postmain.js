@@ -7,6 +7,7 @@ import {
   FormControl,
   NativeSelect,
   Fab,
+  Card,
 } from '@material-ui/core';
 import Container from '@material-ui/core/Container';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -70,7 +71,7 @@ const PostMain = () => {
   const classes = useStyles();
   const projectId = useParams().id;
   const [open, setOpen] = useState(false);
-  const [isPostLoading, setIsPostLoading] = useState(false);
+  const [isPostLoading, setIsPostLoading] = useState(true);
   const [formData, setFormData] = useState(null);
 
   const [hashtags, isHashtagsLoaded] = useFetchData(
@@ -234,17 +235,21 @@ const PostMain = () => {
                 </Typography>
                 {
                   isPostLoading ? (
-                    <Grid
+                    <Card
                       className={classes.children}
-                      item
-                      container
-                      alignItems="center"
-                      style={{ border: '1px solid #eee', padding: '1%' }}
+                      elevation={0}
                       xs={12}
                     >
-                      <CircularProgress />
-                      &nbsp;업로드 중
-                    </Grid>
+                      <Grid
+                        item
+                        container
+                        alignItems="center"
+                        style={{ border: '1px solid #eee', padding: '1%' }}
+                      >
+                        <CircularProgress />
+                        &nbsp;업로드 중
+                      </Grid>
+                    </Card>
                   )
                   : null
                 }
@@ -272,11 +277,6 @@ const PostMain = () => {
           updateFormData={setFormData}
         />
       </ResponsiveDialog>
-      {/* <Link to={`/projects/${projectId}/new`}>
-        <Fab className={classes.button} color="primary">
-          <Edit />
-        </Fab>
-      </Link> */}
     </>
   );
 };

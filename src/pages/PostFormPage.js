@@ -1,5 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Grid, TextField, Paper, makeStyles, Typography, InputAdornment, Button, Divider, Tooltip, InputBase } from '@material-ui/core';
+import { Grid, TextField, Paper, makeStyles, InputAdornment, Divider, Tooltip } from '@material-ui/core';
+import { Backspace, LocationOn } from '@material-ui/icons';
+import ImageResize from 'image-resize';
+import { useParams } from 'react-router';
 import PlacesSearchApi from '../organisms/PlacesSearchApi';
 import ThumbnailList from '../organisms/ThumbnailList';
 import AccessModifier from '../organisms/AccessModifier';
@@ -9,10 +12,7 @@ import PostCreator from '../organisms/PostCreator';
 import Uploader from '../organisms/Uploader';
 import AttachmentList from '../organisms/AttachmentList';
 import CommentModifier from '../organisms/CommentModifier';
-import ImageResize from 'image-resize';
 import { getFormat } from '../utils';
-import { Backspace, LocationOn } from '@material-ui/icons';
-import { useParams } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,7 +47,7 @@ const PostForm = (props) => {
   const [address, setAddress] = useState('');
   const [location, setLocation] = useState({});
   const contentRef = useRef(null);
-  const [hashtags, setHashtags] = useState([]); 
+  const [hashtags, setHashtags] = useState([]);
   const [mediaFiles, setMediaFiles] = useState([]);
   const [attachedFiles, setAttachedFiles] = useState([]);
   const [isFormLoaded, setIsFormLoaded] = useState(false);
@@ -55,11 +55,10 @@ const PostForm = (props) => {
   const [isSearching, setIsSearching] = useState(false);
 
   const handleSubmit = async () => {
-
     if (contentRef.current.value === '') {
       alert('등록할 내용이 없습니다.');
       return;
-    };
+    }
 
     const formData = new FormData();
 
@@ -91,13 +90,13 @@ const PostForm = (props) => {
           const image = new Image();
           image.src = url;
           image.onload = () => (resolve(image.width));
-          image.onerror = () => (reject('이미지 읽는 중 오류 발생'));
+          image.onerror = (error) => (reject(error));
         });
 
         let newWidth = 0;
 
-        if (file.size > 300000)  {
-          newWidth = Math.ceil(width * Math.sqrt(300000/file.size)); // 목표: 약 300kb
+        if (file.size > 300000) {
+          newWidth = Math.ceil(width * Math.sqrt(300000 / file.size)); // 목표: 약 300kb
         }
 
         const format = getFormat(file.type);
@@ -156,7 +155,7 @@ const PostForm = (props) => {
       <Grid container spacing={3}>
         <Grid container item direction="row" justify="space-between">
           <Grid container item direction="column">
-            <Grid item container direction="row" style={{ height: '50px' }} >
+            <Grid item container direction="row" style={{ height: '50px' }}>
               {
                 !isSearching ? (
                   <>
@@ -169,28 +168,28 @@ const PostForm = (props) => {
                         InputProps={{
                           startAdornment: (
                             <InputAdornment>
-                              <LocationOn color="primary" style={{ paddingBottom: '2px' }}/>
+                              <LocationOn color="primary" style={{ paddingBottom: '2px' }} />
                             </InputAdornment>
-                          )
+                          ),
                         }}
                         value={address}
                         onClick={() => { setIsSearching(true); }}
-                    />
-                  </Grid>
-                  <Tooltip title="취소">
-                    <Backspace
-                      onClick={() => { setAddress(''); setLocation({}); }}
-                      style={{ margin: '5px 0', color: '#DBDBDB', cursor: 'pointer' }}
-                    />
-                  </Tooltip>
-                </>
+                      />
+                    </Grid>
+                    <Tooltip title="취소">
+                      <Backspace
+                        onClick={() => { setAddress(''); setLocation({}); }}
+                        style={{ margin: '5px 0', color: '#DBDBDB', cursor: 'pointer' }}
+                      />
+                    </Tooltip>
+                  </>
                 )
                 : (
                   <PlacesSearchApi
-                  address={address}
-                  updateIsSearching={setIsSearching}
-                  updateLocation={setLocation}
-                  updateAddress={setAddress}
+                    address={address}
+                    updateIsSearching={setIsSearching}
+                    updateLocation={setLocation}
+                    updateAddress={setAddress}
                   />
                 )
               }
@@ -214,7 +213,7 @@ const PostForm = (props) => {
             mediaFiles={mediaFiles}
             updateMediaFiles={setMediaFiles}
           />
-          <Divider className={classes.children}/>
+          <Divider className={classes.children} />
         </Grid>
         <Grid container item spacing={1}>
           <Grid item xs={12}>
@@ -224,11 +223,11 @@ const PostForm = (props) => {
                   elevation={0}
                   style={{ backgroundColor: '#F8F8F8', padding: '1%' }}
                 >
-                <AttachmentList
-                  files={attachedFiles}
-                  updateFiles={setAttachedFiles}
-                />
-                 </Paper>
+                  <AttachmentList
+                    files={attachedFiles}
+                    updateFiles={setAttachedFiles}
+                  />
+                </Paper>
               ) : null
             }
           </Grid>
@@ -241,11 +240,11 @@ const PostForm = (props) => {
                   elevation={0}
                   style={{ backgroundColor: '#F8F8F8', padding: '1%' }}
                 >
-                <ThumbnailList
-                  files={mediaFiles}
-                  updateFiles={setMediaFiles}
-                />
-                 </Paper>
+                  <ThumbnailList
+                    files={mediaFiles}
+                    updateFiles={setMediaFiles}
+                  />
+                </Paper>
               ) : null
             }
           </Grid>

@@ -4,17 +4,15 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(() => ({
   user: {
-    display: 'flex',
     cursor: 'pointer',
   },
   image: {
     backgroundColor: 'black',
   },
   small: {
-    width: '25px',
-    height: '25px',
-    margin: '2px',
-    border: '1px solid grey',
+    width: '35px',
+    height: '35px',
+    margin: '3px',
   },
 }));
 
@@ -31,21 +29,21 @@ const UserId = (props) => {
   const { userId, fontSize } = props;
 
   return (
-    <Box display="inline-block" marginLeft="0.25em" fontSize={fontSize}>
-      {userId}
+    <Box display="inline-block" fontSize={fontSize}>
+      <span style={{ fontWeight: 600 }}>{userId}</span>
     </Box>
   );
 };
 
-const UserInfo = (props) => {
-  const classes = useStyles();
-  const { userId, imgWidth, imgHeight, imgPath, fontSize } = props;
-  return (
-    <Box display="inline-block" className={classes.user}>
-      <UserImage imgWidth={imgWidth} imgHeight={imgHeight} imgPath={imgPath} />
-      <UserId userId={userId} fontSize={fontSize} />
-    </Box>
-  );
-};
+// const UserInfo = (props) => {
+//   const classes = useStyles();
+//   const { userId, imgWidth, imgHeight, imgPath, fontSize } = props;
+//   return (
+//     <Grid container className={classes.user} alignItems="center">
+//       <UserImage imgWidth={imgWidth} imgHeight={imgHeight} imgPath={imgPath} />
+//       <UserId userId={userId} fontSize={fontSize} />
+//     </Grid>
+//   );
+// };
 
-export default UserInfo;
+export { UserImage, UserId };
