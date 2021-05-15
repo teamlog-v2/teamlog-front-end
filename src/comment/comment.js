@@ -3,6 +3,7 @@ import {
   Box,
   Chip,
   Grid,
+  Typography,
 } from '@material-ui/core';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import {
@@ -63,7 +64,7 @@ const Content = (props) => {
 
   return (
     <Box display={visibility}>
-      <Grid container direction="row" spacing={1}>
+      <Grid container direction="row" spacing={0}>
         {stringSplit
         ? stringSplit.map((string) => {
             if (
@@ -77,11 +78,12 @@ const Content = (props) => {
                     label={string.split('@')[1]}
                     size="small"
                     color="primary"
+                    style={{ marginRight: '0.25em' }}
                   />
                 </Grid>
               );
             }
-            return <Box display="inline-block"> {`${string}`}&nbsp; </Box>;
+            return <Typography bgcolor="pink"> {`${string}`}&nbsp; </Typography>;
           })
         : []}
       </Grid>

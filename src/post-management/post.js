@@ -198,7 +198,6 @@ const PostMenu = (props) => {
                           setIsPostLoading(false);
                           setFormData(null);
                           initPosts();
-                          console.log('ok');
                         }
                       }
                       handleClose(event);

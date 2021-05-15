@@ -1,4 +1,5 @@
-import { Box, Button } from '@material-ui/core';
+import { Box, Button, Grid, LinearProgress } from '@material-ui/core';
+import { Skeleton } from '@material-ui/lab';
 import {
   React,
   useEffect,
@@ -16,9 +17,11 @@ const CommentList = ({ setCommentCounter, projectId, postId }) => {
   const [commentList, setCommentList] = useState([]);
   const [moreVisibility, setMoreVisibility] = useState([]);
   const [commentSize, setCommentSize] = useState(5); // 5의 배수
-  const [isLoaded, setIsLoaded] = useState(true);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isRenewed, setIsRenewed] = useState(true);
 
   const RenewCommentList = useCallback(async (counterEvent) => {
+      setIsRenewed(false);
       const response = await GetComment(postId, commentSize);
       setCommentList(response);
       setCommentCounter(counterEvent);
@@ -28,12 +31,13 @@ const CommentList = ({ setCommentCounter, projectId, postId }) => {
       } else {
         setMoreVisibility('block');
       }
+      setIsRenewed(true);
   });
 
   useEffect(async () => {
     const response = await GetComment(postId, commentSize);
-    setIsLoaded(true);
     setCommentList(response);
+      setIsLoaded(true);
       if (response.last) {
         setMoreVisibility('none');
       }
@@ -42,30 +46,31 @@ const CommentList = ({ setCommentCounter, projectId, postId }) => {
   return isLoaded ?
    (
      <>
+       { isRenewed ? (<></>) : (<><LinearProgress /></>) }
        {
-      commentList.content
-        ? commentList.content.map((item) => {
-            return (
-              <Box key={item.id}>
-                <Comment
-                  id={item.id}
-                  projectId={projectId}
-                  contents={item.contents}
-                  writer={item.writer}
-                  commentMentions={item.commentMentions}
-                  postId={postId}
-                  writeTime={item.writeTime}
-                  renewCommentList={RenewCommentList}
-                  commentList={commentList}
-                  type="parent"
-                />
-                <ChildCommentList
-                  projectId={projectId}
-                  postId={postId}
-                  commentId={item.id}
-                  commentList={commentList}
-                />
-              </Box>
+          commentList.content
+            ? commentList.content.map((item) => {
+               return (
+                 <Box key={item.id}>
+                   <Comment
+                     id={item.id}
+                     projectId={projectId}
+                     contents={item.contents}
+                     writer={item.writer}
+                     commentMentions={item.commentMentions}
+                     postId={postId}
+                     writeTime={item.writeTime}
+                     renewCommentList={RenewCommentList}
+                     commentList={commentList}
+                     type="parent"
+                   />
+                   <ChildCommentList
+                     projectId={projectId}
+                     postId={postId}
+                     commentId={item.id}
+                     commentList={commentList}
+                   />
+                 </Box>
             );
           })
         : []
@@ -89,7 +94,38 @@ const CommentList = ({ setCommentCounter, projectId, postId }) => {
          renewCommentList={RenewCommentList}
        />
      </>
-  ) : (<div>이거 말고 별도 처리할 예정</div>);
+  ) : (
+    <>
+      <Grid container direction="row" xs={12} justify="space-between" style={{ margin: '0.5em' }}>
+        <Grid item container direction="row" xs={12}>
+          <Grid item>
+            <Skeleton animation="wave" variant="circle" width={35} height={35} />
+          </Grid>
+          <Grid item container direction="column" xs={2} style={{ padding: '0 1%', marginBottom: '0.5em' }}>
+            <Skeleton animation="wave" height={25} width="100%" style={{ marginBottom: 1 }} />
+            <Skeleton animation="wave" height={12} width="80%" style={{ marginBottom: 1 }} />
+          </Grid>
+        </Grid>
+        <Grid item xs={12} style={{ marginRight: '1em' }}>
+          <Skeleton animation="wave" variant="rect" height={50} />
+        </Grid>
+      </Grid>
+      <Grid container direction="row" xs={12} justify="space-between" style={{ margin: '0.5em' }}>
+        <Grid item container direction="row" xs={12}>
+          <Grid item>
+            <Skeleton animation="wave" variant="circle" width={35} height={35} />
+          </Grid>
+          <Grid item container direction="column" xs={2} style={{ padding: '0 1%', marginBottom: '0.5em' }}>
+            <Skeleton animation="wave" height={25} width="100%" style={{ marginBottom: 1 }} />
+            <Skeleton animation="wave" height={12} width="80%" style={{ marginBottom: 1 }} />
+          </Grid>
+        </Grid>
+        <Grid item xs={12} style={{ marginRight: '1em' }}>
+          <Skeleton animation="wave" variant="rect" height={50} />
+        </Grid>
+      </Grid>
+    </>
+);
 };
 
 export default CommentList;

@@ -29,7 +29,6 @@ const useStyles = makeStyles(() => ({
     friends: {
       width: '20em',
       height: '25em',
-      zIndex: '500',
       overflow: 'auto',
     },
     replyTarget: {
@@ -329,9 +328,9 @@ const CommentForm = (props) => {
                   onClick={onClick}
                 >
                   <ListItemIcon>
-                    <Avatar />
+                    <Avatar src={item.profileImgPath} />
                   </ListItemIcon>
-                  <ListItemText primary={item.name} />
+                  <ListItemText primary={item.name} secondary={item.id} />
                 </MenuItem>
                 ))
               : null}

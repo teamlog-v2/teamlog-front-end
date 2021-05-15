@@ -12,6 +12,7 @@ import {
   Box,
   CircularProgress,
   IconButton,
+  Container,
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import TaskItem from './TaskItem';
@@ -138,65 +139,67 @@ const TaskContainer = ({ match }) => {
 
   return (
     <>
-      <Box padding="10px">
-        <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-          + 태스크 생성
-        </Button>
-      </Box>
-      <Dialog open={open} onClose={handleClose}>
-        <Box display="flex" alignItems="center">
-          <Box flexGrow={1} />
-          <Box>
-            <IconButton onClick={handleClose}>
-              <CloseIcon />
-            </IconButton>
-          </Box>
+      <Container maxWidth="md">
+        <Box padding="10px">
+          <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+            + 태스크 생성
+          </Button>
         </Box>
-        <TaskCreateForm
-          handleClose={handleClose}
-          addTaskInContainer={addTaskInContainer}
-          projectId={projectId}
-        />
-      </Dialog>
-      <Grid container spacing={2}>
-        <DragDropContext onDragEnd={onDragEnd}>
-          {state.map((el, ind) => (
-            <Droppable key={ind} droppableId={`${ind}`}>
-              {(provided) => (
-                <Grid
-                  item
-                  sm={3}
-                  xs={12}
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                >
-                  <Grid container spacing={1} alignItems="center">
-                    <Grid item>
-                      <Chip
-                        varient="contained"
-                        color="primary"
-                        label={status[ind]}
-                      />
+        <Dialog open={open} onClose={handleClose}>
+          <Box display="flex" alignItems="center">
+            <Box flexGrow={1} />
+            <Box>
+              <IconButton onClick={handleClose}>
+                <CloseIcon />
+              </IconButton>
+            </Box>
+          </Box>
+          <TaskCreateForm
+            handleClose={handleClose}
+            addTaskInContainer={addTaskInContainer}
+            projectId={projectId}
+          />
+        </Dialog>
+        <Grid container spacing={2}>
+          <DragDropContext onDragEnd={onDragEnd}>
+            {state.map((el, ind) => (
+              <Droppable key={ind} droppableId={`${ind}`}>
+                {(provided) => (
+                  <Grid
+                    item
+                    sm={3}
+                    xs={12}
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                  >
+                    <Grid container spacing={1} alignItems="center">
+                      <Grid item>
+                        <Chip
+                          varient="contained"
+                          color="primary"
+                          label={status[ind]}
+                        />
+                      </Grid>
+                      <Grid item>
+                        <Typography>{state[ind].length}</Typography>
+                      </Grid>
                     </Grid>
-                    <Grid item>
-                      <Typography>{state[ind].length}</Typography>
-                    </Grid>
-                  </Grid>
-                  {state[ind].length === 0 ? (
-                    <Grid>
-                      <p>없어요</p>
-                    </Grid>
+                    {state[ind].length === 0 ? (
+                      <Grid>
+                        <p>없어요</p>
+                      </Grid>
                   ) : null}
-                  {el.map((item, index) => (
-                    <TaskItem item={item} index={index} />
+                    {el.map((item, index) => (
+                      <TaskItem item={item} index={index} />
                   ))}
-                  {provided.placeholder}
-                </Grid>
+                    {provided.placeholder}
+                  </Grid>
               )}
-            </Droppable>
+              </Droppable>
           ))}
-        </DragDropContext>
-      </Grid>
+          </DragDropContext>
+        </Grid>
+      </Container>
     </>
   );
 };
