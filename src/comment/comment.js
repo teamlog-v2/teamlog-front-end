@@ -12,7 +12,6 @@ import {
 import ReplyIcon from '@material-ui/icons/Reply';
 import CloseIcon from '@material-ui/icons/Close';
 import BorderColorIcon from '@material-ui/icons/BorderColor';
-import UserInfo from '../post-management/user';
 import { UserImage, UserId } from '../post-management/user';
 import { DateInfo } from '../post-management/datetime';
 import CommentForm from './commentform';
@@ -229,7 +228,7 @@ export const Comment = (props) => {
               contents={contents}
               tagList={commentMentions}
             />
-            </Grid>
+          </Grid>
         </Box>
       </Box>
       <Box display={visibility.form}>
