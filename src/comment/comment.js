@@ -137,8 +137,8 @@ export const Comment = (props) => {
 
   const commentStyle = CheckRoot(type);
 
-  const RenewCommentList = useCallback(async () => {
-    renewCommentList();
+  const RenewCommentList = useCallback(async (counterEvent) => {
+    renewCommentList(counterEvent);
     setVisibility({
       form: 'none',
       content: 'block',
@@ -154,7 +154,7 @@ export const Comment = (props) => {
               <Grid item>
                 <UserImage imgPath={writer.profileImgPath} />
               </Grid>
-              <Grid item container direction="column" xs={2}>
+              <Grid item container direction="column" xs={2} style={{ padding: '0 1%' }}>
                 <UserId userId={writer.id} />
                 <DateInfo dateTime={writeTime} />
               </Grid>
@@ -211,7 +211,7 @@ export const Comment = (props) => {
                   if (window.confirm('정말로 삭제하시겠습니까?')) {
                     const status = await DeleteComment(id);
                     if (status === 200) {
-                        renewCommentList();
+                        renewCommentList(-1);
                     }
                   }
                 }}

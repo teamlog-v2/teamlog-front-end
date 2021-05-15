@@ -10,7 +10,7 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
@@ -28,6 +28,7 @@ import { Media } from './media';
 import { DateInfo } from './datetime';
 import MyPage from '../user/MyPage';
 import { CommentCounter } from '../comment/comment';
+import { DeletePost } from './postapi';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -120,10 +121,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PostMenu = () => {
+const PostMenu = (props) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
+  const { postContents, setIsPostLoading, setFormData, initPosts } = props;
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -144,7 +146,6 @@ const PostMenu = () => {
     }
   }
 
-  // return focus to the button when we transitioned from !open -> open
   const prevOpen = useRef(open);
   useEffect(() => {
     if (prevOpen.current === true && open === false) {
@@ -190,7 +191,20 @@ const PostMenu = () => {
                   >
                     <MenuItem onClick={handleClose}>수정</MenuItem>
                     <MenuItem onClick={handleClose}>수정 내역</MenuItem>
-                    <MenuItem onClick={handleClose}>삭제</MenuItem>
+                    <MenuItem onClick={async (event) => {
+                      if (window.confirm('정말로 삭제하시겠습니까?')) {
+                        const status = await DeletePost(postContents.id);
+                        if (status === 200) {
+                          setIsPostLoading(false);
+                          setFormData(null);
+                          initPosts();
+                          console.log('ok');
+                        }
+                      }
+                      handleClose(event);
+                    }}
+                    >삭제
+                    </MenuItem>
                   </MenuList>
                 </ClickAwayListener>
               </Paper>
@@ -262,9 +276,19 @@ const MediaList = ({ media }) => {
 };
 
 export const Post = (props) => {
-  const { postContents, maxWidth } = props;
+  const { postContents, maxWidth, setIsPostLoading, setFormData, initPosts } = props;
 
   const classes = useStyles();
+  // const [likerCounter, setLikerCounter] = useState(postContents.likeCOunt);
+  const [commentCounter, setCommentCounter] = useState(postContents.commentCount);
+
+  const SetCommentCounter = useCallback((counterEvent) => {
+    setCommentCounter(commentCounter + counterEvent);
+  });
+
+  useEffect(() => {
+    setCommentCounter(postContents.commentCount);
+  }, [postContents.id]);
 
   return (
     <>
@@ -284,14 +308,19 @@ export const Post = (props) => {
                     <Grid item>
                       <UserImage imgPath={postContents.imgPath} />
                     </Grid>
-                    <Grid item container direction="column" xs={2}>
-                      <UserId userId={postContents.writer.name} />
+                    <Grid item container direction="column" xs={2} style={{ padding: '0 1%' }}>
+                      <UserId userId={postContents.writer.id} />
                       <DateInfo dateTime={postContents.writeTime} />
                     </Grid>
                   </Grid>
                 </Grid>
                 <Grid item className={classes.menu} xs={2}>
-                  <PostMenu />
+                  <PostMenu
+                    postContents={postContents}
+                    setIsPostLoading={setIsPostLoading}
+                    setFormData={setFormData}
+                    initPosts={initPosts}
+                  />
                 </Grid>
               </Grid>
             </Box>
@@ -343,13 +372,14 @@ export const Post = (props) => {
 
             <Box className={classes.etc}>
               <LikerCounter count={postContents.likeCount} />
-              <CommentCounter count={postContents.commentCount} />
+              <CommentCounter count={commentCounter} />
             </Box>
           </Container>
           <Container disableGutters>
             <CommentList
               projectId={postContents.project.id}
               postId={postContents.id}
+              setCommentCounter={SetCommentCounter}
             />
           </Container>
           <Container disableGutters />

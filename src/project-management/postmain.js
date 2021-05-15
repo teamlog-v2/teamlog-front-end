@@ -253,7 +253,12 @@ const PostMain = () => {
                   )
                   : null
                 }
-                <Postlist posts={posts} />
+                <Postlist
+                  posts={posts}
+                  setIsPostLoading={setIsPostLoading}
+                  setFormData={setFormData}
+                  initPosts={initPosts}
+                />
                 <Grid
                   container
                   justify="center"

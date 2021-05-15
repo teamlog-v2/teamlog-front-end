@@ -17,7 +17,6 @@ const useStyles = makeStyles(() => ({
 }));
 
 const UserImage = (props) => {
-  // 차라리 이미지 용도에 따라 클래스를 선택하는 것이 나으려나...?
   const classes = useStyles();
 
   const { imgPath } = props;

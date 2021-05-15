@@ -26,23 +26,6 @@ const useStyles = makeStyles(() => ({
       paddingBottom: '0.5em',
       cursor: 'pointer',
     },
-    comment: {
-      backgroundColor: 'rgb(245, 245, 245)',
-      textAlign: 'left',
-    },
-    reply: {
-      // display='inline-block' right='0px' width='10%' textAlign='right'
-      display: 'inline-block',
-      right: '0px',
-      width: '10%',
-      textAlign: 'right',
-    },
-    icon: {
-      cursor: 'pointer',
-      width: 'auto',
-      display: 'inline-block',
-      margin: '0.5em',
-    },
     friends: {
       width: '20em',
       height: '25em',
@@ -232,9 +215,9 @@ const CommentForm = (props) => {
     return (
       <Container>
         <Box
+          paddingTop="0.5em"
+          paddingBottom="0.5em"
           component="form"
-          marginTop="1em"
-          marginBottom="1em"
           width="auto"
           height="auto"
         >
@@ -272,7 +255,7 @@ const CommentForm = (props) => {
 
                     if (status === 200) {
                       setState({ ...state, userInput: '' });
-                      renewCommentList();
+                      renewCommentList(0);
                     }
                   } else {
                     // 댓글 등록
@@ -284,7 +267,7 @@ const CommentForm = (props) => {
                     );
 
                     if (status === 201) {
-                        renewCommentList();
+                        renewCommentList(1);
                         setState({ ...state, userInput: '' });
                     }
                     }

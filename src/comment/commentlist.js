@@ -4,6 +4,7 @@ import {
   useEffect,
   useState,
   Fragment,
+  useCallback,
   // useRef,
 } from 'react';
 import ChildCommentList from './childcommentlist';
@@ -11,22 +12,23 @@ import { Comment } from './comment';
 import { GetComment } from './commentapi';
 import CommentForm from './commentform';
 
-const CommentList = ({ projectId, postId }) => {
+const CommentList = ({ setCommentCounter, projectId, postId }) => {
   const [commentList, setCommentList] = useState([]);
   const [moreVisibility, setMoreVisibility] = useState([]);
   const [commentSize, setCommentSize] = useState(5); // 5의 배수
   const [isLoaded, setIsLoaded] = useState(true);
 
-  const RenewCommentList = async () => {
+  const RenewCommentList = useCallback(async (counterEvent) => {
       const response = await GetComment(postId, commentSize);
       setCommentList(response);
+      setCommentCounter(counterEvent);
 
       if (response.last) {
         setMoreVisibility('none');
       } else {
         setMoreVisibility('block');
       }
-  };
+  });
 
   useEffect(async () => {
     const response = await GetComment(postId, commentSize);
@@ -35,7 +37,7 @@ const CommentList = ({ projectId, postId }) => {
       if (response.last) {
         setMoreVisibility('none');
       }
-  }, [commentSize]);
+  }, [postId, commentSize]);
 
   return isLoaded ?
    (
@@ -87,7 +89,7 @@ const CommentList = ({ projectId, postId }) => {
          renewCommentList={RenewCommentList}
        />
      </>
-  ) : (<div>댓글 등록하는 중...</div>);
+  ) : (<div>이거 말고 별도 처리할 예정</div>);
 };
 
 export default CommentList;
