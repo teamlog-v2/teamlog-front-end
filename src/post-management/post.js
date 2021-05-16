@@ -23,11 +23,10 @@ import { Route } from 'react-router';
 import FileList from './fileList';
 import CommentList from '../comment/commentlist';
 import { UserImage, UserId } from './user';
-import LikerCounter from './liker';
+import { LikerCounter, CommentCounter } from './counter';
 import { Media } from './media';
 import { DateInfo } from './datetime';
 import MyPage from '../user/MyPage';
-import { CommentCounter } from '../comment/comment';
 import { DeletePost } from './postapi';
 
 const useStyles = makeStyles((theme) => ({
@@ -278,15 +277,20 @@ export const Post = (props) => {
   const { postContents, maxWidth, setIsPostLoading, setFormData, initPosts } = props;
 
   const classes = useStyles();
-  // const [likerCounter, setLikerCounter] = useState(postContents.likeCOunt);
+  const [likerCounter, setLikerCounter] = useState(postContents.likeCount);
   const [commentCounter, setCommentCounter] = useState(postContents.commentCount);
 
   const SetCommentCounter = useCallback((counterEvent) => {
     setCommentCounter(commentCounter + counterEvent);
-  });
+  }); // 댓글 개수 조정
+
+  const SetLikerCounter = useCallback((counterEvent) => {
+    setLikerCounter(likerCounter + counterEvent);
+  }); // 좋아요 개수 조정
 
   useEffect(() => {
     setCommentCounter(postContents.commentCount);
+    setLikerCounter(postContents.likeCount);
   }, [postContents.id]);
 
   return (
@@ -296,7 +300,7 @@ export const Post = (props) => {
         className={classes.root}
         component="main"
         disableGutters
-        madWidth={maxWidth}
+        maxWidth={maxWidth}
       >
         <Card className={classes.paper} elevation={0}>
           <Container disableGutters>
@@ -370,7 +374,11 @@ export const Post = (props) => {
             </Box>
 
             <Box className={classes.etc}>
-              <LikerCounter count={postContents.likeCount} />
+              <LikerCounter
+                count={likerCounter}
+                setLikerCounter={SetLikerCounter}
+                postId={postContents.id}
+              />
               <CommentCounter count={commentCounter} />
             </Box>
           </Container>

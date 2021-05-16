@@ -5,7 +5,6 @@ import {
   Grid,
   Typography,
 } from '@material-ui/core';
-import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import {
   makeStyles,
 } from '@material-ui/core/styles';
@@ -87,16 +86,6 @@ const Content = (props) => {
           })
         : []}
       </Grid>
-    </Box>
-  );
-};
-
-export const CommentCounter = (props) => {
-  const { count } = props;
-  return (
-    <Box display="inline-block">
-      <ChatBubbleOutlineIcon />
-      {count}
     </Box>
   );
 };

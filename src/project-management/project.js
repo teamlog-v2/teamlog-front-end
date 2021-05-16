@@ -5,6 +5,7 @@ import ProjectMain from './projectmain';
 import PostMain from './postmain';
 import MemberTab from './MemberTab';
 import TaskContainer from '../task/TaskContainer';
+import ProjectFollower from './projectfollower';
 
 export default function Project() {
   const sections = [
@@ -12,7 +13,7 @@ export default function Project() {
     { title: '포스트', url: '/post', component: PostMain },
     { title: '태스크', url: '/task', component: TaskContainer },
     { title: '멤버', url: '/member', component: MemberTab },
-    { title: '팔로워', url: '/follower' },
+    { title: '팔로워', url: '/follower', component: ProjectFollower },
   ];
 
   return (
