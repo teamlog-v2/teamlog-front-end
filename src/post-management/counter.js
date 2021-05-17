@@ -18,7 +18,7 @@ export const LikerCounter = (props) => {
   const [like, setLike] = useState(false); // 본인 좋아요 여부
   const [likers, setLikers] = useState([]); // 좋아하는 유저 목록
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isLikerListOpened, setIsLikerListOpened] = useState(true); // 나중에 false로 바꾸기
+  const [isLikerListOpened, setIsLikerListOpened] = useState(false);
   const { postId, count, setLikerCounter } = props;
 
   useEffect(async () => {

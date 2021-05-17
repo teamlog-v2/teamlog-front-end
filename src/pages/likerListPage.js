@@ -15,17 +15,18 @@ const LikerList = ({ likerList }) => {
 
     return likerList.length > 0 ? (
       <Container>
-        <Grid container xs={12}>
-          <Grid item style={{ margin: '1em 0' }}>
-            <Typography variant="h6">좋아하는 유저들</Typography>
-          </Grid>
-          <Grid item xs={12} style={{ marginBottom: '1em' }}>
-            <Divider />
-          </Grid>
-          <Grid item xs={12}>
-            { likerList ? likerList.map((liker) => {
+        <Grid container xs={12} style={{ minWidth: '20em', height: '30em' }}>
+          <Grid container direction="column">
+            <Grid item style={{ margin: '1em 0' }}>
+              <Typography variant="h6">좋아하는 유저들</Typography>
+            </Grid>
+            <Grid item style={{ marginBottom: '1em' }}>
+              <Divider />
+            </Grid>
+            <Grid item>
+              { likerList ? likerList.map((liker) => {
               return (
-                <Grid container spacing={2}>
+                <Grid item spacing={3} style={{ margin: '0.25em 0' }}>
                   <Grid item xs={12}>
                     <Card elevation={2}>
                       <Box display="flex" flexDirection="row">
@@ -60,16 +61,24 @@ const LikerList = ({ likerList }) => {
                 </Grid>
               );
           }) : null}
+            </Grid>
           </Grid>
         </Grid>
       </Container>
     ) : (
       <Container>
-        <Grid variant="h6" style={{ marginTop: '1em' }}>
-          <Typography>좋아하는 유저들</Typography>
-        </Grid>
-        <Grid>
-          아직 없거든요!?
+        <Grid container xs={12} style={{ minWidth: '20em', height: '30em' }}>
+          <Grid container direction="column">
+            <Grid item style={{ margin: '1em 0' }}>
+              <Typography variant="h6">좋아하는 유저들</Typography>
+            </Grid>
+            <Grid item style={{ marginBottom: '1em' }}>
+              <Divider />
+            </Grid>
+            <Grid item>
+              가장 먼저 좋아요를 눌러보세요!
+            </Grid>
+          </Grid>
         </Grid>
       </Container>
     );
