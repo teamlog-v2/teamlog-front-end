@@ -19,6 +19,8 @@ import {
   getUser,
   getUserFollower,
   getUserFollowing,
+  follow,
+  unfollow,
 } from './userService';
 
 const useStyles = makeStyles((theme) => ({
@@ -42,6 +44,8 @@ const MyPage = ({ match }) => {
   const [value, setValue] = useState('1');
   const [isLogin, setIsLogin] = useState(true);
   const [user, setUser] = useState({
+    isMe: false,
+    isFollow: false,
     id: '',
     name: '',
     profileImgPath: '',
@@ -69,6 +73,30 @@ const MyPage = ({ match }) => {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const openProfileEdit = () => {};
+
+  const followUser = () => {
+    const newUser = { ...user, isFollow: true };
+    try {
+      const response = follow(user.id);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+    setUser(newUser);
+  };
+
+  const unfollowUser = () => {
+    const newUser = { ...user, isFollow: false };
+    try {
+      const response = unfollow(user.id);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+    setUser(newUser);
   };
 
   const handleLogout = async () => {
@@ -103,6 +131,34 @@ const MyPage = ({ match }) => {
             {user.introduction}
           </Typography>
         </Grid>
+        <Grid item xs={12} align="center">
+          {user.isMe ? (
+            <Button variant="outlined" onClick={openProfileEdit}>
+              프로필 편집
+            </Button>
+          ) : (
+            <>
+              {user.isFollow === true ? (
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={unfollowUser}
+                >
+                  팔로잉
+                </Button>
+              ) : (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={followUser}
+                >
+                  팔로우
+                </Button>
+              )}
+            </>
+          )}
+        </Grid>
+
         <Grid item xs={12}>
           <Divider variant="middle" />
         </Grid>
