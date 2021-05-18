@@ -27,6 +27,12 @@ const getUser = async (id) => fetch(`/api/users/${id}`, {
     headers: headersData,
   });
 
+const updateUser = async (formData) => fetch('/api/users', {
+    method: 'Put',
+    body: formData,
+    headers: {},
+  });
+
 const getUserFollower = async (id) => fetch(`/api/users/${id}/follower`, {
     method: 'Get',
     headers: headersData,
@@ -47,5 +53,5 @@ const unfollow = async (id) => fetch(`/api/userfollows/${id}`, {
     headers: headersData,
   });
 
-export { validateLogin, login, logout, createUser, getUser,
+export { validateLogin, login, logout, createUser, getUser, updateUser,
   getUserFollower, getUserFollowing, follow, unfollow };
