@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Card, CircularProgress, Container, Grid, makeStyles, Typography } from '@material-ui/core';
+import { Avatar, Box, Card, CircularProgress, Container, Grid, makeStyles, Typography } from '@material-ui/core';
 import React, { useContext } from 'react';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -21,7 +21,7 @@ const Master = (props) => {
   const master = members.filter((candidate) => project.masterId === candidate.id)[0];
 
   return (
-    <Container maxWidth="md" style={{ marginBottom: '2em' }}>
+    <Container maxWidth="md" style={{ margin: '2em 0' }}>
       <Grid>
         <Grid item style={{ margin: '1em 0' }} xs={12}>
           <Typography variant="h6">👑 마스터</Typography>
@@ -46,15 +46,6 @@ const Master = (props) => {
                     </Typography>
                   </Box>
                 </Link>
-              </Box>
-              <Box margin="10px" display="flex" alignItems="center">
-                <Button
-                  size="small"
-                  variant="outlined"
-                  color="primary"
-                >
-                  팔로잉
-                </Button>
               </Box>
             </Box>
           </Card>
@@ -97,15 +88,6 @@ const Member = (props) => {
                     </Box>
                   </Link>
                 </Box>
-                <Box margin="10px" display="flex" alignItems="center">
-                  <Button
-                    size="small"
-                    variant="outlined"
-                    color="primary"
-                  >
-                    팔로잉
-                  </Button>
-                </Box>
               </Box>
             </Card>
           </Grid>
@@ -125,10 +107,10 @@ const MemberTab = () => {
   const [project, isProjectLoaded, projectsLoadError] = useFetchData(
     `/api/projects/${projectId}`,
   );
-  console.log(projectsLoadError);
 
   const { useHandleError } = useContext(ErrorContext);
   useHandleError(membersLoadError);
+  useHandleError(projectsLoadError);
 
   if (!isMemebersLoaded || !isProjectLoaded) {
     return (

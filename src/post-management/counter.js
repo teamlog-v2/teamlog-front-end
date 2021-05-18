@@ -25,8 +25,9 @@ export const LikerCounter = (props) => {
     setIsLoaded(false);
     const response = await GetLiker(postId);
     setLikers(response);
+    console.log(response);
     const contains = (val) => response.some(({ id }) => id.includes(val));
-    if (contains('jduckling1024')) { // 정적으로 아이디 고정하는 것이 아니라 상태를 가지고있어야 할 듯
+    if (contains('jduckling1024')) { // 아이디 변경 필요
       setLike(true);
     } else {
       setLike(false);

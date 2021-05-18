@@ -15,7 +15,7 @@ import {
     makeStyles,
   ThemeProvider,
 } from '@material-ui/core/styles';
-import { getProjectMembers } from '../project-management/projectapi';
+import { GetProjectMembers } from '../project-management/projectapi';
 import { CreateComment, /* GetComment, */ UpdateComment } from './commentapi';
 
 const useStyles = makeStyles(() => ({
@@ -71,7 +71,7 @@ const CommentForm = (props) => {
       } else {
         setState({ ...state, userInput: '' });
       }
-      setOptions(await getProjectMembers(projectId));
+      setOptions(await GetProjectMembers(projectId));
     }, [forUpdate]);
 
     const onKeyDown = (e) => {

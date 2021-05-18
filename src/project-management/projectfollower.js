@@ -1,22 +1,96 @@
-import { CircularProgress, Grid, Typography } from '@material-ui/core';
-import React, { useContext } from 'react';
-import { useParams } from 'react-router';
-import ErrorContext from '../contexts/error';
-import { useFetchData } from '../hooks/hooks';
+import { Avatar, Box, Button, Card, CircularProgress, Container, Grid, makeStyles, Typography } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import { Redirect, useParams } from 'react-router';
+import { Link } from 'react-router-dom';
+import { GetFollowProjects, GetProjectFollowers, Follow, UnFollow } from './projectapi';
+
+const useStyles = makeStyles(() => ({
+  profileImg: {
+    margin: '10px',
+    width: '60px',
+    height: '60px',
+  },
+}));
 
 const ProjectFollower = () => {
-    const { id: projectId } = useParams();
+  const classes = useStyles();
+  const { id: projectId } = useParams();
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
+  const [followers, setFollowers] = useState([]);
+  const [isFollowing, setIsFollowing] = useState();
 
-    const [followers, isFollowersLoaded, followersLoadError] = useFetchData(
-        `/api/projects/${projectId}/members`,
-    );
-    console.log(followers);
-    // 프로젝트 팔로워 요청으로 변경 필요
+  useEffect(async () => {
+    const followersResponse = await GetProjectFollowers(projectId);
 
-    const { useHandleError } = useContext(ErrorContext);
-    useHandleError(followersLoadError);
+    if (followersResponse.status === 401) {
+      setIsLogin(false);
+      return;
+    }
 
-    if (!isFollowersLoaded) {
+    if (followersResponse.status === 200) {
+      setFollowers(await followersResponse.json());
+      const followProjects = await GetFollowProjects();
+
+      if (followProjects.status === 401) {
+        setIsLogin(false);
+        return;
+      }
+
+      if (followProjects.status === 200) {
+        const projects = await followProjects.json();
+        const contains = (val) => projects.some(({ id }) => id === val);
+
+        if (contains(parseInt(projectId, 10))) {
+          setIsFollowing(true);
+        } else {
+          setIsFollowing(false);
+        }
+        setIsLoaded(true);
+      }
+    }
+  }, []);
+
+  if (!isLogin) {
+    window.console.log('세션이 만료되었습니다. 로그인 화면으로 돌아갑니다.');
+    return <Redirect to="/login" />;
+  }
+
+  const FollowProject = async () => {
+    const response = await Follow(projectId);
+
+    if (response.status === 401) {
+      isLogin(false);
+      return;
+    }
+
+    if (response.status === 201) {
+      setIsFollowing(true);
+      const followersResponse = await GetProjectFollowers(projectId);
+      if (followersResponse.status === 200) {
+        setFollowers(await followersResponse.json());
+      }
+    }
+  };
+
+  const UnfollowProject = async () => {
+    const response = await UnFollow(projectId);
+
+    if (response.status === 401) {
+      isLogin(false);
+      return;
+    }
+
+    if (response.status === 200) {
+      setIsFollowing(false);
+      const followersResponse = await GetProjectFollowers(projectId);
+      if (followersResponse.status === 200) {
+        setFollowers(await followersResponse.json());
+      }
+    }
+  };
+
+  if (!isLoaded) {
     return (
       <Grid
         container
@@ -29,12 +103,68 @@ const ProjectFollower = () => {
           <CircularProgress />
         </Grid>
         <Grid item>
-          <Typography> 팔로워 목록을 불러오고 있어요!</Typography>
+          <Typography> 팔로워 목록을 불러오고 있어요! </Typography>
         </Grid>
       </Grid>
     );
   }
-    return (<div>프로젝트 팔로워 목록</div>);
+
+    return (
+      <Container maxWidth="md" style={{ marginTop: '2em', marginBottom: '2em' }}>
+        <Container>
+          <Grid container>
+            <Grid item style={{ margin: '1em 0' }} xs={9} sm={10}>
+              <Typography variant="h6">⭐ 팔로워</Typography>
+            </Grid>
+            <Grid item style={{ margin: '1em 0' }} xs={3} sm={2}>
+              {isFollowing ? (
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  fullWidth
+                  onClick={UnfollowProject}
+                >팔로잉
+                </Button>
+              ) : (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                  onClick={FollowProject}
+                >팔로우
+                </Button>
+              )}
+            </Grid>
+          </Grid>
+          <Grid container spacing={2}>
+            { followers.length > 0 ? (followers.map((member) => (
+              <Grid key={member.id} item sm={6} xs={12}>
+                <Card elevation={2}>
+                  <Box display="flex" flexDirection="row">
+                    <Box flexGrow={1}>
+                      <Link
+                        to={`/users/${member.id}`}
+                        style={{ textDecoration: 'none' }}
+                      >
+                        <Box display="flex" alignItems="center">
+                          <Avatar
+                            className={classes.profileImg}
+                            src={member.profileImgPath}
+                          />
+                          <Typography variant="body1" color="textPrimary">
+                            {member.name}
+                          </Typography>
+                        </Box>
+                      </Link>
+                    </Box>
+                  </Box>
+                </Card>
+              </Grid>
+          ))) : (<Grid item>프로젝트의 첫 번째 팔로워가 되어보세요!</Grid>)}
+          </Grid>
+        </Container>
+      </Container>
+);
 };
 
 export default ProjectFollower;
