@@ -124,7 +124,7 @@ const MyPage = ({ match }) => {
 
   return (
     <>
-      <Container component="main" maxWidth="md">
+      <Container component="main" disableGutters maxWidth="md">
         <Button variant="outlined" onClick={handleLogout}>
           로그아웃
         </Button>
@@ -185,14 +185,14 @@ const MyPage = ({ match }) => {
               <Tab label="팔로잉" value="4" />
             </TabList>
           </AppBar>
-          <TabPanel value="1" className={classes.tab}>
+          <TabPanel value="1" disableGutters className={classes.tab}>
             <ProjectListContainer userId={user.id} />
           </TabPanel>
-          <TabPanel value="2">없음</TabPanel>
-          <TabPanel value="3">
+          <TabPanel value="2" disableGutters>없음</TabPanel>
+          <TabPanel disableGutters value="3">
             <UserList userId={user.id} fetchData={getUserFollower} />
           </TabPanel>
-          <TabPanel value="4">
+          <TabPanel disableGutters value="4">
             <UserList userId={user.id} fetchData={getUserFollowing} />
           </TabPanel>
         </TabContext>
