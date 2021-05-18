@@ -71,7 +71,7 @@ const UserList = ({ userId, fetchData }) => {
   };
 
   return (
-    <Container maxWidth="md">
+    <Container disableGutters maxWidth="md">
       <Grid container spacing={1}>
         {(isLoaded ? users : Array.from(new Array(12))).map((user) => (
           <Grid item sm={6} xs={12}>
@@ -95,24 +95,28 @@ const UserList = ({ userId, fetchData }) => {
                     </Link>
                   </Box>
                   <Box margin="10px" display="flex" alignItems="center">
-                    {user.isFollow === true ? (
-                      <Button
-                        size="small"
-                        variant="outlined"
-                        color="primary"
-                        onClick={() => unfollowUser(user)}
-                      >
-                        팔로잉
-                      </Button>
-                    ) : (
-                      <Button
-                        size="small"
-                        variant="contained"
-                        color="primary"
-                        onClick={() => followUser(user)}
-                      >
-                        팔로우
-                      </Button>
+                    {user.isFollow === null ? null : (
+                      <>
+                        {user.isFollow === true ? (
+                          <Button
+                            size="small"
+                            variant="outlined"
+                            color="primary"
+                            onClick={() => unfollowUser(user)}
+                          >
+                            팔로잉
+                          </Button>
+                        ) : (
+                          <Button
+                            size="small"
+                            variant="contained"
+                            color="primary"
+                            onClick={() => followUser(user)}
+                          >
+                            팔로우
+                          </Button>
+                        )}
+                      </>
                     )}
                   </Box>
                 </Box>
