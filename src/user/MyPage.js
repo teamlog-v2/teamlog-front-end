@@ -64,6 +64,8 @@ const MyPage = ({ match }) => {
 
   useEffect(() => {
     (async () => {
+      setIsLoaded(false);
+      setValue('1');
       let userInfo;
       try {
         const response = await getUser(match.params.userId);
@@ -79,7 +81,7 @@ const MyPage = ({ match }) => {
       console.log(userInfo);
       setIsLoaded(true);
     })();
-  }, []);
+  }, [match.params.userId]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
