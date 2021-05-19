@@ -186,7 +186,7 @@ const ProjectManagement = ({ match }) => {
                 <Typography variant="h6">프로젝트 신청 멤버</Typography>
               </Grid>
               <Grid container spacing={2}>
-                {applicants.size > 0 ? (applicants.map((applicant) => (
+                {applicants.length > 0 ? (applicants.map((applicant) => (
                   <Grid key={applicant.id} item sm={6} xs={12}>
                     <Card elevation={2}>
                       <Box display="flex" flexDirection="row">

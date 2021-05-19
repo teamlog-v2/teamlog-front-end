@@ -4,7 +4,7 @@ import { Redirect, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import ErrorContext from '../contexts/error';
 import { useFetchData } from '../hooks/hooks';
-import { GetProjectApplcants, JoinProject } from './projectapi';
+import { ApplyProject, GetProjectApplcants } from './projectapi';
 
 const useStyles = makeStyles(() => ({
   profileImg: {
@@ -28,28 +28,31 @@ const Master = (props) => {
         </Grid>
       </Grid>
       <Grid container spacing={2}>
-        <Grid item sm={6} xs={12}>
-          <Card elevation={2}>
-            <Box display="flex" flexDirection="row">
-              <Box flexGrow={1}>
-                <Link
-                  to={`/users/${master.id}`}
-                  style={{ textDecoration: 'none' }}
-                >
-                  <Box display="flex" alignItems="center">
-                    <Avatar
-                      className={classes.profileImg}
-                      src={master.profileImgPath}
-                    />
-                    <Typography variant="body1" color="textPrimary">
-                      {master.name}
-                    </Typography>
-                  </Box>
-                </Link>
+        {master !== undefined ? (
+          <Grid item sm={6} xs={12}>
+            <Card elevation={2}>
+              <Box display="flex" flexDirection="row">
+                <Box flexGrow={1}>
+                  <Link
+                    to={`/users/${master.id}`}
+                    style={{ textDecoration: 'none' }}
+                  >
+                    <Box display="flex" alignItems="center">
+                      <Avatar
+                        className={classes.profileImg}
+                        src={master.profileImgPath}
+                      />
+                      <Typography variant="body1" color="textPrimary">
+                        {master.name}
+                      </Typography>
+                    </Box>
+                  </Link>
+                </Box>
               </Box>
-            </Box>
-          </Card>
-        </Grid>
+            </Card>
+          </Grid>
+) : (<></>)}
+
       </Grid>
     </Container>
   );
@@ -59,9 +62,17 @@ const Member = (props) => {
   const classes = useStyles();
   const { projectId, members } = props;
   const [isLogin, setIsLogin] = useState(true);
+  const [isMember, setIsMember] = useState();
   const [isApplyed, setIsApplyed] = useState();
 
   useEffect(async () => {
+    const containsMember = (val) => members.some(({ id }) => id.includes(val));
+    if (containsMember('baaakkbooo')) { // 아이디 변경 필요
+      setIsMember(true);
+      return;
+    }
+
+    setIsMember(false);
     const response = await GetProjectApplcants(projectId);
     if (response.status === 401) {
       setIsLogin(false);
@@ -71,7 +82,8 @@ const Member = (props) => {
     if (response.status === 200) {
       const applicants = await response.json();
       console.log(applicants);
-      // const contains = (val) => applicants.some(({ id }) => id.includes(val));
+      const contains = (val) => applicants.some(({ id }) => id.includes(val));
+      console.log(contains('jduckling1024')); // 여기는 본인이 신청했나
     }
   }, []);
 
@@ -81,7 +93,7 @@ const Member = (props) => {
   }
 
   const Apply = async () => {
-    const response = await JoinProject(projectId);
+    const response = await ApplyProject(projectId);
 
     if (response.status === 401) {
       setIsLogin(false);
@@ -93,6 +105,32 @@ const Member = (props) => {
     }
   };
 
+  const ReplyButton = () => {
+    if (isMember) {
+      return (<> </>);
+    }
+
+    if (!isMember && !isApplyed) {
+      return (
+        <Button
+          variant="contained"
+          color="primary"
+          fullWidth
+          onClick={Apply}
+        >멤버 신청
+        </Button>
+      );
+    }
+      return (
+        <Button
+          variant="outlined"
+          color="primary"
+          fullWidth
+        >신청 완료
+        </Button>
+      );
+  };
+
   return (
     <Container>
       <Grid container>
@@ -100,23 +138,7 @@ const Member = (props) => {
           <Typography variant="h6">👨‍👧‍👧 멤버</Typography>
         </Grid>
         <Grid item style={{ margin: '1em 0' }} xs={3} sm={2}>
-          { !isApplyed ? (
-            <Button
-              variant="contained"
-              color="primary"
-              fullWidth
-              onClick={Apply}
-            >멤버 신청
-            </Button>
-            ) : (
-              <Button
-                variant="outlined"
-                color="primary"
-                fullWidth
-              >신청 완료
-              </Button>
-          ) }
-
+          <ReplyButton />
         </Grid>
       </Grid>
       <Grid container spacing={2}>
