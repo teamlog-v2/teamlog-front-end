@@ -1,6 +1,6 @@
 import { Avatar, Box, Button, Card, CircularProgress, Container, Divider, Grid, Link, makeStyles, Typography, withStyles } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
-import CloseIcon from '@material-ui/icons/Close';
+import { Redirect } from 'react-router';
 import { GetProject, GetProjectMembers, GetProjectApplcants, GetProjectInvitees, Accept, Refuse } from './projectapi';
 import Introduction from './introduction';
 
@@ -45,22 +45,18 @@ const DeleteButton = withStyles({
           borderColor: 'rgb(162, 0, 56)',
           boxShadow: '-0.05em 0.05em 0.2em 0.1em rgba(0, 0, 0, 0.3)',
         },
-        // '&:focus': {
-        //   boxShadow: '0 0 0 0.2rem grey',
-        // },
       },
 })(Button);
 
 const ProjectManagement = ({ match }) => {
     const classes = useStyles();
     const projectId = match.params.id;
+    const [isLogin, setIsLogin] = useState(true);
     const [isLoaded, setIsLoaded] = useState(false);
-    const [project, setProject] = useState(); // 프로젝트 정보
-    const [members, setMembers] = useState([]); // 멤버 정보
-    const [applicants, setApplicants] = useState([]);
-    const [invitees, setInvitees] = useState([]);
-
-    console.log(members);
+    const [project, setProject] = useState(); // 프로젝트
+    const [members, setMembers] = useState([]); // 멤버
+    const [applicants, setApplicants] = useState([]); // 신청한 유저
+    const [invitees, setInvitees] = useState([]); // 초대받은 유저
 
     useEffect(async () => {
         const projectResponse = await GetProject(projectId);
@@ -71,7 +67,7 @@ const ProjectManagement = ({ match }) => {
         if (projectResponse.status === 401
             || applicantsResponse.status === 401
             || membersResponse.status === 401) {
-                // 세션 만료. 로그인 화면으로 돌아가라!
+            setIsLogin(false);
             return;
         }
 
@@ -81,6 +77,10 @@ const ProjectManagement = ({ match }) => {
         setInvitees(await inviteesResponse.json());
         setIsLoaded(true);
     }, []);
+
+    if (!isLogin) {
+        return <Redirect to="/login" />;
+    }
 
     return !isLoaded ? (
       <Grid
@@ -148,8 +148,31 @@ const ProjectManagement = ({ match }) => {
                           </Link>
                         </Box>
                         <Box margin="10px" display="flex" alignItems="center">
-                          <Button>
-                            <CloseIcon color="action" />
+                          <Button
+                            variant="outlined"
+                            color="primary"
+                            size="small"
+                            onClick={async () => {
+                                if (window.confirm('멤버 초대를 취소하시겠습니까?')) {
+                                    const { status } = await Refuse(invitee.id);
+                                    if (status === 401) {
+                                        setIsLogin(false);
+                                        return;
+                                    }
+
+                                    if (status === 200) {
+                                        const inviteesResponse
+                                        = await GetProjectInvitees(projectId);
+                                        if (inviteesResponse.status === 401) {
+                                            setIsLogin(false);
+                                            return;
+                                        }
+                                        setInvitees(await inviteesResponse.json());
+                                    }
+                                }
+                            }}
+                          >
+                            취소
                           </Button>
                         </Box>
                       </Box>
@@ -193,7 +216,7 @@ const ProjectManagement = ({ match }) => {
                                 if (window.confirm('멤버 신청을 수락하시겠습니까?')) {
                                     const { status } = await Accept(applicant.id);
                                     if (status === 401) {
-                                        // 로그인으로 돌아가!
+                                        setIsLogin(false);
                                         return;
                                     }
 
@@ -205,7 +228,7 @@ const ProjectManagement = ({ match }) => {
 
                                         if (applicantsResponse.status === 401
                                             || membersResponse.status === 401) {
-                                            // 로그인으로 돌아가세요
+                                            setIsLogin(false);
                                             return;
                                         }
 
@@ -278,8 +301,12 @@ const ProjectManagement = ({ match }) => {
                           </Link>
                         </Box>
                         <Box margin="10px" display="flex" alignItems="center">
-                          <Button>
-                            <CloseIcon color="action" />
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            size="small"
+                          >
+                            추방
                           </Button>
                         </Box>
                       </Box>
