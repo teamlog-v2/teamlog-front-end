@@ -71,10 +71,46 @@ export const GetProjectInvitees = async (projectId) => {
   return response;
 };
 
-// 프로젝트 가입 초대 및 신청 (아이디 변경 필요)
+// 프로젝트 초대 (아이디 변경 필요)
 export const JoinProject = async (projectId) => {
   const response = await fetch(`/api/projects/${projectId}/joins?userId=ondal1997`, {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  return response;
+};
+
+// 프로젝트 가입 신청
+export const ApplyProject = async (projectId) => {
+  const response = await fetch(`/api/projects/${projectId}/joins`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  return response;
+};
+
+// 프로젝트 초대 및 신청 수락
+export const Accept = async (joinId) => {
+  const response = await fetch(`/api/project-joins/${joinId}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  return response;
+};
+
+// 프로젝트 멤버 신청 삭제
+export const Refuse = async (joinId) => {
+  const response = await fetch(`/api/project-joins/${joinId}`, {
+    method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
     },

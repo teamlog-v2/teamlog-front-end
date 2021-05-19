@@ -1,7 +1,7 @@
-import { Avatar, Box, Button, Card, CircularProgress, Container, Divider, Grid, Link, makeStyles, Typography } from '@material-ui/core';
+import { Avatar, Box, Button, Card, CircularProgress, Container, Divider, Grid, Link, makeStyles, Typography, withStyles } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import CloseIcon from '@material-ui/icons/Close';
-import { GetProject, GetProjectMembers, GetProjectApplcants, GetProjectInvitees } from './projectapi';
+import { GetProject, GetProjectMembers, GetProjectApplcants, GetProjectInvitees, Accept, Refuse } from './projectapi';
 import Introduction from './introduction';
 
 const useStyles = makeStyles(() => ({
@@ -12,6 +12,45 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
+const DeleteButton = withStyles({
+    root: {
+        boxShadow: 'none',
+        textTransform: 'none',
+        fontSize: 14,
+        color: 'white',
+        padding: '6px 12px',
+        border: '1px solid',
+        lineHeight: 1.5,
+        backgroundColor: 'rgb(220, 0, 78)',
+        borderColor: 'rgb(220, 0, 78)',
+        fontFamily: [
+          '-apple-system',
+          'BlinkMacSystemFont',
+          '"Segoe UI"',
+          'Roboto',
+          '"Helvetica Neue"',
+          'Arial',
+          'sans-serif',
+          '"Apple Color Emoji"',
+          '"Segoe UI Emoji"',
+          '"Segoe UI Symbol"',
+        ].join(','),
+        '&:hover': {
+          backgroundColor: 'rgb(162, 0, 56)',
+          borderColor: 'rgb(162, 0, 56)',
+          boxShadow: '-0.05em 0.05em 0.2em 0.1em rgba(0, 0, 0, 0.3)',
+        },
+        '&:active': {
+          backgroundColor: 'rgb(162, 0, 56)',
+          borderColor: 'rgb(162, 0, 56)',
+          boxShadow: '-0.05em 0.05em 0.2em 0.1em rgba(0, 0, 0, 0.3)',
+        },
+        // '&:focus': {
+        //   boxShadow: '0 0 0 0.2rem grey',
+        // },
+      },
+})(Button);
+
 const ProjectManagement = ({ match }) => {
     const classes = useStyles();
     const projectId = match.params.id;
@@ -20,6 +59,9 @@ const ProjectManagement = ({ match }) => {
     const [members, setMembers] = useState([]); // 멤버 정보
     const [applicants, setApplicants] = useState([]);
     const [invitees, setInvitees] = useState([]);
+
+    console.log(members);
+
     useEffect(async () => {
         const projectResponse = await GetProject(projectId);
         const applicantsResponse = await GetProjectApplcants(projectId);
@@ -142,8 +184,66 @@ const ProjectManagement = ({ match }) => {
                           </Link>
                         </Box>
                         <Box margin="10px" display="flex" alignItems="center">
-                          <Button>
-                            <CloseIcon color="action" />
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            size="small"
+                            style={{ margin: '0.1em' }}
+                            onClick={async () => {
+                                if (window.confirm('멤버 신청을 수락하시겠습니까?')) {
+                                    const { status } = await Accept(applicant.id);
+                                    if (status === 401) {
+                                        // 로그인으로 돌아가!
+                                        return;
+                                    }
+
+                                    if (status === 201) {
+                                        const applicantsResponse
+                                        = await GetProjectApplcants(projectId);
+                                        const membersResponse
+                                        = await GetProjectMembers(projectId);
+
+                                        if (applicantsResponse.status === 401
+                                            || membersResponse.status === 401) {
+                                            // 로그인으로 돌아가세요
+                                            return;
+                                        }
+
+                                        setApplicants(await applicantsResponse.json());
+                                        setMembers(await membersResponse.json());
+                                    }
+                                }
+                            }}
+                          >
+                            수락
+                          </Button>
+
+                          <Button
+                            variant="outlined"
+                            color="primary"
+                            size="small"
+                            style={{ margin: '0.1em' }}
+                            onClick={async () => {
+                                if (window.confirm('멤버 신청을 거절하시겠습니까?')) {
+                                    const { status } = await Refuse(applicant.id);
+                                    if (status === 401) {
+                                        // 로그인으로 돌아가!
+                                        return;
+                                    }
+
+                                    if (status === 200) {
+                                        const applicantsResponse
+                                        = await GetProjectApplcants(projectId);
+
+                                        if (applicantsResponse.status === 401) {
+                                            return;
+                                        }
+                                        setApplicants(await applicantsResponse.json());
+                                    }
+                                }
+                            }}
+                          >
+                            거절
                           </Button>
                         </Box>
                       </Box>
@@ -193,17 +293,18 @@ const ProjectManagement = ({ match }) => {
             </Grid>
             <Grid container>
               <Grid item style={{ margin: '1em 0' }} xs={9} sm={10}>
-                <Typography variant="h6" style={{ color: 'red' }}>
+                <Typography variant="h6" style={{ color: 'rgb(220, 0, 78)' }}>
                   프로젝트 삭제
                 </Typography>
               </Grid>
               <Grid item style={{ margin: '1em 0' }} xs={3} sm={2}>
-                <Button
+                {/* <Button
                   variant="contained"
-                  color="primary"
+                  color="secondary"
                   fullWidth
                 >삭제
-                </Button>
+                </Button> */}
+                <DeleteButton fullWidth>삭제</DeleteButton>
               </Grid>
             </Grid>
           </Container>
