@@ -101,7 +101,7 @@ const ProjectManagement = ({ match }) => {
       <>
         <Container maxWidth="md" style={{ marginTop: '2em', marginBottom: '2em' }}>
           <Container>
-            <Grid container>
+            <Grid container style={{ marginBottom: '2em' }}>
               <Grid item style={{ margin: '1em 0' }} xs={9} sm={10}>
                 <Typography variant="h6">프로젝트 정보</Typography>
               </Grid>
@@ -122,12 +122,12 @@ const ProjectManagement = ({ match }) => {
                 />
               </Grid>
             </Grid>
-            <Grid container>
+            <Grid container style={{ marginBottom: '2em' }}>
               <Grid item style={{ margin: '1em 0' }}>
                 <Typography variant="h6">초대한 멤버</Typography>
               </Grid>
               <Grid container spacing={2}>
-                {invitees.map((invitee) => (
+                {invitees.length > 0 ? (invitees.map((invitee) => (
                   <Grid key={invitee.id} item sm={6} xs={12}>
                     <Card elevation={2}>
                       <Box display="flex" flexDirection="row">
@@ -178,15 +178,15 @@ const ProjectManagement = ({ match }) => {
                       </Box>
                     </Card>
                   </Grid>
-            ))}
+                ))) : (<Grid item>초대한 멤버가 없습니다.</Grid>)}
               </Grid>
             </Grid>
-            <Grid container>
+            <Grid container style={{ marginBottom: '2em' }}>
               <Grid item style={{ margin: '1em 0' }}>
                 <Typography variant="h6">프로젝트 신청 멤버</Typography>
               </Grid>
               <Grid container spacing={2}>
-                {applicants.map((applicant) => (
+                {applicants.size > 0 ? (applicants.map((applicant) => (
                   <Grid key={applicant.id} item sm={6} xs={12}>
                     <Card elevation={2}>
                       <Box display="flex" flexDirection="row">
@@ -250,7 +250,7 @@ const ProjectManagement = ({ match }) => {
                                 if (window.confirm('멤버 신청을 거절하시겠습니까?')) {
                                     const { status } = await Refuse(applicant.id);
                                     if (status === 401) {
-                                        // 로그인으로 돌아가!
+                                        setIsLogin(false);
                                         return;
                                     }
 
@@ -272,10 +272,10 @@ const ProjectManagement = ({ match }) => {
                       </Box>
                     </Card>
                   </Grid>
-            ))}
+                ))) : (<Grid item>가입 신청한 멤버가 없습니다.</Grid>)}
               </Grid>
             </Grid>
-            <Grid container>
+            <Grid container style={{ marginBottom: '2em' }}>
               <Grid item style={{ margin: '1em 0' }}>
                 <Typography variant="h6">프로젝트 멤버</Typography>
               </Grid>
@@ -325,13 +325,11 @@ const ProjectManagement = ({ match }) => {
                 </Typography>
               </Grid>
               <Grid item style={{ margin: '1em 0' }} xs={3} sm={2}>
-                {/* <Button
-                  variant="contained"
-                  color="secondary"
+                <DeleteButton
                   fullWidth
-                >삭제
-                </Button> */}
-                <DeleteButton fullWidth>삭제</DeleteButton>
+                >
+                  삭제
+                </DeleteButton>
               </Grid>
             </Grid>
           </Container>

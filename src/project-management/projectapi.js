@@ -10,6 +10,18 @@ export const GetProject = async (projectId) => {
   return response;
 };
 
+// 프로젝트 삭제
+export const DeleteProject = async (projectId) => {
+  const response = fetch(`/api/projects/${projectId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  return response;
+};
+
 // 프로젝트 멤버 조회
 export const GetProjectMembers = async (projectId) => {
     let response = [];
