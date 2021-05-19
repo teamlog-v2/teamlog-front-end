@@ -1,3 +1,4 @@
+// 프로젝트 멤버 조회
 export const GetProjectMembers = async (projectId) => {
     let response = [];
     response = await fetch(`/api/projects/${projectId}/members`)
@@ -5,6 +6,7 @@ export const GetProjectMembers = async (projectId) => {
     return response;
 };
 
+// 프로젝트 팔로워 조회
 export const GetProjectFollowers = async (projectId) => {
     const response = await fetch(`/api/projects/${projectId}/followers`, {
       method: 'GET',
@@ -16,6 +18,7 @@ export const GetProjectFollowers = async (projectId) => {
     return response;
 };
 
+// 유저가 팔로우하는 프로젝트 목록 조회
 export const GetFollowProjects = async () => {
   const response = await fetch('/api/users/jduckling1024/project-follow', { // 아이디 변경 필요
     method: 'GET',
@@ -27,6 +30,31 @@ export const GetFollowProjects = async () => {
   return response;
 };
 
+// 프로젝트 신청자 목록 조회
+export const GetProjectApplcants = async (projectId) => {
+  const response = await fetch(`/api/projects/${projectId}/joins/apply`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  return response;
+};
+
+// 프로젝트 가입 초대 및 신청 (아이디 변경 필요)
+export const JoinProject = async (projectId) => {
+  const response = await fetch(`/api/projects/${projectId}/joins?userId=migu554`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  return response;
+};
+
+// 프로젝트 팔로우
 export const Follow = async (projectId) => {
   const response = await fetch(`/api/projects/${projectId}/followers`, {
     method: 'POST',
@@ -38,6 +66,7 @@ export const Follow = async (projectId) => {
   return response;
 };
 
+// 프로젝트 언팔로우
 export const UnFollow = async (projectId) => {
   const response = await fetch(`/api/projects/${projectId}/followers`, {
     method: 'DELETE',

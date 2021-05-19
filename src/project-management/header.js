@@ -1,18 +1,20 @@
-import { React, useContext, useEffect, useState } from 'react';
+import { React, useContext } from 'react';
 import PropTypes from 'prop-types';
-import { Router, Link, useParams, useLocation } from 'react-router-dom';
+import { Link, useParams, useLocation } from 'react-router-dom';
 import {
   fade,
   makeStyles,
   createMuiTheme,
   ThemeProvider,
 } from '@material-ui/core/styles';
+import SettingsIcon from '@material-ui/icons/Settings';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import { Button, Grid } from '@material-ui/core';
 import { useFetchData } from '../hooks/hooks';
 import ErrorContext from '../contexts/error';
 
@@ -109,6 +111,7 @@ const Header = ({ sections }) => {
   const { pathname } = useLocation();
 
   const [project, isProjectLoaded, projectLoadError] = useFetchData(`/api/projects/${projectId}`);
+  console.log(isProjectLoaded);
   const title = project?.name;
   const introduction = project?.introduction;
 
@@ -133,6 +136,16 @@ const Header = ({ sections }) => {
     <>
       <Toolbar className={classes.toolbar}>
         <ProjectTitle title={title} introduction={introduction} />
+        <Grid item style={{ margin: '1em 0' }} xs={2} sm={1}>
+          <Link
+            to={`/projects/${projectId}/projectmanagement`}
+            style={{ textDecoration: 'none' }}
+          >
+            <Button>
+              <SettingsIcon color="action" />
+            </Button>
+          </Link>
+        </Grid>
       </Toolbar>
 
       <Paper className={classes.root}>
@@ -159,7 +172,7 @@ const Header = ({ sections }) => {
 };
 
 Header.propTypes = {
-  sections: PropTypes.array,
+  sections: PropTypes.arrayOf,
 };
 
 Header.defaultProps = {

@@ -66,7 +66,6 @@
     "src/user/UserSelect.js",
     "src/task/TaskCreateForm.js",
     "src/mock/datalist.js",
-    "src/project-management/header.js",
     "src/post-management/media.js",
     "src/post-management/tag.js",
     "src/file/filetest.js",

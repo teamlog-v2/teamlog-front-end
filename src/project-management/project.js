@@ -6,6 +6,7 @@ import PostMain from './postmain';
 import MemberTab from './MemberTab';
 import TaskContainer from '../task/TaskContainer';
 import ProjectFollower from './projectfollower';
+import ProjectManagement from './projectmanagement';
 
 export default function Project() {
   const sections = [
@@ -29,6 +30,7 @@ export default function Project() {
             component={section.component}
           />
         ))}
+        <Route exact path="/projects/:id/projectmanagement" component={ProjectManagement} />
       </Switch>
     </>
   );
