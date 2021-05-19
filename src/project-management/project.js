@@ -30,7 +30,11 @@ export default function Project() {
             component={section.component}
           />
         ))}
-        <Route exact path="/projects/:id/projectmanagement" component={ProjectManagement} />
+        <Route
+          exact
+          path="/projects/:id/projectmanagement"
+          component={ProjectManagement}
+        />
       </Switch>
     </>
   );

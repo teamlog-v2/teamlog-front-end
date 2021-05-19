@@ -110,7 +110,7 @@ const Member = (props) => {
             </Button>
             ) : (
               <Button
-                variant="contained"
+                variant="outlined"
                 color="primary"
                 fullWidth
               >신청 완료

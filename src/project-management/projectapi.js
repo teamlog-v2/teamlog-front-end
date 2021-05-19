@@ -1,8 +1,25 @@
+// 프로젝트 조회
+export const GetProject = async (projectId) => {
+  const response = fetch(`/api/projects/${projectId}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  return response;
+};
+
 // 프로젝트 멤버 조회
 export const GetProjectMembers = async (projectId) => {
     let response = [];
-    response = await fetch(`/api/projects/${projectId}/members`)
-      .then((res) => res.json());
+    response = await fetch(`/api/projects/${projectId}/members`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
     return response;
 };
 
@@ -42,9 +59,21 @@ export const GetProjectApplcants = async (projectId) => {
   return response;
 };
 
+// 프로젝트 멤버로 초대한 사용자 목록
+export const GetProjectInvitees = async (projectId) => {
+  const response = await fetch(`/api/projects/${projectId}/joins/invitation`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  return response;
+};
+
 // 프로젝트 가입 초대 및 신청 (아이디 변경 필요)
 export const JoinProject = async (projectId) => {
-  const response = await fetch(`/api/projects/${projectId}/joins?userId=migu554`, {
+  const response = await fetch(`/api/projects/${projectId}/joins?userId=ondal1997`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

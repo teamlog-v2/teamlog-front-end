@@ -71,7 +71,9 @@ const CommentForm = (props) => {
       } else {
         setState({ ...state, userInput: '' });
       }
-      setOptions(await GetProjectMembers(projectId));
+
+      const membersResponse = await GetProjectMembers(projectId);
+      setOptions(await membersResponse.json());
     }, [forUpdate]);
 
     const onKeyDown = (e) => {
