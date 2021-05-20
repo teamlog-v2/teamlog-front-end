@@ -67,6 +67,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+let resource = 1;
+
 const PostMain = () => {
   const classes = useStyles();
   const projectId = useParams().id;
@@ -100,7 +102,14 @@ const PostMain = () => {
     fetchPosts,
     totalCount: postsTotalCount,
     initPosts,
+    // initPosts,
   } = useFetchPosts(url);
+
+  console.log(posts);
+
+  useEffect(() => {
+    console.log('component will mount');
+  }, []);
 
   // 스크롤 감지
   useEffect(() => {
@@ -131,11 +140,15 @@ const PostMain = () => {
   }, [isPostsLoading, fetchPosts]);
 
   useEffect(async () => {
-    if (!formData) return;
+    if (!formData || resource < 1) return;
 
     setIsPostLoading(true);
+
     window.scrollTo({ top: 200, behavior: 'smooth' });
     try {
+      resource -= 1;
+      setOpen(false);
+
       const res = await fetch('/api/posts', {
         method: 'POST',
         body: formData,
@@ -146,11 +159,13 @@ const PostMain = () => {
         console.log('성공적으로 등록');
         setIsPostLoading(false);
         setFormData(null);
-        initPosts();
+        // 해시태그 가져오기
+        initPosts(); // 댓글은?
       }
     } catch (error) {
       console.log(error);
     }
+    resource += 1;
   }, [formData]);
 
   return (
@@ -213,11 +228,11 @@ const PostMain = () => {
                 <FormControl>
                   <NativeSelect
                     xs={7}
+                    variant="filled"
                     onChange={(event) => {
                       setOrder(event.target.value);
                     }}
                     name="filter"
-                    inputProps={{ 'aria-label': 'age' }}
                   >
                     <option value="1">최신 순</option>
                     <option value="-1">오래된 순</option>
@@ -278,7 +293,6 @@ const PostMain = () => {
       <ResponsiveDialog open={open} updateOpen={setOpen}>
         <PostFormPage
           updateOpen={setOpen}
-          updatePostLoading={setIsPostLoading}
           updateFormData={setFormData}
         />
       </ResponsiveDialog>

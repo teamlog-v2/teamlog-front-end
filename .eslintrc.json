@@ -33,6 +33,7 @@
         "react/jsx-one-expression-per-line": 0,
         "no-param-reassign": 0,
         "react/jsx-props-no-spreading": 0,
-        "operator-linebreak": 0
+        "operator-linebreak": 0,
+        "import-name": 0
     }
 }

@@ -4,9 +4,11 @@ import { isDuplicateData } from '../utils';
 
 const HashtagRecommender = ({
   recommendedHashtags,
-  hashtags,
-  updateHashtags,
+  postData,
+  updatePostData,
 }) => {
+  const { hashtags } = postData;
+
   const handleChipClick = (value) => {
     const newHashtags = [...hashtags];
     if (isDuplicateData(hashtags, value)) {
@@ -14,7 +16,10 @@ const HashtagRecommender = ({
       return;
     }
     newHashtags.push(value);
-    updateHashtags(newHashtags);
+    updatePostData({
+      ...postData,
+      hashtags: newHashtags,
+    });
   };
 
   return (

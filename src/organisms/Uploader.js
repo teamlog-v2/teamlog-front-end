@@ -12,8 +12,6 @@ const Uploader = ({ attachedFiles, updateAttachedFiles,
 
   const handleAttachedInputChange = (event) => {
     const uploadedFiles = [...event.target.files];
-    console.log(attachedFiles);
-    console.log(uploadedFiles);
     if (!isValidSize(attachedFiles, uploadedFiles, 10000)) {
       alert('첨부파일 최대 용량은 10MB 입니다.');
       return;
@@ -22,7 +20,7 @@ const Uploader = ({ attachedFiles, updateAttachedFiles,
 
     const newFiles = [...attachedFiles];
 
-    uploadedFiles.forEach((file) => {
+    uploadedFiles.forEach((file) => { // fileReader 동기로?
       const fileReader = new FileReader();
       fileReader.onloadstart = () => {
         if (cnt === 0) {
@@ -59,7 +57,6 @@ const Uploader = ({ attachedFiles, updateAttachedFiles,
       return;
     }
 
-    // 용량도
     const fileWithThumbnail = [];
     let newFiles = [...mediaFiles];
 

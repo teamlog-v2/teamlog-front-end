@@ -65,25 +65,12 @@ const Content = (props) => {
     <Box display={visibility}>
       <Grid container direction="row" spacing={0}>
         {stringSplit
-        ? stringSplit.map((string) => {
-            if (
-              string.charAt(0) === '@'
-              && tagList.includes(string.split('@')[1])
-            ) {
-              return (
-                <Grid item>
-                  <Chip
-                    className="tags"
-                    label={string.split('@')[1]}
-                    size="small"
-                    color="primary"
-                    style={{ marginRight: '0.25em' }}
-                  />
-                </Grid>
-              );
-            }
-            return <Typography bgcolor="pink"> {`${string}`}&nbsp; </Typography>;
-          })
+        ? stringSplit.map((string) =>  (
+            string[0] === '@' && tagList.includes(string.split('@')[1])
+            )
+            ? (<span style={{ color: '#C16AF5', fontWeight: 600 }}>{string.split('@')[1]}&nbsp;</span>) 
+            : (<span>{string}&nbsp;</span>)
+          )
         : []}
       </Grid>
     </Box>
