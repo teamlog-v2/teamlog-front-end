@@ -29,7 +29,8 @@ class PlaceSearchApi extends React.Component {
         console.log(address);
         const addressInfo = address.split(',');
         this.props.updateAddress(addressInfo[addressInfo.length - 1]);
-        this.props.updateLocation({
+        this.props.updatePostData({
+          ...this.props.postData,
           latitude: latLng.lat,
           longitude: latLng.lng,
         });
@@ -90,6 +91,7 @@ class PlaceSearchApi extends React.Component {
                   (
                     <Card md={5} xs={12}>
                     {suggestions.map((suggestion) => {
+                      console.log(suggestion.formattedSuggestion.mainText);
                       const className = suggestion.active
                         ? 'suggestion-item--active'
                         : 'suggestion-item';
@@ -107,8 +109,9 @@ class PlaceSearchApi extends React.Component {
                         >
                           <Grid container direction="row">
                             <LocationOn />
-                          <div style={{  }}>
-                            <Typography gutterBottom style={{ fontSize: 15 }}>{suggestion.description}</Typography>
+                          <div>
+                            <Typography gutterBottom style={{ fontSize: 15 }}>
+                              {suggestion.description}</Typography>
                           </div>
                           </Grid>
                         </Grid>
