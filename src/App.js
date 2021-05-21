@@ -13,6 +13,7 @@ import UserEditForm from './user/UserEditForm';
 import NotFoundPage from './pages/NotFoundPage';
 import AppBar from './AppBar';
 import TeamForm from './team/TeamForm';
+import ProjectForm from './project/ProjectForm';
 // import MapPage from './map/MapPage';
 
 // 지도 api 낭비하기 싫어서 주석처리
@@ -26,7 +27,7 @@ const App = () => {
 
           {/* <Route exact path="/main" component={MapPage} /> */}
 
-          <Route path="/create-project" />
+          <Route path="/create-project" component={ProjectForm} />
           <Route path="/project" component={ProjectListContainer} />
           <Route path="/projects/:id" component={Project} />
 

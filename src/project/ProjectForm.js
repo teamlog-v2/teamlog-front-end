@@ -1,4 +1,12 @@
-import { Backdrop, Button, CircularProgress, Divider, makeStyles, TextField, Typography } from '@material-ui/core';
+import {
+  Backdrop,
+  Button,
+  CircularProgress,
+  Divider,
+  makeStyles,
+  TextField,
+  Typography,
+} from '@material-ui/core';
 import { ArrowLeft, Lock, LockOpen } from '@material-ui/icons';
 import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router';
@@ -11,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function TeamForm() {
+export default function ProjectForm() {
   const classes = useStyles();
 
   const [name, setName] = useState('');
@@ -37,7 +45,7 @@ export default function TeamForm() {
       masterId: id,
     };
 
-    return fetch('/api/teams', {
+    return fetch('/api/projects', {
       method: 'POST',
       body: JSON.stringify(data),
       headers: { 'Content-type': 'application/json' },
@@ -53,10 +61,14 @@ export default function TeamForm() {
     request()
       .then((res) => {
         if (res.status >= 200 && res.status < 300) {
-          history.push('/');
+          res.json().then((project) => {
+            setIsProcessing(false);
+            // history.push(`/projects/${project.id}`);
+            history.push('/');
+          });
         }
       })
-      .finally(() => {
+      .catch(() => {
         setIsProcessing(false);
       });
   };
@@ -77,7 +89,7 @@ export default function TeamForm() {
       <div style={{ height: '1rem' }} />
 
       <Typography variant="h4" align="center">
-        팀 생성
+        프로젝트 생성
       </Typography>
       <div style={{ height: '1rem' }} />
 
@@ -85,7 +97,7 @@ export default function TeamForm() {
       <div style={{ height: '1rem' }} />
 
       <Typography variant="h6" color="textSecondary">
-        팀명
+        프로젝트명
       </Typography>
       <TextField
         size="large"
@@ -94,7 +106,9 @@ export default function TeamForm() {
         autoFocus
         placeholder=""
         value={name}
-        onChange={(event) => { setName(event.target.value); }}
+        onChange={(event) => {
+          setName(event.target.value);
+        }}
       />
       <div style={{ height: '1rem' }} />
 
@@ -108,7 +122,9 @@ export default function TeamForm() {
         variant="outlined"
         placeholder="소개를 작성하세요"
         value={introduction}
-        onChange={(event) => { setIntroduction(event.target.value); }}
+        onChange={(event) => {
+          setIntroduction(event.target.value);
+        }}
       />
       <div style={{ height: '1rem' }} />
 

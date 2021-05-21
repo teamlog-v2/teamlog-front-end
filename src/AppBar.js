@@ -83,7 +83,14 @@ export default function AppBar() {
         >
           마이페이지
         </MenuItem>
-        <MenuItem>프로젝트 생성</MenuItem>
+        <MenuItem
+          onClick={() => {
+            handleClose();
+            history.push('/create-project');
+          }}
+        >
+          프로젝트 생성
+        </MenuItem>
         <MenuItem
           onClick={() => {
             handleClose();
