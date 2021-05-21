@@ -60,7 +60,9 @@ export const GetFollowProjects = async (userId) => {
   return response;
 };
 
+// 프로젝트 마스터 위임
 export const DelegateProjectMaster = async (projectId, masterId) => {
+  console.log(masterId);
   const response = await fetch(`/api/projects/${projectId}/master?new-master=${masterId}`, { // 아이디 변경 필요
     method: 'PUT',
     headers: {
@@ -68,6 +70,7 @@ export const DelegateProjectMaster = async (projectId, masterId) => {
     },
   });
 
+  console.log(response);
   return response;
 };
 
@@ -96,8 +99,8 @@ export const GetProjectInvitees = async (projectId) => {
 };
 
 // 프로젝트 초대 (아이디 변경 필요)
-export const JoinProject = async (projectId) => {
-  const response = await fetch(`/api/projects/${projectId}/joins?userId=ondal1997`, {
+export const JoinProject = async (projectId, userId) => {
+  const response = await fetch(`/api/projects/${projectId}/joins?userId=${userId}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

@@ -1,4 +1,4 @@
-import { React, useContext, useState } from 'react';
+import { React, useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link, useParams, useLocation, Redirect } from 'react-router-dom';
 import {
@@ -107,12 +107,13 @@ const ProjectTitle = (props) => {
   );
 };
 
-const TopButton = ({ projectId, relation }) => {
-  if (relation === undefined) return (<></>);
-  console.log(relation);
-
+const TopButton = ({ isProjectLoaded, projectId, relation }) => {
   const [isLogin, setIsLogin] = useState(true);
-  const [relationState, setRelationState] = useState(relation);
+  const [relationState, setRelationState] = useState();
+
+  useEffect(() => {
+    setRelationState(relation);
+  }, [isProjectLoaded]);
 
   if (!isLogin) {
     return <Redirect to="/login" />;
@@ -220,7 +221,7 @@ const Header = ({ sections }) => {
     <>
       <Toolbar className={classes.toolbar}>
         <ProjectTitle title={title} introduction={introduction} />
-        <TopButton projectId={projectId} relation={relation} />
+        <TopButton projectId={projectId} isProjectLoaded={isProjectLoaded} relation={relation} />
       </Toolbar>
 
       <Paper className={classes.root}>

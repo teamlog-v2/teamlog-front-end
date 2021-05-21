@@ -20,6 +20,7 @@ import {
     Search,
   } from '@material-ui/icons';
   import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
 import { DelegateProjectMaster } from './projectapi';
 
   const StyledList = withStyles({
@@ -35,6 +36,7 @@ import { DelegateProjectMaster } from './projectapi';
     setCurrentMaster,
     handleClose,
   }) => {
+    const history = useHistory();
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [users, setUsers] = useState([]);
@@ -93,14 +95,16 @@ import { DelegateProjectMaster } from './projectapi';
     };
 
     const saveSelectedUsers = async () => {
-      const selectedMasterId = selectedMaster[0];
-      const newMaster = users.find((user) => user.id === selectedMasterId);
+      if (window.confirm('정말로 마스터를 위임하시겠습니까?')) {
+        const selectedMasterId = selectedMaster[0];
+        const newMaster = users.find((user) => user.id === selectedMasterId);
 
-      const response = await DelegateProjectMaster(projectId, newMaster.id);
-      if (response.status === 200) {
-          console.log('ok');
-          setCurrentMaster(newMaster);
-          handleClose();
+        const response = await DelegateProjectMaster(projectId, newMaster.id);
+        if (response.status === 200) {
+            console.log('ok');
+            setCurrentMaster(newMaster);
+            history.push(`/projects/${projectId}`);
+        }
       }
     };
 
