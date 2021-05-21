@@ -119,7 +119,7 @@ const MyPage = ({ match }) => {
 
   return (
     <>
-      <Container component="main" disableGutters maxWidth="md">
+      <Container component="main" disableGutters maxWidth="md" style={{ marginTop: '4rem' }}>
         <Grid container spacing={2}>
           <Grid item xs={12} align="center">
             <Avatar className={classes.large} src={user.profileImgPath} />

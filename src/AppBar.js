@@ -19,6 +19,8 @@ const Div = ({ children }) => {
         justifyContent: 'flex-end',
         alignItems: 'center',
         margin: '8px 8px 0px 8px',
+        backgroundColor: '#E0BAF7',
+        borderRadius: '0.25rem',
       }}
     >
       {children}
@@ -58,7 +60,14 @@ export default function AppBar() {
   if (!id) {
     return (
       <Div>
-        <Link to="/login">로그인</Link>
+        <Button
+          color="white"
+          onClick={() => {
+            history.push('/login');
+          }}
+        >
+          로그인
+        </Button>
       </Div>
     );
   }
