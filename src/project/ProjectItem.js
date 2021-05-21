@@ -22,4 +22,5 @@ const ProjectItem = ({ project }) => (
     </Card>
   </Link>
 );
+
 export default ProjectItem;

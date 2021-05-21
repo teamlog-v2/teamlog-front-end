@@ -13,6 +13,7 @@ import { TabContext, TabList, TabPanel } from '@material-ui/lab';
 import React, { useEffect, useState } from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
 import ProjectListContainer from '../project/ProjectListContainer';
+import TeamList from '../team/TeamList';
 import UserList from './UserList';
 import {
   getUser,
@@ -179,7 +180,9 @@ const MyPage = ({ match }) => {
           <TabPanel value="1" disableGutters className={classes.tab}>
             <ProjectListContainer userId={user.id} />
           </TabPanel>
-          <TabPanel value="2" disableGutters>없음</TabPanel>
+          <TabPanel value="2" disableGutters>
+            <TeamList />
+          </TabPanel>
           <TabPanel disableGutters value="3">
             <UserList userId={user.id} fetchData={getUserFollower} />
           </TabPanel>
