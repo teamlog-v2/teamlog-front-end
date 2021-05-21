@@ -4,7 +4,6 @@ import {
   makeStyles,
   Menu,
   MenuItem,
-  MenuList,
 } from '@material-ui/core';
 import { ArrowDropDown } from '@material-ui/icons';
 import React, { useContext, useState } from 'react';
