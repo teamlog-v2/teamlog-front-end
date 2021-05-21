@@ -1,6 +1,7 @@
 import React from 'react';
 import { Avatar, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(() => ({
   user: {
@@ -21,7 +22,7 @@ const UserImage = (props) => {
 
   const { imgPath } = props;
 
-  return <Avatar className={classes.small} src={imgPath} />;
+  return (<Avatar className={classes.small} src={imgPath} />);
 };
 
 const UserId = (props) => {
@@ -29,7 +30,12 @@ const UserId = (props) => {
 
   return (
     <Box display="inline-block" fontSize={fontSize}>
-      <span style={{ fontWeight: 600 }}>{userId}</span>
+      <Link
+        to={`/users/${userId}`}
+        style={{ textDecoration: 'none', color: 'black' }}
+      >
+        <span style={{ fontWeight: 600 }}>{userId}</span>
+      </Link>
     </Box>
   );
 };
