@@ -3,13 +3,14 @@ import {
     Box,
     Button,
     Chip,
+    CircularProgress,
     Container,
+    Grid,
     InputAdornment,
     List,
     ListItem,
     ListItemAvatar,
     ListItemText,
-    styled,
     TextField,
     Typography,
     withStyles,
@@ -30,8 +31,7 @@ import {
 
   const InviteesSelect = ({
     projectId,
-    selectedUsers,
-    setSelectedUsers,
+    setInvitees,
     handleClose,
   }) => {
     const [error, setError] = useState(null);
@@ -39,10 +39,10 @@ import {
     const [users, setUsers] = useState([]);
     const [selectedUserIds, setSelectedUserIds] = useState([]);
     const [searchString, setSearchString] = useState('');
+    console.log(setError);
 
     useEffect(() => {
       (async () => {
-        console.log(selectedUsers);
         let result;
         try {
           const response = await fetch(`/api/projects/${projectId}/members`, {
@@ -55,7 +55,6 @@ import {
           return;
         }
         setUsers(result);
-        setSelectedUserIds(selectedUsers);
         setIsLoaded(true);
       })();
     }, []);
@@ -65,7 +64,22 @@ import {
     }
 
     if (!isLoaded) {
-      return 'Loading...';
+      return (
+        <Grid
+          container
+          direction="column"
+          justify="center"
+          alignItems="center"
+          style={{ minHeight: '100vh' }}
+        >
+          <Grid item>
+            <CircularProgress />
+          </Grid>
+          <Grid item>
+            <Typography> 유저 목록을 불러오고 있어요!</Typography>
+          </Grid>
+        </Grid>
+);
     }
 
     const toggleSelectedUserId = (userId) => {
@@ -84,7 +98,7 @@ import {
         const temp = users.find((user) => user.id === selectedUserId);
         selectedInvitees.push(temp);
       });
-      setSelectedUsers(selectedInvitees);
+      setInvitees(selectedInvitees);
       handleClose();
     };
 

@@ -144,6 +144,7 @@ const TopButton = ({ projectId, relation }) => {
     }
   };
 
+  // 초대 수락의 경우 join id까지 필요할 듯...?
   switch (relationState) {
     case 'MASTER':
       return (

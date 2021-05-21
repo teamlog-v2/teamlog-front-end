@@ -1,10 +1,12 @@
-import { Avatar, Box, Button, Card, CircularProgress, Container, Dialog, Divider, Grid, makeStyles, Typography, withStyles } from '@material-ui/core';
+import { Avatar, Box, Button, Card, CircularProgress, Container, Divider, Grid, makeStyles, Typography, withStyles } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { Redirect, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { GetProject, GetProjectMembers, GetProjectApplcants, GetProjectInvitees, AcceptProject, RefuseProject, DeleteProject, KickOutProjectMember } from './projectapi';
 import Introduction from './introduction';
 import MasterSelect from './masterSelect';
+import InviteesSelect from './inviteesSelect';
+import ResponsiveDialog from '../organisms/ResponsiveDialog';
 
 const useStyles = makeStyles(() => ({
     profileImg: {
@@ -61,7 +63,7 @@ const ProjectManagement = () => {
     const [invitees, setInvitees] = useState([]); // 초대받은 유저
     const [master, setMaster] = useState([]); // 마스터
     const [openUserSelect, setOpenUserSelect] = useState(false); // 마스터 선택 폼 띄울지 여부
-    // const [openInviteeSelect, setOpenInviteeSelect] = useState(false);
+    const [openInviteeSelect, setOpenInviteeSelect] = useState(false);
 
     useEffect(async () => {
         const projectResponse = await GetProject(projectId);
@@ -95,12 +97,20 @@ const ProjectManagement = () => {
         return <Redirect to="/login" />;
     }
 
-    const handleClickOpen = () => {
+    const handleUserSelectOpen = () => {
         setOpenUserSelect(true);
       };
 
     const handleUserSelectClose = () => {
         setOpenUserSelect(false);
+    };
+
+    const handleInviteeSelectOpen = () => {
+        setOpenInviteeSelect(true);
+    };
+
+    const handleInviteeSelectClose = () => {
+        setOpenInviteeSelect(false);
     };
 
     return !isLoaded ? (
@@ -152,16 +162,16 @@ const ProjectManagement = () => {
                   variant="contained"
                   color="primary"
                   fullWidth
+                  onClick={handleInviteeSelectOpen}
                 >초대
                 </Button>
-                <Dialog open={openUserSelect}>
-                  <MasterSelect
-                    projectId={project.id} // 임시로 정한거. 나중에 변경 필요
-                    currentMaster={[master.id]}
-                    setCurrentMaster={setMaster}
-                    handleClose={handleUserSelectClose}
+                <ResponsiveDialog open={openInviteeSelect} updateOpen={setOpenInviteeSelect}>
+                  <InviteesSelect
+                    projectId={project.id}
+                    setInvitees={setInvitees}
+                    handleClose={handleInviteeSelectClose}
                   />
-                </Dialog>
+                </ResponsiveDialog>
               </Grid>
               <Grid container spacing={2}>
                 {invitees.length > 0 ? (invitees.map((invitee) => (
@@ -379,17 +389,17 @@ const ProjectManagement = () => {
                   variant="contained"
                   color="primary"
                   fullWidth
-                  onClick={handleClickOpen}
+                  onClick={handleUserSelectOpen}
                 >위임
                 </Button>
-                <Dialog open={openUserSelect}>
+                <ResponsiveDialog open={openUserSelect} updateOpen={setOpenUserSelect}>
                   <MasterSelect
                     projectId={project.id}
                     currentMaster={[master.id]}
                     setCurrentMaster={setMaster}
                     handleClose={handleUserSelectClose}
                   />
-                </Dialog>
+                </ResponsiveDialog>
               </Grid>
               <Grid container spacing={2}>
                 <Grid item sm={6} xs={12}>

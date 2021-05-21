@@ -2,7 +2,9 @@ import {
     Avatar,
     Box,
     Button,
+    CircularProgress,
     Container,
+    Grid,
     InputAdornment,
     List,
     ListItem,
@@ -64,7 +66,22 @@ import { DelegateProjectMaster } from './projectapi';
     }
 
     if (!isLoaded) {
-      return 'Loading...';
+      return (
+        <Grid
+          container
+          direction="column"
+          justify="center"
+          alignItems="center"
+          style={{ minHeight: '100vh' }}
+        >
+          <Grid item>
+            <CircularProgress />
+          </Grid>
+          <Grid item>
+            <Typography> 멤버 목록을 불러오고 있어요!</Typography>
+          </Grid>
+        </Grid>
+      );
     }
 
     const toggleSelectedUserId = (userId) => {

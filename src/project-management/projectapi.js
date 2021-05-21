@@ -128,6 +128,7 @@ export const AcceptProject = async (joinId) => {
     },
   });
 
+  console.log(response);
   return response;
 };
 
