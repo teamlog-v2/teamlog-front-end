@@ -9,10 +9,11 @@ import {
   TextField,
   makeStyles,
 } from '@material-ui/core';
-import React, { useState, useEffect } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import FaceIcon from '@material-ui/icons/Face';
 import { login, validateLogin } from './userService';
+import AuthContext, { setAccessToken } from '../contexts/auth';
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -23,11 +24,20 @@ const useStyles = makeStyles((theme) => ({
 
 const SignIn = () => {
   const classes = useStyles();
+
+  const history = useHistory();
+  const [contextId, setContextId] = useContext(AuthContext);
+
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
-  const [isLogin, setIsLogin] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
+
+  const isMounted = useRef(true);
+  useEffect(() => {
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
 
   const handleIdChange = (event) => {
     setId(event.target.value);
@@ -38,42 +48,54 @@ const SignIn = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (isProcessing) {
+      return;
+    }
+
     setIsProcessing(true);
     const data = {
       id,
       password,
     };
+
+    let res;
     try {
-      const response = await login(data);
-      setIsProcessing(false);
-      if (response.status === 200) {
-        setIsLogin(true);
+      res = await login(data);
+      res = await res.json();
+    } catch {
+      if (isMounted.current) {
+        setIsProcessing(false);
       }
-    } catch (err) {
-      console.error(err);
+      return;
     }
+    if (!isMounted.current) {
+      return;
+    }
+    if (res.message) {
+      setIsProcessing(false);
+      return;
+    }
+
+    localStorage.setItem('access-token', res.token);
+    setAccessToken(res.token);
+    res = await validateLogin();
+    res = await res.json();
+    console.log(res);
+    if (!isMounted.current) {
+      return;
+    }
+    if (res.status) {
+      setIsProcessing(false);
+      return;
+    }
+    setContextId(res.id);
     setIsProcessing(false);
-    setIsLogin(false);
+    history.push('/main');
   };
 
-  useEffect(async () => {
-    try {
-      const response = await validateLogin();
-      if (response.status === 200) {
-        setIsLogin(true);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-    setIsLoaded(true);
-  }, []);
-
-  if (isLogin) {
-    return <Redirect to="/main" />;
-  }
-
-  if (!isLoaded) {
-    return <div />;
+  if (contextId) {
+    history.push('/main');
+    return null;
   }
 
   return (

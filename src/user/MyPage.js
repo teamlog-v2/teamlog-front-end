@@ -10,12 +10,12 @@ import {
   Tab,
 } from '@material-ui/core';
 import { TabContext, TabList, TabPanel } from '@material-ui/lab';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
+import AuthContext, { setAccessToken } from '../contexts/auth';
 import ProjectListContainer from '../project/ProjectListContainer';
 import UserList from './UserList';
 import {
-  logout,
   getUser,
   getUserFollower,
   getUserFollowing,
@@ -109,9 +109,12 @@ const MyPage = ({ match }) => {
     setUser(newUser);
   };
 
+  const [_, setContextId] = useContext(AuthContext);
   const handleLogout = async () => {
-    await logout();
-    setIsLogin(false);
+    localStorage.removeItem('access-token');
+    setAccessToken('');
+    setContextId(null);
+    history.push('/');
   };
 
   if (!isLogin) {
