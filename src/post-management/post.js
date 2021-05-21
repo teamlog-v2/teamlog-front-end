@@ -9,13 +9,13 @@ import Paper from '@material-ui/core/Paper';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useContext } from 'react';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { Menu } from '@material-ui/icons';
-import { Avatar, Button, Card, Chip, Grid } from '@material-ui/core';
+import { Menu, History, Delete, Edit, Close } from '@material-ui/icons';
+import { Avatar, Button, Card, Chip, Grid, Dialog, DialogContentText, DialogTitle, DialogContent, DialogActions } from '@material-ui/core';
 
 import { Route } from 'react-router';
 import FileList from './fileList';
@@ -28,6 +28,8 @@ import MyPage from '../user/MyPage';
 import { DeletePost } from './postapi';
 import ResponsiveDialog from '../organisms/ResponsiveDialog';
 import PostFormPage from '../pages/PostFormPage';
+import AuthContext from '../contexts/auth';
+import UpdateHistory from './updateHistory';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -65,13 +67,14 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'left',
   },
   menu: {
-    display: 'inline-block',
     cursor: 'pointer',
     position: 'absolute',
     right: 0,
   },
   postMenu: {
-    zIndex: 5,
+    zIndex: 3,
+    position: 'absolute',
+    right: -30,
   },
   media: {
     position: 'relative',
@@ -131,51 +134,62 @@ const useStyles = makeStyles((theme) => ({
 
 const PostMenu = (props) => {
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [alertOpen, setAlertOpen] = useState(false);
   const anchorRef = useRef(null);
-  const { content, setIsPostLoading, setFormData, initPosts, updateOpen } = props;
+  const { content, setIsPostLoading, setFormData, initPosts,
+    updateOpen, updateHistoryOpen } = props;
 
   const handleToggle = () => {
-    setOpen((prevOpen) => !prevOpen);
+    setMenuOpen((prevOpen) => !prevOpen);
   };
 
   const handleClose = (event) => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
       return;
     }
-
-    setOpen(false);
+    setMenuOpen(false);
   };
 
   const handleListKeyDown = (event) => {
     if (event.key === 'Tab') {
       event.preventDefault();
-      setOpen(false);
+      setMenuOpen(false);
     }
   };
 
-  const prevOpen = useRef(open);
+  const handlePostDelete = async (event) => {
+    const status = await DeletePost(content.id);
+    if (status === 200) {
+      setIsPostLoading(false);
+      setFormData(null);
+      initPosts();
+    }
+    setAlertOpen(false);
+  };
+
+  const prevOpen = useRef(menuOpen);
   useEffect(() => {
-    if (prevOpen.current === true && open === false) {
+    if (prevOpen.current === true && menuOpen === false) {
       anchorRef.current.focus();
     }
 
-    prevOpen.current = open;
-  }, [open]);
+    prevOpen.current = menuOpen;
+  }, [menuOpen]);
 
   return (
     <div className={classes.root}>
       <div>
         <Button
           ref={anchorRef}
-          aria-controls={open ? 'menu-list-grow' : undefined}
+          aria-controls={menuOpen ? 'menu-list-grow' : undefined}
           aria-haspopup="true"
           onClick={handleToggle}
         >
           <Menu color="action" />
         </Button>
         <Popper
-          open={open}
+          open={menuOpen}
           anchorEl={anchorRef.current}
           role={undefined}
           transition
@@ -187,36 +201,29 @@ const PostMenu = (props) => {
               {...TransitionProps}
               style={{
                 transformOrigin:
-                  placement === 'bottom' ? 'center top' : 'center bottom',
+                placement === 'bottom' ? 'center top' : 'center bottom',
+                zIndex: 3,
               }}
             >
-              <Paper className={classes.postMenu}>
+              <Paper className={classes.postMenu} style={{ zIndex: 2 }}>
                 <ClickAwayListener onClickAway={handleClose}>
                   <MenuList
-                    autoFocusItem={open}
+                    autoFocusItem={menuOpen}
                     id="menu-list-grow"
                     onKeyDown={handleListKeyDown}
                   >
                     <MenuItem onClick={() => {
-                      if (!updateOpen) return;
-                      updateOpen(true);
-                    }}
+                        if (!updateOpen) return;
+                        updateOpen(true);
+                      }}
                     >
-                      수정
+                      <Edit />&nbsp;포스트 수정
                     </MenuItem>
-                    <MenuItem onClick={handleClose}>수정 내역</MenuItem>
-                    <MenuItem onClick={async (event) => {
-                      if (window.confirm('정말로 삭제하시겠습니까?')) {
-                        const status = await DeletePost(content.id);
-                        if (status === 200) {
-                          setIsPostLoading(false);
-                          setFormData(null);
-                          initPosts();
-                        }
-                      }
-                      handleClose(event);
-                    }}
-                    >삭제
+                    <MenuItem onClick={() => { updateHistoryOpen(true); }}>
+                      <History />&nbsp;수정 내역
+                    </MenuItem>
+                    <MenuItem onClick={() => { setAlertOpen(true); }}>
+                      <Delete />&nbsp;포스트 삭제
                     </MenuItem>
                   </MenuList>
                 </ClickAwayListener>
@@ -225,6 +232,30 @@ const PostMenu = (props) => {
           )}
         </Popper>
       </div>
+      <Dialog
+        open={alertOpen}
+        onClose={() => { setAlertOpen(false); }}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">포스트 삭제</DialogTitle>
+        <DialogContent style={{ width: 200, textAlign: 'center' }}>
+          <DialogContentText id="alert-dialog-description">
+            정말로 삭제할까요?
+          </DialogContentText>
+        </DialogContent>
+        <Grid container direction="row" justify="space-evenly">
+          <Button
+            onClick={handlePostDelete}
+            color="primary"
+            autoFocus
+          >삭제
+          </Button>
+          <Button onClick={() => { setAlertOpen(false); }} color="primary">
+            취소
+          </Button>
+        </Grid>
+      </Dialog>
     </div>
   );
 };
@@ -291,10 +322,11 @@ const MediaList = ({ media }) => {
 
 export const Post = (props) => {
   const { postContents, maxWidth, setIsPostLoading, setFormData, initPosts } = props;
-  // const { userId } = useContext(SignContext);
-  // 정적값으로 대체
-  const userId = 'migu554';
+
+  const [id] = useContext(AuthContext);
+
   const [open, setOpen] = useState(false);
+  const [historyOpen, setHistoryOpen] = useState(false);
   const [content, setContent] = useState(postContents);
 
   const classes = useStyles();
@@ -343,15 +375,16 @@ export const Post = (props) => {
                   </Grid>
                 </Grid>
                 {
-                  userId === content.writer.id
+                  content.writer.id === id
                   ? (
-                    <Grid item className={classes.menu} xs={2}>
+                    <Grid item className={classes.menu}>
                       <PostMenu
                         content={content}
                         setIsPostLoading={setIsPostLoading}
                         setFormData={setFormData}
                         initPosts={initPosts}
                         updateOpen={setOpen}
+                        updateHistoryOpen={setHistoryOpen}
                       />
                     </Grid>
                   ) : null
@@ -432,6 +465,13 @@ export const Post = (props) => {
           updateOpen={setOpen}
         />
       </ResponsiveDialog>
+      <Dialog
+        open={historyOpen}
+        updateOpen={setHistoryOpen}
+        onClose={() => { setHistoryOpen(false); }}
+      >
+        <UpdateHistory id={content.id} updateOpen={setHistoryOpen} />
+      </Dialog>
     </>
   );
 };
