@@ -20,7 +20,6 @@ import {
     Search,
   } from '@material-ui/icons';
   import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router';
 import { DelegateProjectMaster } from './projectapi';
 
   const StyledList = withStyles({
@@ -36,7 +35,6 @@ import { DelegateProjectMaster } from './projectapi';
     setCurrentMaster,
     handleClose,
   }) => {
-    const history = useHistory();
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [users, setUsers] = useState([]);
@@ -103,7 +101,7 @@ import { DelegateProjectMaster } from './projectapi';
         if (response.status === 200) {
             console.log('ok');
             setCurrentMaster(newMaster);
-            history.push(`/projects/${projectId}`);
+            window.location.replace(`/projects/${projectId}`);
         }
       }
     };

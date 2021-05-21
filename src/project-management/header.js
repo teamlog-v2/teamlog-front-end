@@ -108,6 +108,7 @@ const ProjectTitle = (props) => {
 };
 
 const TopButton = ({ isProjectLoaded, projectId, relation }) => {
+  console.log(relation);
   const [isLogin, setIsLogin] = useState(true);
   const [relationState, setRelationState] = useState();
 
@@ -195,7 +196,7 @@ const Header = ({ sections }) => {
   const { pathname } = useLocation();
 
   const [project, isProjectLoaded, projectLoadError] = useFetchData(`/api/projects/${projectId}`);
-  window.console.log(isProjectLoaded);
+  console.log(project);
   const title = project?.name;
   const introduction = project?.introduction;
   const relation = project?.relation;
