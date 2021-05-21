@@ -2,12 +2,14 @@ import {
     Avatar,
     Box,
     Button,
+    Chip,
     Container,
     InputAdornment,
     List,
     ListItem,
     ListItemAvatar,
     ListItemText,
+    styled,
     TextField,
     Typography,
     withStyles,
@@ -18,7 +20,6 @@ import {
     Search,
   } from '@material-ui/icons';
   import React, { useEffect, useState } from 'react';
-import { DelegateProjectMaster } from './projectapi';
 
   const StyledList = withStyles({
     root: {
@@ -27,21 +28,21 @@ import { DelegateProjectMaster } from './projectapi';
     },
   })(List);
 
-  const MasterSelect = ({
+  const InviteesSelect = ({
     projectId,
-    currentMaster,
-    setCurrentMaster,
+    selectedUsers,
+    setSelectedUsers,
     handleClose,
   }) => {
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [users, setUsers] = useState([]);
-    const [selectedMaster, setSelectedMaster] = useState([]);
+    const [selectedUserIds, setSelectedUserIds] = useState([]);
     const [searchString, setSearchString] = useState('');
-    console.log(setError);
 
     useEffect(() => {
       (async () => {
+        console.log(selectedUsers);
         let result;
         try {
           const response = await fetch(`/api/projects/${projectId}/members`, {
@@ -54,7 +55,7 @@ import { DelegateProjectMaster } from './projectapi';
           return;
         }
         setUsers(result);
-        setSelectedMaster(currentMaster);
+        setSelectedUserIds(selectedUsers);
         setIsLoaded(true);
       })();
     }, []);
@@ -68,30 +69,31 @@ import { DelegateProjectMaster } from './projectapi';
     }
 
     const toggleSelectedUserId = (userId) => {
-      if (selectedMaster.includes(userId)) {
-        setSelectedMaster(currentMaster);
+      if (selectedUserIds.includes(userId)) {
+        const temp = selectedUserIds.slice();
+        temp.splice(selectedUserIds.indexOf(userId), 1);
+        setSelectedUserIds(temp);
       } else {
-        setSelectedMaster([userId]);
+        setSelectedUserIds([...selectedUserIds, userId]);
       }
     };
 
-    const saveSelectedUsers = async () => {
-      const selectedMasterId = selectedMaster[0];
-      const newMaster = users.find((user) => user.id === selectedMasterId);
-
-      const response = await DelegateProjectMaster(projectId, newMaster.id);
-      if (response.status === 200) {
-          console.log('ok');
-          setCurrentMaster(newMaster);
-          handleClose();
-      }
+    const saveSelectedUsers = () => {
+      const selectedInvitees = [];
+      selectedUserIds.map((selectedUserId) => {
+        const temp = users.find((user) => user.id === selectedUserId);
+        selectedInvitees.push(temp);
+      });
+      setSelectedUsers(selectedInvitees);
+      handleClose();
     };
 
     return (
       <Container minWidth="sm">
         <Box display="flex" justifyContent="center">
-          <Typography>선택된 마스터</Typography>
+          <Typography>{`${selectedUserIds.length}명 선택됨`}</Typography>
         </Box>
+
         <Box
           width="23vw"
           display="flex"
@@ -103,21 +105,20 @@ import { DelegateProjectMaster } from './projectapi';
           overflow="auto"
           bgcolor="#F8F8F8"
         >
-          {selectedMaster.length === 0 && (
+          {selectedUserIds.length === 0 && (
             <Typography color="primary">-</Typography>
           )}
-          {selectedMaster.map((selectedUserId) => {
-            const user = users.find((master) => master.id === selectedUserId);
+          {selectedUserIds.map((selectedUserId) => {
+            const user = users.find((userItem) => userItem.id === selectedUserId);
             return (
-              <>
-                <ListItem>
-                  <ListItemAvatar>
-                    <Avatar alt={user.name} src={user.profileImgPath} />
-                  </ListItemAvatar>
-                  <ListItemText primary={user.name} />
-
-                </ListItem>
-              </>
+              <Chip
+                key={user.id}
+                label={user.name}
+                onDelete={() => {
+                  toggleSelectedUserId(user.id);
+                }}
+                color="primary"
+              />
             );
           })}
         </Box>
@@ -154,7 +155,7 @@ import { DelegateProjectMaster } from './projectapi';
                   <Avatar alt={user.name} src={user.profileImgPath} />
                 </ListItemAvatar>
                 <ListItemText primary={user.name} />
-                {selectedMaster.includes(user.id) ? (
+                {selectedUserIds.includes(user.id) ? (
                   <CheckBox color="primary" />
                 ) : (
                   <CheckBoxOutlineBlank color="primary" />
@@ -173,7 +174,7 @@ import { DelegateProjectMaster } from './projectapi';
           bgcolor="#F8F8F8"
         >
           <Button variant="contained" color="primary" onClick={saveSelectedUsers}>
-            확인
+            완료
           </Button>
           <Button onClick={handleClose} variant="contained">
             취소
@@ -183,4 +184,4 @@ import { DelegateProjectMaster } from './projectapi';
     );
   };
 
-  export default MasterSelect;
+  export default InviteesSelect;

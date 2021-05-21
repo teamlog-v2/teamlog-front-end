@@ -49,9 +49,20 @@ export const GetProjectFollowers = async (projectId) => {
 };
 
 // 유저가 팔로우하는 프로젝트 목록 조회
-export const GetFollowProjects = async () => {
-  const response = await fetch('/api/users/jduckling1024/project-follow', { // 아이디 변경 필요
+export const GetFollowProjects = async (userId) => {
+  const response = await fetch(`/api/users/${userId}/project-follow`, { // 아이디 변경 필요
     method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  return response;
+};
+
+export const DelegateProjectMaster = async (projectId, masterId) => {
+  const response = await fetch(`/api/projects/${projectId}/master?new-master=${masterId}`, { // 아이디 변경 필요
+    method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
     },

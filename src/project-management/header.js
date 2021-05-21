@@ -109,6 +109,7 @@ const ProjectTitle = (props) => {
 
 const TopButton = ({ projectId, relation }) => {
   if (relation === undefined) return (<></>);
+  console.log(relation);
 
   const [isLogin, setIsLogin] = useState(true);
   const [relationState, setRelationState] = useState(relation);
@@ -144,7 +145,7 @@ const TopButton = ({ projectId, relation }) => {
   };
 
   switch (relationState) {
-    case 'MEMBER':
+    case 'MASTER':
       return (
         <Link
           to={`/projects/${projectId}/projectmanagement`}

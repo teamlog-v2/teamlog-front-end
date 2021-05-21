@@ -9,7 +9,7 @@ import Paper from '@material-ui/core/Paper';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useContext } from 'react';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -28,6 +28,7 @@ import { DateInfo } from './datetime';
 import { DeletePost } from './postapi';
 import ResponsiveDialog from '../organisms/ResponsiveDialog';
 import PostFormPage from '../pages/PostFormPage';
+import AuthContext from '../contexts/auth';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -291,9 +292,8 @@ const MediaList = ({ media }) => {
 
 export const Post = (props) => {
   const { postContents, maxWidth, setIsPostLoading, setFormData, initPosts } = props;
-  // const { userId } = useContext(SignContext);
+  const [userId] = useContext(AuthContext);
   // 정적값으로 대체
-  const userId = 'jduckling1024';
   const [open, setOpen] = useState(false);
   const [content, setContent] = useState(postContents);
 
