@@ -1,8 +1,11 @@
-import { Avatar, Box, Button, Card, CircularProgress, Container, Divider, Grid, Link, makeStyles, Typography, withStyles } from '@material-ui/core';
+import { Avatar, Box, Button, Card, CircularProgress, Container, Divider, Grid, makeStyles, Typography, withStyles } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
-import { Redirect } from 'react-router';
-import { GetProject, GetProjectMembers, GetProjectApplcants, GetProjectInvitees, Accept, Refuse } from './projectapi';
+import { Redirect, useParams } from 'react-router';
+import { Link } from 'react-router-dom';
+import { GetProject, GetProjectMembers, GetProjectApplcants, GetProjectInvitees, AcceptProject, RefuseProject, DeleteProject } from './projectapi';
 import Introduction from './introduction';
+import ProjectForm from './projectform';
+import ResponsiveDialog from '../organisms/ResponsiveDialog';
 
 const useStyles = makeStyles(() => ({
     profileImg: {
@@ -48,11 +51,12 @@ const DeleteButton = withStyles({
       },
 })(Button);
 
-const ProjectManagement = ({ match }) => {
+const ProjectManagement = () => {
     const classes = useStyles();
-    const projectId = match.params.id;
+    const { id: projectId } = useParams();
     const [isLogin, setIsLogin] = useState(true);
     const [isLoaded, setIsLoaded] = useState(false);
+    const [isUpdateFormOpened, setIsUpdateFormOpened] = useState(false); // 프로젝트 수정 양식
     const [project, setProject] = useState(); // 프로젝트
     const [members, setMembers] = useState([]); // 멤버
     const [applicants, setApplicants] = useState([]); // 신청한 유저
@@ -110,9 +114,16 @@ const ProjectManagement = ({ match }) => {
                   variant="contained"
                   color="primary"
                   fullWidth
+                  onClick={() => { setIsUpdateFormOpened(true); }}
                 >수정
                 </Button>
               </Grid>
+              <ResponsiveDialog
+                open={isUpdateFormOpened}
+                updateOpen={isUpdateFormOpened}
+              >
+                <ProjectForm project={project} />
+              </ResponsiveDialog>
               <Grid item>
                 <Introduction
                   masterUserId={project.masterId}
@@ -132,20 +143,15 @@ const ProjectManagement = ({ match }) => {
                     <Card elevation={2}>
                       <Box display="flex" flexDirection="row">
                         <Box flexGrow={1}>
-                          <Link
-                            to={`/users/${invitee.user.id}`}
-                            style={{ textDecoration: 'none' }}
-                          >
-                            <Box display="flex" alignItems="center">
-                              <Avatar
-                                className={classes.profileImg}
-                                src={invitee.user.profileImgPath}
-                              />
-                              <Typography variant="body1" color="textPrimary">
-                                {invitee.user.name}
-                              </Typography>
-                            </Box>
-                          </Link>
+                          <Box display="flex" alignItems="center">
+                            <Avatar
+                              className={classes.profileImg}
+                              src={invitee.user.profileImgPath}
+                            />
+                            <Typography variant="body1" color="textPrimary">
+                              {invitee.user.name}
+                            </Typography>
+                          </Box>
                         </Box>
                         <Box margin="10px" display="flex" alignItems="center">
                           <Button
@@ -154,7 +160,7 @@ const ProjectManagement = ({ match }) => {
                             size="small"
                             onClick={async () => {
                                 if (window.confirm('멤버 초대를 취소하시겠습니까?')) {
-                                    const { status } = await Refuse(invitee.id);
+                                    const { status } = await RefuseProject(invitee.id);
                                     if (status === 401) {
                                         setIsLogin(false);
                                         return;
@@ -214,7 +220,7 @@ const ProjectManagement = ({ match }) => {
                             style={{ margin: '0.1em' }}
                             onClick={async () => {
                                 if (window.confirm('멤버 신청을 수락하시겠습니까?')) {
-                                    const { status } = await Accept(applicant.id);
+                                    const { status } = await AcceptProject(applicant.id);
                                     if (status === 401) {
                                         setIsLogin(false);
                                         return;
@@ -248,7 +254,7 @@ const ProjectManagement = ({ match }) => {
                             style={{ margin: '0.1em' }}
                             onClick={async () => {
                                 if (window.confirm('멤버 신청을 거절하시겠습니까?')) {
-                                    const { status } = await Refuse(applicant.id);
+                                    const { status } = await RefuseProject(applicant.id);
                                     if (status === 401) {
                                         setIsLogin(false);
                                         return;
@@ -327,6 +333,20 @@ const ProjectManagement = ({ match }) => {
               <Grid item style={{ margin: '1em 0' }} xs={3} sm={2}>
                 <DeleteButton
                   fullWidth
+                  onClick={() => {
+                    if (window.confirm('프로젝트 내의 내용은 모두 사라집니다. 정말 그래도 삭제하시겠습니까?')) {
+                        const { status } = DeleteProject(projectId);
+
+                        if (status === 401) {
+                            setIsLogin(false);
+                            return;
+                        }
+
+                        if (status === 200) {
+                            console.log('성공');
+                        }
+                    }
+                }}
                 >
                   삭제
                 </DeleteButton>

@@ -19,14 +19,14 @@ import Container from '@material-ui/core/Container';
 import { Menu } from '@material-ui/icons';
 import { Avatar, Button, Card, Chip, Grid } from '@material-ui/core';
 
-import { Route } from 'react-router';
+// import { Route } from 'react-router';
 import FileList from './fileList';
 import CommentList from '../comment/commentlist';
 import { UserImage, UserId } from './user';
 import { LikerCounter, CommentCounter } from './counter';
 import { Media } from './media';
 import { DateInfo } from './datetime';
-import MyPage from '../user/MyPage';
+// import MyPage from '../user/MyPage';
 import { DeletePost } from './postapi';
 
 const useStyles = makeStyles((theme) => ({
@@ -295,7 +295,7 @@ export const Post = (props) => {
 
   return (
     <>
-      <Route exact path="/users/:userId" component={MyPage} />
+      {/* <Route exact path="/users/:userId" component={MyPage} /> */}
       <Container
         className={classes.root}
         component="main"

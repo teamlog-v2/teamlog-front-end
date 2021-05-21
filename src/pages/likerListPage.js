@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Card, Container, Divider, Grid, makeStyles, Typography } from '@material-ui/core';
+import { Avatar, Box, Card, Container, Divider, Grid, makeStyles, Typography } from '@material-ui/core';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -45,15 +45,6 @@ const LikerList = ({ likerList }) => {
                               </Typography>
                             </Box>
                           </Link>
-                        </Box>
-                        <Box margin="10px" display="flex" alignItems="center">
-                          <Button
-                            size="small"
-                            variant="outlined"
-                            color="primary"
-                          >
-                            팔로잉
-                          </Button>
                         </Box>
                       </Box>
                     </Card>

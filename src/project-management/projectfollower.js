@@ -2,7 +2,7 @@ import { Avatar, Box, Button, Card, CircularProgress, Container, Grid, makeStyle
 import React, { useEffect, useState } from 'react';
 import { Redirect, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
-import { GetFollowProjects, GetProjectFollowers, Follow, UnFollow } from './projectapi';
+import { GetFollowProjects, GetProjectFollowers, UnFollowProject, FollowProject } from './projectapi';
 
 const useStyles = makeStyles(() => ({
   profileImg: {
@@ -56,8 +56,8 @@ const ProjectFollower = () => {
     return <Redirect to="/login" />;
   }
 
-  const FollowProject = async () => {
-    const response = await Follow(projectId);
+  const Follow = async () => {
+    const response = await FollowProject(projectId);
 
     if (response.status === 401) {
       isLogin(false);
@@ -73,8 +73,8 @@ const ProjectFollower = () => {
     }
   };
 
-  const UnfollowProject = async () => {
-    const response = await UnFollow(projectId);
+  const Unfollow = async () => {
+    const response = await UnFollowProject(projectId);
 
     if (response.status === 401) {
       isLogin(false);
@@ -122,7 +122,7 @@ const ProjectFollower = () => {
                   variant="outlined"
                   color="primary"
                   fullWidth
-                  onClick={UnfollowProject}
+                  onClick={Unfollow}
                 >팔로잉
                 </Button>
               ) : (
@@ -130,7 +130,7 @@ const ProjectFollower = () => {
                   variant="contained"
                   color="primary"
                   fullWidth
-                  onClick={FollowProject}
+                  onClick={Follow}
                 >팔로우
                 </Button>
               )}
