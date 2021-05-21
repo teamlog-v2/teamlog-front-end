@@ -293,7 +293,7 @@ export const Post = (props) => {
   const { postContents, maxWidth, setIsPostLoading, setFormData, initPosts } = props;
   // const { userId } = useContext(SignContext);
   // 정적값으로 대체
-  const userId = 'migu554';
+  const userId = 'jduckling1024';
   const [open, setOpen] = useState(false);
   const [content, setContent] = useState(postContents);
 
@@ -342,6 +342,7 @@ export const Post = (props) => {
                     </Grid>
                   </Grid>
                 </Grid>
+                {console.log(userId)}
                 {
                   userId === content.writer.id
                   ? (

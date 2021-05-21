@@ -132,6 +132,18 @@ export const RefuseProject = async (joinId) => {
   return response;
 };
 
+// 프로젝트 멤버 추방
+export const KickOutProjectMember = async (projectId, memberId) => {
+  const response = await fetch(`/api/projects/${projectId}/members?userId=${memberId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  return response;
+};
+
 // 프로젝트 팔로우
 export const FollowProject = async (projectId) => {
   const response = await fetch(`/api/projects/${projectId}/followers`, {

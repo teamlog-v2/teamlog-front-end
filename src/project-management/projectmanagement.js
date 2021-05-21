@@ -2,7 +2,7 @@ import { Avatar, Box, Button, Card, CircularProgress, Container, Divider, Grid, 
 import React, { useEffect, useState } from 'react';
 import { Redirect, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
-import { GetProject, GetProjectMembers, GetProjectApplcants, GetProjectInvitees, AcceptProject, RefuseProject, DeleteProject } from './projectapi';
+import { GetProject, GetProjectMembers, GetProjectApplcants, GetProjectInvitees, AcceptProject, RefuseProject, DeleteProject, KickOutProjectMember } from './projectapi';
 import Introduction from './introduction';
 import ProjectForm from './projectform';
 import ResponsiveDialog from '../organisms/ResponsiveDialog';
@@ -129,7 +129,7 @@ const ProjectManagement = () => {
                   masterUserId={project.masterId}
                   createTime={project.createTime}
                   followerCount={project.followerCount}
-                  memberCount={project.memberCount}
+                  memberCount={members.length}
                 />
               </Grid>
             </Grid>
@@ -307,13 +307,36 @@ const ProjectManagement = () => {
                           </Link>
                         </Box>
                         <Box margin="10px" display="flex" alignItems="center">
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            size="small"
-                          >
-                            추방
-                          </Button>
+                          {member.id !== project.masterId ? (
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              size="small"
+                              onClick={async () => {
+                                if (window.confirm('해당 멤버를 추방하시겠습니까?')) {
+                                    const { status }
+                                    = await KickOutProjectMember(projectId, member.id);
+                                    if (status === 401) {
+                                        setIsLogin(false);
+                                        return;
+                                    }
+
+                                    if (status === 200) {
+                                        const projectMembersResponse
+                                        = await GetProjectMembers(projectId);
+
+                                        if (projectMembersResponse.status === 401) {
+                                            return;
+                                        }
+                                        setMembers(await projectMembersResponse.json());
+                                    }
+                                }
+                            }}
+                            >
+                              추방
+                            </Button>
+) : (<></>)}
+
                         </Box>
                       </Box>
                     </Card>
