@@ -15,6 +15,7 @@ import {
   Container,
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
+import { useParams } from 'react-router';
 import TaskItem from './TaskItem';
 import TaskCreateForm from './TaskCreateForm';
 import { getTasksByProject, updateTaskStatus } from './taskService';
@@ -38,12 +39,12 @@ const move = (source, destination, droppableSource, droppableDestination) => {
   return result;
 };
 
-const TaskContainer = ({ match }) => {
+const TaskContainer = () => {
   const [state, setState] = useState([[], [], [], []]);
   const [open, setOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const status = ['진행 전', '진행 중', '완료', '실패'];
-  const projectId = match.params.id;
+  const projectId = useParams().id;
 
   const handleClickOpen = () => {
     setOpen(true);

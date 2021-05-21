@@ -21,12 +21,14 @@ const isDuplicateData = (list, value) => {
  */
 const isValidSize = (files, newFiles, value) => {
   let totalSize = 0;
+
   files.forEach(({ file }) => {
-    totalSize += file.size / 1000;
+    totalSize += file?.size ?? 0 / 1000;
   });
   newFiles.forEach(({ size }) => {
     totalSize += size / 1000;
   });
+
   return totalSize <= value;
 };
 
@@ -49,4 +51,18 @@ const getFormat = (type) => {
   }
 };
 
-module.exports = { isDuplicateData, isValidSize, getFormat };
+/**
+ * 확장자로 사진인지 동영상인지 판별
+ * @param {String} name 파일명
+ * @returns video or image
+ */
+const getTypeofFile = (name) => {
+  const token = name.split('.');
+  const extension = token[token.length - 1];
+  if (extension === 'mp4') {
+    return 'VIDEO';
+  }
+  return 'IMAGE';
+};
+
+module.exports = { isDuplicateData, isValidSize, getFormat, getTypeofFile };
