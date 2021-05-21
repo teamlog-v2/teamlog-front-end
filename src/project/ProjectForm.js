@@ -64,8 +64,7 @@ export default function ProjectForm() {
           res.json().then((project) => {
             console.log(project);
             setIsProcessing(false);
-            // history.push(`/projects/${project.id}`);
-            history.push('/');
+            history.push(`/projects/${project.id}`);
           });
         }
       })

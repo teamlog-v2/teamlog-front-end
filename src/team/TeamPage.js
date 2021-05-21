@@ -1,3 +1,5 @@
+import { Button } from '@material-ui/core';
+import React from 'react';
 import { useParams } from 'react-router';
 import { useFetchData } from '../hooks/hooks';
 
@@ -22,9 +24,9 @@ export default function TeamPage() {
       <h3>멤버 수: {memberCount}</h3>
       <h3>{accessModifier}</h3>
 
-      <button>팀 설정 (마스터인 경우)</button>
-      <button>팀 멤버 조회</button>
-      <button>팀 프로젝트 조회</button>
+      <Button>팀 설정 (마스터인 경우)</Button>
+      <Button>팀 멤버 조회</Button>
+      <Button>팀 프로젝트 조회</Button>
     </>
   );
 }

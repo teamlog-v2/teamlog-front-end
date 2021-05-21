@@ -14,6 +14,7 @@ import NotFoundPage from './pages/NotFoundPage';
 import AppBar from './AppBar';
 import TeamForm from './team/TeamForm';
 import ProjectForm from './project/ProjectForm';
+import TeamPage from './team/TeamPage';
 // import MapPage from './map/MapPage';
 
 // 지도 api 낭비하기 싫어서 주석처리
@@ -33,7 +34,7 @@ const App = () => {
 
           <Route path="/create-team" component={TeamForm} />
           <Route path="/teams/:id/settings" />
-          <Route path="/teams/:id" />
+          <Route path="/teams/:id" component={TeamPage} />
 
           <Route exact path="/users/:userId" component={MyPage} />
           <Route exact path="/users/:userId/edit" component={UserEditForm} />
