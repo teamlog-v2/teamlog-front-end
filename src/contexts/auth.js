@@ -28,6 +28,7 @@ fetch = ((origin) => {
 
 const AuthProvider = ({ children }) => {
   const [id, setId] = useState(null);
+  const [profileImgPath, setProfileImgPath] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -44,6 +45,7 @@ const AuthProvider = ({ children }) => {
 
       if (!result.status) {
         setId(result.id);
+        setProfileImgPath(result.profileImgPath);
       }
       setIsLoaded(true);
     })();
@@ -55,7 +57,7 @@ const AuthProvider = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={[id, setId]}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={[id, setId, profileImgPath, setProfileImgPath]}>{children}</AuthContext.Provider>
   );
 };
 

@@ -1,6 +1,7 @@
 import {
   Avatar,
   Button,
+  IconButton,
   makeStyles,
   Menu,
   MenuItem,
@@ -8,7 +9,7 @@ import {
   Slide,
   useScrollTrigger,
 } from '@material-ui/core';
-import { ArrowDropDown } from '@material-ui/icons';
+import { ArrowDropDown, Notifications } from '@material-ui/icons';
 import React, { useContext, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import AuthContext, { setAccessToken } from './contexts/auth';
@@ -70,7 +71,7 @@ export default function AppBar() {
   const classes = useStyles();
   const history = useHistory();
 
-  const [id, setContextId] = useContext(AuthContext);
+  const [id, setContextId, profileImgPath] = useContext(AuthContext);
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -108,9 +109,12 @@ export default function AppBar() {
   return (
     <>
       <Div>
+        <IconButton>
+          <Notifications style={{ fontSize: '1rem' }} />
+        </IconButton>
         <Button onClick={handleClick}>
-          <Avatar className={classes.small} />
-          <ArrowDropDown />
+          <Avatar className={classes.small} src={profileImgPath} />
+          <ArrowDropDown color="action" />
         </Button>
         <Menu
           keepMounted
@@ -142,7 +146,6 @@ export default function AppBar() {
           >
             팀 생성
           </MenuItem>
-          <MenuItem>승인 현황</MenuItem>
           <MenuItem
             style={{ color: 'red' }}
             onClick={() => {
