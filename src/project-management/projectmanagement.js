@@ -1,5 +1,5 @@
 import { Avatar, Box, Button, Card, CircularProgress, Container, Divider, Grid, makeStyles, Typography, withStyles } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Redirect, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { GetProject, GetProjectMembers, GetProjectApplcants, GetProjectInvitees, AcceptProject, RefuseProject, DeleteProject, KickOutProjectMember } from './projectapi';
@@ -7,6 +7,7 @@ import Introduction from './introduction';
 import MasterSelect from './masterSelect';
 import InviteesSelect from './inviteesSelect';
 import ResponsiveDialog from '../organisms/ResponsiveDialog';
+import AuthContext from '../contexts/auth';
 
 const useStyles = makeStyles(() => ({
     profileImg: {
@@ -54,6 +55,7 @@ const DeleteButton = withStyles({
 
 const ProjectManagement = () => {
     const classes = useStyles();
+    const [userId] = useContext(AuthContext);
     const { id: projectId } = useParams();
     const [isLogin, setIsLogin] = useState(true);
     const [isLoaded, setIsLoaded] = useState(false);
@@ -82,6 +84,12 @@ const ProjectManagement = () => {
         const tempProject = await projectResponse.json();
         const tempApplicants = await applicantsResponse.json();
         const tempInvitees = await inviteesResponse.json();
+
+        if (userId !== tempProject.masterId) {
+          window.alert('접근 권한이 없습니다.');
+          window.location.replace(`/projects/${projectId}`);
+          return;
+        }
 
         setProject(tempProject);
         setMembers(tempMembers);
