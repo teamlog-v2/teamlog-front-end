@@ -17,7 +17,7 @@ const getListStyle = (isDraggingOver) => ({
   overflow: 'auto',
 });
 
-const ThumbnailList = ({ files, updateFiles }) => {
+const ThumbnailList = ({ files, updateFiles, handleDeleteList }) => {
   const handleDragEnd = (result) => {
     const { destination, source } = result;
     const { index } = source;
@@ -28,6 +28,7 @@ const ThumbnailList = ({ files, updateFiles }) => {
       current.style.border = 'none';
       const newFiles = files.filter((file, i) => {
         if (index === i) URL.revokeObjectURL(file.url); // blob url 해제
+        if (file.id) handleDeleteList(file.id);
         return index !== i;
       });
       updateFiles(newFiles);

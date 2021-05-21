@@ -4,19 +4,10 @@ import {
   Button,
 } from '@material-ui/core';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
-import { isValidSize } from '../utils';
+import { getTypeofFile, isValidSize } from '../utils';
 
 const MediaUploader = ({ files, updateFiles }) => {
   const fileInputRef = useRef(null);
-
-  const getTypeofFile = (name) => {
-    const token = name.split('.');
-    const extension = token[token.length - 1];
-    if (extension === 'mp4') {
-      return 'VIDEO';
-    }
-    return 'IMAGE';
-  };
 
   const handleInputChange = (event) => { // click trigger
     const uploadedFiles = [...event.target.files];

@@ -19,7 +19,7 @@ import Header from './header';
 import Introduction from './introduction';
 import Postlist from '../post-management/postlist';
 import HashtagChooser from '../organisms/HashtagChooser';
-import { Route } from 'react-router';
+import { Route, useParams } from 'react-router';
 import MyPage from '../user/MyPage';
 
 const useStyles = makeStyles((theme) => ({
@@ -64,9 +64,9 @@ const Title = (props) => {
   );
 };
 
-const ProjectMain = ({ match }) => {
+const ProjectMain = () => {
   const classes = useStyles();
-  const projectId = match.params.id;
+  const projectId = useParams().id;
 
   const [project, setProject] = useState([]);
   const [posts, setPosts] = useState([]);

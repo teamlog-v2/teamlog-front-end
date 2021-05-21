@@ -15,7 +15,6 @@ import { Redirect, useHistory } from 'react-router-dom';
 import ProjectListContainer from '../project/ProjectListContainer';
 import UserList from './UserList';
 import {
-  logout,
   getUser,
   getUserFollower,
   getUserFollowing,
@@ -109,11 +108,6 @@ const MyPage = ({ match }) => {
     setUser(newUser);
   };
 
-  const handleLogout = async () => {
-    await logout();
-    setIsLogin(false);
-  };
-
   if (!isLogin) {
     return <Redirect to="/login" />;
   }
@@ -125,9 +119,6 @@ const MyPage = ({ match }) => {
   return (
     <>
       <Container component="main" disableGutters maxWidth="md">
-        <Button variant="outlined" onClick={handleLogout}>
-          로그아웃
-        </Button>
         <Grid container spacing={2}>
           <Grid item xs={12} align="center">
             <Avatar className={classes.large} src={user.profileImgPath} />

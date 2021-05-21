@@ -17,14 +17,12 @@ const useStyles = makeStyles(() => ({
 }));
 
 export const Media = ({ file }) => {
-  // const { content, frameWidth, frameHeight } = props;
   const { contentType, fileName, fileDownloadUri } = file;
   // 확장자 판별
   if (contentType.includes('video')) {
     return <Video file={file} width="100%" />; //
   } else if (contentType.includes('image')) {
     return <ImageContent file={file} />;
-    // 조건 더 필요하긴 하겠지만...
   }
 };
 

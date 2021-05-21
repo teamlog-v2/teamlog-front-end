@@ -9,9 +9,7 @@ import Paper from '@material-ui/core/Paper';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
-
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -28,6 +26,8 @@ import { Media } from './media';
 import { DateInfo } from './datetime';
 // import MyPage from '../user/MyPage';
 import { DeletePost } from './postapi';
+import ResponsiveDialog from '../organisms/ResponsiveDialog';
+import PostFormPage from '../pages/PostFormPage';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,14 +39,17 @@ const useStyles = makeStyles((theme) => ({
   chip: {
     zIndex: 1,
     position: 'absolute',
+    padding: '3px 12px',
+    borderRadius: '500px',
+    fontSize: '14px',
     [theme.breakpoints.down('sm')]: {
-      fontSize: 'small',
       margin: '2%',
     },
     [theme.breakpoints.up('md')]: {
-      fontSize: 'medium',
-      margin: '1%',
+      margin: '0.5%',
     },
+    backgroundColor: '#FFFFFF',
+    opacity: 0.8,
   },
   paper: {
     display: 'flex',
@@ -118,13 +121,19 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  span: {
+    cursor: 'pointer',
+    '&:hover': {
+      opacity: 0.6,
+    },
+  },
 }));
 
 const PostMenu = (props) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
-  const { postContents, setIsPostLoading, setFormData, initPosts } = props;
+  const { content, setIsPostLoading, setFormData, initPosts, updateOpen } = props;
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -138,12 +147,12 @@ const PostMenu = (props) => {
     setOpen(false);
   };
 
-  function handleListKeyDown(event) {
+  const handleListKeyDown = (event) => {
     if (event.key === 'Tab') {
       event.preventDefault();
       setOpen(false);
     }
-  }
+  };
 
   const prevOpen = useRef(open);
   useEffect(() => {
@@ -171,7 +180,7 @@ const PostMenu = (props) => {
           role={undefined}
           transition
           disablePortal
-          style={{ zIndex: 1 }}
+          style={{ zIndex: 2 }}
         >
           {({ TransitionProps, placement }) => (
             <Grow
@@ -188,11 +197,17 @@ const PostMenu = (props) => {
                     id="menu-list-grow"
                     onKeyDown={handleListKeyDown}
                   >
-                    <MenuItem onClick={handleClose}>수정</MenuItem>
+                    <MenuItem onClick={() => {
+                      if (!updateOpen) return;
+                      updateOpen(true);
+                    }}
+                    >
+                      수정
+                    </MenuItem>
                     <MenuItem onClick={handleClose}>수정 내역</MenuItem>
                     <MenuItem onClick={async (event) => {
                       if (window.confirm('정말로 삭제하시겠습니까?')) {
-                        const status = await DeletePost(postContents.id);
+                        const status = await DeletePost(content.id);
                         if (status === 200) {
                           setIsPostLoading(false);
                           setFormData(null);
@@ -241,10 +256,11 @@ const MediaList = ({ media }) => {
   return (
     <>
       <Grid container direction="row-reverse">
-        <Chip
+        <span
           className={classes.chip}
-          label={`${curIndex}/${media.length}`}
-        />
+        >
+          {`${curIndex}/${media.length}`}
+        </span>
       </Grid>
       <Box id="mediaBox" textAlign="center">
         <Carousel
@@ -275,10 +291,15 @@ const MediaList = ({ media }) => {
 
 export const Post = (props) => {
   const { postContents, maxWidth, setIsPostLoading, setFormData, initPosts } = props;
+  // const { userId } = useContext(SignContext);
+  // 정적값으로 대체
+  const userId = 'migu554';
+  const [open, setOpen] = useState(false);
+  const [content, setContent] = useState(postContents);
 
   const classes = useStyles();
-  const [likerCounter, setLikerCounter] = useState(postContents.likeCount);
-  const [commentCounter, setCommentCounter] = useState(postContents.commentCount);
+  const [likerCounter, setLikerCounter] = useState(content.likeCount);
+  const [commentCounter, setCommentCounter] = useState(content.commentCount);
 
   const SetCommentCounter = useCallback((counterEvent) => {
     setCommentCounter(commentCounter + counterEvent);
@@ -292,6 +313,10 @@ export const Post = (props) => {
     setCommentCounter(postContents.commentCount);
     setLikerCounter(postContents.likeCount);
   }, [postContents.id]);
+
+  useEffect(() => {
+    setContent(postContents);
+  }, [props]);
 
   return (
     <>
@@ -309,33 +334,40 @@ export const Post = (props) => {
                 <Grid item xs={10}>
                   <Grid container className={classes.user} alignItems="center">
                     <Grid item>
-                      <UserImage imgPath={postContents.imgPath} />
+                      <UserImage imgPath={content.writer.profileImgPath} />
                     </Grid>
                     <Grid item container direction="column" xs={2} style={{ padding: '0 1%' }}>
-                      <UserId userId={postContents.writer.id} />
-                      <DateInfo dateTime={postContents.writeTime} />
+                      <UserId userId={content.writer.id} />
+                      <DateInfo dateTime={content.writeTime} />
                     </Grid>
                   </Grid>
                 </Grid>
-                <Grid item className={classes.menu} xs={2}>
-                  <PostMenu
-                    postContents={postContents}
-                    setIsPostLoading={setIsPostLoading}
-                    setFormData={setFormData}
-                    initPosts={initPosts}
-                  />
-                </Grid>
+                {
+                  userId === content.writer.id
+                  ? (
+                    <Grid item className={classes.menu} xs={2}>
+                      <PostMenu
+                        content={content}
+                        setIsPostLoading={setIsPostLoading}
+                        setFormData={setFormData}
+                        initPosts={initPosts}
+                        updateOpen={setOpen}
+                      />
+                    </Grid>
+                  ) : null
+                }
               </Grid>
             </Box>
           </Container>
           <Grid className={classes.children} container alignItems="center">
             <RoomIcon color="primary" />
-            {postContents.latitude}
+            {content.latitude}
+            {content.longitude}
           </Grid>
           <Grid className={classes.children}>
             <Grid container direction="row" spacing={1}>
-              {postContents.hashtags
-                ? postContents.hashtags.map((item, index) => {
+              {content.hashtags
+                ? content.hashtags.map((item, index) => {
                     return (
                       <Grid item>
                         <Chip
@@ -356,51 +388,56 @@ export const Post = (props) => {
                 : ''}
             </Grid>
           </Grid>
-          {postContents.media.length === 0 ? null : (
+          {
+            content.files.length !== 0 && (
+              <FileList files={content.files} />
+            )
+          }
+          {content.media.length === 0 ? null : (
             <Container disableGutters>
-              <MediaList media={postContents.media} />
+              <MediaList media={content.media} />
             </Container>
           )}
           <Container disableGutters>
             <Box className={classes.content}>
               <Typography>
-                <p style={{ whiteSpace: 'pre-wrap' }}>{postContents.contents}</p>
+                <p style={{ whiteSpace: 'pre-wrap' }}>{content.contents}</p>
               </Typography>
             </Box>
           </Container>
           <Container disableGutters>
-            <Box className={classes.files}>
-              <FileList className={classes.file} files={postContents.files} />
-            </Box>
-
             <Box className={classes.etc}>
               <LikerCounter
                 count={likerCounter}
                 setLikerCounter={SetLikerCounter}
-                postId={postContents.id}
+                postId={content.id}
               />
               <CommentCounter count={commentCounter} />
             </Box>
           </Container>
           <Container disableGutters>
             <CommentList
-              projectId={postContents.project.id}
-              postId={postContents.id}
+              projectId={content.project.id}
+              postId={content.id}
               setCommentCounter={SetCommentCounter}
             />
           </Container>
           <Container disableGutters />
         </Card>
       </Container>
+      <ResponsiveDialog open={open} updateOpen={setOpen}>
+        <PostFormPage
+          content={content}
+          updateContent={setContent}
+          updateOpen={setOpen}
+        />
+      </ResponsiveDialog>
     </>
   );
 };
 
-//
-
 export const CompressedPost = (props) => {
   const { post } = props;
-
   const classes = useStyles();
 
   return (

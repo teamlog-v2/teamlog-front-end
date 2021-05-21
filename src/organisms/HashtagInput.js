@@ -25,11 +25,16 @@ const StyledChip = styled.input`
   transition: 0.3s;
 `;
 
-const HashtagInput = ({ hashtags, updateHashtags }) => {
+const HashtagInput = ({ postData, updatePostData }) => {
+  const { hashtags } = postData;
+
   const deleteHashtag = (index) => {
     const newHashtags = [...hashtags];
     newHashtags.splice(index, 1);
-    updateHashtags(newHashtags);
+    updatePostData({
+      ...postData,
+      hashtags: newHashtags,
+    });
   };
 
   const handleClick = (index) => {
@@ -52,7 +57,10 @@ const HashtagInput = ({ hashtags, updateHashtags }) => {
         alert('이미 입력된 태그입니다!');
       } else {
         newHashtags.push(value);
-        updateHashtags(newHashtags);
+        updatePostData({
+          ...postData,
+          hashtags: newHashtags,
+        });
       }
       target.value = '';
     }
