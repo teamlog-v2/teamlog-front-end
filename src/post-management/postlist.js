@@ -1,16 +1,13 @@
 import React from 'react';
 import { Post } from './post';
 
-const Postlist = ({ posts, setIsPostLoading, setFormData, initPosts, updateOpen }) => (
+const Postlist = ({ posts, ...props }) => (
   posts.map((item) => (
     <Post
       key={item.key}
       maxWidth="md"
       postContents={item}
-      setIsPostLoading={setIsPostLoading}
-      setFormData={setFormData}
-      initPosts={initPosts}
-      updateOpen={updateOpen}
+      {...props}
     />
   )));
 
