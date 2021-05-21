@@ -10,9 +10,8 @@ import {
   Tab,
 } from '@material-ui/core';
 import { TabContext, TabList, TabPanel } from '@material-ui/lab';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
-import AuthContext, { setAccessToken } from '../contexts/auth';
 import ProjectListContainer from '../project/ProjectListContainer';
 import UserList from './UserList';
 import {
@@ -109,14 +108,6 @@ const MyPage = ({ match }) => {
     setUser(newUser);
   };
 
-  const [_, setContextId] = useContext(AuthContext);
-  const handleLogout = async () => {
-    localStorage.removeItem('access-token');
-    setAccessToken('');
-    setContextId(null);
-    history.push('/');
-  };
-
   if (!isLogin) {
     return <Redirect to="/login" />;
   }
@@ -128,9 +119,6 @@ const MyPage = ({ match }) => {
   return (
     <>
       <Container component="main" disableGutters maxWidth="md">
-        <Button variant="outlined" onClick={handleLogout}>
-          로그아웃
-        </Button>
         <Grid container spacing={2}>
           <Grid item xs={12} align="center">
             <Avatar className={classes.large} src={user.profileImgPath} />
