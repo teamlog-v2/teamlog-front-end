@@ -103,13 +103,16 @@ import { GetProjectInvitees, JoinProject } from './projectapi';
       selectedInvitees.map(async (invitee) => {
         const response = await JoinProject(projectId, invitee.id);
         if (response.status !== 201) {
-          alert('error');
+          window.alert('error');
         }
       });
 
       const inviteesResponse = await GetProjectInvitees(projectId);
-      setInvitees(await inviteesResponse.json());
-      handleClose();
+      if (inviteesResponse.status === 200) {
+        const newInvitees = await inviteesResponse.json();
+        setInvitees(newInvitees);
+        handleClose();
+      }
     };
 
     return (
