@@ -191,7 +191,7 @@ const TopButton = ({ isProjectLoaded, projectId, relation }) => {
   }
 };
 
-const Header = ({ sections }) => {
+const Header = ({ sections, updateRelation }) => {
   const { id: projectId } = useParams();
   const { pathname } = useLocation();
 
@@ -200,6 +200,8 @@ const Header = ({ sections }) => {
   const title = project?.name;
   const introduction = project?.introduction;
   const relation = project?.relation;
+
+  updateRelation(project?.relation ?? 'NONE');
 
   const { useHandleError } = useContext(ErrorContext);
   useHandleError(projectLoadError);

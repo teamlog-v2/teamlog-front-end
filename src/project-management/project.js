@@ -1,4 +1,4 @@
-import { React } from 'react';
+import { React, useState } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Header from './header';
 import ProjectMain from './projectmain';
@@ -17,9 +17,11 @@ export default function Project() {
     { title: '팔로워', url: '/follower', component: ProjectFollower },
   ];
 
+  const [relation, setRelation] = useState(null);
+
   return (
     <>
-      <Header sections={sections} />
+      <Header sections={sections} updateRelation={setRelation} />
 
       <Switch>
         {sections.map((section, index) => (
@@ -27,13 +29,15 @@ export default function Project() {
             key={index}
             exact
             path={`/projects/:id${section.url}`}
-            component={section.component}
+            component={() => (
+              <section.component relation={relation} />
+            )}
           />
         ))}
         <Route
           exact
           path="/projects/:id/projectmanagement"
-          component={ProjectManagement}
+          component={() => <ProjectManagement relation={relation} />}
         />
       </Switch>
     </>
