@@ -204,7 +204,7 @@ const PostForm = (props) => {
                               </InputAdornment>
                             ),
                           }}
-                          value={postData.address.split('#')[0]}
+                          value={postData.address ? postData.address.split('#')[0] : ''}
                           onClick={() => { setIsSearching(true); }}
                         />
                       </Grid>
