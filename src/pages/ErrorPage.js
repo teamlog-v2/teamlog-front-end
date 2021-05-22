@@ -1,12 +1,24 @@
+import { Box, Button, Container, Typography } from '@material-ui/core';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 const ErrorPage = ({ error }) => {
+  const history = useHistory();
+
   return (
-    <>
-      <h1>{`${error}`}</h1>
-      <Link to="/">홈으로</Link>
-    </>
+    <Box textAlign="center" margin="8rem 0">
+      <Typography variant="h1">{`${error}`}</Typography>
+      <Box height="1rem" />
+      <Button
+        color="primary"
+        variant="outlined"
+        onClick={() => {
+          history.push('/');
+        }}
+      >
+        홈으로
+      </Button>
+    </Box>
   );
 };
 
