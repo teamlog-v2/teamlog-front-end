@@ -23,7 +23,7 @@ const Master = (props) => {
     <Container maxWidth="md" style={{ margin: '2em 0' }}>
       <Grid container>
         <Grid item style={{ margin: '1em 0' }} xs={12}>
-          <Typography variant="h6">👑 마스터</Typography>
+          <Typography variant="h6">👑 프로젝트 마스터</Typography>
         </Grid>
       </Grid>
       <Grid container spacing={2}>
@@ -65,7 +65,7 @@ const Member = (props) => {
     <Container>
       <Grid container>
         <Grid item style={{ margin: '1em 0' }} xs={12}>
-          <Typography variant="h6">👨‍👧‍👧 멤버</Typography>
+          <Typography variant="h6">👨‍👧‍👧 프로젝트 멤버</Typography>
         </Grid>
       </Grid>
       <Grid container spacing={2}>

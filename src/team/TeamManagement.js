@@ -403,7 +403,7 @@ const TeamManagement = () => {
             </Grid>
             <Grid container>
               <Grid item style={{ margin: '1em 0' }} xs={9} sm={10}>
-                <Typography variant="h6">마스터</Typography>
+                <Typography variant="h6">팀 마스터</Typography>
               </Grid>
               <Grid item style={{ margin: '1em 0' }} xs={3} sm={2}>
                 <Button
