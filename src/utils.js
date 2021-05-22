@@ -1,4 +1,4 @@
-const { default: ImageResize } = require('image-resize');
+import ImageResize from 'image-resize';
 
 /**
  * 데이터 중복 확인을 위한 함수
@@ -103,4 +103,4 @@ const resizeImage = async (file, tempURL) => {
   return blobToFile;
 };
 
-module.exports = { isDuplicateData, isValidSize, getFormat, getTypeofFile, resizeImage };
+export { isDuplicateData, isValidSize, getFormat, getTypeofFile, resizeImage };

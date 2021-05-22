@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Grid, TextField, Paper, makeStyles, InputAdornment, Divider, Tooltip } from '@material-ui/core';
 import { Backspace, Close, LocationOn } from '@material-ui/icons';
-import ImageResize from 'image-resize';
 import { useParams } from 'react-router';
 import PlacesSearchApi from '../organisms/PlacesSearchApi';
 import ThumbnailList from '../organisms/ThumbnailList';
