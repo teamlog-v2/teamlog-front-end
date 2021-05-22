@@ -3,7 +3,6 @@ import { Grid, TextField, Paper, makeStyles, InputAdornment, Divider, Tooltip } 
 import { Backspace, Close, LocationOn } from '@material-ui/icons';
 import ImageResize from 'image-resize';
 import { useParams } from 'react-router';
-import Geocode from 'react-geocode';
 import PlacesSearchApi from '../organisms/PlacesSearchApi';
 import ThumbnailList from '../organisms/ThumbnailList';
 import AccessModifier from '../organisms/AccessModifier';
@@ -13,7 +12,7 @@ import PostCreator from '../organisms/PostCreator';
 import Uploader from '../organisms/Uploader';
 import AttachmentList from '../organisms/AttachmentList';
 import CommentModifier from '../organisms/CommentModifier';
-import { getFormat, getTypeofFile } from '../utils';
+import { getTypeofFile, resizeImage } from '../utils';
 
 const useDeleteData = () => {
   const [deletedList, setDeletedList] = useState([]);
@@ -56,12 +55,12 @@ const PostForm = (props) => {
   const postId = content?.id;
 
   const [isLoaded, setIsLoaded] = useState(false);
-  const [address, setAddress] = useState('');
   const contentRef = useRef(null);
   const [postData, setPostData] = useState({
     accessModifier: 'PRIVATE',
     commentModifier: 'PRIVATE',
     hashtags: [],
+    address: '',
   });
   const [mediaFiles, setMediaFiles] = useState([]);
   const [attachedFiles, setAttachedFiles] = useState([]);
@@ -93,40 +92,12 @@ const PostForm = (props) => {
       if (!file.id) formData.append('files', file);
     });
 
-    const imageResize = new ImageResize();
-
     // 이미지 압축
     try {
       const newMedia = mediaFiles.filter((file) => !file.id);
 
-      const blobs = await Promise.all(newMedia.map(async ({ file, type, url }) => {
-          if (type === 'VIDEO') return new Blob([file]);
-
-          const width = await new Promise((resolve, reject) => {
-            const image = new Image();
-            image.src = url;
-            image.onload = () => (resolve(image.width));
-            image.onerror = (error) => (reject(error));
-          });
-
-        let newWidth = 0;
-
-        if (file.size > 300000) {
-          newWidth = Math.ceil(width * Math.sqrt(300000 / file.size)); // 목표: 약 300kb
-        }
-
-        const format = getFormat(file.type);
-
-        if (file.size > 300000 && (format === 'jpg' || format === 'png')) {
-          return imageResize.updateOptions({
-            format: getFormat(file.type),
-            outputType: 'blob',
-            quality: 0.85,
-            width: newWidth,
-          }).play(url);
-        }
-        return new Blob([file]);
-      }));
+      const blobs = await Promise.all(newMedia.map(async ({ file, type, url }) => (
+      type === 'VIDEO' ? new Blob([file]) : resizeImage(file, url))));
 
       newMedia.forEach(({ file }, index) => {
         const blobToFile = new File([blobs[index]], file.name, { type: file.type });
@@ -165,22 +136,9 @@ const PostForm = (props) => {
 
   useEffect(async () => {
     if (content) {
-      try {
-        if (content.latitude && content.longitude) {
-          Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
-          Geocode.setLocationType('ROOFTOP');
-          Geocode.enableDebug();
-          const res = await Geocode.fromLatLng(
-            content.latitude, content.longitude,
-            );
-          console.log(res);
-      }
-      } catch (err) {
-        console.log(err);
-      }
-
       contentRef.current.value = content.contents;
       setPostData({
+        address: content.address,
         accessModifier: content.accessModifier,
         commentModifier: content.commentModifier,
         hashtags: content.hashtags,
@@ -234,7 +192,7 @@ const PostForm = (props) => {
                 {
                   !isSearching ? (
                     <>
-                      <Grid item xs={4}>
+                      <Grid item xs={8}>
                         <TextField
                           size="small"
                           variant="standard"
@@ -247,15 +205,14 @@ const PostForm = (props) => {
                               </InputAdornment>
                             ),
                           }}
-                          value={address}
+                          value={postData.address.split('#')[0]}
                           onClick={() => { setIsSearching(true); }}
                         />
                       </Grid>
                       <Tooltip title="취소">
                         <Backspace
                           onClick={() => {
-                            setAddress('');
-                            setPostData({ ...postData, latitude: null, longitude: null });
+                            setPostData({ ...postData, address: '', latitude: null, longitude: null });
                           }}
                           style={{ margin: '5px 0', color: '#DBDBDB', cursor: 'pointer' }}
                         />
@@ -264,11 +221,9 @@ const PostForm = (props) => {
                   )
                   : (
                     <PlacesSearchApi
-                      address={address}
                       postData={postData}
                       updateIsSearching={setIsSearching}
                       updatePostData={setPostData}
-                      updateAddress={setAddress}
                     />
                   )
                 }

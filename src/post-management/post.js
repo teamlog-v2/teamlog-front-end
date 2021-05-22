@@ -15,7 +15,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Menu, History, Delete, Edit, Close } from '@material-ui/icons';
-import { Avatar, Button, Card, Chip, Grid, Dialog, DialogContentText, DialogTitle, DialogContent, DialogActions } from '@material-ui/core';
+import { Avatar, Button, Card, Chip, Grid, Dialog, DialogContentText, DialogTitle, DialogContent, DialogActions, Tooltip } from '@material-ui/core';
 
 import { Route } from 'react-router';
 import FileList from './fileList';
@@ -28,7 +28,6 @@ import MyPage from '../user/MyPage';
 import { DeletePost } from './postapi';
 import ResponsiveDialog from '../organisms/ResponsiveDialog';
 import PostFormPage from '../pages/PostFormPage';
-import AuthContext from '../contexts/auth';
 import UpdateHistory from './updateHistory';
 
 /** 관계와 접근제어자를 입력받아서
@@ -350,8 +349,6 @@ export const Post = (props) => {
     setLikerCounter(content.likeCount);
   }, [content.id]);
 
-  console.log(relation);
-
   return (
     <>
       <Route exact path="/users/:userId" component={MyPage} />
@@ -399,9 +396,14 @@ export const Post = (props) => {
             (
               <>
                 <Grid className={classes.children} container alignItems="center">
-                  <RoomIcon color="primary" />
-                  {content.latitude}
-                  {content.longitude}
+                  {
+                    content.address ? (
+                      <Grid container alignItems="center">
+                        <RoomIcon color="primary" />
+                        {content.address.split('#')[0]}&nbsp;
+                      </Grid>
+                       ) : null
+                  }
                 </Grid>
                 <Grid className={classes.children}>
                   <Grid container direction="row" spacing={1}>
