@@ -8,6 +8,8 @@ import {
   CircularProgress,
   TextField,
   makeStyles,
+  Divider,
+  Typography,
 } from '@material-ui/core';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
@@ -104,14 +106,18 @@ const SignIn = () => {
         <CircularProgress color="inherit" />
       </Backdrop>
       <Container component="main" maxWidth="xs">
+        <Box height="5rem" />
+        <Divider />
+        <Box height="1rem" />
+        <Typography variant="h4" align="center">
+          TeamLog
+        </Typography>
+        <Box height="1rem" />
+        <Divider />
+        <Box height="1rem" />
         <div>
           <form onSubmit={handleSubmit} noValidate>
             <Grid container spacing={2}>
-              <Grid item xs={12} align="center">
-                <Avatar>
-                  <FaceIcon />
-                </Avatar>
-              </Grid>
               <Grid item xs={12}>
                 <TextField
                   name="id"

@@ -10,6 +10,7 @@ import {
   Avatar,
   Box,
   makeStyles,
+  Divider,
 } from '@material-ui/core';
 import { Link, Redirect } from 'react-router-dom';
 import FaceIcon from '@material-ui/icons/Face';
@@ -94,17 +95,18 @@ const SignUp = () => {
         <CircularProgress color="inherit" />
       </Backdrop>
       <Container component="main" maxWidth="xs">
+        <Box height="5rem" />
+        <Divider />
+        <Box height="1rem" />
+        <Typography variant="h4" align="center">
+          회원가입
+        </Typography>
+        <Box height="1rem" />
+        <Divider />
+        <Box height="1rem" />
         <div>
           <form onSubmit={handleSubmit} noValidate>
             <Grid container spacing={2}>
-              <Grid item xs={12} align="center">
-                <Avatar>
-                  <FaceIcon />
-                </Avatar>
-                <Typography component="h1" variant="h5">
-                  회원 가입
-                </Typography>
-              </Grid>
               <Grid item xs={12}>
                 <TextField
                   autoComplete="fname"

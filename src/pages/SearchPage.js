@@ -54,6 +54,9 @@ export default function SearchPage() {
         // 병렬처리도 가능하긴 함
         const res = await promise;
         const users1 = await res.json();
+        if (promise !== lastPromise.current) {
+          return;
+        }
         const res2 = await fetch(`/api/users?id=${query}`);
         const users2 = await res2.json();
         if (promise !== lastPromise.current) {

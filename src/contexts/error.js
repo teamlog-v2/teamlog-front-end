@@ -13,7 +13,7 @@ const ErrorProvider = ({ children }) => {
   useEffect(() => {
     const unlisten = history.listen(() => {
       setError(null);
-      window.scrollTo(0, 0);
+      window.scrollTo(0, -1);
     });
 
     return () => {
