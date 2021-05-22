@@ -31,6 +31,12 @@ import PostFormPage from '../pages/PostFormPage';
 import AuthContext from '../contexts/auth';
 import UpdateHistory from './updateHistory';
 
+/** 관계와 접근제어자를 입력받아서
+ * visible 한지 반환
+ */
+const canAccess = (relation, modifier) => modifier === 'PUBLIC' ||
+            (relation === 'MEMBER' || relation === 'MASTER');
+
 const useStyles = makeStyles((theme) => ({
   root: {
     margin: '5% 0',
@@ -321,11 +327,11 @@ const MediaList = ({ media }) => {
 };
 
 export const Post = (props) => {
-  const { postContents, maxWidth, setIsPostLoading, setFormData, initPosts, relation } = props;
+  const { content, maxWidth, setIsPostLoading, setFormData,
+    initPosts, relation, updatePost } = props;
 
   const [open, setOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
-  const [content, setContent] = useState(postContents);
 
   const classes = useStyles();
   const [likerCounter, setLikerCounter] = useState(content.likeCount);
@@ -340,13 +346,11 @@ export const Post = (props) => {
   }); // 좋아요 개수 조정
 
   useEffect(() => {
-    setCommentCounter(postContents.commentCount);
-    setLikerCounter(postContents.likeCount);
-  }, [postContents.id]);
+    setCommentCounter(content.commentCount);
+    setLikerCounter(content.likeCount);
+  }, [content.id]);
 
-  useEffect(() => {
-    setContent(postContents);
-  }, [props]);
+  console.log(relation);
 
   return (
     <>
@@ -390,77 +394,108 @@ export const Post = (props) => {
               </Grid>
             </Box>
           </Container>
-          <Grid className={classes.children} container alignItems="center">
-            <RoomIcon color="primary" />
-            {content.latitude}
-            {content.longitude}
-          </Grid>
-          <Grid className={classes.children}>
-            <Grid container direction="row" spacing={1}>
-              {content.hashtags
-                ? content.hashtags.map((item, index) => {
-                    return (
-                      <Grid item>
-                        <Chip
-                          className="tags"
-                          key={index}
-                          label={`#${item}`}
-                          variant="outlined"
-                          size="small"
-                          onClick={() => {
-                            // handleChipClick(index);
-                            // handleToggle(index);
-                          }}
-                          color="primary"
-                        />
-                      </Grid>
-                    );
-                  })
-                : ''}
-            </Grid>
-          </Grid>
           {
-            content.files.length !== 0 && (
-              <FileList files={content.files} />
+            canAccess(relation, content.accessModifier) ?
+            (
+              <>
+                <Grid className={classes.children} container alignItems="center">
+                  <RoomIcon color="primary" />
+                  {content.latitude}
+                  {content.longitude}
+                </Grid>
+                <Grid className={classes.children}>
+                  <Grid container direction="row" spacing={1}>
+                    {content.hashtags
+                      ? content.hashtags.map((item, index) => {
+                          return (
+                            <Grid item>
+                              <Chip
+                                className="tags"
+                                key={index}
+                                label={`#${item}`}
+                                variant="outlined"
+                                size="small"
+                                onClick={() => {
+                                  // handleChipClick(index);
+                                  // handleToggle(index);
+                                }}
+                                color="primary"
+                              />
+                            </Grid>
+                          );
+                        })
+                      : ''}
+                  </Grid>
+                </Grid>
+                {
+                  content.files.length !== 0 && (
+                    <FileList files={content.files} />
+                  )
+                }
+                {content.media.length === 0 ? null : (
+                  <Container disableGutters>
+                    <MediaList media={content.media} />
+                  </Container>
+                )}
+                <Container disableGutters>
+                  <Box className={classes.content}>
+                    <Typography>
+                      <p style={{ whiteSpace: 'pre-wrap' }}>{content.contents}</p>
+                    </Typography>
+                  </Box>
+                </Container>
+                <Container disableGutters>
+                  <Box className={classes.etc}>
+                    <LikerCounter
+                      count={likerCounter}
+                      setLikerCounter={SetLikerCounter}
+                      postId={content.id}
+                    />
+                    <CommentCounter count={commentCounter} />
+                  </Box>
+                </Container>
+                {
+                  canAccess(relation, content.commentModifier) ? (
+                    <Container disableGutters>
+                      <CommentList
+                        projectId={content.project.id}
+                        postId={content.id}
+                        setCommentCounter={SetCommentCounter}
+                      />
+                    </Container>
+                  ) : (
+                    <span
+                      style={{
+                        backgroundColor: '#eee',
+                        textAlign: 'center',
+                        padding: '1% 0',
+                        fontSize: 'smaller' }}
+                    >
+                      댓글을 볼 수 있는 권한이 없습니다
+                    </span>
+                      )
+                  }
+              </>
+          ) : (
+            <Grid
+              style={{
+                backgroundColor: '#eee',
+                textAlign: 'center',
+                padding: '10% 0',
+                }}
+            >
+              포스트를 볼 수 있는 권한이 없습니다
+            </Grid>
             )
           }
-          {content.media.length === 0 ? null : (
-            <Container disableGutters>
-              <MediaList media={content.media} />
-            </Container>
-          )}
-          <Container disableGutters>
-            <Box className={classes.content}>
-              <Typography>
-                <p style={{ whiteSpace: 'pre-wrap' }}>{content.contents}</p>
-              </Typography>
-            </Box>
-          </Container>
-          <Container disableGutters>
-            <Box className={classes.etc}>
-              <LikerCounter
-                count={likerCounter}
-                setLikerCounter={SetLikerCounter}
-                postId={content.id}
-              />
-              <CommentCounter count={commentCounter} />
-            </Box>
-          </Container>
-          <Container disableGutters>
-            <CommentList
-              projectId={content.project.id}
-              postId={content.id}
-              setCommentCounter={SetCommentCounter}
-            />
-          </Container>
           <Container disableGutters />
         </Card>
       </Container>
       <ResponsiveDialog open={open} updateOpen={setOpen}>
         <PostFormPage
           content={content}
-          updateContent={setContent}
           updateOpen={setOpen}
+          updatePost={updatePost}
         />
       </ResponsiveDialog>
       <Dialog

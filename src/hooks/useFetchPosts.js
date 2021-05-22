@@ -124,13 +124,24 @@ const useFetchPosts = (url) => {
     fetchPosts(true);
   }, [url]);
 
+  const updatePost = (postId, post) => {
+    let updatedIndex = -1;
+    [...state.posts].some(({ id }, index) => {
+      updatedIndex = index;
+      return (postId === id);
+    });
+    const updatedPosts = [...state.posts];
+    updatedPosts[updatedIndex] = post;
+    setState({ ...state, posts: updatedPosts });
+  };
+
   useEffect(() => {
     return () => {
       isMounted.current = false;
     };
   });
 
-  return { ...state, fetchPosts, totalCount, initPosts };
+  return { ...state, updatePost, fetchPosts, totalCount, initPosts };
 };
 
 export default useFetchPosts;
