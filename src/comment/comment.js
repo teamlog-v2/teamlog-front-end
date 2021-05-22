@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import {
   Box,
   Chip,
@@ -17,6 +17,7 @@ import { UserImage, UserId } from '../post-management/user';
 import { DateInfo } from '../post-management/datetime';
 import CommentForm from './commentform';
 import { DeleteComment } from './commentapi';
+import AuthContext from '../contexts/auth';
 
 const useStyles = makeStyles((theme) => ({
   more: {
@@ -100,7 +101,7 @@ const CheckRoot = (type) => {
 
 export const Comment = (props) => {
   const {
-    id,
+    id: commentId,
     projectId,
     postId,
     type,
@@ -111,6 +112,8 @@ export const Comment = (props) => {
     contents,
     /* commentList, */
   } = props;
+
+  const [id] = useContext(AuthContext);
   const classes = useStyles();
 
   // const [tagList, setTagList] = useState([]);
@@ -145,7 +148,7 @@ export const Comment = (props) => {
               </Grid>
             </Grid>
             <Grid item visibility={commentStyle.buttonDisplay}>
-              <Box
+            <Box
                 visibility={commentStyle.buttonDisplay}
                 className={classes.icon}
                 onClick={() => {
@@ -170,6 +173,8 @@ export const Comment = (props) => {
               >
                 <ReplyIcon color="action" fontSize="small" />
               </Box>
+              {
+                writer.id === id ? ( <>
               <Box
                 className={classes.icon}
                 onClick={async () => {
@@ -194,7 +199,7 @@ export const Comment = (props) => {
                 className={classes.icon}
                 onClick={async () => {
                   if (window.confirm('정말로 삭제하시겠습니까?')) {
-                    const status = await DeleteComment(id);
+                    const status = await DeleteComment(commentId);
                     if (status === 200) {
                         renewCommentList(-1);
                     }
@@ -203,6 +208,8 @@ export const Comment = (props) => {
               >
                 <CloseIcon color="action" fontSize="small" />
               </Box>
+              </>) : null
+              }
             </Grid>
           </Grid>
         </Box>
@@ -218,7 +225,7 @@ export const Comment = (props) => {
       </Box>
       <Box display={visibility.form}>
         <CommentForm
-          id={id}
+          id={commentId}
           projectId={projectId}
           postId={postId}
           renewCommentList={RenewCommentList}
