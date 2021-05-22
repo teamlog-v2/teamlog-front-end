@@ -16,17 +16,17 @@ export default function TeamPage() {
   const { name, introduction, masterId, memberCount, accessModifier } = team;
   return (
     <>
-      <h1>{name}</h1>
-      <h2>{introduction}</h2>
+      <h1>죄송합니다! 팀 페이지는 🚧공사 중🚧입니다.</h1>
 
+      {/* <h1>{name}</h1>
+      <h2>{introduction}</h2>
       <h3>팀 생성일</h3>
       <h3>마스터: {masterId}</h3>
       <h3>멤버 수: {memberCount}</h3>
       <h3>{accessModifier}</h3>
-
       <Button>팀 설정 (마스터인 경우)</Button>
       <Button>팀 멤버 조회</Button>
-      <Button>팀 프로젝트 조회</Button>
+      <Button>팀 프로젝트 조회</Button> */}
     </>
   );
 }
