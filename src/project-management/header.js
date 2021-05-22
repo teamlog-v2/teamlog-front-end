@@ -165,6 +165,7 @@ const TopButton = ({ isProjectLoaded, projectId, relation }) => {
           variant="contained"
           color="primary"
           onClick={Accept}
+          style={{ maxWidth: '7em', minWidth: '7em' }}
         >초대 수락
         </Button>
       );
@@ -174,6 +175,7 @@ const TopButton = ({ isProjectLoaded, projectId, relation }) => {
           variant="outlined"
           color="primary"
           disabled
+          style={{ maxWidth: '7em', minWidth: '7em' }}
         >신청 완료
         </Button>
       );
@@ -183,6 +185,7 @@ const TopButton = ({ isProjectLoaded, projectId, relation }) => {
           variant="contained"
           color="primary"
           onClick={Apply}
+          style={{ maxWidth: '7em', minWidth: '7em' }}
         >가입 신청
         </Button>
       );
