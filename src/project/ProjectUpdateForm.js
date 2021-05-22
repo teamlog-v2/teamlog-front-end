@@ -8,7 +8,7 @@ import {
     Typography,
   } from '@material-ui/core';
   import { ArrowLeft, Lock, LockOpen } from '@material-ui/icons';
-  import React, { useContext, useState } from 'react';
+  import React, { useContext, useEffect, useState } from 'react';
   import { useHistory } from 'react-router';
   import AuthContext from '../contexts/auth';
 
@@ -20,12 +20,19 @@ import {
   }));
 
   export default function ProjectUpdateForm({ project }) {
-    console.log(project);
     const classes = useStyles();
 
-    const [name, setName] = useState('');
-    const [introduction, setIntroduction] = useState('');
-    const [isPrivate, setIsPrivate] = useState(false);
+    const [name, setName] = useState(project.name);
+    const [introduction, setIntroduction] = useState(project.introduction);
+    const [isPrivate, setIsPrivate] = useState();
+
+    useEffect(() => {
+      if (project.accessModifier === 'PUBLIC') {
+        setIsPrivate(false);
+      } else {
+        setIsPrivate(true);
+      }
+    }, []);
 
     const [isProcessing, setIsProcessing] = useState(false);
 
@@ -46,14 +53,14 @@ import {
         masterId: id,
       };
 
-      return fetch('/api/projects', {
-        method: 'POST',
+      return fetch(`/api/projects/${project.id}`, {
+        method: 'PUT',
         body: JSON.stringify(data),
         headers: { 'Content-type': 'application/json' },
       });
     };
 
-    const onClickCreate = () => {
+    const onClickUpdate = () => {
       if (isProcessing) {
         return;
       }
@@ -65,7 +72,7 @@ import {
             res.json().then(() => {
               setIsProcessing(false);
               // history.push(`/projects/${project.id}`);
-              history.push('/');
+              window.location.replace(`/projects/${project.id}/projectmanagement`);
             });
           }
         })
@@ -188,9 +195,9 @@ import {
             variant="contained"
             disableElevation
             style={{ fontSize: '1.5rem' }}
-            onClick={onClickCreate}
+            onClick={onClickUpdate}
           >
-            생성하기
+            수정하기
           </Button>
         </div>
         <div style={{ height: '1rem' }} />
