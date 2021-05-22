@@ -20,9 +20,9 @@ const useStyles = makeStyles(() => ({
 const UserImage = (props) => {
   const classes = useStyles();
 
-  const { imgPath } = props;
+  const { imgPath = '' } = props;
 
-  return <Avatar className={classes.small} src={imgPath.slice(imgPath.indexOf('/resources'))} />;
+  return <Avatar className={classes.small} src={imgPath ? imgPath.slice(imgPath.indexOf('/resources')) : ''} />;
 };
 
 const UserId = (props) => {

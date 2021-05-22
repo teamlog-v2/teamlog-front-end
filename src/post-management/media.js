@@ -17,7 +17,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 export const Media = ({ file }) => {
-  const { contentType, fileName, fileDownloadUri } = file;
+  const { contentType } = file;
   // 확장자 판별
   if (contentType.includes('video')) {
     return <Video file={file} width="100%" />; //
@@ -48,17 +48,19 @@ const ImageContent = ({ file }) => {
 };
 
 const Video = (props) => {
-  const { content, width, height } = props;
+  const { fileDownloadUri } = props.file;
+
+  const url = fileDownloadUri.slice(fileDownloadUri.indexOf('/resources'));
   const classes = useStyles();
 
   const image = new Image();
-  image.src = content.toString();
+  image.src = url.toString();
   console.log(image.videoWidth);
 
   return (
     <Box>
       <video className={classes.align} controls>
-        <source src={content}></source>
+        <source src={url}></source>
       </video>
     </Box>
   );
