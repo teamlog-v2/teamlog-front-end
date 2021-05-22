@@ -17,10 +17,11 @@ import {
   withStyles,
   Box,
 } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
-import { updateUser, getUser } from './userService';
+import { updateUser, getUser, validateLogin } from './userService';
+import AuthContext from '../contexts/auth';
 
 const useStyles = makeStyles((theme) => ({
   large: {
@@ -48,6 +49,7 @@ const SmallAvatar = withStyles((theme) => ({
 }))(Avatar);
 
 const UserEditForm = ({ match }) => {
+  const [___, __, _, setContextProfileImgPath] = useContext(AuthContext);
   const history = useHistory();
   const classes = useStyles();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -108,6 +110,9 @@ const UserEditForm = ({ match }) => {
       const response = await updateUser(formData);
       if (response.status === 200) {
         history.push(`/users/${match.params.userId}`);
+        let res = await validateLogin();
+        res = await res.json();
+        setContextProfileImgPath(res.profileImgPath);
       }
     } catch (err) {
       setIsLoading(false);
