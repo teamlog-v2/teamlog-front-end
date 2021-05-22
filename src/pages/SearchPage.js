@@ -52,14 +52,26 @@ export default function SearchPage() {
         lastPromise.current = promise;
         // 병렬처리도 가능하긴 함
         const res = await promise;
-        const users = await res.json();
+        const users1 = await res.json();
         const res2 = await fetch(`/api/users?id=${query}`);
         const users2 = await res2.json();
         if (promise !== lastPromise.current) {
           return;
         }
 
-        setResult([...users, ...users2]);
+        // 중복 제거
+        const users = [...users1, ...users2];
+        const ids = {};
+        const filterdUsers = [];
+        users.forEach((user) => {
+          if (ids[user.id]) {
+            return;
+          }
+          ids[user.id] = true;
+          filterdUsers.push(user);
+        });
+
+        setResult(filterdUsers);
         setIsProcessing(false);
       })();
     }
