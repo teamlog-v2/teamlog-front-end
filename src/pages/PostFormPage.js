@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Grid, TextField, Paper, makeStyles, InputAdornment, Divider, Tooltip, IconButton } from '@material-ui/core';
-import { Backspace, CheckBoxOutlineBlank, Close, LocationOn } from '@material-ui/icons';
+import { Grid, TextField, Paper, makeStyles, InputAdornment, Divider, Tooltip } from '@material-ui/core';
+import { Backspace, Close, LocationOn } from '@material-ui/icons';
 import ImageResize from 'image-resize';
 import { useParams } from 'react-router';
+import Geocode from 'react-geocode';
 import PlacesSearchApi from '../organisms/PlacesSearchApi';
 import ThumbnailList from '../organisms/ThumbnailList';
 import AccessModifier from '../organisms/AccessModifier';
@@ -13,17 +14,16 @@ import Uploader from '../organisms/Uploader';
 import AttachmentList from '../organisms/AttachmentList';
 import CommentModifier from '../organisms/CommentModifier';
 import { getFormat, getTypeofFile } from '../utils';
-import Geocode from 'react-geocode';
 
 const useDeleteData = () => {
   const [deletedList, setDeletedList] = useState([]);
 
   const handleDeleteList = (id) => {
     setDeletedList([...deletedList, id]);
-  }
+  };
 
   return { deletedList, handleDeleteList };
-}
+};
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
 
 const PostForm = (props) => {
   const { id } = useParams();
-  const { content, updateOpen, updateContent, updateFormData } = props;
+  const { content, updateOpen, updateFormData, updatePost } = props;
 
   const classes = useStyles();
   const isUpdateRequest = (content !== undefined);
@@ -67,7 +67,7 @@ const PostForm = (props) => {
   const [attachedFiles, setAttachedFiles] = useState([]);
   const [recommendedHashtags, setRecommendedHashtags] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
-  const {deletedList : deletedFileIdList, handleDeleteList } = useDeleteData();
+  const { deletedList: deletedFileIdList, handleDeleteList } = useDeleteData();
 
   const handleSubmit = async () => {
     if (contentRef.current.value === '') {
@@ -94,10 +94,10 @@ const PostForm = (props) => {
     });
 
     const imageResize = new ImageResize();
-    
+
     // 이미지 압축
     try {
-      const newMedia = mediaFiles.filter((file) => !file.id)
+      const newMedia = mediaFiles.filter((file) => !file.id);
 
       const blobs = await Promise.all(newMedia.map(async ({ file, type, url }) => {
           if (type === 'VIDEO') return new Blob([file]);
@@ -141,7 +141,7 @@ const PostForm = (props) => {
       URL.revokeObjectURL(file.url);
     });
 
-    if(isUpdateRequest) { // 업데이트 로직
+    if (isUpdateRequest) { // 업데이트 로직
       try {
         const res = await fetch(`/api/posts/${postId}`, {
           method: 'PUT',
@@ -151,16 +151,14 @@ const PostForm = (props) => {
       if (res.status === 200) {
         const result = await res.json();
         console.log('성공적으로 수정');
-        updateContent(result);
+        updatePost(postId, result);
         updateOpen(false);
         return;
       }
     } catch (error) {
       console.log(error);
-      return;
       }
-    }
-    else { // 등록로직 -> 부모 컴포넌트에 요청
+    } else { // 등록로직 -> 부모 컴포넌트에 요청
       updateFormData(formData);
     }
   };
@@ -168,12 +166,13 @@ const PostForm = (props) => {
   useEffect(async () => {
     if (content) {
       try {
-        if(content.latitude && content.longitude) {
+        if (content.latitude && content.longitude) {
           Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
-          Geocode.setLocationType("ROOFTOP");
+          Geocode.setLocationType('ROOFTOP');
           Geocode.enableDebug();
           const res = await Geocode.fromLatLng(
-            content.latitude, content.longitude);
+            content.latitude, content.longitude,
+            );
           console.log(res);
       }
       } catch (err) {
@@ -185,19 +184,19 @@ const PostForm = (props) => {
         accessModifier: content.accessModifier,
         commentModifier: content.commentModifier,
         hashtags: content.hashtags,
-      })
+      });
       setMediaFiles(content.media.map((file) => ({
           url: file.fileDownloadUri,
           type: getTypeofFile(file.fileName),
           file,
-          id: file.id, 
+          id: file.id,
         })));
       setAttachedFiles(content.files.map((file) => ({
         file: {
           url: file.fileDownloadUri,
           name: file.fileName,
           id: file.id,
-        }
+        },
       })));
     }
     setIsLoaded(true);
@@ -217,86 +216,87 @@ const PostForm = (props) => {
     // }, 3000);
   }, []);
 
-  return (<>
-    <Grid item container justify="flex-end">
-      <Close onClick={() => { updateOpen(false); }} style={{ cursor: 'pointer', margin: '1%' }}/>
-    </Grid>
-    <Grid
-      className={classes.root}
-      container
-      direction="column"
-      alignItems="center"
-    >
-      <Grid container spacing={3}>
-        <Grid container item direction="row" justify="space-between">
-          <Grid container item direction="column">
-            <Grid item container direction="row" style={{ height: '50px' }}>
-              {
-                !isSearching ? (
-                  <>
-                    <Grid item xs={4}>
-                      <TextField
-                        size="small"
-                        variant="standard"
-                        fullWidth
-                        helperText="필드를 눌러 장소를 검색하세요."
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment>
-                              <LocationOn color="primary" style={{ paddingBottom: '2px' }} />
-                            </InputAdornment>
-                          ),
-                        }}
-                        value={address}
-                        onClick={() => { setIsSearching(true); }}
-                      />
-                    </Grid>
-                    <Tooltip title="취소">
-                      <Backspace
-                        onClick={() => {
-                          setAddress('');
-                          setPostData({...postData, latitude: null, longitude: null }); }}
-                        style={{ margin: '5px 0', color: '#DBDBDB', cursor: 'pointer' }}
-                      />
-                    </Tooltip>
-                  </>
-                )
-                : (
-                  <PlacesSearchApi
-                    address={address}
-                    postData={postData}
-                    updateIsSearching={setIsSearching}
-                    updatePostData={setPostData}
-                    updateAddress={setAddress}
-                  />
-                )
-              }
+  return (
+    <>
+      <Grid item container justify="flex-end">
+        <Close onClick={() => { updateOpen(false); }} style={{ cursor: 'pointer', margin: '1%' }} />
+      </Grid>
+      <Grid
+        className={classes.root}
+        container
+        direction="column"
+        alignItems="center"
+      >
+        <Grid container spacing={3}>
+          <Grid container item direction="row" justify="space-between">
+            <Grid container item direction="column">
+              <Grid item container direction="row" style={{ height: '50px' }}>
+                {
+                  !isSearching ? (
+                    <>
+                      <Grid item xs={4}>
+                        <TextField
+                          size="small"
+                          variant="standard"
+                          fullWidth
+                          helperText="필드를 눌러 장소를 검색하세요."
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment>
+                                <LocationOn color="primary" style={{ paddingBottom: '2px' }} />
+                              </InputAdornment>
+                            ),
+                          }}
+                          value={address}
+                          onClick={() => { setIsSearching(true); }}
+                        />
+                      </Grid>
+                      <Tooltip title="취소">
+                        <Backspace
+                          onClick={() => {
+                            setAddress('');
+                            setPostData({ ...postData, latitude: null, longitude: null });
+                          }}
+                          style={{ margin: '5px 0', color: '#DBDBDB', cursor: 'pointer' }}
+                        />
+                      </Tooltip>
+                    </>
+                  )
+                  : (
+                    <PlacesSearchApi
+                      address={address}
+                      postData={postData}
+                      updateIsSearching={setIsSearching}
+                      updatePostData={setPostData}
+                      updateAddress={setAddress}
+                    />
+                  )
+                }
+              </Grid>
+            </Grid>
+            <Grid item container xs={12} justify="flex-end">
+              <AccessModifier
+                postData={postData}
+                updatePostData={setPostData}
+              />
+              <CommentModifier
+                postData={postData}
+                updatePostData={setPostData}
+              />
             </Grid>
           </Grid>
-          <Grid item container xs={12} justify="flex-end">
-            <AccessModifier
-              postData={postData}
-              updatePostData={setPostData}
-            />
-            <CommentModifier
-              postData={postData}
-              updatePostData={setPostData}
-            />
-          </Grid>
-        </Grid>
-        <Grid item xs={12}>
-          <Uploader
-            attachedFiles={attachedFiles}
-            updateAttachedFiles={setAttachedFiles}
-            mediaFiles={mediaFiles}
-            updateMediaFiles={setMediaFiles}
-          />
-          <Divider className={classes.children} />
-        </Grid>
-        <Grid container item spacing={1}>
           <Grid item xs={12}>
-            {
-              attachedFiles.length > 0 ? (
+            <Uploader
+              attachedFiles={attachedFiles}
+              updateAttachedFiles={setAttachedFiles}
+              mediaFiles={mediaFiles}
+              updateMediaFiles={setMediaFiles}
+            />
+            <Divider className={classes.children} />
+          </Grid>
+          {attachedFiles.length > 0 ? (
+            <Grid container item spacing={1}>
+              <Grid item xs={12}>
                 <Paper
                   elevation={0}
                   style={{ backgroundColor: '#F8F8F8', padding: '1%' }}
@@ -307,14 +307,12 @@ const PostForm = (props) => {
                     handleDeleteList={handleDeleteList}
                   />
                 </Paper>
-              ) : null
-            }
-          </Grid>
-        </Grid>
-        <Grid container item spacing={1}>
-          <Grid item xs={12}>
-            {
-              mediaFiles.length > 0 ? (
+              </Grid>
+            </Grid>
+          ) : null}
+          {mediaFiles.length > 0 ? (
+            <Grid container item spacing={1}>
+              <Grid item xs={12}>
                 <Paper
                   elevation={0}
                   style={{ backgroundColor: '#F8F8F8', padding: '1%' }}
@@ -325,62 +323,62 @@ const PostForm = (props) => {
                     handleDeleteList={handleDeleteList}
                   />
                 </Paper>
-              ) : null
-            }
-          </Grid>
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            variant="outlined"
-            rows={5}
-            rowsMax={Infinity}
-            multiline
-            fullWidth
-            inputRef={contentRef}
-          />
-        </Grid>
-        <Grid container item>
-          <Grid container item direction="row" justify="space-between">
-            <Grid item sm={12}>
-              <Grid container direction="column" spacing={2}>
-                <Grid item>
-                  <HashtagInput
-                    postData={postData}
-                    updatePostData={setPostData}
-                  />
-                </Grid>
-                <Grid
-                  item
-                  container
-                  direction="row"
-                  alignItems="center"
-                  spacing={1}
-                >
-                  <Grid item>
-                    <strong style={{ color: '#828282' }}>
-                      이런 해시태그는 어때요?
-                    </strong>
-                  </Grid>
-                  {isLoaded ? (
-                    <HashtagRecommender
-                      postData={postData}
-                      recommendedHashtags={recommendedHashtags}
-                      updatePostData={setPostData}
-                    />
-                  ) : (
-                    '추천 해시태그를 찾는 중입니다'
-                  )}
-                </Grid>
               </Grid>
             </Grid>
-            <Grid />
-            <PostCreator
-              handleSubmit={handleSubmit}
+            ) : null}
+          <Grid item xs={12}>
+            <TextField
+              variant="outlined"
+              rows={5}
+              rowsMax={Infinity}
+              multiline
+              fullWidth
+              inputRef={contentRef}
             />
+          </Grid>
+          <Grid container item>
+            <Grid container item direction="row" justify="space-between">
+              <Grid item sm={12}>
+                <Grid container direction="column" spacing={2}>
+                  <Grid item>
+                    <HashtagInput
+                      postData={postData}
+                      updatePostData={setPostData}
+                    />
+                  </Grid>
+                  <Grid
+                    item
+                    container
+                    direction="row"
+                    alignItems="center"
+                    spacing={1}
+                  >
+                    <Grid item>
+                      <strong style={{ color: '#828282' }}>
+                        이런 해시태그는 어때요?
+                      </strong>
+                    </Grid>
+                    {isLoaded ? (
+                      <HashtagRecommender
+                        postData={postData}
+                        recommendedHashtags={recommendedHashtags}
+                        updatePostData={setPostData}
+                      />
+                    ) : (
+                      '추천 해시태그를 찾는 중입니다'
+                    )}
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid />
+              <PostCreator
+                handleSubmit={handleSubmit}
+              />
+            </Grid>
+            <Grid />
           </Grid>
         </Grid>
       </Grid>
-    </Grid>
     </>
   );
 };
