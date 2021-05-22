@@ -67,13 +67,13 @@ import { DelegateTeamMaster } from './TeamApi';
 
     if (!isLoaded) {
       return (
-        <Container style={{ width: '20em', height: '32em' }}>
+        <Container style={{ minWidth: '20em', height: '32em', margin: '1em 0' }}>
           <Grid
             container
             direction="column"
             justify="center"
             alignItems="center"
-            style={{ minHeight: '32em' }}
+            style={{ height: '32em', margin: '1em 0' }}
           >
             <Grid item>
               <CircularProgress />
@@ -109,12 +109,12 @@ import { DelegateTeamMaster } from './TeamApi';
     };
 
     return (
-      <Container style={{ width: '20em', height: '32em' }}>
+      <Container style={{ minWidth: '20em', height: '32em', margin: '1em 0' }}>
         <Box display="flex" justifyContent="center">
           <Typography>선택된 마스터</Typography>
         </Box>
         <Box
-          width="23vw"
+          width="100%"
           display="flex"
           flexWrap="wrap"
           justifyContent="center"
@@ -122,7 +122,7 @@ import { DelegateTeamMaster } from './TeamApi';
           gridGap="4px"
           height="128px"
           overflow="auto"
-          bgcolor="#F8F8F8"
+          bgcolor="white"
         >
           {selectedMaster.length === 0 && (
             <Typography color="primary">-</Typography>
@@ -131,15 +131,13 @@ import { DelegateTeamMaster } from './TeamApi';
             const user = users.find((master) => master.id === selectedUserId);
             return (
               <>
-                <Grid>
-                  <ListItem>
-                    <ListItemAvatar>
-                      <Avatar alt={user.name} src={user.profileImgPath} />
-                    </ListItemAvatar>
-                    <ListItemText primary={user.name} />
+                <ListItem style={{ backgroundColor: 'white' }}>
+                  <ListItemAvatar>
+                    <Avatar alt={user.name} src={user.profileImgPath} />
+                  </ListItemAvatar>
+                  <ListItemText primary={user.name} />
 
-                  </ListItem>
-                </Grid>
+                </ListItem>
               </>
             );
           })}

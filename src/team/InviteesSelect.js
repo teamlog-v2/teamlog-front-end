@@ -11,6 +11,7 @@ import {
     ListItem,
     ListItemAvatar,
     ListItemText,
+    makeStyles,
     TextField,
     Typography,
     withStyles,
@@ -30,12 +31,23 @@ import { GetTeamInvitees, JoinTeam } from './TeamApi';
     },
   })(List);
 
+  const useStyles = makeStyles((theme) => ({
+    usersContainer: {
+      [theme.breakpoints.up('md')]: {
+        width: '20em',
+        height: '32em',
+        margin: '1em 0',
+      },
+    },
+  }));
+
   const InviteesSelect = ({
     invitees,
     teamId,
     setInvitees,
     handleClose,
   }) => {
+    const classes = useStyles();
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [users, setUsers] = useState([]);
@@ -67,20 +79,22 @@ import { GetTeamInvitees, JoinTeam } from './TeamApi';
 
     if (!isLoaded) {
       return (
-        <Grid
-          container
-          direction="column"
-          justify="center"
-          alignItems="center"
-          style={{ minHeight: '100vh' }}
-        >
-          <Grid item>
-            <CircularProgress />
+        <Container style={{ minWidth: '20em', height: '32em', margin: '1em 0' }}>
+          <Grid
+            container
+            direction="column"
+            justify="center"
+            alignItems="center"
+            style={{ height: '32em', margin: '1em 0' }}
+          >
+            <Grid item>
+              <CircularProgress />
+            </Grid>
+            <Grid item>
+              <Typography> 유저 목록을 불러오고 있어요!</Typography>
+            </Grid>
           </Grid>
-          <Grid item>
-            <Typography> 유저 목록을 불러오고 있어요!</Typography>
-          </Grid>
-        </Grid>
+        </Container>
 );
     }
 
@@ -116,13 +130,13 @@ import { GetTeamInvitees, JoinTeam } from './TeamApi';
     };
 
     return (
-      <Container minWidth="sm">
+      <Container className={classes.usersContainer}>
         <Box display="flex" justifyContent="center">
           <Typography>{`${selectedUserIds.length}명 선택됨`}</Typography>
         </Box>
 
         <Box
-          width="23vw"
+          width="100%"
           display="flex"
           flexWrap="wrap"
           justifyContent="center"

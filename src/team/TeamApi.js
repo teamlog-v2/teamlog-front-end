@@ -77,16 +77,33 @@ export const AcceptTeam = async (teamId) => {
 
 };
 
-export const RefuseTeam = async (teamId) => {
+export const RefuseTeam = async (joinId) => {
+  const response = await fetch(`/api/team-joins/${joinId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 
+  console.log(response);
+  return response;
 };
 
 export const DeleteTeam = async (teamId) => {
 
 };
 
-export const KickOutTeamMember = async (teamId) => {
+// 팀 멤버 추방
+export const KickOutTeamMember = async (teamId, memberId) => {
+  const response = await fetch(`/api/teams/${teamId}/members?userId=${memberId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 
+  console.log(response.status);
+  return response;
 };
 
 // 마스터 위임

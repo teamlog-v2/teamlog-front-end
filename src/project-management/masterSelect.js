@@ -67,20 +67,22 @@ import { DelegateProjectMaster } from './projectapi';
 
     if (!isLoaded) {
       return (
-        <Grid
-          container
-          direction="column"
-          justify="center"
-          alignItems="center"
-          style={{ minHeight: '100vh' }}
-        >
-          <Grid item>
-            <CircularProgress />
+        <Container style={{ minWidth: '20em', height: '32em', margin: '1em 0' }}>
+          <Grid
+            container
+            direction="column"
+            justify="center"
+            alignItems="center"
+            style={{ height: '32em', margin: '1em 0' }}
+          >
+            <Grid item>
+              <CircularProgress />
+            </Grid>
+            <Grid item>
+              <Typography> 멤버 목록을 불러오고 있어요!</Typography>
+            </Grid>
           </Grid>
-          <Grid item>
-            <Typography> 멤버 목록을 불러오고 있어요!</Typography>
-          </Grid>
-        </Grid>
+        </Container>
       );
     }
 
@@ -107,12 +109,12 @@ import { DelegateProjectMaster } from './projectapi';
     };
 
     return (
-      <Container minWidth="sm">
+      <Container style={{ minWidth: '20em', height: '32em', margin: '1em 0' }}>
         <Box display="flex" justifyContent="center">
           <Typography>선택된 마스터</Typography>
         </Box>
         <Box
-          width="23vw"
+          width="100%"
           display="flex"
           flexWrap="wrap"
           justifyContent="center"
@@ -120,7 +122,7 @@ import { DelegateProjectMaster } from './projectapi';
           gridGap="4px"
           height="128px"
           overflow="auto"
-          bgcolor="#F8F8F8"
+          bgcolor="white"
         >
           {selectedMaster.length === 0 && (
             <Typography color="primary">-</Typography>
@@ -189,7 +191,7 @@ import { DelegateProjectMaster } from './projectapi';
           justifyContent="center"
           gridGap="8px"
           padding="8px"
-          bgcolor="#F8F8F8"
+          bgcolor="white"
         >
           <Button variant="contained" color="primary" onClick={saveSelectedUsers}>
             확인

@@ -107,7 +107,7 @@ import {
         <Divider />
         <div style={{ height: '1rem' }} />
 
-        <Typography variant="h6" color="textSecondary">
+        <Typography color="textSecondary">
           팀명
         </Typography>
         <TextField
@@ -123,7 +123,7 @@ import {
         />
         <div style={{ height: '1rem' }} />
 
-        <Typography variant="h6" color="textSecondary">
+        <Typography color="textSecondary">
           간단한 소개
         </Typography>
         <TextField
@@ -139,7 +139,7 @@ import {
         />
         <div style={{ height: '1rem' }} />
 
-        <Typography variant="h6" color="textSecondary">
+        <Typography color="textSecondary">
           공개 설정
         </Typography>
         <div style={{ display: 'flex' }}>
