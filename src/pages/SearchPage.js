@@ -224,7 +224,7 @@ function QueryInput({ value, onChange }) {
 
 function Template({ children, ...props }) {
   return (
-    <Box maxWidth="480px" margin="auto" {...props}>
+    <Box maxWidth="480px" margin="auto" padding="1rem" {...props}>
       <Box height="4rem" />
       {children}
       <Box height="4rem" />

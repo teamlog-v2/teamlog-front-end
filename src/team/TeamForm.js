@@ -1,5 +1,6 @@
 import {
   Backdrop,
+  Box,
   Button,
   CircularProgress,
   Divider,
@@ -77,13 +78,14 @@ export default function TeamForm() {
       style={{
         margin: 'auto',
         maxWidth: '480px',
-        padding: '16px',
+        padding: '1rem',
         // textAlign: 'center',
       }}
     >
       <Backdrop open={isProcessing} className={classes.backdrop}>
         <CircularProgress color="inherit" />
       </Backdrop>
+      <Box height="4rem" />
       <Divider />
       <div style={{ height: '1rem' }} />
 
@@ -191,7 +193,7 @@ export default function TeamForm() {
           생성하기
         </Button>
       </div>
-      <div style={{ height: '1rem' }} />
+      <Box height="4rem" />
     </div>
   );
 }
