@@ -17,7 +17,7 @@ import Tab from '@material-ui/core/Tab';
 import { Button } from '@material-ui/core';
 import { useFetchData } from '../hooks/hooks';
 import ErrorContext from '../contexts/error';
-import { AcceptProject, ApplyProject, InvitationAccept } from './projectapi';
+// import { AcceptTeam, ApplyTeam } from './teamapi';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -86,7 +86,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ProjectTitle = (props) => {
+const TeamTitle = (props) => {
   const classes = useStyles();
   const { title, introduction } = props;
 
@@ -107,43 +107,42 @@ const ProjectTitle = (props) => {
   );
 };
 
-const TopButton = ({ isProjectLoaded, projectId, relation }) => {
-  console.log(relation);
+const TopButton = ({ isTeamLoaded, teamId, relation }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [relationState, setRelationState] = useState();
 
   useEffect(() => {
     setRelationState(relation);
-  }, [isProjectLoaded]);
+  }, [isTeamLoaded]);
 
   if (!isLogin) {
     return <Redirect to="/login" />;
   }
 
   const Apply = async () => {
-    const response = await ApplyProject(projectId);
+    // const response = await ApplyTeam(teamId);
 
-    if (response.status === 401) {
-      setIsLogin(false);
-      return;
-    }
+    // if (response.status === 401) {
+    //   setIsLogin(false);
+    //   return;
+    // }
 
-    if (response.status === 201) {
-      setRelationState('APPLIED');
-    }
+    // if (response.status === 201) {
+    //   setRelationState('APPLIED');
+    // }
   };
 
   const Accept = async () => {
-    const response = await InvitationAccept(projectId);
+    // const response = await AcceptTeam(teamId);
 
-    if (response.status === 401) {
-      setIsLogin(false);
-      return;
-    }
+    // if (response.status === 401) {
+    //   setIsLogin(false);
+    //   return;
+    // }
 
-    if (response.status === 200) {
-      setRelationState('MEMBER');
-    }
+    // if (response.status === 200) {
+    //   setRelationState('MEMBER');
+    // }
   };
 
   // 초대 수락의 경우 join id까지 필요할 듯...?
@@ -151,7 +150,7 @@ const TopButton = ({ isProjectLoaded, projectId, relation }) => {
     case 'MASTER':
       return (
         <Link
-          to={`/projects/${projectId}/projectmanagement`}
+          to={`/teams/${teamId}/teammanagement`}
           style={{ textDecoration: 'none' }}
         >
           <Button>
@@ -195,22 +194,22 @@ const TopButton = ({ isProjectLoaded, projectId, relation }) => {
 };
 
 const Header = ({ sections, updateRelation }) => {
-  const { id: projectId } = useParams();
+  const { id: teamId } = useParams();
   const { pathname } = useLocation();
 
-  const [project, isProjectLoaded, projectLoadError] = useFetchData(`/api/projects/${projectId}`);
-  console.log(project);
-  const title = project?.name;
-  const introduction = project?.introduction;
-  const relation = project?.relation;
+  const [team, isTeamLoaded, teamLoadError] = useFetchData(`/api/teams/${teamId}`);
+  console.log(team);
+  const title = team?.name;
+  const introduction = team?.introduction;
+  const relation = team?.relation;
 
-  updateRelation(project?.relation ?? 'NONE');
+  updateRelation(team?.relation ?? 'NONE');
 
   const { useHandleError } = useContext(ErrorContext);
-  useHandleError(projectLoadError);
+  useHandleError(teamLoadError);
 
   const selectedTabIndex = sections.findIndex(
-    (section) => pathname === `/projects/${projectId}${section.url}`,
+    (section) => pathname === `/teams/${teamId}${section.url}`,
   );
 
   const classes = useStyles();
@@ -226,8 +225,8 @@ const Header = ({ sections, updateRelation }) => {
   return (
     <>
       <Toolbar className={classes.toolbar}>
-        <ProjectTitle title={title} introduction={introduction} />
-        <TopButton projectId={projectId} isProjectLoaded={isProjectLoaded} relation={relation} />
+        <TeamTitle title={title} introduction={introduction} />
+        <TopButton teamId={teamId} isTeamLoaded={isTeamLoaded} relation={relation} />
       </Toolbar>
 
       <Paper className={classes.root}>
@@ -243,7 +242,7 @@ const Header = ({ sections, updateRelation }) => {
                 key={index}
                 label={section.title}
                 component={Link}
-                to={`/projects/${projectId}${section.url}`}
+                to={`/teams/${teamId}${section.url}`}
               />
             ))}
           </Tabs>

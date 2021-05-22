@@ -123,7 +123,7 @@ export const ApplyProject = async (projectId) => {
   return response;
 };
 
-// 프로젝트 초대 및 신청 수락
+// 프로젝트 신청 수락
 export const AcceptProject = async (joinId) => {
   const response = await fetch(`/api/project-joins/${joinId}`, {
     method: 'POST',
@@ -132,7 +132,18 @@ export const AcceptProject = async (joinId) => {
     },
   });
 
-  console.log(response);
+  return response;
+};
+
+// 프로젝트 초대 수락
+export const InvitationAccept = async (projectId) => {
+  const response = await fetch(`/api/projects/${projectId}/members`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
   return response;
 };
 
