@@ -1,4 +1,4 @@
-import { CircularProgress, Grid } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
 import React from 'react';
 import { Post } from './post';
 
@@ -17,7 +17,7 @@ const Postlist = ({ posts, ...props }) => {
     <Post
       key={item.key}
       maxWidth="md"
-      postContents={item}
+      content={item}
       {...props}
     />
   ));

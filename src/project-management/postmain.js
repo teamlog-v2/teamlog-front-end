@@ -8,6 +8,7 @@ import {
   NativeSelect,
   Fab,
   Card,
+  Tooltip,
 } from '@material-ui/core';
 import Container from '@material-ui/core/Container';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -101,6 +102,7 @@ const PostMain = (props) => {
   const {
     posts,
     isLoading: isPostsLoading,
+    updatePost,
     fetchPosts,
     totalCount: postsTotalCount,
     initPosts,
@@ -268,6 +270,7 @@ const PostMain = (props) => {
                   setIsPostLoading={setIsPostLoading}
                   setFormData={setFormData}
                   initPosts={initPosts}
+                  updatePost={updatePost}
                   relation={relation}
                 />
                 <Grid
@@ -283,9 +286,18 @@ const PostMain = (props) => {
           </Container>
         </>
       )}
-      <Fab className={classes.button} color="primary" onClick={() => { setOpen(true); }}>
-        <Edit />
-      </Fab>
+      {
+        (relation === 'MEMBER' || relation === 'MASTER')
+        && (
+        <Fab
+          className={classes.button}
+          color="primary"
+          onClick={() => { setOpen(true); }}
+        >
+          <Edit />
+        </Fab>
+        )
+      }
       <ResponsiveDialog open={open} updateOpen={setOpen}>
         <PostFormPage
           updateOpen={setOpen}

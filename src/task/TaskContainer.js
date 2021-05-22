@@ -40,13 +40,22 @@ const move = (source, destination, droppableSource, droppableDestination) => {
   return result;
 };
 
-const TaskContainer = () => {
+const TaskContainer = (props) => {
   const [state, setState] = useState([[], [], [], []]);
   const [open, setOpen] = useState(false);
 
   const [isLoaded, setIsLoaded] = useState(false);
   const status = ['진행 전', '진행 중', '완료', '실패'];
   const projectId = useParams().id;
+
+  const { relation } = props;
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const addTaskInContainer = (task) => {
     const newState = [...state];
@@ -134,15 +143,15 @@ const TaskContainer = () => {
   return (
     <>
       <Container maxWidth="md">
-        <Box padding="10px">
-          <Button
-            variant="outlined"
-            color="primary"
-            onClick={() => setOpen(true)}
-          >
-            + 태스크 생성
-          </Button>
-        </Box>
+        <Grid style={{ margin: '2% 0' }}>
+          {
+            relation === 'MEMBER' || relation === 'MASTER' ? (
+              <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+                + 태스크 생성
+              </Button>
+            ) : null
+          }
+        </Grid>
         <ResponsiveDialog open={open} updateOpen={setOpen}>
           <Box display="flex" alignItems="center">
             <Box flexGrow={1} />
