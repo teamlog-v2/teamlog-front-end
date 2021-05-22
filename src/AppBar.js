@@ -9,7 +9,7 @@ import {
   Slide,
   useScrollTrigger,
 } from '@material-ui/core';
-import { ArrowDropDown, Notifications } from '@material-ui/icons';
+import { ArrowDropDown, Notifications, Search } from '@material-ui/icons';
 import React, { useContext, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import AuthContext, { setAccessToken } from './contexts/auth';
@@ -19,7 +19,10 @@ function HideOnScroll(props) {
   // Note that you normally won't need to set the window ref as useScrollTrigger
   // will default to window.
   // This is only being set here because the demo is in an iframe.
-  const trigger = useScrollTrigger({ target: window ? window() : undefined, threshold: 0 });
+  const trigger = useScrollTrigger({
+    target: window ? window() : undefined,
+    threshold: 0,
+  });
 
   return (
     <Slide appear={false} direction="down" in={!trigger}>
@@ -55,7 +58,7 @@ const Div = ({ children }) => {
           </div>
         </div>
       </HideOnScroll>
-      <div style={{ height: '40px' }} />
+      <div style={{ height: '44px' }} />
     </>
   );
 };
@@ -93,6 +96,13 @@ export default function AppBar() {
     return (
       <>
         <Div>
+          <IconButton
+            onClick={() => {
+              history.push('/search');
+            }}
+          >
+            <Search style={{ fontSize: '1rem' }} />
+          </IconButton>
           <Button
             color="white"
             onClick={() => {
@@ -109,6 +119,13 @@ export default function AppBar() {
   return (
     <>
       <Div>
+        <IconButton
+          onClick={() => {
+            history.push('/search');
+          }}
+        >
+          <Search style={{ fontSize: '1rem' }} />
+        </IconButton>
         <IconButton>
           <Notifications style={{ fontSize: '1rem' }} />
         </IconButton>
