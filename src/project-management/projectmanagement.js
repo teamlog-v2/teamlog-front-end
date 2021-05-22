@@ -8,6 +8,7 @@ import MasterSelect from './masterSelect';
 import InviteesSelect from './inviteesSelect';
 import ResponsiveDialog from '../organisms/ResponsiveDialog';
 import AuthContext from '../contexts/auth';
+import ProjectUpdateForm from '../project/ProjectUpdateForm';
 
 const useStyles = makeStyles(() => ({
     profileImg: {
@@ -55,10 +56,11 @@ const DeleteButton = withStyles({
 
 const ProjectManagement = () => {
     const classes = useStyles();
-    const [userId] = useContext(AuthContext);
+    const [userId] = useContext(AuthContext); // 유저 정보
     const { id: projectId } = useParams();
     const [isLogin, setIsLogin] = useState(true);
     const [isLoaded, setIsLoaded] = useState(false);
+    const [isProjectUpdatFormOpened, setIsProjectUpdatFormOpened] = useState(false);
     const [project, setProject] = useState(); // 프로젝트
     const [members, setMembers] = useState([]); // 멤버
     const [applicants, setApplicants] = useState([]); // 신청한 유저
@@ -149,8 +151,15 @@ const ProjectManagement = () => {
                   variant="contained"
                   color="primary"
                   fullWidth
+                  onClick={() => { setIsProjectUpdatFormOpened(true); }}
                 >수정
                 </Button>
+                <ResponsiveDialog
+                  open={isProjectUpdatFormOpened}
+                  updateOpen={setIsProjectUpdatFormOpened}
+                >
+                  <ProjectUpdateForm project={project} />
+                </ResponsiveDialog>
               </Grid>
               <Grid item>
                 <Introduction
