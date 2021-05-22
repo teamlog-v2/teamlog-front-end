@@ -28,7 +28,7 @@ const SignIn = () => {
   const classes = useStyles();
 
   const history = useHistory();
-  const [contextId, setContextId] = useContext(AuthContext);
+  const [contextId, setContextId, _, setContextProfileImgPath] = useContext(AuthContext);
 
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
@@ -91,6 +91,7 @@ const SignIn = () => {
       return;
     }
     setContextId(res.id);
+    setContextProfileImgPath(res.profileImgPath);
     setIsProcessing(false);
     history.push('/main');
   };
