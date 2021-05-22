@@ -176,6 +176,7 @@ const ProjectManagement = () => {
                 <ResponsiveDialog open={openInviteeSelect} updateOpen={setOpenInviteeSelect}>
                   <InviteesSelect
                     projectId={project.id}
+                    invitees={invitees}
                     setInvitees={setInvitees}
                     handleClose={handleInviteeSelectClose}
                   />
