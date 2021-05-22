@@ -72,6 +72,7 @@ const ProjectMain = () => {
   const [posts, setPosts] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false); // 프로젝트 전체에 대한 로드 상태
   const [isPostsLoaded, setIsPostsLoaded] = useState(false); // 게시글에 대한 로드 상태
+  const [relation, setRelation] = useState(null);
 
   const fetchPosts = async (callback) => {
     setIsPostsLoaded(false);
@@ -96,7 +97,7 @@ const ProjectMain = () => {
       });
   };
 
-  const fetchProject = () => {
+  const fetchProject = () => { // member, invited, applied, none
     fetch(`/api/projects/${projectId}`)
       .then((res) => res.json())
       .then((info) => setProject(info));

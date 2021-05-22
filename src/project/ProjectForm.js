@@ -62,6 +62,7 @@ export default function ProjectForm() {
       .then((res) => {
         if (res.status >= 200 && res.status < 300) {
           res.json().then((project) => {
+            console.log(project);
             setIsProcessing(false);
             history.push(`/projects/${project.id}`);
           });

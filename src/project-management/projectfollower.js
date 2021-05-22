@@ -1,8 +1,9 @@
 import { Avatar, Box, Button, Card, CircularProgress, Container, Grid, makeStyles, Typography } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Redirect, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
-import { GetFollowProjects, GetProjectFollowers, Follow, UnFollow } from './projectapi';
+import AuthContext from '../contexts/auth';
+import { GetFollowProjects, GetProjectFollowers, UnFollowProject, FollowProject } from './projectapi';
 
 const useStyles = makeStyles(() => ({
   profileImg: {
@@ -15,6 +16,7 @@ const useStyles = makeStyles(() => ({
 const ProjectFollower = () => {
   const classes = useStyles();
   const { id: projectId } = useParams();
+  const [userId] = useContext(AuthContext);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
   const [followers, setFollowers] = useState([]);
@@ -30,7 +32,7 @@ const ProjectFollower = () => {
 
     if (followersResponse.status === 200) {
       setFollowers(await followersResponse.json());
-      const followProjects = await GetFollowProjects();
+      const followProjects = await GetFollowProjects(userId);
 
       if (followProjects.status === 401) {
         setIsLogin(false);
@@ -56,8 +58,8 @@ const ProjectFollower = () => {
     return <Redirect to="/login" />;
   }
 
-  const FollowProject = async () => {
-    const response = await Follow(projectId);
+  const Follow = async () => {
+    const response = await FollowProject(projectId);
 
     if (response.status === 401) {
       isLogin(false);
@@ -73,8 +75,8 @@ const ProjectFollower = () => {
     }
   };
 
-  const UnfollowProject = async () => {
-    const response = await UnFollow(projectId);
+  const Unfollow = async () => {
+    const response = await UnFollowProject(projectId);
 
     if (response.status === 401) {
       isLogin(false);
@@ -122,7 +124,7 @@ const ProjectFollower = () => {
                   variant="outlined"
                   color="primary"
                   fullWidth
-                  onClick={UnfollowProject}
+                  onClick={Unfollow}
                 >팔로잉
                 </Button>
               ) : (
@@ -130,7 +132,7 @@ const ProjectFollower = () => {
                   variant="contained"
                   color="primary"
                   fullWidth
-                  onClick={FollowProject}
+                  onClick={Follow}
                 >팔로우
                 </Button>
               )}

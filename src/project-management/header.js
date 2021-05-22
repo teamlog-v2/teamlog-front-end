@@ -1,6 +1,6 @@
-import { React, useContext } from 'react';
+import { React, useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Link, useParams, useLocation } from 'react-router-dom';
+import { Link, useParams, useLocation, Redirect } from 'react-router-dom';
 import {
   fade,
   makeStyles,
@@ -14,9 +14,10 @@ import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import { Button, Grid } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import { useFetchData } from '../hooks/hooks';
 import ErrorContext from '../contexts/error';
+import { AcceptProject, ApplyProject } from './projectapi';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -106,14 +107,99 @@ const ProjectTitle = (props) => {
   );
 };
 
+const TopButton = ({ isProjectLoaded, projectId, relation }) => {
+  console.log(relation);
+  const [isLogin, setIsLogin] = useState(true);
+  const [relationState, setRelationState] = useState();
+
+  useEffect(() => {
+    setRelationState(relation);
+  }, [isProjectLoaded]);
+
+  if (!isLogin) {
+    return <Redirect to="/login" />;
+  }
+
+  const Apply = async () => {
+    const response = await ApplyProject(projectId);
+
+    if (response.status === 401) {
+      setIsLogin(false);
+      return;
+    }
+
+    if (response.status === 201) {
+      setRelationState('APPLIED');
+    }
+  };
+
+  const Accept = async () => {
+    const response = await AcceptProject(projectId);
+
+    if (response.status === 401) {
+      setIsLogin(false);
+      return;
+    }
+
+    if (response.status === 200) {
+      setRelationState('MEMBER');
+    }
+  };
+
+  // 초대 수락의 경우 join id까지 필요할 듯...?
+  switch (relationState) {
+    case 'MASTER':
+      return (
+        <Link
+          to={`/projects/${projectId}/projectmanagement`}
+          style={{ textDecoration: 'none' }}
+        >
+          <Button>
+            <SettingsIcon color="action" />
+          </Button>
+        </Link>
+      );
+    case 'INVITED':
+      return (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={Accept}
+        >초대 수락
+        </Button>
+      );
+    case 'APPLIED':
+      return (
+        <Button
+          variant="outlined"
+          color="primary"
+          disabled
+        >신청 완료
+        </Button>
+      );
+    case 'NONE':
+      return (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={Apply}
+        >가입 신청
+        </Button>
+      );
+    default:
+      return (<></>);
+  }
+};
+
 const Header = ({ sections }) => {
   const { id: projectId } = useParams();
   const { pathname } = useLocation();
 
   const [project, isProjectLoaded, projectLoadError] = useFetchData(`/api/projects/${projectId}`);
-  console.log(isProjectLoaded);
+  console.log(project);
   const title = project?.name;
   const introduction = project?.introduction;
+  const relation = project?.relation;
 
   const { useHandleError } = useContext(ErrorContext);
   useHandleError(projectLoadError);
@@ -136,16 +222,7 @@ const Header = ({ sections }) => {
     <>
       <Toolbar className={classes.toolbar}>
         <ProjectTitle title={title} introduction={introduction} />
-        <Grid item style={{ margin: '1em 0' }} xs={2} sm={1}>
-          <Link
-            to={`/projects/${projectId}/projectmanagement`}
-            style={{ textDecoration: 'none' }}
-          >
-            <Button>
-              <SettingsIcon color="action" />
-            </Button>
-          </Link>
-        </Grid>
+        <TopButton projectId={projectId} isProjectLoaded={isProjectLoaded} relation={relation} />
       </Toolbar>
 
       <Paper className={classes.root}>

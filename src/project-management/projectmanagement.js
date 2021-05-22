@@ -1,8 +1,13 @@
-import { Avatar, Box, Button, Card, CircularProgress, Container, Divider, Grid, Link, makeStyles, Typography, withStyles } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
-import { Redirect } from 'react-router';
-import { GetProject, GetProjectMembers, GetProjectApplcants, GetProjectInvitees, Accept, Refuse } from './projectapi';
+import { Avatar, Box, Button, Card, CircularProgress, Container, Divider, Grid, makeStyles, Typography, withStyles } from '@material-ui/core';
+import React, { useContext, useEffect, useState } from 'react';
+import { Redirect, useParams } from 'react-router';
+import { Link } from 'react-router-dom';
+import { GetProject, GetProjectMembers, GetProjectApplcants, GetProjectInvitees, AcceptProject, RefuseProject, DeleteProject, KickOutProjectMember } from './projectapi';
 import Introduction from './introduction';
+import MasterSelect from './masterSelect';
+import InviteesSelect from './inviteesSelect';
+import ResponsiveDialog from '../organisms/ResponsiveDialog';
+import AuthContext from '../contexts/auth';
 
 const useStyles = makeStyles(() => ({
     profileImg: {
@@ -48,15 +53,19 @@ const DeleteButton = withStyles({
       },
 })(Button);
 
-const ProjectManagement = ({ match }) => {
+const ProjectManagement = () => {
     const classes = useStyles();
-    const projectId = match.params.id;
+    const [userId] = useContext(AuthContext);
+    const { id: projectId } = useParams();
     const [isLogin, setIsLogin] = useState(true);
     const [isLoaded, setIsLoaded] = useState(false);
     const [project, setProject] = useState(); // 프로젝트
     const [members, setMembers] = useState([]); // 멤버
     const [applicants, setApplicants] = useState([]); // 신청한 유저
     const [invitees, setInvitees] = useState([]); // 초대받은 유저
+    const [master, setMaster] = useState([]); // 마스터
+    const [openUserSelect, setOpenUserSelect] = useState(false); // 마스터 선택 폼 띄울지 여부
+    const [openInviteeSelect, setOpenInviteeSelect] = useState(false);
 
     useEffect(async () => {
         const projectResponse = await GetProject(projectId);
@@ -71,16 +80,46 @@ const ProjectManagement = ({ match }) => {
             return;
         }
 
-        setProject(await projectResponse.json());
-        setMembers(await membersResponse.json());
-        setApplicants(await applicantsResponse.json());
-        setInvitees(await inviteesResponse.json());
+        const tempMembers = await membersResponse.json();
+        const tempProject = await projectResponse.json();
+        const tempApplicants = await applicantsResponse.json();
+        const tempInvitees = await inviteesResponse.json();
+
+        if (userId !== tempProject.masterId) {
+          window.alert('접근 권한이 없습니다.');
+          window.location.replace(`/projects/${projectId}`);
+          return;
+        }
+
+        setProject(tempProject);
+        setMembers(tempMembers);
+        setApplicants(tempApplicants);
+        setInvitees(tempInvitees);
+
+        const tempMaster = tempMembers.filter((user) => user.id === tempProject.masterId);
+        setMaster(tempMaster[0]);
         setIsLoaded(true);
     }, []);
 
     if (!isLogin) {
         return <Redirect to="/login" />;
     }
+
+    const handleUserSelectOpen = () => {
+        setOpenUserSelect(true);
+      };
+
+    const handleUserSelectClose = () => {
+        setOpenUserSelect(false);
+    };
+
+    const handleInviteeSelectOpen = () => {
+        setOpenInviteeSelect(true);
+    };
+
+    const handleInviteeSelectClose = () => {
+        setOpenInviteeSelect(false);
+    };
 
     return !isLoaded ? (
       <Grid
@@ -118,13 +157,29 @@ const ProjectManagement = ({ match }) => {
                   masterUserId={project.masterId}
                   createTime={project.createTime}
                   followerCount={project.followerCount}
-                  memberCount={project.memberCount}
+                  memberCount={members.length}
                 />
               </Grid>
             </Grid>
             <Grid container style={{ marginBottom: '2em' }}>
-              <Grid item style={{ margin: '1em 0' }}>
+              <Grid item style={{ margin: '1em 0' }} xs={9} sm={10}>
                 <Typography variant="h6">초대한 멤버</Typography>
+              </Grid>
+              <Grid item style={{ margin: '1em 0' }} xs={3} sm={2}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                  onClick={handleInviteeSelectOpen}
+                >초대
+                </Button>
+                <ResponsiveDialog open={openInviteeSelect} updateOpen={setOpenInviteeSelect}>
+                  <InviteesSelect
+                    projectId={project.id}
+                    setInvitees={setInvitees}
+                    handleClose={handleInviteeSelectClose}
+                  />
+                </ResponsiveDialog>
               </Grid>
               <Grid container spacing={2}>
                 {invitees.length > 0 ? (invitees.map((invitee) => (
@@ -132,20 +187,15 @@ const ProjectManagement = ({ match }) => {
                     <Card elevation={2}>
                       <Box display="flex" flexDirection="row">
                         <Box flexGrow={1}>
-                          <Link
-                            to={`/users/${invitee.user.id}`}
-                            style={{ textDecoration: 'none' }}
-                          >
-                            <Box display="flex" alignItems="center">
-                              <Avatar
-                                className={classes.profileImg}
-                                src={invitee.user.profileImgPath}
-                              />
-                              <Typography variant="body1" color="textPrimary">
-                                {invitee.user.name}
-                              </Typography>
-                            </Box>
-                          </Link>
+                          <Box display="flex" alignItems="center">
+                            <Avatar
+                              className={classes.profileImg}
+                              src={invitee.user.profileImgPath}
+                            />
+                            <Typography variant="body1" color="textPrimary">
+                              {invitee.user.name}
+                            </Typography>
+                          </Box>
                         </Box>
                         <Box margin="10px" display="flex" alignItems="center">
                           <Button
@@ -154,7 +204,7 @@ const ProjectManagement = ({ match }) => {
                             size="small"
                             onClick={async () => {
                                 if (window.confirm('멤버 초대를 취소하시겠습니까?')) {
-                                    const { status } = await Refuse(invitee.id);
+                                    const { status } = await RefuseProject(invitee.id);
                                     if (status === 401) {
                                         setIsLogin(false);
                                         return;
@@ -214,7 +264,7 @@ const ProjectManagement = ({ match }) => {
                             style={{ margin: '0.1em' }}
                             onClick={async () => {
                                 if (window.confirm('멤버 신청을 수락하시겠습니까?')) {
-                                    const { status } = await Accept(applicant.id);
+                                    const { status } = await AcceptProject(applicant.id);
                                     if (status === 401) {
                                         setIsLogin(false);
                                         return;
@@ -248,7 +298,7 @@ const ProjectManagement = ({ match }) => {
                             style={{ margin: '0.1em' }}
                             onClick={async () => {
                                 if (window.confirm('멤버 신청을 거절하시겠습니까?')) {
-                                    const { status } = await Refuse(applicant.id);
+                                    const { status } = await RefuseProject(applicant.id);
                                     if (status === 401) {
                                         setIsLogin(false);
                                         return;
@@ -301,18 +351,87 @@ const ProjectManagement = ({ match }) => {
                           </Link>
                         </Box>
                         <Box margin="10px" display="flex" alignItems="center">
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            size="small"
-                          >
-                            추방
-                          </Button>
+                          {member.id !== project.masterId ? (
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              size="small"
+                              onClick={async () => {
+                                if (window.confirm('해당 멤버를 추방하시겠습니까?')) {
+                                    const { status }
+                                    = await KickOutProjectMember(projectId, member.id);
+                                    if (status === 401) {
+                                        setIsLogin(false);
+                                        return;
+                                    }
+
+                                    if (status === 200) {
+                                        const projectMembersResponse
+                                        = await GetProjectMembers(projectId);
+
+                                        if (projectMembersResponse.status === 401) {
+                                            return;
+                                        }
+                                        setMembers(await projectMembersResponse.json());
+                                    }
+                                }
+                            }}
+                            >
+                              추방
+                            </Button>
+            ) : (<></>)}
+
                         </Box>
                       </Box>
                     </Card>
                   </Grid>
             ))}
+              </Grid>
+            </Grid>
+            <Grid container>
+              <Grid item style={{ margin: '1em 0' }} xs={9} sm={10}>
+                <Typography variant="h6">마스터</Typography>
+              </Grid>
+              <Grid item style={{ margin: '1em 0' }} xs={3} sm={2}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                  onClick={handleUserSelectOpen}
+                >위임
+                </Button>
+                <ResponsiveDialog open={openUserSelect} updateOpen={setOpenUserSelect}>
+                  <MasterSelect
+                    projectId={project.id}
+                    currentMaster={[master.id]}
+                    setCurrentMaster={setMaster}
+                    handleClose={handleUserSelectClose}
+                  />
+                </ResponsiveDialog>
+              </Grid>
+              <Grid container spacing={2}>
+                <Grid item sm={6} xs={12}>
+                  <Card elevation={2}>
+                    <Box display="flex" flexDirection="row">
+                      <Box flexGrow={1}>
+                        <Link
+                          to={`/users/${master.id}`}
+                          style={{ textDecoration: 'none' }}
+                        >
+                          <Box display="flex" alignItems="center">
+                            <Avatar
+                              className={classes.profileImg}
+                              src={master.profileImgPath}
+                            />
+                            <Typography variant="body1" color="textPrimary">
+                              {master.name}
+                            </Typography>
+                          </Box>
+                        </Link>
+                      </Box>
+                    </Box>
+                  </Card>
+                </Grid>
               </Grid>
             </Grid>
             <Grid item style={{ marginTop: '2em' }}>
@@ -327,6 +446,20 @@ const ProjectManagement = ({ match }) => {
               <Grid item style={{ margin: '1em 0' }} xs={3} sm={2}>
                 <DeleteButton
                   fullWidth
+                  onClick={() => {
+                    if (window.confirm('프로젝트 내의 내용은 모두 사라집니다. 정말 그래도 삭제하시겠습니까?')) {
+                        const { status } = DeleteProject(projectId);
+
+                        if (status === 401) {
+                            setIsLogin(false);
+                            return;
+                        }
+
+                        if (status === 200) {
+                            console.log('성공');
+                        }
+                    }
+                }}
                 >
                   삭제
                 </DeleteButton>

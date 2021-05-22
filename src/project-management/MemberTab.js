@@ -1,10 +1,9 @@
-import { Avatar, Box, Button, Card, CircularProgress, Container, Grid, makeStyles, Typography } from '@material-ui/core';
-import React, { useContext, useEffect, useState } from 'react';
-import { Redirect, useParams } from 'react-router';
+import { Avatar, Box, Card, CircularProgress, Container, Grid, makeStyles, Typography } from '@material-ui/core';
+import React, { useContext } from 'react';
+import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import ErrorContext from '../contexts/error';
 import { useFetchData } from '../hooks/hooks';
-import { ApplyProject, GetProjectApplcants } from './projectapi';
 
 const useStyles = makeStyles(() => ({
   profileImg: {
@@ -60,85 +59,13 @@ const Master = (props) => {
 
 const Member = (props) => {
   const classes = useStyles();
-  const { projectId, members } = props;
-  const [isLogin, setIsLogin] = useState(true);
-  const [isMember, setIsMember] = useState();
-  const [isApplyed, setIsApplyed] = useState();
-
-  useEffect(async () => {
-    const containsMember = (val) => members.some(({ id }) => id.includes(val));
-    if (containsMember('baaakkbooo')) { // 아이디 변경 필요
-      setIsMember(true);
-      return;
-    }
-
-    setIsMember(false);
-    const response = await GetProjectApplcants(projectId);
-    if (response.status === 401) {
-      setIsLogin(false);
-      return;
-    }
-
-    if (response.status === 200) {
-      const applicants = await response.json();
-      console.log(applicants);
-      const contains = (val) => applicants.some(({ id }) => id.includes(val));
-      console.log(contains('jduckling1024')); // 여기는 본인이 신청했나
-    }
-  }, []);
-
-  if (!isLogin) {
-    window.console.log('세션이 만료되었습니다. 로그인 화면으로 돌아갑니다.');
-    return <Redirect to="/login" />;
-  }
-
-  const Apply = async () => {
-    const response = await ApplyProject(projectId);
-
-    if (response.status === 401) {
-      setIsLogin(false);
-      return;
-    }
-
-    if (response.status === 201) {
-      setIsApplyed(true);
-    }
-  };
-
-  const ReplyButton = () => {
-    if (isMember) {
-      return (<> </>);
-    }
-
-    if (!isMember && !isApplyed) {
-      return (
-        <Button
-          variant="contained"
-          color="primary"
-          fullWidth
-          onClick={Apply}
-        >멤버 신청
-        </Button>
-      );
-    }
-      return (
-        <Button
-          variant="outlined"
-          color="primary"
-          fullWidth
-        >신청 완료
-        </Button>
-      );
-  };
+  const { members } = props;
 
   return (
     <Container>
       <Grid container>
-        <Grid item style={{ margin: '1em 0' }} xs={9} sm={10}>
+        <Grid item style={{ margin: '1em 0' }} xs={12}>
           <Typography variant="h6">👨‍👧‍👧 멤버</Typography>
-        </Grid>
-        <Grid item style={{ margin: '1em 0' }} xs={3} sm={2}>
-          <ReplyButton />
         </Grid>
       </Grid>
       <Grid container spacing={2}>

@@ -2,7 +2,8 @@ import { Box, makeStyles, Tooltip } from '@material-ui/core';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
-import { React, useState, useEffect } from 'react';
+import { React, useState, useEffect, useContext } from 'react';
+import AuthContext from '../contexts/auth';
 import ResponsiveDialog from '../organisms/ResponsiveDialog';
 import LikerList from '../pages/likerListPage';
 import { CreateLiker, DeleteLiker, GetLiker } from './postlikeapi';
@@ -15,6 +16,7 @@ const useStyles = makeStyles(() => ({
 
 export const LikerCounter = (props) => {
   const classes = useStyles();
+  const [userId] = useContext(AuthContext);
   const [like, setLike] = useState(false); // 본인 좋아요 여부
   const [likers, setLikers] = useState([]); // 좋아하는 유저 목록
   const [isLoaded, setIsLoaded] = useState(false);
@@ -26,7 +28,7 @@ export const LikerCounter = (props) => {
     const response = await GetLiker(postId);
     setLikers(response);
     const contains = (val) => response.some(({ id }) => id.includes(val));
-    if (contains('jduckling1024')) { // 아이디 변경 필요
+    if (contains(userId)) { // 아이디 변경 필요
       setLike(true);
     } else {
       setLike(false);
