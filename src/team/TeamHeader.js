@@ -108,7 +108,6 @@ const TeamTitle = (props) => {
 };
 
 const TopButton = ({ isTeamLoaded, teamId, relation }) => {
-  console.log(relation);
   const [isLogin, setIsLogin] = useState(true);
   const [relationState, setRelationState] = useState();
 

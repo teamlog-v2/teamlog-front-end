@@ -17,7 +17,7 @@ import Tab from '@material-ui/core/Tab';
 import { Button } from '@material-ui/core';
 import { useFetchData } from '../hooks/hooks';
 import ErrorContext from '../contexts/error';
-import { AcceptProject, ApplyProject } from './projectapi';
+import { AcceptProject, ApplyProject, InvitationAccept } from './projectapi';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -134,7 +134,7 @@ const TopButton = ({ isProjectLoaded, projectId, relation }) => {
   };
 
   const Accept = async () => {
-    const response = await AcceptProject(projectId);
+    const response = await InvitationAccept(projectId);
 
     if (response.status === 401) {
       setIsLogin(false);
