@@ -12,7 +12,7 @@ import Card from '@material-ui/core/Card';
 class PlaceSearchApi extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { address: this.props.postData.address.split('#')[0] };
+    this.state = { address: this.props.postData.address ? this.props.postData.address.split('#')[0] : '' };
     this.inputRef = React.createRef();
   }
 

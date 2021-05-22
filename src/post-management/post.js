@@ -329,6 +329,8 @@ export const Post = (props) => {
   const { content, maxWidth, setIsPostLoading, setFormData,
     initPosts, relation, updatePost } = props;
 
+  console.log(content.address);
+
   const [open, setOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
 
@@ -400,7 +402,7 @@ export const Post = (props) => {
                     content.address ? (
                       <Grid container alignItems="center">
                         <RoomIcon color="primary" />
-                        {content.address.split('#')[0]}&nbsp;
+                        <span style={{ fontWeight: 600 }}>{content.address.split('#')[0]}</span>
                       </Grid>
                        ) : null
                   }
