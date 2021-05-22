@@ -130,7 +130,18 @@ const ProjectMain = (props) => {
             />
           </Container>
           <Container className={classes.children} disableGutters>
+            {posts.length === 0 ? (
+              <Grid
+              container
+              justify="center"
+              alignItems="center"
+              style={{ height: '50vh', fontWeight: 600 }}
+            >
+              아직 등록된 글이 없어요. 😢
+            </Grid>
+            ) : (
               <Postlist posts={posts} relation={relation}/>
+              )}
               <Grid
                 container
                 justify="center"
