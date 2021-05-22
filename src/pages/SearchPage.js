@@ -162,6 +162,9 @@ function UserItem({ user }) {
           <Typography variant="body1" color="textPrimary">
             {user.name}
           </Typography>
+          <Typography variant="body2" color="textPrimary">
+            ({user.id})
+          </Typography>
         </Box>
       </Card>
     </Link>
