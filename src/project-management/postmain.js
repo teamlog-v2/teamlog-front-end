@@ -265,14 +265,27 @@ const PostMain = (props) => {
                   )
                   : null
                 }
-                <Postlist
-                  posts={posts}
-                  setIsPostLoading={setIsPostLoading}
-                  setFormData={setFormData}
-                  initPosts={initPosts}
-                  updatePost={updatePost}
-                  relation={relation}
-                />
+                {
+                  (posts.length === 0 && keyword === '') && !isPostsLoading ? (
+                    <Grid
+                      container
+                      justify="center"
+                      alignItems="center"
+                      style={{ height: '50vh', fontWeight: 600 }}
+                    >
+                      아직 등록된 글이 없어요. 😢
+                    </Grid>
+                    ) : (
+                      <Postlist
+                        posts={posts}
+                        setIsPostLoading={setIsPostLoading}
+                        setFormData={setFormData}
+                        initPosts={initPosts}
+                        updatePost={updatePost}
+                        relation={relation}
+                      />
+                    )
+                  }
                 <Grid
                   container
                   justify="center"

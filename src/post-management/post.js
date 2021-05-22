@@ -466,7 +466,7 @@ export const Post = (props) => {
                   ) : (
                     <span
                       style={{
-                        backgroundColor: '#eee',
+                        backgroundColor: '#F8F8F8',
                         textAlign: 'center',
                         padding: '1% 0',
                         fontSize: 'smaller' }}
@@ -479,7 +479,7 @@ export const Post = (props) => {
           ) : (
             <Grid
               style={{
-                backgroundColor: '#eee',
+                backgroundColor: '#F8F8F8',
                 textAlign: 'center',
                 padding: '10% 0',
                 }}
