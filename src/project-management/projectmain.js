@@ -21,6 +21,8 @@ import Postlist from '../post-management/postlist';
 import HashtagChooser from '../organisms/HashtagChooser';
 import { Route, useParams } from 'react-router';
 import MyPage from '../user/MyPage';
+import useFetchPosts from '../hooks/useFetchPosts';
+import { useFetchData } from '../hooks/hooks';
 
 const useStyles = makeStyles((theme) => ({
   /* 반응형 스타일 */
@@ -42,16 +44,6 @@ const useStyles = makeStyles((theme) => ({
       margin: '1% 0',
     },
   },
-  mainGrid: {
-    marginTop: theme.spacing(3),
-  },
-  partition: {
-    marginTop: '2.5em',
-    marginBottom: '2.5em',
-  },
-  subtitle: {
-    // 글씨 크기 등 적용할 예정
-  },
 }));
 
 const Title = (props) => {
@@ -64,52 +56,54 @@ const Title = (props) => {
   );
 };
 
-const ProjectMain = () => {
+const ProjectMain = (props) => {
   const classes = useStyles();
   const projectId = useParams().id;
 
-  const [project, setProject] = useState([]);
-  const [posts, setPosts] = useState([]);
-  const [isLoaded, setIsLoaded] = useState(false); // 프로젝트 전체에 대한 로드 상태
-  const [isPostsLoaded, setIsPostsLoaded] = useState(false); // 게시글에 대한 로드 상태
-  const [relation, setRelation] = useState(null);
+  // const [project, setProject] = useState([]);
+  // const [isLoaded, setIsLoaded] = useState(false); // 프로젝트 정보 대한 로드 상태
+  const { relation } = props;
 
-  const fetchPosts = async (callback) => {
-    setIsPostsLoaded(false);
+  let url = `/api/posts/project/${projectId}?`;
+  const names = ['스토리보드'];
+  url += `&hashtag=${names}`;
 
-    let url = `/api/posts/project/${projectId}`;
-    const names = ['스토리보드'];
-    url += `/hashtag/${names}`;
+  const [data, isLoaded] = useFetchData(`/api/projects/${projectId}`);
+  const project = data;
 
-    await fetch(url, {
-      method: 'GET',
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.length >= 0) {
-          setPosts(res);
-        }
-        setIsPostsLoaded(true);
-        if (callback) callback(res); // 포스트 결과를 한 번 더 활용해야하는 경우 매개변수로 전달
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  const {
+    posts,
+    isLoading: isPostsLoading,
+    fetchPosts,
+    totalCount: postsTotalCount,
+  } = useFetchPosts(url);
 
-  const fetchProject = () => { // member, invited, applied, none
-    fetch(`/api/projects/${projectId}`)
-      .then((res) => res.json())
-      .then((info) => setProject(info));
-  };
-
-  useEffect(async () => {
-    // '스토리보드' 포함된 게시물 get [홈]
-    fetchProject();
-    fetchPosts(() => {
-      setIsLoaded(true);
-    });
-  }, []);
+  // 스크롤 감지
+  useEffect(() => {
+    const handleScroll = (event) => {
+      if (event.deltaY < 0) {
+        return;
+      }
+      if (isPostsLoading) {
+        return;
+      }
+      const { innerHeight } = window;
+      const { scrollHeight } = document.body;
+      const scrollTop =
+        window.pageYOffset ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop ||
+        0;
+      // 스크롤링 했을때, 브라우저의 가장 밑에서 100정도 높이가 남았을 때
+      if (scrollHeight - innerHeight - scrollTop < 100) {
+        fetchPosts();
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [isPostsLoading, fetchPosts]);
 
   return !isLoaded ? (
     <Grid
@@ -123,31 +117,30 @@ const ProjectMain = () => {
   ) : (
     <>
       <Container maxWidth="md">
-        <Container className={classes.partition} disableGutters>
-          <Title title={project.name} />
-          <Introduction
-            name={project.name}
-            masterUserId={project.masterId}
-            createTime={project.createTime}
-            followerCount={project.followerCount}
-            memberCount={project.memberCount}
-          />
-        </Container>
-        <Container className={classes.partition} disableGutters>
-          <Title title="스토리보드" />
-          {isPostsLoaded ? (
-            <Postlist posts={posts} />
-          ) : (
-            <Grid
-              container
-              justify="center"
-              alignItems="center"
-              style={{ height: '50vh' }}
-            >
-              <CircularProgress />
-            </Grid>
-          )}
-        </Container>
+        <Grid
+          container
+          md={10}
+          justify="center"
+          direction="column"
+          style={{ margin: '0 auto' }}>
+          <Container className={classes.children} disableGutters>
+            <Title title={project.name} />
+            <Introduction
+              {...project}
+            />
+          </Container>
+          <Container className={classes.children} disableGutters>
+              <Postlist posts={posts} relation={relation}/>
+              <Grid
+                container
+                justify="center"
+                alignItems="center"
+                style={{ height: '20vh' }}
+              >
+                {isPostsLoading && <CircularProgress />}
+              </Grid>
+            </Container>
+        </Grid>
       </Container>
     </>
   );
