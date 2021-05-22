@@ -98,7 +98,7 @@ export const GetProjectInvitees = async (projectId) => {
   return response;
 };
 
-// 프로젝트 초대 (아이디 변경 필요)
+// 프로젝트 초대
 export const JoinProject = async (projectId, userId) => {
   const response = await fetch(`/api/projects/${projectId}/joins?userId=${userId}`, {
     method: 'POST',
@@ -107,6 +107,7 @@ export const JoinProject = async (projectId, userId) => {
     },
   });
 
+  console.log(response.status);
   return response;
 };
 

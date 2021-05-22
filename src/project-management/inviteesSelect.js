@@ -21,6 +21,7 @@ import {
     Search,
   } from '@material-ui/icons';
   import React, { useEffect, useState } from 'react';
+import { GetProjectInvitees, JoinProject } from './projectapi';
 
   const StyledList = withStyles({
     root: {
@@ -30,6 +31,7 @@ import {
   })(List);
 
   const InviteesSelect = ({
+    invitees,
     projectId,
     setInvitees,
     handleClose,
@@ -45,7 +47,7 @@ import {
       (async () => {
         let result;
         try {
-          const response = await fetch(`/api/projects/${projectId}/members`, {
+          const response = await fetch(`/api/projects/${projectId}/not-members`, {
             method: 'Get',
             headers: { 'Content-Type': 'application/json' },
           });
@@ -92,13 +94,21 @@ import {
       }
     };
 
-    const saveSelectedUsers = () => {
+    const saveSelectedUsers = async () => {
       const selectedInvitees = [];
       selectedUserIds.map((selectedUserId) => {
         const temp = users.find((user) => user.id === selectedUserId);
         selectedInvitees.push(temp);
       });
-      setInvitees(selectedInvitees);
+      selectedInvitees.map(async (invitee) => {
+        const response = await JoinProject(projectId, invitee.id);
+        if (response.status !== 201) {
+          alert('error');
+        }
+      });
+
+      const inviteesResponse = await GetProjectInvitees(projectId);
+      setInvitees(await inviteesResponse.json());
       handleClose();
     };
 
