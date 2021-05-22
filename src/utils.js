@@ -1,3 +1,5 @@
+const { default: ImageResize } = require('image-resize');
+
 /**
  * 데이터 중복 확인을 위한 함수
  * @param {Array} list 타겟 리스트
@@ -65,4 +67,40 @@ const getTypeofFile = (name) => {
   return 'IMAGE';
 };
 
-module.exports = { isDuplicateData, isValidSize, getFormat, getTypeofFile };
+/**
+ * file객체를 입력받아 약 300kb에 맞게 압축해서 file객체로 리턴
+ * @param {File} file 파일 객체
+ */
+const resizeImage = async (file, tempURL) => {
+  const imageResize = new ImageResize();
+
+  const { name, size, type } = file;
+  const width = await new Promise((resolve, reject) => {
+    const image = new Image();
+    image.src = tempURL;
+    image.onload = () => (resolve(image.width));
+    image.onerror = (error) => (reject(error));
+  });
+
+  let newWidth = 0;
+
+  if (size > 300000) {
+    newWidth = Math.ceil(width * Math.sqrt(300000 / size)); // 목표: 약 300kb
+  }
+
+  const format = getFormat(type);
+  let blob = null;
+  if (file.size > 300000 && (format === 'jpg' || format === 'png')) {
+        blob = await imageResize.updateOptions({
+          format,
+          outputType: 'blob',
+          quality: 0.85,
+          width: newWidth,
+        }).play(tempURL);
+  } else blob = new Blob([file]);
+
+  const blobToFile = new File([blob], name, { type });
+  return blobToFile;
+};
+
+module.exports = { isDuplicateData, isValidSize, getFormat, getTypeofFile, resizeImage };

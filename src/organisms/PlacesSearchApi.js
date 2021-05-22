@@ -12,7 +12,7 @@ import Card from '@material-ui/core/Card';
 class PlaceSearchApi extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { address: this.props.address };
+    this.state = { address: this.props.postData.address.split('#')[0] };
     this.inputRef = React.createRef();
   }
 
@@ -20,19 +20,16 @@ class PlaceSearchApi extends React.Component {
     this.setState({ address });
   };
 
-  handleSelect = (address) => {
-    // this.props.onClose();
+  handleSelect = (address, t, detail) => {
     geocodeByAddress(address)
       .then((results) => getLatLng(results[0]))
       .then((latLng) => {
         console.log('Success', latLng); // 위도 및 경도
-        console.log(address);
-        const addressInfo = address.split(',');
-        this.props.updateAddress(addressInfo[addressInfo.length - 1]);
         this.props.updatePostData({
           ...this.props.postData,
           latitude: latLng.lat,
           longitude: latLng.lng,
+          address: `${detail.formattedSuggestion.mainText}#${address}`,
         });
         this.props.updateIsSearching(false);
       })
@@ -54,7 +51,7 @@ class PlaceSearchApi extends React.Component {
           {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
             <Grid style={{ position: 'relative' }} xs={12}>
               <Grid container xs={12} direction="row">
-                <Grid xs={4}>
+                <Grid xs={8}>
                   <TextField
                     size="small"
                     fullWidth
@@ -82,7 +79,7 @@ class PlaceSearchApi extends React.Component {
               </Grid>
               <Grid
                 container
-                style={{ width: '300px', position: 'absolute', zIndex: 999 }}
+                style={{ width: '400px', position: 'absolute', zIndex: 999, opacity: 0.9 }}
                 direction="column"
               >
                 {loading && <Typography style={{ color: 'gray' }}>장소를 찾는 중입니다 -</Typography>}

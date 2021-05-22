@@ -19,9 +19,11 @@ import {
 } from '@material-ui/core';
 import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import ImageResize from 'image-resize';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import { updateUser, getUser, validateLogin } from './userService';
 import AuthContext from '../contexts/auth';
+import { resizeImage } from '../utils';
 
 const useStyles = makeStyles((theme) => ({
   large: {
@@ -105,7 +107,18 @@ const UserEditForm = ({ match }) => {
       'key',
       new Blob([JSON.stringify(data)], { type: 'application/json' }),
     );
-    if (profileImg !== null) formData.append('profileImg', profileImg);
+
+    try {
+      if (profileImg) {
+        const tempURL = URL.createObjectURL(profileImg);
+        const resizedImage = await resizeImage(profileImg, tempURL);
+        formData.append('profileImg', resizedImage);
+      }
+    } catch (error) {
+      console.log(error);
+      return;
+    }
+
     try {
       const response = await updateUser(formData);
       if (response.status === 200) {
