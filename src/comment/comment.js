@@ -8,6 +8,7 @@ import {
 import {
   makeStyles,
 } from '@material-ui/core/styles';
+import { Link } from 'react-router-dom';
 
 import ReplyIcon from '@material-ui/icons/Reply';
 import CloseIcon from '@material-ui/icons/Close';
@@ -63,12 +64,18 @@ const Content = (props) => {
 
   return (
     <Box display={visibility}>
-      <Grid container direction="row" spacing={0}>
+      <Grid container direction="row" alignItems="center">
         {stringSplit
         ? stringSplit.map((string) =>  (
             string[0] === '@' && tagList.includes(string.split('@')[1])
             )
-            ? (<span style={{ color: '#C16AF5', fontWeight: 600 }}>{string.split('@')[1]}&nbsp;</span>) 
+            ? (
+              <Link
+              to={`/users/${string.split('@')[1]}`}
+              style={{ textDecoration: 'none', cursor: 'pointer' }}
+              >
+                <span style={{ color: '#C16AF5', fontWeight: 600 }}>{string.split('@')[1]}&nbsp;</span>
+              </Link>) 
             : (<span>{string}&nbsp;</span>)
           )
         : []}
@@ -128,7 +135,7 @@ export const Comment = (props) => {
       <Box marginLeft={commentStyle.marginLeft}>
         <Box>
           <Grid container direction="row" xs={12} justify="space-between" style={{ padding: '1% 0' }}>
-            <Grid item container direction="row" xs={10}>
+            <Grid item container direction="row" xs={8}>
               <Grid item>
                 <UserImage imgPath={writer.profileImgPath} />
               </Grid>
