@@ -21,7 +21,7 @@ const UserImage = (props) => {
 
   const { imgPath } = props;
 
-  return <Avatar className={classes.small} src={imgPath} />;
+  return <Avatar className={classes.small} src={imgPath.slice(imgPath.indexOf('/resources'))} />;
 };
 
 const UserId = (props) => {

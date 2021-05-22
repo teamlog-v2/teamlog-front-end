@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Grid, TextField, Paper, makeStyles, InputAdornment, Divider, Tooltip, IconButton } from '@material-ui/core';
-import { Backspace, Close, LocationOn } from '@material-ui/icons';
+import { Backspace, CheckBoxOutlineBlank, Close, LocationOn } from '@material-ui/icons';
 import ImageResize from 'image-resize';
 import { useParams } from 'react-router';
 import PlacesSearchApi from '../organisms/PlacesSearchApi';
@@ -13,6 +13,7 @@ import Uploader from '../organisms/Uploader';
 import AttachmentList from '../organisms/AttachmentList';
 import CommentModifier from '../organisms/CommentModifier';
 import { getFormat, getTypeofFile } from '../utils';
+import Geocode from 'react-geocode';
 
 const useDeleteData = () => {
   const [deletedList, setDeletedList] = useState([]);
@@ -64,7 +65,6 @@ const PostForm = (props) => {
   });
   const [mediaFiles, setMediaFiles] = useState([]);
   const [attachedFiles, setAttachedFiles] = useState([]);
-  const [isFormLoaded, setIsFormLoaded] = useState(false);
   const [recommendedHashtags, setRecommendedHashtags] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const {deletedList : deletedFileIdList, handleDeleteList } = useDeleteData();
@@ -99,7 +99,9 @@ const PostForm = (props) => {
     try {
       const newMedia = mediaFiles.filter((file) => !file.id)
 
-      const blobs = await Promise.all(newMedia.map(async ({ file, url }) => {
+      const blobs = await Promise.all(newMedia.map(async ({ file, type, url }) => {
+          if (type === 'VIDEO') return new Blob([file]);
+
           const width = await new Promise((resolve, reject) => {
             const image = new Image();
             image.src = url;
@@ -163,8 +165,21 @@ const PostForm = (props) => {
     }
   };
 
-  useEffect(() => {
+  useEffect(async () => {
     if (content) {
+      try {
+        if(content.latitude && content.longitude) {
+          Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
+          Geocode.setLocationType("ROOFTOP");
+          Geocode.enableDebug();
+          const res = await Geocode.fromLatLng(
+            content.latitude, content.longitude);
+          console.log(res);
+      }
+      } catch (err) {
+        console.log(err);
+      }
+
       contentRef.current.value = content.contents;
       setPostData({
         accessModifier: content.accessModifier,
@@ -204,7 +219,7 @@ const PostForm = (props) => {
 
   return (<>
     <Grid item container justify="flex-end">
-      <Close onClick={() => { updateOpen(false); }} style={{ cursor: 'pointer' }}/>
+      <Close onClick={() => { updateOpen(false); }} style={{ cursor: 'pointer', margin: '1%' }}/>
     </Grid>
     <Grid
       className={classes.root}
@@ -360,7 +375,6 @@ const PostForm = (props) => {
             </Grid>
             <Grid />
             <PostCreator
-              isFormLoaded={isFormLoaded}
               handleSubmit={handleSubmit}
             />
           </Grid>
