@@ -19,6 +19,7 @@ import { useParams } from 'react-router';
 import TaskItem from './TaskItem';
 import TaskCreateForm from './TaskCreateForm';
 import { getTasksByProject, updateTaskStatus } from './taskService';
+import ResponsiveDialog from '../organisms/ResponsiveDialog';
 
 const reorder = (list, droppableSource, droppableDestination) => {
   const result = Array.from(list);
@@ -42,16 +43,10 @@ const move = (source, destination, droppableSource, droppableDestination) => {
 const TaskContainer = () => {
   const [state, setState] = useState([[], [], [], []]);
   const [open, setOpen] = useState(false);
+
   const [isLoaded, setIsLoaded] = useState(false);
   const status = ['진행 전', '진행 중', '완료', '실패'];
   const projectId = useParams().id;
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const addTaskInContainer = (task) => {
     const newState = [...state];
@@ -91,12 +86,11 @@ const TaskContainer = () => {
     const fromStatusIndex = +source.droppableId;
     const toStatusIndex = +destination.droppableId;
 
+    const newState = [...state];
     if (fromStatusIndex === toStatusIndex) {
       // 같은 공간에 떨어진 경우
       const items = reorder(state[fromStatusIndex], source, destination);
-      const newState = [...state];
       newState[fromStatusIndex] = items;
-      setState(newState);
     } else {
       // 다른 공간에 떨어진 경우
       result = move(
@@ -105,18 +99,17 @@ const TaskContainer = () => {
         source,
         destination,
       );
-      const newState = [...state];
       newState[fromStatusIndex] = result[fromStatusIndex];
       newState[toStatusIndex] = result[toStatusIndex];
-      // --- db  수정 ------
-      const target = newState[toStatusIndex][destination.index];
-      const data = { status: toStatusIndex };
-      updateTaskStatus(target.id, data)
-        .then((res) => res.json())
-        .then((response) => console.log(response))
-        .catch((error) => console.error(error));
-      setState(newState);
     }
+    const target = newState[toStatusIndex][destination.index];
+    const data = { status: toStatusIndex, priority: destination.index };
+
+    updateTaskStatus(target.id, data)
+      .then((res) => res.json())
+      .then((response) => console.log(response))
+      .catch((error) => console.error(error));
+    setState(newState);
   };
 
   if (!isLoaded) {
@@ -142,25 +135,29 @@ const TaskContainer = () => {
     <>
       <Container maxWidth="md">
         <Box padding="10px">
-          <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={() => setOpen(true)}
+          >
             + 태스크 생성
           </Button>
         </Box>
-        <Dialog open={open} onClose={handleClose}>
+        <ResponsiveDialog open={open} updateOpen={setOpen}>
           <Box display="flex" alignItems="center">
             <Box flexGrow={1} />
             <Box>
-              <IconButton onClick={handleClose}>
+              <IconButton onClick={() => setOpen(false)}>
                 <CloseIcon />
               </IconButton>
             </Box>
           </Box>
           <TaskCreateForm
-            handleClose={handleClose}
+            handleClose={() => setOpen(false)}
             addTaskInContainer={addTaskInContainer}
             projectId={projectId}
           />
-        </Dialog>
+        </ResponsiveDialog>
         <Grid container spacing={2}>
           <DragDropContext onDragEnd={onDragEnd}>
             {state.map((el, ind) => (
@@ -189,15 +186,15 @@ const TaskContainer = () => {
                       <Grid>
                         <p>없어요</p>
                       </Grid>
-                  ) : null}
+                    ) : null}
                     {el.map((item, index) => (
                       <TaskItem item={item} index={index} />
-                  ))}
+                    ))}
                     {provided.placeholder}
                   </Grid>
-              )}
+                )}
               </Droppable>
-          ))}
+            ))}
           </DragDropContext>
         </Grid>
       </Container>

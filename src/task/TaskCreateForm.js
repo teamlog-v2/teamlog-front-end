@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import {
   Container,
+  Backdrop,
+  CircularProgress,
   Button,
   TextField,
   Radio,
@@ -12,6 +14,7 @@ import {
   FormLabel,
   Dialog,
   Avatar,
+  makeStyles,
 } from '@material-ui/core';
 import { AvatarGroup } from '@material-ui/lab';
 import AddIcon from '@material-ui/icons/Add';
@@ -19,12 +22,21 @@ import MultiTimePicker from './MultiTimePicker';
 import { createTask } from './taskService';
 import UserSelect from '../user/UserSelect';
 
+const useStyles = makeStyles((theme) => ({
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
+}));
+
 const TaskCreateForm = ({ projectId, addTaskInContainer, handleClose }) => {
+  const classes = useStyles();
   const [taskName, setTaskName] = useState('');
   const [status, setStatus] = useState('0');
   const [deadline, setDeadline] = useState(new Date());
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [openUserSelect, setopenUserSelect] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const handleClickOpen = () => {
     setopenUserSelect(true);
@@ -46,6 +58,7 @@ const TaskCreateForm = ({ projectId, addTaskInContainer, handleClose }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsProcessing(true);
     let performersId = selectedUsers.map(({ id }) => id);
     const data = {
       taskName,
@@ -57,15 +70,24 @@ const TaskCreateForm = ({ projectId, addTaskInContainer, handleClose }) => {
       const response = await createTask(projectId, data);
       const res = await response.json();
       console.log(res);
-      addTaskInContainer(data);
-      handleClose();
+      if (response.status === 201) {
+        addTaskInContainer(data);
+        handleClose();
+      } else {
+        alert('실패');
+      }
+      setIsProcessing(false);
     } catch (err) {
       console.error('Error');
+      setIsProcessing(false);
     }
   };
 
   return (
     <>
+      <Backdrop className={classes.backdrop} open={isProcessing}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <Container component="main" maxWidth="xs">
         <div>
           <form onSubmit={handleSubmit} noValidate>

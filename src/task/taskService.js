@@ -11,7 +11,7 @@ const createTask = (projectId, data) => fetch(`/api/projects/${projectId}/tasks`
     headers: headersData,
   });
 
-const updateTaskStatus = (taskId, data) => fetch(`/api/tasks/${taskId}`, {
+const updateTaskStatus = (taskId, data) => fetch(`/api/tasks/${taskId}/location`, {
     method: 'Put',
     body: JSON.stringify(data),
     headers: headersData,
