@@ -21,6 +21,7 @@ export default function SearchPage() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [result, setResult] = useState([]);
   const lastPromise = useRef(null);
+  const focusEl = useRef(null);
 
   useEffect(() => {
     if (!query) {
@@ -97,6 +98,7 @@ export default function SearchPage() {
           value={type}
           onClick={() => {
             setType('PROJECT');
+            focusEl.current.focus();
           }}
         >
           <CollectionsBookmark />
@@ -109,6 +111,7 @@ export default function SearchPage() {
           value={type}
           onClick={() => {
             setType('USER');
+            focusEl.current.focus();
           }}
         >
           <Group />
@@ -118,6 +121,7 @@ export default function SearchPage() {
       </Box>
       <Box marginBottom="1rem" />
       <QueryInput
+        reff={focusEl}
         value={query}
         onChange={(event) => {
           setQuery(event.target.value);
@@ -197,7 +201,7 @@ function RadioButton({ children, onClick, highlight, value, ...props }) {
   );
 }
 
-function QueryInput({ value, onChange }) {
+function QueryInput({ value, onChange, reff }) {
   return (
     <TextField
       value={value}
@@ -218,6 +222,7 @@ function QueryInput({ value, onChange }) {
       }}
       autoFocus
       variant="outlined"
+      inputRef={reff}
     />
   );
 }
