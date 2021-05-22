@@ -134,6 +134,25 @@ export default function SearchPage() {
           if (isProcessing) {
             return null;
           }
+          if (!query) {
+            return null;
+          }
+
+          if (result.length === 0) {
+            return <Typography>대응하는 결과가 없습니다 😢</Typography>;
+          }
+
+          return (
+            <>
+              <Typography>{result.length}개의 검색 결과</Typography>
+              <Box marginBottom="1rem" />
+            </>
+          );
+        })()}
+        {(() => {
+          if (isProcessing) {
+            return null;
+          }
 
           if (type === 'PROJECT') {
             return result.map((project) => (
