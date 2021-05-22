@@ -141,12 +141,11 @@ const TopButton = ({ isProjectLoaded, projectId, relation }) => {
       return;
     }
 
-    if (response.status === 200) {
+    if (response.status === 201) {
       setRelationState('MEMBER');
     }
   };
 
-  // 초대 수락의 경우 join id까지 필요할 듯...?
   switch (relationState) {
     case 'MASTER':
       return (
