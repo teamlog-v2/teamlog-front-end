@@ -72,7 +72,7 @@ const ThumbnailList = ({ files, updateFiles, handleDeleteList }) => {
             style={getListStyle(snapshot.isDraggingOver)}
             {...provided.droppableProps}
           >
-            {files.map(({ url, type }, index) => (
+            {files.map(({ id, url, type }, index) => (
               <Draggable
                 key={`draggable-${index}`}
                 draggableId={`draggable-${index}`}
@@ -92,10 +92,10 @@ const ThumbnailList = ({ files, updateFiles, handleDeleteList }) => {
                     )}
                   >
                     <Card className="media">
-                      {type === 'video' ? (
+                      {type.includes('VIDEO') ? (
                         <CardMedia
                           component="video"
-                          src={url.slice(url.indexOf('/resources'))}
+                          src={id ? url.slice(url.indexOf('/resources')) : url}
                           autoPlay
                           control
                           style={{ width: '200px', height: '200px' }}
@@ -103,7 +103,7 @@ const ThumbnailList = ({ files, updateFiles, handleDeleteList }) => {
                       ) : (
                         <CardMedia
                           component="img"
-                          src={url.slice(url.indexOf('/resources'))}
+                          src={id ? url.slice(url.indexOf('/resources')) : url}
                           style={{ width: '200px', height: '200px' }}
                         />
                       )}
