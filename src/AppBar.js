@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Backdrop,
   Button,
   IconButton,
   makeStyles,
@@ -118,6 +119,7 @@ export default function AppBar() {
 
   return (
     <>
+      <Backdrop open={!!anchorEl} style={{ zIndex: 1000 }} />
       <Div>
         <IconButton
           onClick={() => {
