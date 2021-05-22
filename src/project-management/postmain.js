@@ -69,12 +69,14 @@ const useStyles = makeStyles((theme) => ({
 
 let resource = 1;
 
-const PostMain = () => {
+const PostMain = (props) => {
   const classes = useStyles();
   const projectId = useParams().id;
   const [open, setOpen] = useState(false);
   const [isPostLoading, setIsPostLoading] = useState(false);
   const [formData, setFormData] = useState(null);
+
+  const { relation } = props;
 
   const [hashtags, isHashtagsLoaded] = useFetchData(
     `/api/projects/${projectId}/hashtags`,
@@ -102,14 +104,7 @@ const PostMain = () => {
     fetchPosts,
     totalCount: postsTotalCount,
     initPosts,
-    // initPosts,
   } = useFetchPosts(url);
-
-  console.log(posts);
-
-  useEffect(() => {
-    console.log('component will mount');
-  }, []);
 
   // 스크롤 감지
   useEffect(() => {
@@ -273,6 +268,7 @@ const PostMain = () => {
                   setIsPostLoading={setIsPostLoading}
                   setFormData={setFormData}
                   initPosts={initPosts}
+                  relation={relation}
                 />
                 <Grid
                   container

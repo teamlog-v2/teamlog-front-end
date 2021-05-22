@@ -321,9 +321,7 @@ const MediaList = ({ media }) => {
 };
 
 export const Post = (props) => {
-  const { postContents, maxWidth, setIsPostLoading, setFormData, initPosts } = props;
-
-  const [id] = useContext(AuthContext);
+  const { postContents, maxWidth, setIsPostLoading, setFormData, initPosts, relation } = props;
 
   const [open, setOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
@@ -375,7 +373,7 @@ export const Post = (props) => {
                   </Grid>
                 </Grid>
                 {
-                  content.writer.id === id
+                  relation === 'MEMBER' || relation === 'MASTER'
                   ? (
                     <Grid item className={classes.menu}>
                       <PostMenu
