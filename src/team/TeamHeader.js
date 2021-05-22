@@ -226,7 +226,15 @@ const Header = ({ sections, updateRelation }) => {
     <>
       <Toolbar className={classes.toolbar}>
         <TeamTitle title={title} introduction={introduction} />
-        <TopButton teamId={teamId} isTeamLoaded={isTeamLoaded} relation={relation} />
+        {/* <TopButton teamId={teamId} isTeamLoaded={isTeamLoaded} relation={relation} /> */}
+        <Link
+          to={`/teams/${teamId}/teammanagement`}
+          style={{ textDecoration: 'none' }}
+        >
+          <Button>
+            <SettingsIcon color="action" />
+          </Button>
+        </Link>
       </Toolbar>
 
       <Paper className={classes.root}>

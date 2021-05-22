@@ -9,7 +9,7 @@ import {
     Typography,
   } from '@material-ui/core';
   import { ArrowLeft, Lock, LockOpen } from '@material-ui/icons';
-  import React, { useContext, useState } from 'react';
+  import React, { useContext, useEffect, useState } from 'react';
   import { useHistory } from 'react-router';
   import AuthContext from '../contexts/auth';
 
@@ -20,14 +20,22 @@ import {
     },
   }));
 
-  export default function TeamUpdateForm() {
+  export default function TeamUpdateForm({ team }) {
     const classes = useStyles();
 
-    const [name, setName] = useState('');
-    const [introduction, setIntroduction] = useState('');
+    const [name, setName] = useState(team.name);
+    const [introduction, setIntroduction] = useState(team.introduction);
     const [isPrivate, setIsPrivate] = useState(false);
 
     const [isProcessing, setIsProcessing] = useState(false);
+
+    useEffect(() => {
+      if (team.accessModifier === 'PUBLIC') {
+        setIsPrivate(false);
+      } else {
+        setIsPrivate(true);
+      }
+    }, []);
 
     const history = useHistory();
 
@@ -46,14 +54,14 @@ import {
         masterId: id,
       };
 
-      return fetch('/api/teams', {
-        method: 'POST',
+      return fetch(`/api/teams/${team.id}`, {
+        method: 'PUT',
         body: JSON.stringify(data),
         headers: { 'Content-type': 'application/json' },
       });
     };
 
-    const onClickCreate = () => {
+    const onClickUpdate = () => {
       if (isProcessing) {
         return;
       }
@@ -61,10 +69,11 @@ import {
 
       request()
         .then((res) => {
+          console.log(res.status);
           if (res.status >= 200 && res.status < 300) {
-            res.json().then((team) => {
+            res.json().then((teamItem) => {
               setIsProcessing(false);
-              history.push(`/teams/${team.id}`);
+              history.push(`/teams/${teamItem.id}`);
             });
           }
         })
@@ -77,6 +86,7 @@ import {
       <div
         style={{
           margin: 'auto',
+          minWidth: '20em',
           maxWidth: '480px',
           padding: '1rem',
           // textAlign: 'center',
@@ -85,19 +95,19 @@ import {
         <Backdrop open={isProcessing} className={classes.backdrop}>
           <CircularProgress color="inherit" />
         </Backdrop>
-        <Box height="4rem" />
+        <Box />
         <Divider />
         <div style={{ height: '1rem' }} />
 
-        <Typography variant="h4" align="center">
-          팀 생성
+        <Typography variant="h5" align="center">
+          팀 수정
         </Typography>
-        <div style={{ height: '1rem' }} />
+        <div style={{ height: '0.5rem' }} />
 
         <Divider />
         <div style={{ height: '1rem' }} />
 
-        <Typography variant="h6" color="textSecondary">
+        <Typography color="textSecondary">
           팀명
         </Typography>
         <TextField
@@ -113,7 +123,7 @@ import {
         />
         <div style={{ height: '1rem' }} />
 
-        <Typography variant="h6" color="textSecondary">
+        <Typography color="textSecondary">
           간단한 소개
         </Typography>
         <TextField
@@ -129,7 +139,7 @@ import {
         />
         <div style={{ height: '1rem' }} />
 
-        <Typography variant="h6" color="textSecondary">
+        <Typography color="textSecondary">
           공개 설정
         </Typography>
         <div style={{ display: 'flex' }}>
@@ -187,13 +197,14 @@ import {
             color="primary"
             variant="contained"
             disableElevation
-            style={{ fontSize: '1.5rem' }}
-            onClick={onClickCreate}
+            style={{ fontSize: '1.0rem' }}
+            onClick={onClickUpdate}
+            size="small"
           >
-            생성하기
+            수정하기
           </Button>
         </div>
-        <Box height="4rem" />
+        <Box />
       </div>
     );
   }

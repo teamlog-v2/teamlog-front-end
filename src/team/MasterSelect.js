@@ -20,7 +20,7 @@ import {
     Search,
   } from '@material-ui/icons';
   import React, { useEffect, useState } from 'react';
-import { DelegateProjectMaster } from './projectapi';
+import { DelegateTeamMaster } from './TeamApi';
 
   const StyledList = withStyles({
     root: {
@@ -30,7 +30,7 @@ import { DelegateProjectMaster } from './projectapi';
   })(List);
 
   const MasterSelect = ({
-    projectId,
+    teamId,
     currentMaster,
     setCurrentMaster,
     handleClose,
@@ -46,7 +46,7 @@ import { DelegateProjectMaster } from './projectapi';
       (async () => {
         let result;
         try {
-          const response = await fetch(`/api/projects/${projectId}/members`, {
+          const response = await fetch(`/api/teams/${teamId}/members`, {
             method: 'Get',
             headers: { 'Content-Type': 'application/json' },
           });
@@ -99,11 +99,11 @@ import { DelegateProjectMaster } from './projectapi';
         const selectedMasterId = selectedMaster[0];
         const newMaster = users.find((user) => user.id === selectedMasterId);
 
-        const response = await DelegateProjectMaster(projectId, newMaster.id);
+        const response = await DelegateTeamMaster(teamId, newMaster.id);
         if (response.status === 200) {
             console.log('ok');
             setCurrentMaster(newMaster);
-            window.location.replace(`/projects/${projectId}`);
+            window.location.replace(`/teams/${teamId}`);
         }
       }
     };
@@ -131,7 +131,7 @@ import { DelegateProjectMaster } from './projectapi';
             const user = users.find((master) => master.id === selectedUserId);
             return (
               <>
-                <ListItem>
+                <ListItem style={{ backgroundColor: 'white' }}>
                   <ListItemAvatar>
                     <Avatar alt={user.name} src={user.profileImgPath} />
                   </ListItemAvatar>
@@ -191,7 +191,7 @@ import { DelegateProjectMaster } from './projectapi';
           justifyContent="center"
           gridGap="8px"
           padding="8px"
-          bgcolor="white"
+          bgcolor="#F8F8F8"
         >
           <Button variant="contained" color="primary" onClick={saveSelectedUsers}>
             확인

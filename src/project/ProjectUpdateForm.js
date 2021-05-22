@@ -85,6 +85,7 @@ import {
       <div
         style={{
           margin: 'auto',
+          minWidth: '20em',
           maxWidth: '480px',
           padding: '16px',
           // textAlign: 'center',
@@ -96,15 +97,15 @@ import {
         <Divider />
         <div style={{ height: '1rem' }} />
 
-        <Typography variant="h4" align="center">
+        <Typography variant="h5" align="center">
           프로젝트 수정
         </Typography>
-        <div style={{ height: '1rem' }} />
+        <div style={{ height: '0.5rem' }} />
 
         <Divider />
         <div style={{ height: '1rem' }} />
 
-        <Typography variant="h6" color="textSecondary">
+        <Typography color="textSecondary">
           프로젝트명
         </Typography>
         <TextField
@@ -120,7 +121,7 @@ import {
         />
         <div style={{ height: '1rem' }} />
 
-        <Typography variant="h6" color="textSecondary">
+        <Typography color="textSecondary">
           간단한 소개
         </Typography>
         <TextField
@@ -136,7 +137,7 @@ import {
         />
         <div style={{ height: '1rem' }} />
 
-        <Typography variant="h6" color="textSecondary">
+        <Typography color="textSecondary">
           공개 설정
         </Typography>
         <div style={{ display: 'flex' }}>
@@ -194,8 +195,9 @@ import {
             color="primary"
             variant="contained"
             disableElevation
-            style={{ fontSize: '1.5rem' }}
+            style={{ fontSize: '1.0rem' }}
             onClick={onClickUpdate}
+            size="small"
           >
             수정하기
           </Button>

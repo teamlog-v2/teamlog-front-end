@@ -107,7 +107,6 @@ export const JoinProject = async (projectId, userId) => {
     },
   });
 
-  console.log(response.status);
   return response;
 };
 
