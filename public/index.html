@@ -1,15 +1,54 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Teamlog" />
-    <title></title>
-    <link rel="stylesheet" href="%PUBLIC_URL%/index.css" />
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="app"></div>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD19HDfecIVKOhxEa0a81aC9AV5_2LrgDY&libraries=places"></script>
-  </body>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Teamlog" />
+  <title></title>
+  <link rel="stylesheet" href="%PUBLIC_URL%/index.css" />
+  <!-- 구분선 -->
+  <link rel="apple-touch-icon-precomposed" sizes="57x57" href="apple-touch-icon-57x57.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="apple-touch-icon-114x114.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="apple-touch-icon-72x72.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="apple-touch-icon-144x144.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="60x60" href="apple-touch-icon-60x60.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="120x120" href="apple-touch-icon-120x120.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="76x76" href="apple-touch-icon-76x76.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="152x152" href="apple-touch-icon-152x152.png" />
+  <link rel="icon" type="image/png" href="icons/favicon-196x196.png" sizes="196x196" />
+  <link rel="icon" type="image/png" href="icons/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/png" href="icons/favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="icons/favicon-16x16.png" sizes="16x16" />
+  <link rel="icon" type="image/png" href="icons/favicon-128.png" sizes="128x128" />
+
+  <meta name="apple-mobile-web-app-title" content="TeamLog" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <meta name="apple-touch-icon" content="icons/favicon-196x196.png" />
+
+  <meta name="application-name" content="&nbsp;" />
+  <meta name="msapplication-TileColor" content="#FFFFFF" />
+  <meta name="msapplication-TileImage" content="mstile-144x144.png" />
+  <meta name="msapplication-square70x70logo" content="mstile-70x70.png" />
+  <meta name="msapplication-square150x150logo" content="mstile-150x150.png" />
+  <meta name="msapplication-wide310x150logo" content="mstile-310x150.png" />
+  <meta name="msapplication-square310x310logo" content="mstile-310x310.png" />
+
+  <link rel="manifest" href="manifest.json" crossorigin="use-credentials">
+  <!-- 구분선 -->
+</head>
+
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="app"></div>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js').then((reg) => console.log('Service worker registered.', reg));
+    }
+  </script>
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD19HDfecIVKOhxEa0a81aC9AV5_2LrgDY&libraries=places"></script>
+</body>
+
 </html>
