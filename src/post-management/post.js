@@ -14,8 +14,8 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { Menu, History, Delete, Edit, Close } from '@material-ui/icons';
-import { Avatar, Button, Card, Chip, Grid, Dialog, DialogContentText, DialogTitle, DialogContent, DialogActions, Tooltip, Divider } from '@material-ui/core';
+import { Menu, History, Delete, Edit, Close, MoreVert } from '@material-ui/icons';
+import { Avatar, Button, Card, Chip, Grid, Dialog, DialogContentText, DialogTitle, DialogContent, DialogActions, Tooltip, Divider, IconButton } from '@material-ui/core';
 
 import { Route } from 'react-router';
 import FileList from './fileList';
@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
   postMenu: {
     zIndex: 3,
     position: 'absolute',
-    right: -30,
+    right: -10,
   },
   media: {
     position: 'relative',
@@ -185,14 +185,14 @@ const PostMenu = (props) => {
   return (
     <div className={classes.root}>
       <div>
-        <Button
+        <IconButton
           ref={anchorRef}
           aria-controls={menuOpen ? 'menu-list-grow' : undefined}
           aria-haspopup="true"
           onClick={handleToggle}
         >
-          <Menu color="action" />
-        </Button>
+          <MoreVert color="action" fontSize="small" />
+        </IconButton>
         <Popper
           open={menuOpen}
           anchorEl={anchorRef.current}

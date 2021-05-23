@@ -96,7 +96,7 @@ export const LikerCounter = (props) => {
         </Box>
       </Tooltip>
       <ResponsiveDialog open={isLikerListOpened} updateOpen={setIsLikerListOpened}>
-        <LikerList likerList={likers} />
+        <LikerList likerList={likers} updateOpen={setIsLikerListOpened} />
       </ResponsiveDialog>
     </>
   ) : (
