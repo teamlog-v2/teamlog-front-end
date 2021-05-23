@@ -46,7 +46,7 @@ const CommentList = ({ setCommentCounter, projectId, postId }) => {
   return isLoaded ?
    (
      <>
-       { isRenewed ? (<></>) : (<><LinearProgress /></>) }
+       { isRenewed ? (<></>) : (<LinearProgress />)}
        {
           commentList.content
             ? commentList.content.map((item) => {

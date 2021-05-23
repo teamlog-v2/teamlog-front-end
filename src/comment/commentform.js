@@ -1,4 +1,4 @@
-import { Button, ListItemIcon, ListItemText, Container, MenuItem, MenuList, Box, Avatar } from '@material-ui/core';
+import { Button, ListItemIcon, ListItemText, Container, MenuItem, MenuList, Box, Avatar, Divider } from '@material-ui/core';
 import InputBase from '@material-ui/core/InputBase';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
@@ -214,13 +214,13 @@ const CommentForm = (props) => {
     });
 
     return (
-      <Container>
+      <Container disableGutters>
+        <Divider />
         <Box
-          paddingTop="0.5em"
-          paddingBottom="0.5em"
           component="form"
           width="auto"
           height="auto"
+          style={{ padding: '0.5em' }}
         >
           <Box width="80%" display="inline-block">
             <>

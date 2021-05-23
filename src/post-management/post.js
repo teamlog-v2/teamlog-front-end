@@ -15,7 +15,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Menu, History, Delete, Edit, Close } from '@material-ui/icons';
-import { Avatar, Button, Card, Chip, Grid, Dialog, DialogContentText, DialogTitle, DialogContent, DialogActions, Tooltip } from '@material-ui/core';
+import { Avatar, Button, Card, Chip, Grid, Dialog, DialogContentText, DialogTitle, DialogContent, DialogActions, Tooltip, Divider } from '@material-ui/core';
 
 import { Route } from 'react-router';
 import FileList from './fileList';
@@ -397,67 +397,57 @@ export const Post = (props) => {
             canAccess(relation, content.accessModifier) ?
             (
               <>
-                <Grid className={classes.children} container alignItems="center">
-                  {
-                    content.address ? (
-                      <Grid container alignItems="center">
-                        <RoomIcon color="primary" />
-                        <span style={{ fontWeight: 600 }}>{content.address.split('#')[0]}</span>
-                      </Grid>
-                       ) : null
-                  }
-                </Grid>
-                <Grid className={classes.children}>
-                  <Grid container direction="row" spacing={1}>
-                    {content.hashtags
-                      ? content.hashtags.map((item, index) => {
-                          return (
-                            <Grid item>
-                              <Chip
-                                className="tags"
-                                key={index}
-                                label={`#${item}`}
-                                variant="outlined"
-                                size="small"
-                                onClick={() => {
-                                  // handleChipClick(index);
-                                  // handleToggle(index);
-                                }}
-                                color="primary"
-                              />
-                            </Grid>
-                          );
-                        })
-                      : ''}
+                {content.address ? (
+                  <Grid className={classes.children} container alignItems="center">
+                    <Grid container alignItems="center">
+                      <RoomIcon color="primary" />
+                      <span style={{ fontWeight: 600 }}>{content.address.split('#')[0]}</span>
+                    </Grid>
                   </Grid>
-                </Grid>
-                {
-                  content.files.length !== 0 && (
-                    <FileList files={content.files} />
-                  )
-                }
-                {content.media.length === 0 ? null : (
-                  <Container disableGutters>
-                    <MediaList media={content.media} />
-                  </Container>
+                   ) : null}
+                {content?.hashtags.length > 0
+                  ? (
+                    <Grid className={classes.children}>
+                      <Grid container direction="row" spacing={1}>
+                        {content.hashtags.map((item, index) => {
+                        return (
+                          <Grid item>
+                            <Chip
+                              className="tags"
+                              key={index}
+                              label={`#${item}`}
+                              variant="outlined"
+                              size="small"
+                              onClick={() => {
+                                // handleChipClick(index);
+                                // handleToggle(index);
+                                }}
+                              color="primary"
+                            />
+                          </Grid>
+                            );
+                          })}
+                      </Grid>
+                    </Grid>
+                  ) : null}
+                {content.files.length !== 0 && (
+                  <FileList files={content.files} />
                 )}
-                <Container disableGutters>
-                  <Box className={classes.content}>
-                    <Typography>
-                      <p style={{ whiteSpace: 'pre-wrap' }}>{content.contents}</p>
-                    </Typography>
-                  </Box>
-                </Container>
-                <Container disableGutters>
-                  <Box className={classes.etc}>
-                    <LikerCounter
-                      count={likerCounter}
-                      setLikerCounter={SetLikerCounter}
-                      postId={content.id}
-                    />
-                    <CommentCounter count={commentCounter} />
-                  </Box>
-                </Container>
+                {content.media.length !== 0 && (
+                  <MediaList media={content.media} />
+                )}
+                <Box className={classes.children}>
+                  <p style={{ whiteSpace: 'pre-wrap', margin: '0 0' }}>{content.contents}</p>
+                </Box>
+                <Box className={classes.children}>
+                  <LikerCounter
+                    count={likerCounter}
+                    setLikerCounter={SetLikerCounter}
+                    postId={content.id}
+                  />
+                  &nbsp;
+                  <CommentCounter count={commentCounter} />
+                </Box>
                 {
                   canAccess(relation, content.commentModifier) ? (
                     <Container disableGutters>

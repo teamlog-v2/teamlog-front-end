@@ -88,7 +88,6 @@ class PlaceSearchApi extends React.Component {
                   (
                     <Card md={5} xs={12}>
                     {suggestions.map((suggestion) => {
-                      console.log(suggestion.formattedSuggestion.mainText);
                       const className = suggestion.active
                         ? 'suggestion-item--active'
                         : 'suggestion-item';
@@ -98,18 +97,17 @@ class PlaceSearchApi extends React.Component {
                         : { cursor: 'pointer' };
                       return (
                         <Grid
-                          item
+                          container
+                          direction="row"
                           {...getSuggestionItemProps(suggestion, {
                             className,
                             style,
                           })}
                         >
-                          <Grid container direction="row">
-                            <LocationOn />
-                          <div>
+                          <LocationOn />
+                          <Grid item xs={11}>
                             <Typography gutterBottom style={{ fontSize: 15 }}>
                               {suggestion.description}</Typography>
-                          </div>
                           </Grid>
                         </Grid>
                       );
