@@ -118,7 +118,7 @@ const UserSelect = ({
           return (
             <Chip
               key={user.id}
-              label={user.name}
+              label={`${user.name} (${user.id})`}
               onDelete={() => {
                 toggleSelectedUserId(user.id);
               }}
@@ -159,7 +159,7 @@ const UserSelect = ({
               <ListItemAvatar>
                 <Avatar alt={user.name} src={user.profileImgPath} />
               </ListItemAvatar>
-              <ListItemText primary={user.name} />
+              <ListItemText primary={`${user.name} (${user.id})`} />
               {selectedUserIds.includes(user.id) ? (
                 <CheckBox color="primary" />
               ) : (
@@ -178,10 +178,10 @@ const UserSelect = ({
         padding="8px"
         bgcolor="#F8F8F8"
       >
-        <Button variant="contained" color="primary" onClick={saveSelectedUsers}>
+        <Button variant="outlined" onClick={saveSelectedUsers}>
           완료
         </Button>
-        <Button onClick={handleClose} variant="contained">
+        <Button onClick={handleClose} variant="outlined">
           취소
         </Button>
       </Box>

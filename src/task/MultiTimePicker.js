@@ -6,8 +6,8 @@ import {
 import DateFnsUtils from '@date-io/date-fns';
 import koLocale from 'date-fns/locale/ko';
 
-const MultiTimePicker = ({ label, getDeadlineValue }) => {
-  const [selectedDate, setDate] = useState(new Date());
+const MultiTimePicker = ({ label, value, getDeadlineValue }) => {
+  const [selectedDate, setDate] = useState(value);
 
   return (
     <MuiPickersUtilsProvider locale={koLocale} utils={DateFnsUtils}>
@@ -17,8 +17,8 @@ const MultiTimePicker = ({ label, getDeadlineValue }) => {
         label={label}
         inputVariant="outlined"
         value={selectedDate}
-        onChange={setDate}
-        onAccept={(date) => getDeadlineValue(date)}
+        onChange={(date) => { setDate(date); }}
+        onAccept={(date) => { getDeadlineValue(date); }}
         onError={console.log}
         disablePast
         format="yyyy/MM/dd aa h:mm "

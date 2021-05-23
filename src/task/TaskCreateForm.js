@@ -19,7 +19,7 @@ import {
 import { AvatarGroup } from '@material-ui/lab';
 import AddIcon from '@material-ui/icons/Add';
 import MultiTimePicker from './MultiTimePicker';
-import { createTask } from './taskService';
+import { createTask, putTask } from './taskService';
 import UserSelect from '../user/UserSelect';
 
 const useStyles = makeStyles((theme) => ({
@@ -29,12 +29,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TaskCreateForm = ({ projectId, addTaskInContainer, handleClose }) => {
+const getDate = (date) => {
+  if (date) {
+    const formattedDate = [...date];
+    const month = date[1];
+    formattedDate[1] = month - 1;
+    return new Date(...formattedDate);
+  }
+  return new Date();
+}
+
+const TaskCreateForm = ({ projectId, addTaskInContainer, handleClose, task, updateTask }) => {
   const classes = useStyles();
-  const [taskName, setTaskName] = useState('');
-  const [status, setStatus] = useState('0');
-  const [deadline, setDeadline] = useState(new Date());
-  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [taskName, setTaskName] = useState(task?.taskName??'');
+  const [status, setStatus] = useState(task?.status??0);
+
+  const [deadline, setDeadline] = useState(getDate(task?.deadline));
+  const [selectedUsers, setSelectedUsers] = useState(task?.performers??[]);
   const [openUserSelect, setopenUserSelect] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -50,28 +61,52 @@ const TaskCreateForm = ({ projectId, addTaskInContainer, handleClose }) => {
   };
 
   const handleStatusChange = (event) => {
-    setStatus(event.target.value);
+    setStatus(event.target.value * 1);
   };
   const handleTaskNameChange = (event) => {
     setTaskName(event.target.value);
   };
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
+    // task 기존에 있었다면 update request
     setIsProcessing(true);
+    event.preventDefault();
     let performersId = selectedUsers.map(({ id }) => id);
+
+    console.log(deadline);
+
     const data = {
       taskName,
       performersId,
       deadline,
       status,
     };
+
+    console.log('updated data');
+    console.log(data);
+
     try {
-      const response = await createTask(projectId, data);
+      let response;
+
+      if (task) response = await putTask(task.id, data);
+      else response = await createTask(projectId, data);
+
+      if (task) {
+        console.log('put');
+      }
+      else console.log('create');
+
+      const { status } = response;
       const res = await response.json();
+
+      console.log('수정 결과');
       console.log(res);
-      if (response.status === 201) {
-        addTaskInContainer(data);
+
+      if (status === 201) {
+        addTaskInContainer(res);
+        handleClose();
+      } else if (status === 200) {
+        updateTask(res);
         handleClose();
       } else {
         alert('실패');
@@ -88,7 +123,7 @@ const TaskCreateForm = ({ projectId, addTaskInContainer, handleClose }) => {
       <Backdrop className={classes.backdrop} open={isProcessing}>
         <CircularProgress color="inherit" />
       </Backdrop>
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="xs" style={{ margin: '3% 0' }}>
         <div>
           <form onSubmit={handleSubmit} noValidate>
             <Dialog open={openUserSelect}>
@@ -101,9 +136,6 @@ const TaskCreateForm = ({ projectId, addTaskInContainer, handleClose }) => {
             </Dialog>
             <Grid container spacing={2}>
               <Grid item xs={12} align="center">
-                <Typography component="h1" variant="h5">
-                  새로운 태스크
-                </Typography>
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -113,6 +145,7 @@ const TaskCreateForm = ({ projectId, addTaskInContainer, handleClose }) => {
                   id="taskName"
                   label="태스크 이름"
                   autoFocus
+                  value={taskName}
                   onChange={handleTaskNameChange}
                 />
               </Grid>
@@ -145,6 +178,7 @@ const TaskCreateForm = ({ projectId, addTaskInContainer, handleClose }) => {
                   id="deadline"
                   name="deadline"
                   label="마감일"
+                  value={deadline}
                   getDeadlineValue={getDeadlineValue}
                 />
               </Grid>
@@ -152,18 +186,18 @@ const TaskCreateForm = ({ projectId, addTaskInContainer, handleClose }) => {
                 <FormLabel component="legend">태스크 상태</FormLabel>
                 <RadioGroup value={status} onChange={handleStatusChange} row>
                   <FormControlLabel
-                    value="0"
-                    control={<Radio />}
+                    value={0}
+                    control={<Radio color="primary"/>}
                     label="진행 전"
                   />
                   <FormControlLabel
-                    value="1"
-                    control={<Radio />}
+                    value={1}
+                    control={<Radio color="primary"/>}
                     label="진행 중"
                   />
                   <FormControlLabel
-                    value="2"
-                    control={<Radio />}
+                    value={2}
+                    control={<Radio color="primary" />}
                     label="완료"
                   />
                 </RadioGroup>
@@ -173,10 +207,10 @@ const TaskCreateForm = ({ projectId, addTaskInContainer, handleClose }) => {
               <Button
                 type="submit"
                 fullWidth
-                variant="contained"
+                variant="outlined"
                 color="primary"
               >
-                만들기
+                {task ? '수정' : '생성'}
               </Button>
             </Box>
           </form>
