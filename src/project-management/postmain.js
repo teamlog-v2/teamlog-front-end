@@ -9,6 +9,7 @@ import {
   Fab,
   Card,
   Tooltip,
+  Select,
 } from '@material-ui/core';
 import Container from '@material-ui/core/Container';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -53,17 +54,14 @@ const useStyles = makeStyles((theme) => ({
   button: {
     position: 'fixed',
     zIndex: 3,
-    [theme.breakpoints.down('sm')]: {
-      left: '90%',
-      top: '90%',
+    [theme.breakpoints.up('xs')]: {
+      right: 0,
+      bottom: 0,
+      margin: '2%',
     },
     [theme.breakpoints.up('md')]: {
-      left: '100%',
-      top: '90%',
-    },
-    [theme.breakpoints.up('lg')]: {
-      left: '70%',
-      top: '90%',
+      left: '75%',
+      top: '85%',
     },
   },
 }));
@@ -157,7 +155,7 @@ const PostMain = (props) => {
         setIsPostLoading(false);
         setFormData(null);
         // 해시태그 가져오기
-        initPosts(); // 댓글은?
+        initPosts();
       }
     } catch (error) {
       console.log(error);
@@ -222,19 +220,19 @@ const PostMain = (props) => {
                 justify="flex-end"
                 xs={12}
               >
-                <FormControl>
-                  <NativeSelect
-                    xs={7}
-                    variant="filled"
+                <FormControl variant="outlined" style={{ height: 30, width: 120 }}>
+                  <Select
+                    native
                     onChange={(event) => {
                       setOrder(event.target.value);
                     }}
                     name="filter"
+                    style={{ height: 30, width: 120 }}
                   >
                     <option value="1">최신 순</option>
                     <option value="-1">오래된 순</option>
                     <option value="like">좋아요 순(미구현)</option>
-                  </NativeSelect>
+                  </Select>
                 </FormControl>
               </Grid>
               <Grid className={classes.children} item>
@@ -286,6 +284,18 @@ const PostMain = (props) => {
                       />
                     )
                   }
+                {
+                  (relation === 'MEMBER' || relation === 'MASTER')
+                  && (
+                  <Fab
+                    className={classes.button}
+                    color="primary"
+                    onClick={() => { setOpen(true); }}
+                  >
+                    <Edit />
+                  </Fab>
+                  )
+                }
                 <Grid
                   container
                   justify="center"
@@ -299,18 +309,6 @@ const PostMain = (props) => {
           </Container>
         </>
       )}
-      {
-        (relation === 'MEMBER' || relation === 'MASTER')
-        && (
-        <Fab
-          className={classes.button}
-          color="primary"
-          onClick={() => { setOpen(true); }}
-        >
-          <Edit />
-        </Fab>
-        )
-      }
       <ResponsiveDialog open={open} updateOpen={setOpen}>
         <PostFormPage
           updateOpen={setOpen}

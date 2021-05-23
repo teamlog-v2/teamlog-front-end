@@ -2,15 +2,21 @@ import { Box, makeStyles, Tooltip } from '@material-ui/core';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
-import { React, useState, useEffect, useContext } from 'react';
+import { React, useState, useEffect, useContext, useRef } from 'react';
+import styled from 'styled-components';
 import AuthContext from '../contexts/auth';
 import ResponsiveDialog from '../organisms/ResponsiveDialog';
 import LikerList from '../pages/likerListPage';
 import { CreateLiker, DeleteLiker, GetLiker } from './postlikeapi';
+import './heart.css';
 
 const useStyles = makeStyles(() => ({
   likerCursor: {
     cursor: 'pointer',
+  },
+  heart: {
+    position: 'absolute',
+    animation: 'bounce',
   },
 }));
 
@@ -29,14 +35,16 @@ export const LikerCounter = (props) => {
     setLikers(response);
     const contains = (val) => response.some(({ id }) => id.includes(val));
     if (contains(userId)) { // 아이디 변경 필요
-      setLike(true);
+      setLike(1);
     } else {
-      setLike(false);
+      setLike(0);
     }
     setIsLoaded(true);
   }, [postId]);
 
   const LikeIt = async () => {
+    if (like === 2) return;
+
     let status;
     if (!like) {
       status = await CreateLiker(postId);
@@ -45,16 +53,25 @@ export const LikerCounter = (props) => {
       status = await DeleteLiker(postId);
       setLikerCounter(-1);
     }
-    console.log(status);
 
-    setLike(!like);
+    if (like === 1) setLike(0);
+    else {
+      setLike(2);
+      setTimeout(() => {
+        if (like === 1) setLike(0);
+        else setLike(1);
+      }, 2100);
+    }
     const response = await GetLiker(postId);
     setLikers(response);
   };
 
   const Icon = () => {
-    if (like) {
-      return <FavoriteIcon fontSize="small" />;
+    if (like === 2) {
+      return <FavoriteIcon className="bounce2" fontSize="small" color="primary" />;
+    }
+    if (like === 1) {
+      return <FavoriteIcon fontSize="small" color="primary" />;
     }
     return <FavoriteBorderIcon fontSize="small" />;
   };
@@ -79,7 +96,7 @@ export const LikerCounter = (props) => {
         </Box>
       </Tooltip>
       <ResponsiveDialog open={isLikerListOpened} updateOpen={setIsLikerListOpened}>
-        <LikerList likerList={likers} />
+        <LikerList likerList={likers} updateOpen={setIsLikerListOpened} />
       </ResponsiveDialog>
     </>
   ) : (
