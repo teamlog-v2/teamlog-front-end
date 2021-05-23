@@ -230,14 +230,14 @@ const Header = ({ sections, updateRelation }) => {
           <img src={teamIcon} alt="teamIcon" width="40px" height="40px" />
         </Box>
         <TeamTitle title={title} introduction={introduction} />
-        {/* <TopButton teamId={teamId} isTeamLoaded={isTeamLoaded} relation={relation} /> */}
+        <TopButton teamId={teamId} isTeamLoaded={isTeamLoaded} relation={relation} />
         <Link
           to={`/teams/${teamId}/teammanagement`}
           style={{ textDecoration: 'none' }}
         >
-          <Button>
+          {/* <Button>
             <SettingsIcon color="action" />
-          </Button>
+          </Button> */}
         </Link>
       </Toolbar>
 
