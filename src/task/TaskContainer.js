@@ -13,12 +13,13 @@ import {
   CircularProgress,
   IconButton,
   Container,
+  Paper,
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import { useParams } from 'react-router';
 import TaskItem from './TaskItem';
 import TaskCreateForm from './TaskCreateForm';
-import { getTasksByProject, updateTaskStatus } from './taskService';
+import { getTasksByProject, updateTaskStatus, deleteTask } from './taskService';
 import ResponsiveDialog from '../organisms/ResponsiveDialog';
 
 const reorder = (list, droppableSource, droppableDestination) => {
@@ -45,14 +46,68 @@ const TaskContainer = (props) => {
   const [open, setOpen] = useState(false);
 
   const [isLoaded, setIsLoaded] = useState(false);
-  const status = ['진행 전', '진행 중', '완료', '실패'];
+  const status = [
+    { name: '진행 전', color: '#000000' },
+    { name: '진행 중', color: '#000000' },
+    { name: '완료', color: '#000000' },
+    { name: '실패', color: '#F93B2E' },
+  ];
   const projectId = useParams().id;
+
+  const [focusedTask, setFocusedTask] = useState(null);
 
   const { relation } = props;
 
-  const handleClickOpen = () => {
+  const updateTask = (task) => {
+    const to = task.status;
+    let from = -1;
+
+    let originIndex = -1;
+
+    state.some((taskList, taskStatus) => { // 전체 태스크 중 기존 태스크 상태 및 위치 탐색
+      return taskList.some((item, index) => {
+        if (item.id === task.id) {
+          from = taskStatus;
+          originIndex = index;
+          return true;
+        }
+        return false;
+      });
+    });
+
+    const updatedState = [...state];
+
+    if (from === to) {
+      updatedState[to][originIndex] = task;
+    } else {
+      updatedState[from].splice(originIndex, 1);
+      updatedState[to].push(task);
+    }
+    setFocusedTask(null);
+    setState(updatedState);
+  };
+
+  const handleClickOpen = () => { // 태스크 생성 클릭
+    setFocusedTask(null);
     setOpen(true);
   };
+
+  const handleDeleteTask = async (task) => {
+    try {
+      const response = await deleteTask(task.id);
+      const result = await response.json();
+
+      const updatedState = [...state];
+      const { id, status: taskStatus } = task;
+      updatedState[taskStatus] = updatedState[taskStatus].filter((item) => item.id !== id);
+
+      setFocusedTask(null);
+      setState(updatedState);
+    } catch (err) {
+      alert(err);
+    }
+  };
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -118,6 +173,7 @@ const TaskContainer = (props) => {
       .then((res) => res.json())
       .then((response) => console.log(response))
       .catch((error) => console.error(error));
+    setFocusedTask(null);
     setState(newState);
   };
 
@@ -162,13 +218,18 @@ const TaskContainer = (props) => {
             </Box>
           </Box>
           <TaskCreateForm
-            handleClose={() => setOpen(false)}
+            handleClose={handleClose}
             addTaskInContainer={addTaskInContainer}
+            updateTask={updateTask}
             projectId={projectId}
+            task={focusedTask}
           />
         </ResponsiveDialog>
         <Grid container spacing={2}>
-          <DragDropContext onDragEnd={onDragEnd}>
+          <DragDropContext
+            onDragEnd={onDragEnd}
+            onBeforeDragStart={() => { setFocusedTask(null); }}
+          >
             {state.map((el, ind) => (
               <Droppable key={ind} droppableId={`${ind}`}>
                 {(provided) => (
@@ -181,23 +242,38 @@ const TaskContainer = (props) => {
                   >
                     <Grid container spacing={1} alignItems="center">
                       <Grid item>
-                        <Chip
-                          varient="contained"
-                          color="primary"
-                          label={status[ind]}
-                        />
-                      </Grid>
-                      <Grid item>
-                        <Typography>{state[ind].length}</Typography>
+                        <strong style={{ color: status[ind].color }}>
+                          {status[ind].name}
+                        </strong>
+                        &nbsp;
+                        {state[ind].length}
                       </Grid>
                     </Grid>
                     {state[ind].length === 0 ? (
-                      <Grid>
-                        <p>없어요</p>
-                      </Grid>
+                      <Paper
+                        elevation={0}
+                        style={{
+                          border: '2px solid #eee',
+                          padding: 10,
+                          opacity: 0.5,
+                          margin: '5px 0 5px 0' }}
+                      >
+                        <Typography>
+                          {`${status[ind].name} 태스크가 없습니다`}
+                        </Typography>
+                      </Paper>
                     ) : null}
                     {el.map((item, index) => (
-                      <TaskItem item={item} index={index} />
+                      <TaskItem
+                        item={item}
+                        index={index}
+                        isFocused={item.id === focusedTask?.id ?? false}
+                        updateFocusedTask={(event) => {
+                          setFocusedTask(item);
+                        }}
+                        updateFormOpen={() => { setOpen(true); }}
+                        handleDeleteTask={handleDeleteTask}
+                      />
                     ))}
                     {provided.placeholder}
                   </Grid>
