@@ -469,7 +469,7 @@ const TeamManagement = () => {
                         }
 
                         if (status === 200) {
-                            console.log('성공');
+                            window.location.replace(`/users/${master.id}`);
                         }
                     }
                 }}
