@@ -19,7 +19,6 @@ export const DeleteProject = async (projectId) => {
     },
   });
 
-  console.log(response);
   return response;
 };
 

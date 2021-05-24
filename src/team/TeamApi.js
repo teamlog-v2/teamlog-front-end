@@ -129,7 +129,6 @@ export const DeleteTeam = async (teamId) => {
     },
   });
 
-  console.log(response);
   return response;
 };
 
