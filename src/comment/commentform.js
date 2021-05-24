@@ -208,7 +208,8 @@ const CommentForm = (props) => {
     const theme = createMuiTheme({
       palette: {
         primary: {
-          main: 'rgb(220, 220, 220)',
+          // main: 'rgb(220, 220, 220)',
+          main: '#593875',
         },
       },
     });

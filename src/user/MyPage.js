@@ -163,7 +163,6 @@ const MyPage = ({ match }) => {
               </>
             )}
           </Grid>
-
           <Grid item xs={12}>
             <Divider variant="middle" />
           </Grid>
