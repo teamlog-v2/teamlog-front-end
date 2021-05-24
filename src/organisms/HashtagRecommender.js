@@ -28,21 +28,30 @@ const HashtagRecommender = ({
       container
       direction="row"
       alignItems="center"
+      xs={8}
       spacing={1}
-      sm={10}
     >
-      {recommendedHashtags.map((item) => (
-        <Grid item key={item.key}>
-          <Chip
-            label={`${item.name}`}
-            color="secondary"
-            style={{ cursor: 'pointer' }}
-            onClick={() => {
-              handleChipClick(item.name);
-            }}
-          />
-        </Grid>
-      ))}
+      {
+        recommendedHashtags.length !== 0 ? (
+          recommendedHashtags.map((name, index) => (
+            <Grid item key={index}>
+              <Chip
+                label={`${name}`}
+                variant="outlined"
+                color="default"
+                style={{ cursor: 'pointer', fontSize: 11 }}
+                onClick={() => {
+                  handleChipClick(name);
+                }}
+              />
+            </Grid>
+          ))
+        ) : (
+          <Grid>
+            추천할 해시태그가 없어요.
+          </Grid>
+        )
+      }
     </Grid>
   );
 };

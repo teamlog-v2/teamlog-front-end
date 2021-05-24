@@ -276,6 +276,7 @@ const PostMain = (props) => {
                     ) : (
                       <Postlist
                         posts={posts}
+                        hashtags={hashtags}
                         setIsPostLoading={setIsPostLoading}
                         setFormData={setFormData}
                         initPosts={initPosts}
@@ -311,6 +312,7 @@ const PostMain = (props) => {
       )}
       <ResponsiveDialog open={open} updateOpen={setOpen}>
         <PostFormPage
+          hashtags={hashtags}
           updateOpen={setOpen}
           updateFormData={setFormData}
         />

@@ -25,10 +25,10 @@ const isValidSize = (files, newFiles, value) => {
   let totalSize = 0;
 
   files.forEach(({ file }) => {
-    totalSize += file?.size ?? 0 / 1000;
+    totalSize += (file?.size ?? 0) / 1000000;
   });
   newFiles.forEach(({ size }) => {
-    totalSize += size / 1000;
+    totalSize += size / 1000000;
   });
 
   return totalSize <= value;

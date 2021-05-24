@@ -5,22 +5,19 @@ import { isDuplicateData } from '../utils';
 
 const StyledChip = styled.input`
   width: ${(props) => (props.isInput ? '150px;' : `${props.value.length * 12}px;`)}
-  cursor: ${(props) => (props.isInput ? 'default;' : 'pointer;')}
+  cursor: ${(props) => (props.isInput ? 'text;' : 'pointer;')}
   text-align: ${(props) => (props.isInput ? 'none;' : 'center;')}
-  font-size: smaller;
+  font-size: 13px;
   border-style: none;
-  color: white;
-  background-color: #C16AF5;
+  color: ${(props) => (props.isInput ? 'black;' : 'white;')};
+  background-color: ${(props) => (props.isInput ? 'none;' : '#593875;')};
   border-radius: 500px;
-  padding: 8px 15px;
+  padding: ${(props) => (props.isInput ? '8px 0' : '8px 15px;')};
   &:focus{
     outline: none;
   }
   &:hover{
     ${(props) => (props.isInput ? 'none;' : 'background-color: #722387;')}
-  }
-  &::placeholder{
-    color: #F0F0F0;
   }
   transition: 0.3s;
 `;
@@ -37,7 +34,7 @@ const HashtagInput = ({ postData, updatePostData }) => {
     });
   };
 
-  const handleClick = (index) => {
+  const handleClick = (index) => (event) => {
     deleteHashtag(index);
   };
 
@@ -76,11 +73,8 @@ const HashtagInput = ({ postData, updatePostData }) => {
                 key={index}
                 type="text"
                 value={item}
-                color="primary"
                 readOnly
-                onClick={() => {
-                    handleClick(index);
-                  }}
+                onClick={handleClick(index)}
               />
             </Grid>
             ))
@@ -91,7 +85,6 @@ const HashtagInput = ({ postData, updatePostData }) => {
             type="text"
             placeholder="해시태그를 입력하세요."
             onKeyDown={handleInput}
-            color="primary"
           />
         </Grid>
       </Grid>

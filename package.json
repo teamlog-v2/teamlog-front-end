@@ -81,8 +81,7 @@
     "src/organisms/PlacesSearchApi.js",
     "src/post-management/comment.js",
     "src/post-management/commentlist.js",
-    "src/comment/comment.js",
-    "src/Pages/PostFormPage.js"
+    "src/comment/comment.js"
   ],
   "browserslist": {
     "production": [

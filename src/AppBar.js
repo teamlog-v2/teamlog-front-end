@@ -47,19 +47,18 @@ const Div = ({ children }) => {
         >
           <div
             style={{
-              margin: '0.25rem',
               display: 'flex',
               justifyContent: 'flex-end',
               alignItems: 'center',
-              backgroundColor: '#E0BAF7',
-              borderRadius: '0.25rem',
+              backgroundColor: '#593875',
+              height: '48px',
             }}
           >
             {children}
           </div>
         </div>
       </HideOnScroll>
-      <div style={{ height: '44px' }} />
+      <div style={{ height: '52px' }} />
     </>
   );
 };
@@ -130,7 +129,6 @@ export default function AppBar() {
             <Search style={{ fontSize: '1rem' }} />
           </IconButton>
           <Button
-            color="white"
             onClick={() => {
               history.push('/login');
             }}
@@ -151,14 +149,14 @@ export default function AppBar() {
             history.push('/search');
           }}
         >
-          <Search style={{ fontSize: '1rem' }} />
+          <Search style={{ fontSize: '1.125rem', color: 'white' }} />
         </IconButton>
         <IconButton>
-          <Notifications style={{ fontSize: '1rem' }} />
+          <Notifications style={{ fontSize: '1.125rem', color: 'white' }} />
         </IconButton>
         <Button onClick={handleClick}>
           <Avatar className={classes.small} src={profileImgPath} />
-          <ArrowDropDown color="action" />
+          <ArrowDropDown style={{ fontSize: '1rem', color: 'white' }} />
         </Button>
         <Menu
           keepMounted

@@ -15,18 +15,18 @@ const HashtagChooser = ({ hashtags, selectedTags, updateSelectedTags }) => {
   const handleToggle = (index) => {
     const item = document.querySelectorAll('.tags')[index];
     if (!selectedTags.includes(index)) {
-      item.style.backgroundColor = '#C16AF5';
+      item.style.backgroundColor = '#593875';
       item.style.color = 'white';
     } else {
       item.style.backgroundColor = 'white';
-      item.style.color = '#C16AF5';
+      item.style.color = '#593875';
     }
   };
 
   useEffect(() => {
     const item = document.querySelectorAll('.tags');
     selectedTags.forEach((index) => {
-      item[index].style.backgroundColor = '#C16AF5';
+      item[index].style.backgroundColor = '#593875';
       item[index].style.color = 'white';
     });
   }, []);

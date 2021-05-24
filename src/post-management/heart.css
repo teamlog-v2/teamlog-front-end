@@ -1,11 +1,7 @@
-*, *:before, *:after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
 .gelatine {
   animation: gelatine 1s 1;
 }
+
 @keyframes gelatine {
   from, to { transform: scale(1, 1); }
   25% { transform: scale(0.9, 1.1); }

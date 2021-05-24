@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Grid, TextField, Paper, makeStyles, InputAdornment, Divider, Tooltip } from '@material-ui/core';
+import { Grid, TextField, Paper, makeStyles, InputAdornment, Divider, Tooltip, Button, Card, ClickAwayListener } from '@material-ui/core';
 import { Backspace, Close, LocationOn } from '@material-ui/icons';
 import { useParams } from 'react-router';
 import PlacesSearchApi from '../organisms/PlacesSearchApi';
@@ -37,23 +37,37 @@ const useStyles = makeStyles((theme) => ({
   },
   children: {
     [theme.breakpoints.down('sm')]: {
-      margin: '3% 0',
+      margin: '4% 0',
     },
     [theme.breakpoints.up('md')]: {
-      margin: '1% 0',
+      margin: '3% 0',
     },
   },
 }));
 
+const randomHashtags = (hashtags) => {
+  if (hashtags.length < 5) { return hashtags; }
+  const min = Math.ceil(0);
+  const max = Math.floor(hashtags.length);
+
+  const randomIndexes = [];
+
+  while (randomIndexes.length !== 5) {
+    const randomIndex = Math.floor(Math.random() * (max - min)) + min;
+    if (!randomIndexes.includes(randomIndex)) randomIndexes.push(randomIndex);
+  }
+
+  return hashtags.filter((hashtag, index) => randomIndexes.includes(index));
+};
+
 const PostForm = (props) => {
   const { id } = useParams();
-  const { content, updateOpen, updateFormData, updatePost } = props;
+  const { content, hashtags: projectHashtags, updateOpen, updateFormData, updatePost } = props;
 
   const classes = useStyles();
   const isUpdateRequest = (content !== undefined);
   const postId = content?.id;
 
-  const [isLoaded, setIsLoaded] = useState(false);
   const contentRef = useRef(null);
   const [postData, setPostData] = useState({
     accessModifier: 'PRIVATE',
@@ -156,21 +170,7 @@ const PostForm = (props) => {
         },
       })));
     }
-    setIsLoaded(true);
-    // setTimeout(() => {
-    //   setRecommendedHashtags([
-    //     // hashtag 추천 api 필요
-    //     {
-    //       key: '1',
-    //       name: '스토리보드',
-    //     },
-    //     {
-    //       key: '2',
-    //       name: '일본',
-    //     },
-    //   ]);
-    //   setIsLoaded(true);
-    // }, 3000);
+    setRecommendedHashtags(projectHashtags.length !== 0 ? randomHashtags(projectHashtags) : []);
   }, []);
 
   return (
@@ -197,6 +197,7 @@ const PostForm = (props) => {
                           variant="standard"
                           fullWidth
                           helperText="필드를 눌러 장소를 검색하세요."
+                          placeholder="어디를 방문하셨나요?"
                           InputProps={{
                             startAdornment: (
                               <InputAdornment>
@@ -228,15 +229,36 @@ const PostForm = (props) => {
                 }
               </Grid>
             </Grid>
-            <Grid item container xs={12} justify="flex-end">
-              <AccessModifier
-                postData={postData}
-                updatePostData={setPostData}
-              />
-              <CommentModifier
-                postData={postData}
-                updatePostData={setPostData}
-              />
+          </Grid>
+          <Grid item xs={12}>
+            <Divider className={classes.children} />
+            <Grid container direction="column">
+              <Grid item>
+                <HashtagInput
+                  postData={postData}
+                  updatePostData={setPostData}
+                />
+              </Grid>
+              <Grid
+                item
+                container
+                direction="row"
+                alignItems="flex-start"
+                xs={12}
+                className={classes.children}
+              >
+                <span
+                  style={{ fontSize: 'smaller', margin: '0.5% 0', cursor: 'default' }}
+                >
+                  이런 해시태그는 어떠세요?&nbsp;
+                </span>
+                <HashtagRecommender
+                  postData={postData}
+                  recommendedHashtags={recommendedHashtags}
+                  updatePostData={setPostData}
+                />
+                <Divider className={classes.children} />
+              </Grid>
             </Grid>
           </Grid>
           <Grid item xs={12}>
@@ -246,14 +268,13 @@ const PostForm = (props) => {
               mediaFiles={mediaFiles}
               updateMediaFiles={setMediaFiles}
             />
-            <Divider className={classes.children} />
           </Grid>
           {attachedFiles.length > 0 ? (
-            <Grid container item spacing={1}>
+            <Grid container item xs={12}>
               <Grid item xs={12}>
                 <Paper
                   elevation={0}
-                  style={{ backgroundColor: '#F8F8F8', padding: '1%' }}
+                  style={{ backgroundColor: '#F8F8F8', padding: '3%' }}
                 >
                   <AttachmentList
                     files={attachedFiles}
@@ -265,7 +286,7 @@ const PostForm = (props) => {
             </Grid>
           ) : null}
           {mediaFiles.length > 0 ? (
-            <Grid container item spacing={1}>
+            <Grid container item>
               <Grid item xs={12}>
                 <Paper
                   elevation={0}
@@ -280,7 +301,7 @@ const PostForm = (props) => {
               </Grid>
             </Grid>
             ) : null}
-          <Grid item xs={12}>
+          <Grid container item xs={12}>
             <TextField
               variant="outlined"
               rows={5}
@@ -290,46 +311,24 @@ const PostForm = (props) => {
               inputRef={contentRef}
             />
           </Grid>
-          <Grid container item>
+          <Grid container item xs={12} justify="flex-end">
+            <div style={{ display: 'flex', gap: '0.5rem' }}>
+              <AccessModifier
+                postData={postData}
+                updatePostData={setPostData}
+              />
+              <CommentModifier
+                postData={postData}
+                updatePostData={setPostData}
+              />
+            </div>
+          </Grid>
+          <Grid container item xs={12}>
             <Grid container item direction="row" justify="space-between">
-              <Grid item sm={12}>
-                <Grid container direction="column" spacing={2}>
-                  <Grid item>
-                    <HashtagInput
-                      postData={postData}
-                      updatePostData={setPostData}
-                    />
-                  </Grid>
-                  <Grid
-                    item
-                    container
-                    direction="row"
-                    alignItems="center"
-                    spacing={1}
-                  >
-                    <Grid item>
-                      <strong style={{ color: '#828282' }}>
-                        이런 해시태그는 어때요?
-                      </strong>
-                    </Grid>
-                    {isLoaded ? (
-                      <HashtagRecommender
-                        postData={postData}
-                        recommendedHashtags={recommendedHashtags}
-                        updatePostData={setPostData}
-                      />
-                    ) : (
-                      '추천 해시태그를 찾는 중입니다'
-                    )}
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid />
               <PostCreator
                 handleSubmit={handleSubmit}
               />
             </Grid>
-            <Grid />
           </Grid>
         </Grid>
       </Grid>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from '@material-ui/core';
-import { Lock, LockOpen } from '@material-ui/icons';
+import { PeopleAlt, Public } from '@material-ui/icons';
 
 const CommentModifier = ({ postData, updatePostData }) => {
   const { commentModifier } = postData;
@@ -9,17 +9,16 @@ const CommentModifier = ({ postData, updatePostData }) => {
     <Button
       size="small"
       variant="outlined"
-      startIcon={commentModifier === 'PUBLIC' ? <LockOpen /> : <Lock />}
+      startIcon={commentModifier === 'PUBLIC' ? <Public /> : <PeopleAlt />}
       onClick={() => {
         updatePostData({
           ...postData,
           commentModifier: commentModifier === 'PUBLIC' ? 'PRIVATE' : 'PUBLIC',
         });
       }}
-      style={{ margin: '0.5%' }}
     >
       {
-        commentModifier === 'PUBLIC' ? '댓글 전체 공개' : '댓글 내부 공개'
+        commentModifier === 'PUBLIC' ? '댓글 외부 공개' : '댓글 내부 공개'
       }
       &nbsp;
       &nbsp;
