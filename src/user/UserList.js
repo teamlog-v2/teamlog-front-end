@@ -21,7 +21,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const UserList = ({ userId, fetchData }) => {
+const UserList = ({ type, userId, fetchData }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [users, setUsers] = useState([]);
   const classes = useStyles();
@@ -73,39 +73,42 @@ const UserList = ({ userId, fetchData }) => {
   return (
     <Container disableGutters maxWidth="md">
       <Grid container spacing={1}>
-        {(isLoaded ? users : Array.from(new Array(12))).map((user) => (
-          <Grid item sm={6} xs={12}>
-            <Card elevation={2}>
-              {user ? (
-                <Box display="flex" flexDirection="row">
-                  <Box flexGrow={1}>
-                    <Link
-                      to={`/users/${user.id}`}
-                      style={{ textDecoration: 'none' }}
-                    >
-                      <Box display="flex" alignItems="center">
-                        <Avatar
-                          className={classes.profileImg}
-                          src={user.profileImgPath}
-                        />
-                        <Typography variant="body1" color="textPrimary">
-                          {user.name}
-                        </Typography>
+        {isLoaded ?
+        (
+          <>
+            {users.length > 0 ?
+              users.map(((user) => (
+                <Grid item sm={6} xs={12}>
+                  <Card elevation={2}>
+                    <Box display="flex" flexDirection="row">
+                      <Box flexGrow={1}>
+                        <Link
+                          to={`/users/${user.id}`}
+                          style={{ textDecoration: 'none' }}
+                        >
+                          <Box display="flex" alignItems="center">
+                            <Avatar
+                              className={classes.profileImg}
+                              src={user.profileImgPath}
+                            />
+                            <Typography variant="body1" color="textPrimary">
+                              {user.name}
+                            </Typography>
+                          </Box>
+                        </Link>
                       </Box>
-                    </Link>
-                  </Box>
-                  <Box margin="10px" display="flex" alignItems="center">
-                    {user.isFollow === null ? null : (
-                      <>
-                        {user.isFollow === true ? (
-                          <Button
-                            size="small"
-                            variant="outlined"
-                            color="primary"
-                            onClick={() => unfollowUser(user)}
-                          >
-                            팔로잉
-                          </Button>
+                      <Box margin="10px" display="flex" alignItems="center">
+                        {user.isFollow === null ? null : (
+                          <>
+                            {user.isFollow === true ? (
+                              <Button
+                                size="small"
+                                variant="outlined"
+                                color="primary"
+                                onClick={() => unfollowUser(user)}
+                              >
+                                팔로잉
+                              </Button>
                         ) : (
                           <Button
                             size="small"
@@ -116,16 +119,32 @@ const UserList = ({ userId, fetchData }) => {
                             팔로우
                           </Button>
                         )}
-                      </>
+                          </>
                     )}
-                  </Box>
-                </Box>
-              ) : (
-                <Box display="flex" flexDirection="row" alignItems="center">
-                  <Skeleton variant="circle" className={classes.profileImg} />
-                  <Skeleton width="50%" height={20} />
-                </Box>
-              )}
+                      </Box>
+                    </Box>
+                  </Card>
+                </Grid>
+              )
+            )) : (
+              <Grid
+                container
+                justify="center"
+                alignItems="center"
+                style={{ height: '50vh' }}
+              >
+                {type === 'FOLLOWER' ? (<>아직 팔로워가 없어요. 😢</>) : (<>아직 팔로우하는 유저가 없어요. 😢</>)}
+              </Grid>
+            )}
+          </>
+        )
+        : Array.from(new Array(12)).map(() => (
+          <Grid item sm={6} xs={12}>
+            <Card elevation={2}>
+              <Box display="flex" flexDirection="row" alignItems="center">
+                <Skeleton variant="circle" className={classes.profileImg} />
+                <Skeleton width="50%" height={20} />
+              </Box>
             </Card>
           </Grid>
         ))}

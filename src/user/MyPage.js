@@ -170,7 +170,7 @@ const MyPage = ({ match }) => {
         </Grid>
         <TabContext value={value}>
           <AppBar position="static" elevation={0} color="transparent">
-            <TabList onChange={handleChange}>
+            <TabList onChange={handleChange} centered>
               <Tab label="프로젝트" value="1" />
               <Tab label="팀" value="2" />
               <Tab label="팔로워" value="3" />
@@ -184,10 +184,10 @@ const MyPage = ({ match }) => {
             <TeamList />
           </TabPanel>
           <TabPanel disableGutters value="3">
-            <UserList userId={user.id} fetchData={getUserFollower} />
+            <UserList type="FOLLOWER" userId={user.id} fetchData={getUserFollower} />
           </TabPanel>
           <TabPanel disableGutters value="4">
-            <UserList userId={user.id} fetchData={getUserFollowing} />
+            <UserList type="FOLLOWING" userId={user.id} fetchData={getUserFollowing} />
           </TabPanel>
         </TabContext>
       </Container>
