@@ -15,6 +15,7 @@ const StyledIcon = styled(Typography)`
     font-size: medium;
   }
   cursor: pointer;
+  transition: 0.2s;
   &:hover {
     color: #C16AF5;
   }
@@ -26,7 +27,6 @@ const getItemStyle = (isDragging, draggableStyle) => ({
   margin: '5px 0 5px 0',
   backgroundColor: 'none',
   border: isDragging ? '2px solid #C16AF5' : '2px solid #eee',
-  // styles we need to apply on draggables
   ...draggableStyle,
 });
 

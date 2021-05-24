@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     display: 'flex',
     flexDirection: 'column',
-    border: '1px solid #eee',
+    border: '1px solid #F2F2F2',
   },
   header: {
     position: 'relative',
@@ -210,7 +210,11 @@ const PostMenu = (props) => {
                 zIndex: 3,
               }}
             >
-              <Paper className={classes.postMenu} style={{ zIndex: 2 }}>
+              <Paper
+                className={classes.postMenu}
+                style={{ zIndex: 2, opacity: 0.9 }}
+                elevation={1}
+              >
                 <ClickAwayListener onClickAway={handleClose}>
                   <MenuList
                     autoFocusItem={menuOpen}
@@ -308,6 +312,7 @@ const MediaList = ({ media }) => {
           cycleNavigation={false}
           indicatorIconButtonProps={{
           }}
+          indicators={false}
           activeIndicatorIconButtonProps={{
               style: {
                   color: '#C16AF5', // 2
@@ -327,9 +332,7 @@ const MediaList = ({ media }) => {
 
 export const Post = (props) => {
   const { content, maxWidth, setIsPostLoading, setFormData,
-    initPosts, relation, updatePost } = props;
-
-  console.log(content.address);
+    initPosts, relation, updatePost, hashtags: projectHashtags } = props;
 
   const [open, setOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
@@ -488,6 +491,7 @@ export const Post = (props) => {
       <ResponsiveDialog open={open} updateOpen={setOpen}>
         <PostFormPage
           content={content}
+          hashtags={projectHashtags} // 임시 빈값
           updateOpen={setOpen}
           updatePost={updatePost}
         />

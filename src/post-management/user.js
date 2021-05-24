@@ -13,7 +13,6 @@ const useStyles = makeStyles(() => ({
   small: {
     width: '35px',
     height: '35px',
-    margin: '3px',
   },
 }));
 
@@ -34,7 +33,7 @@ const UserId = (props) => {
         to={`/users/${userId}`}
         style={{ textDecoration: 'none', color: 'black' }}
       >
-        <span style={{ fontWeight: 600 }}>{userId}</span>
+        <strong>{userId}</strong>
       </Link>
     </Box>
   );

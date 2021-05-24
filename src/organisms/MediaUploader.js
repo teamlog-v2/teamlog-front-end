@@ -21,7 +21,8 @@ const MediaUploader = ({ files, updateFiles }) => {
     const fileWithThumbnail = [];
     let newFiles = [...files];
 
-    if (!isValidSize(files, uploadedFiles, 200000)) { // 동영상은 얼마나 압축하는게 좋을까요
+    if (!isValidSize(files, uploadedFiles, 200000000)) { // 동영상은 얼마나 압축하는게 좋을까요
+      console.log(`plz ${200000000 / 1000000} MB...`);
       alert('첨부파일 최대 용량은 200MB 입니다.');
       return;
     }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from '@material-ui/core';
-import { Lock, LockOpen } from '@material-ui/icons';
+import { PeopleAlt, Public } from '@material-ui/icons';
 
 const AccessModifier = ({ postData, updatePostData }) => {
   const { accessModifier } = postData;
@@ -8,16 +8,15 @@ const AccessModifier = ({ postData, updatePostData }) => {
     <Button
       size="small"
       variant="outlined"
-      startIcon={accessModifier === 'PUBLIC' ? <LockOpen /> : <Lock />}
+      startIcon={accessModifier === 'PUBLIC' ? <Public /> : <PeopleAlt />}
       onClick={() => {
         updatePostData({
           ...postData,
           accessModifier: accessModifier === 'PUBLIC' ? 'PRIVATE' : 'PUBLIC' });
       }}
-      style={{ margin: '0.5%' }}
     >
       {
-        accessModifier === 'PUBLIC' ? '포스트 전체 공개' : '포스트 내부 공개'
+        accessModifier === 'PUBLIC' ? '포스트 외부 공개' : '포스트 내부 공개'
       }
     </Button>
 );

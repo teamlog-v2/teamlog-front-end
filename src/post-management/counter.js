@@ -68,10 +68,10 @@ export const LikerCounter = (props) => {
 
   const Icon = () => {
     if (like === 2) {
-      return <FavoriteIcon className="gelatine" fontSize="small" color="primary" />;
+      return <FavoriteIcon className="gelatine" fontSize="small" style={{ color: '#F5575A' }} />;
     }
     if (like === 1) {
-      return <FavoriteIcon fontSize="small" color="primary" />;
+      return <FavoriteIcon fontSize="small" style={{ color: '#F5575A' }} />;
     }
     return <FavoriteBorderIcon fontSize="small" />;
   };
