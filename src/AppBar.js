@@ -15,6 +15,9 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import React, { useContext, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import AuthContext, { setAccessToken } from './contexts/auth';
+import ResponsiveDialog from './organisms/ResponsiveDialog';
+import ProjectForm from './project/ProjectForm';
+import TeamForm from './team/TeamForm';
 
 function HideOnScroll(props) {
   const { children, window } = props;
@@ -102,6 +105,8 @@ export default function AppBar() {
   const [id, setContextId, profileImgPath] = useContext(AuthContext);
 
   const [anchorEl, setAnchorEl] = useState(null);
+  const [isProjectFormOpened, setIsProjectFormOpened] = useState(false);
+  const [isTeamFormOpened, setIsTeamFormOpened] = useState(false);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -183,7 +188,8 @@ export default function AppBar() {
           <MenuItem
             onClick={() => {
               handleClose();
-              history.push('/create-project');
+              setIsProjectFormOpened(true);
+              // history.push('/create-project');
             }}
           >
             프로젝트 생성
@@ -191,7 +197,8 @@ export default function AppBar() {
           <MenuItem
             onClick={() => {
               handleClose();
-              history.push('/create-team');
+              setIsTeamFormOpened(true);
+              // history.push('/create-team');
             }}
           >
             팀 생성
@@ -206,6 +213,12 @@ export default function AppBar() {
             로그아웃
           </MenuItem>
         </Menu>
+        <ResponsiveDialog open={isProjectFormOpened} updateOpen={setIsProjectFormOpened}>
+          <ProjectForm />
+        </ResponsiveDialog>
+        <ResponsiveDialog open={isTeamFormOpened} updateOpen={setIsTeamFormOpened}>
+          <TeamForm />
+        </ResponsiveDialog>
       </Div>
     </>
   );

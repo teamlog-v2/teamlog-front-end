@@ -77,6 +77,7 @@ export default function TeamForm() {
     <div
       style={{
         margin: 'auto',
+        minWidth: '20em',
         maxWidth: '480px',
         padding: '1rem',
         // textAlign: 'center',
@@ -85,19 +86,18 @@ export default function TeamForm() {
       <Backdrop open={isProcessing} className={classes.backdrop}>
         <CircularProgress color="inherit" />
       </Backdrop>
-      <Box height="4rem" />
       <Divider />
       <div style={{ height: '1rem' }} />
 
-      <Typography variant="h4" align="center">
+      <Typography variant="h5" align="center">
         팀 생성
       </Typography>
-      <div style={{ height: '1rem' }} />
+      <div style={{ height: '0.5rem' }} />
 
       <Divider />
       <div style={{ height: '1rem' }} />
 
-      <Typography variant="h6" color="textSecondary">
+      <Typography color="textSecondary">
         팀명
       </Typography>
       <TextField
@@ -113,7 +113,7 @@ export default function TeamForm() {
       />
       <div style={{ height: '1rem' }} />
 
-      <Typography variant="h6" color="textSecondary">
+      <Typography color="textSecondary">
         간단한 소개
       </Typography>
       <TextField
@@ -129,7 +129,7 @@ export default function TeamForm() {
       />
       <div style={{ height: '1rem' }} />
 
-      <Typography variant="h6" color="textSecondary">
+      <Typography color="textSecondary">
         공개 설정
       </Typography>
       <div style={{ display: 'flex' }}>
@@ -187,13 +187,13 @@ export default function TeamForm() {
           color="primary"
           variant="contained"
           disableElevation
-          style={{ fontSize: '1.5rem' }}
+          style={{ fontSize: '1.0rem' }}
           onClick={onClickCreate}
+          size="small"
         >
           생성하기
         </Button>
       </div>
-      <Box height="4rem" />
     </div>
   );
 }
