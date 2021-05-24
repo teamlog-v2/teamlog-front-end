@@ -11,12 +11,14 @@ import {
   useScrollTrigger,
 } from '@material-ui/core';
 import { ArrowDropDown, Notifications, Search } from '@material-ui/icons';
+import GetAppIcon from '@material-ui/icons/GetApp';
 import React, { useContext, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import AuthContext, { setAccessToken } from './contexts/auth';
 
 function HideOnScroll(props) {
   const { children, window } = props;
+  console.log('bar');
   // Note that you normally won't need to set the window ref as useScrollTrigger
   // will default to window.
   // This is only being set here because the demo is in an iframe.
@@ -120,15 +122,19 @@ export default function AppBar() {
     return (
       <>
         <Div>
-          <Button className="add-button" onClick={userClickedAddToHome}>앱</Button>
+          <IconButton onClick={userClickedAddToHome}>
+            <GetAppIcon style={{ fontSize: '1.125rem', color: 'white' }} />
+          </IconButton>
+          {/* <Button className="add-button" onClick={userClickedAddToHome}>앱</Button> */}
           <IconButton
             onClick={() => {
               history.push('/search');
             }}
           >
-            <Search style={{ fontSize: '1rem' }} />
+            <Search style={{ fontSize: '1.125rem', color: 'white' }} />
           </IconButton>
           <Button
+            style={{ color: 'white' }}
             onClick={() => {
               history.push('/login');
             }}
@@ -144,6 +150,9 @@ export default function AppBar() {
     <>
       <Backdrop open={!!anchorEl} style={{ zIndex: 1000 }} />
       <Div>
+        <IconButton onClick={userClickedAddToHome}>
+          <GetAppIcon style={{ fontSize: '1.125rem', color: 'white' }} />
+        </IconButton>
         <IconButton
           onClick={() => {
             history.push('/search');
