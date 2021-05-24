@@ -72,26 +72,25 @@ const useStyles = makeStyles((theme) => ({
 
 let deferredInstallPrompt = null;
 
-  window.addEventListener('beforeinstallprompt', (e) => {
-    // Stash the event so it can be triggered later.
-    deferredInstallPrompt = e;
-    // Update UI notify the user they can install the PWA
-    // Optionally, send analytics event that PWA install promo was shown.
-    console.log('\'beforeinstallprompt\' event was fired.');
-  });
+window.addEventListener('beforeinstallprompt', (e) => {
+  // Stash the event so it can be triggered later.
+  deferredInstallPrompt = e;
+  // Update UI notify the user they can install the PWA
+  // Optionally, send analytics event that PWA install promo was shown.
+  console.log("'beforeinstallprompt' event was fired.");
+});
 
 function userClickedAddToHome() {
   deferredInstallPrompt.prompt();
 
-  deferredInstallPrompt.userChoice
-   .then((choiceResult) => {
- if (choiceResult.outcome === 'accepted') {
-   // 유저가 홈 스크린에 어플리케이션 추가에 동의
- } else {
-   // 유저가 홈 스크린에 어플리케이션 추가를 거부
- }
- deferredInstallPrompt = null;
-});
+  deferredInstallPrompt.userChoice.then((choiceResult) => {
+    if (choiceResult.outcome === 'accepted') {
+      // 유저가 홈 스크린에 어플리케이션 추가에 동의
+    } else {
+      // 유저가 홈 스크린에 어플리케이션 추가를 거부
+    }
+    deferredInstallPrompt = null;
+  });
 }
 
 export default function AppBar() {
@@ -120,15 +119,22 @@ export default function AppBar() {
     return (
       <>
         <Div>
-          <Button className="add-button" onClick={userClickedAddToHome}>앱</Button>
+          <Button
+            style={{ color: 'white' }}
+            className="add-button"
+            onClick={userClickedAddToHome}
+          >
+            앱
+          </Button>
           <IconButton
             onClick={() => {
               history.push('/search');
             }}
           >
-            <Search style={{ fontSize: '1rem' }} />
+            <Search style={{ fontSize: '1rem', color: 'white' }} />
           </IconButton>
           <Button
+            style={{ color: 'white' }}
             onClick={() => {
               history.push('/login');
             }}

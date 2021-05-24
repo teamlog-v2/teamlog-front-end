@@ -218,7 +218,8 @@ const Header = ({ sections, updateRelation }) => {
   const theme = createMuiTheme({
     palette: {
       primary: {
-        main: 'rgb(195, 0, 255)',
+        // main: 'rgb(195, 0, 255)',
+        main: '#593875',
       },
     },
   });

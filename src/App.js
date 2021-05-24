@@ -27,7 +27,6 @@ const App = () => {
         <AppBar />
         <Switch>
           <Redirect exact path="/" to="/login" />
-
           {/* <Route exact path="/main" component={MapPage} /> */}
 
           <Route path="/create-project" component={ProjectForm} />

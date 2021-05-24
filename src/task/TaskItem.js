@@ -17,7 +17,7 @@ const StyledIcon = styled(Typography)`
   cursor: pointer;
   transition: 0.2s;
   &:hover {
-    color: #C16AF5;
+    color: #593875;
   }
 `;
 
@@ -26,7 +26,7 @@ const getItemStyle = (isDragging, draggableStyle) => ({
   padding: 10,
   margin: '5px 0 5px 0',
   backgroundColor: 'none',
-  border: isDragging ? '2px solid #C16AF5' : '2px solid #eee',
+  border: isDragging ? '2px solid #593875' : '2px solid #eee',
   ...draggableStyle,
 });
 
