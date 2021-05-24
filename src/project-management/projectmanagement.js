@@ -456,9 +456,9 @@ const ProjectManagement = () => {
               <Grid item style={{ margin: '1em 0' }} xs={3} sm={2}>
                 <DeleteButton
                   fullWidth
-                  onClick={() => {
+                  onClick={async () => {
                     if (window.confirm('프로젝트 내의 내용은 모두 사라집니다. 정말 그래도 삭제하시겠습니까?')) {
-                        const { status } = DeleteProject(projectId);
+                        const { status } = await DeleteProject(projectId);
 
                         if (status === 401) {
                             setIsLogin(false);
@@ -466,7 +466,7 @@ const ProjectManagement = () => {
                         }
 
                         if (status === 200) {
-                            console.log('성공');
+                            window.location.replace(`/users/${master.id}`);
                         }
                     }
                 }}

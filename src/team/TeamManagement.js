@@ -459,9 +459,10 @@ const TeamManagement = () => {
               <Grid item style={{ margin: '1em 0' }} xs={3} sm={2}>
                 <DeleteButton
                   fullWidth
-                  onClick={() => {
+                  onClick={async () => {
                     if (window.confirm('팀 내의 내용은 모두 사라집니다. 정말 그래도 삭제하시겠습니까?')) {
-                        const { status } = DeleteTeam(teamId);
+                        const { status } = await DeleteTeam(teamId);
+                        console.log(status);
 
                         if (status === 401) {
                             setIsLogin(false);
@@ -469,7 +470,7 @@ const TeamManagement = () => {
                         }
 
                         if (status === 200) {
-                            console.log('성공');
+                          window.location.replace(`/users/${master.id}`);
                         }
                     }
                 }}

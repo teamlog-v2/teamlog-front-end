@@ -59,6 +59,7 @@ export default function ProjectForm() {
     }
     setIsProcessing(true);
 
+    // 팀 내에서 등록할 때는 팀 아이디도 필요할 듯
     request()
       .then((res) => {
         if (res.status >= 200 && res.status < 300) {
@@ -78,6 +79,7 @@ export default function ProjectForm() {
     <div
       style={{
         margin: 'auto',
+        minWidth: '20em',
         maxWidth: '480px',
         padding: '1rem',
         // textAlign: 'center',
@@ -86,19 +88,18 @@ export default function ProjectForm() {
       <Backdrop open={isProcessing} className={classes.backdrop}>
         <CircularProgress color="inherit" />
       </Backdrop>
-      <Box height="4rem" />
       <Divider />
       <div style={{ height: '1rem' }} />
 
-      <Typography variant="h4" align="center">
+      <Typography variant="h5" align="center">
         프로젝트 생성
       </Typography>
-      <div style={{ height: '1rem' }} />
+      <div style={{ height: '0.5rem' }} />
 
       <Divider />
       <div style={{ height: '1rem' }} />
 
-      <Typography variant="h6" color="textSecondary">
+      <Typography color="textSecondary">
         프로젝트명
       </Typography>
       <TextField
@@ -114,7 +115,7 @@ export default function ProjectForm() {
       />
       <div style={{ height: '1rem' }} />
 
-      <Typography variant="h6" color="textSecondary">
+      <Typography color="textSecondary">
         간단한 소개
       </Typography>
       <TextField
@@ -130,7 +131,7 @@ export default function ProjectForm() {
       />
       <div style={{ height: '1rem' }} />
 
-      <Typography variant="h6" color="textSecondary">
+      <Typography color="textSecondary">
         공개 설정
       </Typography>
       <div style={{ display: 'flex' }}>
@@ -188,13 +189,13 @@ export default function ProjectForm() {
           color="primary"
           variant="contained"
           disableElevation
-          style={{ fontSize: '1.5rem' }}
+          style={{ fontSize: '1.0rem' }}
           onClick={onClickCreate}
+          size="small"
         >
           생성하기
         </Button>
       </div>
-      <Box height="4rem" />
     </div>
   );
 }

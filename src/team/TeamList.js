@@ -29,26 +29,35 @@ export default function TeamList() {
 
   return (
     <Grid container spacing={1}>
-      {teams.map((team) => (
-        <Grid key={team.id} item sm={6} xs={12}>
-          <Link to={`/teams/${team.id}`} style={{ textDecoration: 'none' }}>
-            <Card elevation={2}>
-              <Box padding="0.5em" display="inline-block">
-                <img src={teamIcon} alt="teamIcon" width="40px" height="40px" />
-              </Box>
-              <Box display="inline-block" margin="0.5rem 0.75rem">
-                <Typography color="textPrimary">
-                  {team.name}
-                </Typography>
-                <Typography variant="body2" color="textSecondary">
-                  마지막 업데이트&nbsp;·&nbsp;
-                  {ManufactureDate(team.updateTime)}
-                </Typography>
-              </Box>
-            </Card>
-          </Link>
+      {teams.length === 0 ? (
+        <Grid
+          container
+          justify="center"
+          alignItems="center"
+          style={{ height: '50vh' }}
+        >
+          아직 참여 중인 팀이 없어요. 😢
         </Grid>
-      ))}
+) : (teams.map((team) => (
+  <Grid key={team.id} item sm={6} xs={12}>
+    <Link to={`/teams/${team.id}`} style={{ textDecoration: 'none' }}>
+      <Card elevation={2}>
+        <Box padding="0.5em" display="inline-block">
+          <img src={teamIcon} alt="teamIcon" width="40px" height="40px" />
+        </Box>
+        <Box display="inline-block" margin="0.5rem 0.75rem">
+          <Typography color="textPrimary">
+            {team.name}
+          </Typography>
+          <Typography variant="body2" color="textSecondary">
+            마지막 업데이트&nbsp;·&nbsp;
+            {ManufactureDate(team.updateTime)}
+          </Typography>
+        </Box>
+      </Card>
+    </Link>
+  </Grid>
+      )))}
     </Grid>
   );
 }
