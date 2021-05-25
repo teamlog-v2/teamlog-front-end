@@ -1,6 +1,7 @@
 import {
   Box,
   Card,
+  Chip,
   CircularProgress,
   Divider,
   IconButton,
@@ -10,6 +11,7 @@ import { Reply } from '@material-ui/icons';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import AuthContext from '../contexts/auth';
+import { DateInfo } from '../post-management/datetime';
 
 // 1. 프로젝트 2. 게시물 (3. 댓글)
 // 태스크
@@ -239,7 +241,10 @@ export default function HomePage() {
             );
           case 'TASKS':
             return (
-              <TasksCard key={`TASKS_${wrapper.project.id}`} tasksWrapper={wrapper} />
+              <TasksCard
+                key={`TASKS_${wrapper.project.id}`}
+                tasksWrapper={wrapper}
+              />
             );
           default:
             return null;
@@ -280,33 +285,74 @@ function InvitationsCard({ invitation }) {
 }
 
 function TasksCard({ tasksWrapper }) {
-  const { project, tasks } = tasksWrapper;
+  const { project, wrapperTime, tasks } = tasksWrapper;
   const mainTask = tasks[0]; // { status, updateTime, ... }
   const history = useHistory();
 
   return (
     <UnitCard>
-      <Typography variant="caption" color="primary">
-        <CustomLink to={`/projects/${project.id}`}>@{project.name}</CustomLink>
-      </Typography>
-      <Typography variant="caption" color="textSecondary"> 태스크 업데이트</Typography>
-      <Box>
-        {mainTask.taskName}
+      <Box display="flex" justifyContent="space-between" alignItems="center">
+        <Box>
+          <Typography variant="" color="primary">
+            <CustomLink to={`/projects/${project.id}`}>
+              @{project.name}
+            </CustomLink>
+          </Typography>
+          &nbsp;
+          <DateInfo dateTime={wrapperTime} />
+          <Box height="1rem" />
+          <Box display="flex" alignItems="center">
+            <CustomLink to={`/projects/${project.id}/task`}>
+              <SmallCard>
+                {(() => {
+                  switch (mainTask.status) {
+                    case 0:
+                      return '[진행 전]';
+                    case 1:
+                      return '[진행 중]';
+                    case 2:
+                      return '[완료]';
+                    case 3:
+                      return '[실패]';
+                    default:
+                      return null;
+                  }
+                })()}
+                &nbsp;{mainTask.taskName}
+              </SmallCard>
+            </CustomLink>
+            &nbsp;
+            <CustomLink to={`/projects/${project.id}/task`}>
+              <CustomEm>등 {tasks.length}건의 태스크</CustomEm>
+            </CustomLink>
+            가 업데이트 되었습니다.
+          </Box>
+        </Box>
+        <IconButton
+          onClick={() => {
+            history.push(`/projects/${project.id}/task`);
+          }}
+        >
+          <Reply />
+        </IconButton>
       </Box>
     </UnitCard>
   );
 }
 
 function PostCard({ postWrapper }) {
-  const { project } = postWrapper;
+  const { project, wrapperTime } = postWrapper;
   const history = useHistory();
 
   return (
     <UnitCard>
-      <Typography variant="caption" color="primary">
+      <Typography variant="" color="primary">
         <CustomLink to={`/projects/${project.id}`}>@{project.name}</CustomLink>
       </Typography>
-      <Typography variant="caption" color="textSecondary"> 게시물 업데이트</Typography>
+      &nbsp;
+      <DateInfo dateTime={wrapperTime} />
+      <Box height="1rem" />
+      <Box>포스트 업데이트 알림, 여기에 압축된 포스트가 들어갑니다!</Box>
     </UnitCard>
   );
 }
@@ -318,6 +364,18 @@ function UnitCard({ children }) {
         <Box padding="1rem">{children}</Box>
       </Card>
       <Box marginBottom="1rem" />
+    </>
+  );
+}
+
+function SmallCard({ children }) {
+  return (
+    <>
+      <Card elevation={0}>
+        <Box bgcolor="#593875" color="white" padding="0.5rem">
+          {children}
+        </Box>
+      </Card>
     </>
   );
 }
@@ -337,7 +395,11 @@ function Template({ children, ...props }) {
 function CustomLink({ children, ...props }) {
   return (
     <Link style={{ color: '#593875', textDecoration: 'none' }} {...props}>
-      <span style={{ textDecoration: 'underline' }}>{children}</span>
+      {children}
     </Link>
   );
+}
+
+function CustomEm({ children }) {
+  return <strong style={{ color: '#593875' }}>{children}</strong>;
 }
