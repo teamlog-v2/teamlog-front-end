@@ -16,6 +16,10 @@ import AuthContext from '../contexts/auth';
 //
 // 지도로 탐험하기 버튼 -> MapPage로 이동
 
+function cmpTimeStr(a, b) {
+  return new Date(b) - new Date(a);
+}
+
 //
 // 최신, 인기?
 export default function HomePage() {
@@ -24,7 +28,7 @@ export default function HomePage() {
   const [invitations, setInvitations] = useState(null);
   const [belongingProjects, setBelongingProjects] = useState(null);
   const [followingProjects, setFollowingProjects] = useState(null);
-  const [followingUsers, setFollowingUsers] = useState(null);
+  const [followingUsersPosts, setFollowingUsersPosts] = useState(null);
   const [taskWrappers, setTaskWrappers] = useState([]);
   const tasksCounter = useRef(0);
   const [belongingPosts, setBelongingPosts] = useState([]);
@@ -60,12 +64,12 @@ export default function HomePage() {
         setFollowingProjects(res);
       });
 
-    // 나의 팔로워
-    fetch(`/api/users/${userId}/following`)
+    // 나의 팔로워의 게시물
+    fetch('/api/following-users/posts')
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
-        setFollowingUsers(res);
+        setFollowingUsersPosts(res);
       });
   }, []);
 
@@ -76,24 +80,27 @@ export default function HomePage() {
 
     // 테스크
     // 프로젝트 단위로 받는데,
-    // 최신 (5일 이내? 기준시간값을 변경하기 쉽게 구현하세요)측에 속하는 것만 가지고 나머지는 날린다. (이러고 남은게 없으면 패스~)
-    // 정렬 후 포장해서 저장한다. wrapper.isTask = true
+    // 최신 (7일 이내? 기준시간값을 변경하기 쉽게 구현하세요)측에 속하는 것만 가지고 나머지는 날린다. (이러고 남은게 없으면 패스~)
+    // 정렬 후 포장해서 저장한다.
     belongingProjects.forEach((project) => {
       fetch(`/api/projects/${project.id}/tasks`)
         .then((res) => res.json())
         .then((res) => {
           console.log(res);
-          const filteredTasks = res; // TODO: 최신 항목 분리
+          // 최신 항목 분리 (7일 이내의 항목)
+          const filteredTasks = res.filter((task) => {
+            const deltaTime = Date.now() - new Date(task.updateTimeStr);
+            return deltaTime <= 7 * 24 * 60 * 60 * 1000;
+          });
 
           if (filteredTasks.length > 0) {
-            // TODO: 최신 순 정렬
-            // filteredTasks.sort();
-            // TODO: wrapperTime 변경
+            filteredTasks.sort((a, b) => cmpTimeStr(a.updateTimeStr, b.updateTimeStr));
             const taskWrapper = {
               type: 'TASKS',
               tasks: filteredTasks,
               project,
               wrapperTime: filteredTasks[0].updateTime,
+              wrapperTimeStr: filteredTasks[0].updateTimeStr,
             };
             setTaskWrappers((prev) => [...prev, taskWrapper]);
           }
@@ -103,14 +110,13 @@ export default function HomePage() {
 
     // 게시물
     // 프로젝트 단위로 받는데, 딱히 구분하진 않는다.
-    // 최신 측에 속하는 것만 가지고 나머지는 날린다.
     // 상태변수에 추가한다. (정렬은 나중에 한번에)
     belongingProjects.forEach(({ id }) => {
       fetch(`/api/posts/project/${id}`)
         .then((res) => res.json())
         .then((res) => {
           console.log(res);
-          // TODO : 최신 항목 분리
+          // TODO : 최신 항목 분리 (안해도될듯)
           setBelongingPosts((prev) => [...prev, ...res.content]);
           belongingPostsCounter.current += 1;
         });
@@ -124,14 +130,13 @@ export default function HomePage() {
 
     // 게시물
     // 프로젝트 단위로 받는데, 딱히 구분하진 않는다.
-    // 최신 측에 속하는 것만 가지고 나머지는 날린다.
     // 상태변수에 추가한다. (정렬은 나중에 한번에)
     followingProjects.forEach(({ id }) => {
       fetch(`/api/posts/project/${id}`)
         .then((res) => res.json())
         .then((res) => {
           console.log(res);
-          // TODO : 최신 항목 분리
+          // TODO : 최신 항목 분리 (안해도될듯)
           setFollowingPosts((prev) => [...prev, ...res.content]);
           followingPostsCounter.current += 1;
         });
@@ -145,20 +150,16 @@ export default function HomePage() {
       tasksCounter.current !== belongingProjects.length ||
       belongingPostsCounter.current !== belongingProjects.length ||
       followingProjects === null ||
-      followingPostsCounter.current !== followingProjects.length
+      followingPostsCounter.current !== followingProjects.length ||
+      followingUsersPosts === null
     ) {
       return;
     }
 
-    console.log(invitations);
-    console.log(taskWrappers);
-    console.log(belongingPosts);
-    console.log(followingPosts);
-
     // 중복 포스트를 날리고, Wrapping 하기
     const postWrappers = [];
     const checker = {};
-    [...belongingPosts, ...followingPosts].forEach((post) => {
+    [...belongingPosts, ...followingPosts, ...followingUsersPosts].forEach((post) => {
       if (checker[post.id]) {
         return;
       }
@@ -168,16 +169,21 @@ export default function HomePage() {
         post,
         project: post.project,
         wrapperTime: post.writeTime,
+        wrapperTimeStr: post.writeTimeStr,
       });
     });
 
-    // wrapper 통합하기
+    // wrapper 통합 및 정렬
     const wrappers = [...taskWrappers, ...postWrappers];
-    // TODO: wrapperTime으로 wrappers를 정렬
+    wrappers.sort((a, b) => cmpTimeStr(a.wrapperTimeStr, b.wrapperTimeStr));
+    // 개수를 잘라낸다?? (일단은 ㅇㅇ!)
+    if (wrappers.length > 20) {
+      wrappers.length = 20;
+    }
 
     setUnits(wrappers);
     setIsLoaded(true);
-  }, [invitations, taskWrappers, belongingPosts, followingPosts]);
+  }, [invitations, taskWrappers, belongingPosts, followingPosts, followingUsersPosts]);
 
   // == render ========
   if (!isLoaded) {
@@ -186,26 +192,32 @@ export default function HomePage() {
 
   return (
     <>
-      <h1>최신 뉴스 피드</h1>
+      <h1>최신 뉴스 피드(꾸미면 예뻐집니다(아마도))</h1>
 
       <Divider />
       {invitations.map((unit) => (
-        <div key={unit.id}>{unit.projectName}</div>
+        <div key={unit.id}>{unit.projectName}에 초대되었습니다</div>
       ))}
 
-      <Divider />
       {units.map((wrapper) => {
         switch (wrapper.type) {
           case 'POST':
-            return <div key={`POST_${wrapper.post.id}`}>여기에 포스트</div>;
+            return (
+              <div key={`POST_${wrapper.post.id}`}>
+                {wrapper.wrapperTime} 여기에 포스트
+              </div>
+            );
           case 'TASKS':
             return (
-              <div key={`TASKS_${wrapper.project.id}`}>여기에 테스크스</div>
+              <div key={`TASKS_${wrapper.project.id}`}>
+                {wrapper.wrapperTime} 여기에 테스크스
+              </div>
             );
           default:
             return null;
         }
       })}
+      <div>뉴스는 여기까지</div>
       <Divider />
     </>
   );
