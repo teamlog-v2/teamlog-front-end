@@ -1,5 +1,14 @@
-import { Divider } from '@material-ui/core';
+import {
+  Box,
+  Card,
+  CircularProgress,
+  Divider,
+  IconButton,
+  Typography,
+} from '@material-ui/core';
+import { Reply } from '@material-ui/icons';
 import React, { useContext, useEffect, useRef, useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import AuthContext from '../contexts/auth';
 
 // 1. 프로젝트 2. 게시물 (3. 댓글)
@@ -94,7 +103,9 @@ export default function HomePage() {
           });
 
           if (filteredTasks.length > 0) {
-            filteredTasks.sort((a, b) => cmpTimeStr(a.updateTimeStr, b.updateTimeStr));
+            filteredTasks.sort((a, b) => {
+              return cmpTimeStr(a.updateTimeStr, b.updateTimeStr);
+            });
             const taskWrapper = {
               type: 'TASKS',
               tasks: filteredTasks,
@@ -159,19 +170,21 @@ export default function HomePage() {
     // 중복 포스트를 날리고, Wrapping 하기
     const postWrappers = [];
     const checker = {};
-    [...belongingPosts, ...followingPosts, ...followingUsersPosts].forEach((post) => {
-      if (checker[post.id]) {
-        return;
-      }
-      checker[post.id] = true;
-      postWrappers.push({
-        type: 'POST',
-        post,
-        project: post.project,
-        wrapperTime: post.writeTime,
-        wrapperTimeStr: post.writeTimeStr,
-      });
-    });
+    [...belongingPosts, ...followingPosts, ...followingUsersPosts].forEach(
+      (post) => {
+        if (checker[post.id]) {
+          return;
+        }
+        checker[post.id] = true;
+        postWrappers.push({
+          type: 'POST',
+          post,
+          project: post.project,
+          wrapperTime: post.writeTime,
+          wrapperTimeStr: post.writeTimeStr,
+        });
+      },
+    );
 
     // wrapper 통합 및 정렬
     const wrappers = [...taskWrappers, ...postWrappers];
@@ -183,42 +196,148 @@ export default function HomePage() {
 
     setUnits(wrappers);
     setIsLoaded(true);
-  }, [invitations, taskWrappers, belongingPosts, followingPosts, followingUsersPosts]);
+    console.log(invitations);
+  }, [
+    invitations,
+    taskWrappers,
+    belongingPosts,
+    followingPosts,
+    followingUsersPosts,
+  ]);
 
   // == render ========
   if (!isLoaded) {
-    return <h1>환영합니다, 최신 뉴스 피드를 준비하는 중입니다!</h1>;
+    return (
+      <Template bgcolor="#F8F8F8">
+        <Box display="flex" alignItems="center">
+          <CircularProgress />
+          <Box width="1rem" />
+          <Typography>환영합니다! 최근 소식을 가져오고 있습니다...</Typography>
+        </Box>
+      </Template>
+    );
   }
 
   return (
-    <>
-      <h1>최신 뉴스 피드(꾸미면 예뻐집니다(아마도))</h1>
-
+    <Template bgcolor="#F8F8F8">
+      <Typography variant="h3" color="primary">
+        🥳 최근 소식
+      </Typography>
+      <Box height="1rem" />
       <Divider />
-      {invitations.map((unit) => (
-        <div key={unit.id}>{unit.projectName}에 초대되었습니다</div>
+      <Box height="1rem" />
+
+      {invitations.map((invitation) => (
+        <InvitationsCard key={invitation.id} invitation={invitation} />
       ))}
 
       {units.map((wrapper) => {
         switch (wrapper.type) {
           case 'POST':
             return (
-              <div key={`POST_${wrapper.post.id}`}>
-                {wrapper.wrapperTime} 여기에 포스트
-              </div>
+              <PostCard key={`POST_${wrapper.post.id}`} postWrapper={wrapper} />
             );
           case 'TASKS':
             return (
-              <div key={`TASKS_${wrapper.project.id}`}>
-                {wrapper.wrapperTime} 여기에 테스크스
-              </div>
+              <TasksCard key={`TASKS_${wrapper.project.id}`} tasksWrapper={wrapper} />
             );
           default:
             return null;
         }
       })}
-      <div>뉴스는 여기까지</div>
       <Divider />
+    </Template>
+  );
+}
+
+// == 이하 중요하지 않음 ========
+function InvitationsCard({ invitation }) {
+  const { projectId, projectName } = invitation;
+  const history = useHistory();
+
+  return (
+    <UnitCard>
+      <Box display="flex" alignItems="center" justifyContent="space-between">
+        <Box>
+          <Typography variant="caption" color="textSecondary">
+            프로젝트 초대
+          </Typography>
+          <Typography variant="body1">
+            <CustomLink to={`/projects/${projectId}`}>{projectName}</CustomLink>
+            에 초대되었습니다.
+          </Typography>
+        </Box>
+        <IconButton
+          onClick={() => {
+            history.push(`/projects/${projectId}`);
+          }}
+        >
+          <Reply />
+        </IconButton>
+      </Box>
+    </UnitCard>
+  );
+}
+
+function TasksCard({ tasksWrapper }) {
+  const { project, tasks } = tasksWrapper;
+  const mainTask = tasks[0]; // { status, updateTime, ... }
+  const history = useHistory();
+
+  return (
+    <UnitCard>
+      <Typography variant="caption" color="primary">
+        <CustomLink to={`/projects/${project.id}`}>@{project.name}</CustomLink>
+      </Typography>
+      <Typography variant="caption" color="textSecondary"> 태스크 업데이트</Typography>
+      <Box>
+        {mainTask.taskName}
+      </Box>
+    </UnitCard>
+  );
+}
+
+function PostCard({ postWrapper }) {
+  const { project } = postWrapper;
+  const history = useHistory();
+
+  return (
+    <UnitCard>
+      <Typography variant="caption" color="primary">
+        <CustomLink to={`/projects/${project.id}`}>@{project.name}</CustomLink>
+      </Typography>
+      <Typography variant="caption" color="textSecondary"> 게시물 업데이트</Typography>
+    </UnitCard>
+  );
+}
+
+function UnitCard({ children }) {
+  return (
+    <>
+      <Card>
+        <Box padding="1rem">{children}</Box>
+      </Card>
+      <Box marginBottom="1rem" />
     </>
+  );
+}
+
+// //////////////////
+function Template({ children, ...props }) {
+  return (
+    <>
+      <Box maxWidth="768px" margin="2rem auto" {...props}>
+        <Box padding="1rem">{children}</Box>
+      </Box>
+      <Box height="6rem" />
+    </>
+  );
+}
+
+function CustomLink({ children, ...props }) {
+  return (
+    <Link style={{ color: '#593875', textDecoration: 'none' }} {...props}>
+      <span style={{ textDecoration: 'underline' }}>{children}</span>
+    </Link>
   );
 }
