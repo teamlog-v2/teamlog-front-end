@@ -68,33 +68,44 @@ const Content = (props) => {
 
   const classes = useStyles();
 
-  const stringSplit = contents.split(' ');
+  const stringSplit = contents.split(`\n`);
+  console.log(stringSplit);
 
   return (
    // <Box display={visibility}>
+   <>
       <Grid className={classes.commentGrid} item container direction="column">
-        <Grid item container direction="row" alignItems="center">
-        {writer}&nbsp;
+      {/* {writer}&nbsp; */}
+
         {stringSplit
-        ? stringSplit.map((string) =>  (
-            string[0] === '@' && tagList.includes(string.split('@')[1])
+        ? stringSplit.map((string, index) => {
+          console.log(index);
+          const wordSplit = string.split(' ');
+          return <Grid item>
+            {index == 0 ? (writer) : <></>}
+          {
+            wordSplit.map((word) => 
+              (word[0] === '@' && tagList.includes(word.split('@')[1])) ? 
+                <Link
+                to={`/users/${word.split('@')[1]}`}
+                style={{ textDecoration: 'none', cursor: 'pointer' }}
+                >
+                  <span style={{ color: '#593875', fontWeight: 600 }}>{word.split('@')[1]}&nbsp;</span>
+                </Link> 
+              : (<span>{word}&nbsp;</span>)
             )
-            ? (
-              <Link
-              to={`/users/${string.split('@')[1]}`}
-              style={{ textDecoration: 'none', cursor: 'pointer' }}
-              >
-                <span style={{ color: '#593875', fontWeight: 600 }}>{string.split('@')[1]}&nbsp;</span>
-              </Link>) 
-            : (<span>{string}&nbsp;</span>)
+          }
+          </Grid>
+        }
           )
         : []}
-        </Grid>
+
         <Grid container item direction="row" style={{ fontSize: 13, display: 'flex', gap: 5 }}>
           {writeTime}
           {funcs}
         </Grid>
       </Grid>
+    </>
   // </Box>
   );
 };

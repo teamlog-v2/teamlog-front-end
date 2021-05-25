@@ -33,7 +33,7 @@ const UserId = (props) => {
         to={`/users/${userId}`}
         style={{ textDecoration: 'none', color: 'black' }}
       >
-        <strong>{userId}</strong>
+        <strong style={{ marginRight: '0.25em' }}>{userId}</strong>
       </Link>
     </Box>
   );
