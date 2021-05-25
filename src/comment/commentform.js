@@ -58,6 +58,7 @@ const CommentForm = (props) => {
     const [menuFocus, setMenuFocus] = useState(false);
     const [open, setOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
+    const [isEmpty, setIsEmpty] = useState(true);
     const [state, setState] = useState({
       activeOption: 0,
       filteredOptions: [],
@@ -107,6 +108,12 @@ const CommentForm = (props) => {
         ...state,
         userInput: e.currentTarget.value,
       });
+
+      if (userCurrentInput === '') {
+        setIsEmpty(true);
+      } else {
+        setIsEmpty(false);
+      }
 
       if (
         state.tagStartIndex > -1
@@ -245,6 +252,7 @@ const CommentForm = (props) => {
               variant="outlined"
               fullWidth
               color="primary"
+              disabled={isEmpty}
               onClick={async () => {
                   if (forUpdate) {
                     // 댓글 수정

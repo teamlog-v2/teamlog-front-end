@@ -167,7 +167,7 @@ export const Comment = (props) => {
                   writer={(<UserId userId={writer.id} />)}
                   writeTime={<DateInfo dateTime={writeTime} />}
                   funcs={(<div style={{ width: '80%' }}>
-                      <span
+                    {type === "parent" ? (<span
                           style={{ cursor: 'pointer' }}
                           onClick={() => {
                             setForUpdate(false);
@@ -190,7 +190,7 @@ export const Comment = (props) => {
                           }}
                         >
                           답글달기&nbsp;
-                        </span>
+                        </span>) : (<></>)}
                         {
                           writer.id === id ? ( <>
                         <span
