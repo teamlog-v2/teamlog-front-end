@@ -17,6 +17,7 @@ import ProjectForm from './project/ProjectForm';
 import TeamPage from './team/TeamPage';
 import SearchPage from './pages/SearchPage';
 import Team from './team/Team';
+import HomePage from './pages/HomePage';
 // import MapPage from './map/MapPage';
 
 // 지도 api 낭비하기 싫어서 주석처리
@@ -27,7 +28,7 @@ const App = () => {
         <AppBar />
         <Switch>
           <Redirect exact path="/" to="/login" />
-          {/* <Route exact path="/main" component={MapPage} /> */}
+          <Route exact path="/main" component={HomePage} />
 
           <Route path="/create-project" component={ProjectForm} />
           <Route path="/project" component={ProjectListContainer} />

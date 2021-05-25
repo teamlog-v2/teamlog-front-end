@@ -63,7 +63,7 @@ const Div = ({ children }) => {
           </div>
         </div>
       </HideOnScroll>
-      <div style={{ height: '52px' }} />
+      <div style={{ height: '48px' }} />
     </>
   );
 };
