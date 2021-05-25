@@ -295,7 +295,7 @@ function TasksCard({ tasksWrapper }) {
         <Box>
           <Typography variant="" color="primary">
             <CustomLink to={`/projects/${project.id}`}>
-              @{project.name}
+              {project.name}
             </CustomLink>
           </Typography>
           &nbsp;
@@ -304,21 +304,31 @@ function TasksCard({ tasksWrapper }) {
           <Box display="flex" alignItems="center">
             <CustomLink to={`/projects/${project.id}/task`}>
               <SmallCard>
-                {(() => {
-                  switch (mainTask.status) {
-                    case 0:
-                      return '[진행 전]';
-                    case 1:
-                      return '[진행 중]';
-                    case 2:
-                      return '[완료]';
-                    case 3:
-                      return '[실패]';
-                    default:
-                      return null;
-                  }
-                })()}
-                &nbsp;{mainTask.taskName}
+                <span
+                  style={{
+                    backgroundColor: 'white',
+                    borderRadius: '1rem',
+                    padding: '0.25rem',
+                  }}
+                >
+                  <CustomEm>
+                    {(() => {
+                      switch (mainTask.status) {
+                        case 0:
+                          return '진행 전';
+                        case 1:
+                          return '진행 중';
+                        case 2:
+                          return '완료';
+                        case 3:
+                          return '실패';
+                        default:
+                          return null;
+                      }
+                    })()}
+                  </CustomEm>
+                </span>
+                &nbsp;&nbsp;{mainTask.taskName}&nbsp;
               </SmallCard>
             </CustomLink>
             &nbsp;
@@ -347,7 +357,7 @@ function PostCard({ postWrapper }) {
   return (
     <UnitCard>
       <Typography variant="" color="primary">
-        <CustomLink to={`/projects/${project.id}`}>@{project.name}</CustomLink>
+        <CustomLink to={`/projects/${project.id}`}>{project.name}</CustomLink>
       </Typography>
       &nbsp;
       <DateInfo dateTime={wrapperTime} />
@@ -370,13 +380,9 @@ function UnitCard({ children }) {
 
 function SmallCard({ children }) {
   return (
-    <>
-      <Card elevation={0}>
-        <Box bgcolor="#593875" color="white" padding="0.5rem">
-          {children}
-        </Box>
-      </Card>
-    </>
+    <Box bgcolor="#593875" color="white" padding="0.5rem" borderRadius="1rem">
+      {children}
+    </Box>
   );
 }
 
