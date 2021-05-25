@@ -1,6 +1,16 @@
 import React from 'react';
-import { Grid, Chip } from '@material-ui/core';
+import { Grid, Chip, Button } from '@material-ui/core';
+import styled from 'styled-components';
 import { isDuplicateData } from '../utils';
+
+const StyledClickableSpan = styled.span`
+  cursor: pointer;
+  font-size: 13px;
+  &:hover {
+    color: #593875;
+    font-weight: bolder;
+  }
+`;
 
 const HashtagRecommender = ({
   recommendedHashtags,
@@ -9,7 +19,7 @@ const HashtagRecommender = ({
 }) => {
   const { hashtags } = postData;
 
-  const handleChipClick = (value) => {
+  const handleChipClick = (value) => (event) => {
     const newHashtags = [...hashtags];
     if (isDuplicateData(hashtags, value)) {
       alert('이미 입력된 태그입니다!');
@@ -35,15 +45,18 @@ const HashtagRecommender = ({
         recommendedHashtags.length !== 0 ? (
           recommendedHashtags.map((name, index) => (
             <Grid item key={index}>
-              <Chip
-                label={`${name}`}
+              <StyledClickableSpan
+                role="button"
+                tabIndex={0}
                 variant="outlined"
                 color="default"
-                style={{ cursor: 'pointer', fontSize: 11 }}
-                onClick={() => {
-                  handleChipClick(name);
+                onKeyPress={(event) => {
+                  if (event.keyCode === 13) handleChipClick(name);
                 }}
-              />
+                onClick={handleChipClick(name)}
+              >
+                {name}
+              </StyledClickableSpan>
             </Grid>
           ))
         ) : (

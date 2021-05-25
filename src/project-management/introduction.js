@@ -1,5 +1,6 @@
 import { Box, Typography } from '@material-ui/core';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { ManufactureDate } from '../post-management/datetime'; // 디렉토리 변경 필요할 듯
 
 const Introduction = (props) => {
@@ -9,7 +10,15 @@ const Introduction = (props) => {
 
   return (
     <Box>
-      <Typography>👑 마스터는 {masterId}님입니다.</Typography>
+      <Typography>
+        👑 마스터는
+        <Link
+          to={`/users/${masterId}`}
+          style={{ textDecoration: 'none', color: 'black' }}
+        >
+          &nbsp;<strong>{masterId}</strong>
+        </Link>님입니다.
+      </Typography>
       <Typography>🎉 {dateTime}에 생성되었습니다.</Typography>
       <Typography>⭐ {followerCount}명이 팔로우하고 있습니다.</Typography>
       <Typography>👨‍👧‍👧 {memberCount}명의 멤버가 참여 중입니다.</Typography>

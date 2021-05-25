@@ -18,10 +18,8 @@ const CommentModifier = ({ postData, updatePostData }) => {
       }}
     >
       {
-        commentModifier === 'PUBLIC' ? '댓글 외부 공개' : '댓글 내부 공개'
+        commentModifier === 'PUBLIC' ? '댓글 공개' : '댓글 비공개'
       }
-      &nbsp;
-      &nbsp;
     </Button>
   );
 };

@@ -205,22 +205,20 @@ const CommentForm = (props) => {
       setOpen(false);
     };
 
-    const theme = createMuiTheme({
-      palette: {
-        primary: {
-          main: 'rgb(220, 220, 220)',
-        },
-      },
-    });
+    // const theme = createMuiTheme({
+    //   palette: {
+    //     primary: {
+    //       main: 'rgb(220, 220, 220)',
+    //     },
+    //   },
+    // });
 
     return (
-      <Container disableGutters>
-        <Divider />
+      <Container disableGutters style={{ margin: '2% 0', padding: '0 2%' }}>
         <Box
           component="form"
           width="auto"
           height="auto"
-          style={{ padding: '0.5em' }}
         >
           <Box width="80%" display="inline-block">
             <>
@@ -239,11 +237,12 @@ const CommentForm = (props) => {
             </>
           </Box>
           <Box width="20%" display="inline-block">
-            <ThemeProvider theme={theme}>
-              <Button
-                fullWidth
-                variant="outlined"
-                onClick={async () => {
+            {/* <ThemeProvider theme={theme}> */}
+            <Button
+              variant="outlined"
+              fullWidth
+              color="primary"
+              onClick={async () => {
                   if (forUpdate) {
                     // 댓글 수정
                     const status = await UpdateComment(
@@ -272,10 +271,10 @@ const CommentForm = (props) => {
                     }
                     }
                   }}
-              >
-                작성
-              </Button>
-            </ThemeProvider>
+            >
+              작성
+            </Button>
+            {/* </ThemeProvider> */}
           </Box>
         </Box>
         <Popper

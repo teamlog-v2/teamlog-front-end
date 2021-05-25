@@ -1,4 +1,4 @@
-import { Box, Button } from '@material-ui/core';
+import { Box, Button, Divider } from '@material-ui/core';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Comment } from './comment';
 import { GetChildComment } from './commentapi';
@@ -61,11 +61,16 @@ const ChildCommentList = (props) => {
             );
           })
         : []}
-        <Box display={moreVisibility}>
-          <Button
-            fullWidth
+        <Box display={moreVisibility} style={{ padding: '15px 25px' }}>
+          <span
+            role="button"
             size="small"
             variant="text"
+            tabIndex={0}
+            style={{ fontSize: 13, cursor: 'pointer' }}
+            onKeyPress={() => {
+              console.log('헷^^');
+            }}
             onClick={async () => {
                 setCommentState(
                   {
@@ -75,8 +80,8 @@ const ChildCommentList = (props) => {
                 );
             }}
           >
-            답글 더 보기({`${commentState.remaining}`})
-          </Button>
+            답글 {`${commentState.remaining}`}개 보기
+          </span>
         </Box>
       </>
     );
