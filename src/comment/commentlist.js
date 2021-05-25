@@ -75,17 +75,22 @@ const CommentList = ({ setCommentCounter, projectId, postId }) => {
           })
         : []
         }
-       <Box display={moreVisibility}>
-         <Button
-           fullWidth
+       <Box display={moreVisibility} style={{ padding: '15px 15px' }}>
+         <span
+           role="button"
            size="small"
            variant="text"
+           tabIndex={0}
+           style={{ fontSize: 13, cursor: 'pointer' }}
+           onKeyPress={() => {
+              console.log('헷^^');
+            }}
            onClick={async () => {
-            setCommentSize(commentSize + 5);
-          }}
+              setCommentSize(commentSize + 5);
+            }}
          >
            댓글 더 보기...
-         </Button>
+         </span>
        </Box>
        <CommentForm
          parentCommentId={null}
