@@ -3,16 +3,13 @@ import {
   Box,
   Chip,
   Grid,
+  IconButton,
   Typography,
 } from '@material-ui/core';
 import {
   makeStyles,
 } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
-
-import ReplyIcon from '@material-ui/icons/Reply';
-import CloseIcon from '@material-ui/icons/Close';
-import BorderColorIcon from '@material-ui/icons/BorderColor';
 import { UserImage, UserId } from '../post-management/user';
 import { DateInfo } from '../post-management/datetime';
 import CommentForm from './commentform';
@@ -28,9 +25,7 @@ const useStyles = makeStyles((theme) => ({
     cursor: 'pointer',
   },
   comment: {
-    backgroundColor: 'rgb(245, 245, 245)',
     textAlign: 'left',
-    borderTop: `1px solid ${theme.palette.divider}`,
   },
   reply: {
     // display='inline-block' right='0px' width='10%' textAlign='right'
@@ -56,16 +51,30 @@ const useStyles = makeStyles((theme) => ({
     zIndex: '500',
     overflow: 'auto',
   },
+  commentGrid: {
+    [theme.breakpoints.down('sm')]: {
+      width: '85%',
+      margin: '0 2%',
+    },
+    [theme.breakpoints.up('md')]: {
+      width: '90%',
+      margin: '0 1%',
+    },
+  }
 }));
 
 const Content = (props) => {
-  const { visibility, contents, tagList } = props;
+  const { writer, writeTime, funcs, visibility, contents, tagList } = props;
+
+  const classes = useStyles();
 
   const stringSplit = contents.split(' ');
 
   return (
-    <Box display={visibility}>
-      <Grid container direction="row" alignItems="center">
+   // <Box display={visibility}>
+      <Grid className={classes.commentGrid} item container direction="column">
+        <Grid item container direction="row" alignItems="center">
+        {writer}&nbsp;
         {stringSplit
         ? stringSplit.map((string) =>  (
             string[0] === '@' && tagList.includes(string.split('@')[1])
@@ -80,8 +89,13 @@ const Content = (props) => {
             : (<span>{string}&nbsp;</span>)
           )
         : []}
+        </Grid>
+        <Grid container item direction="row" style={{ fontSize: 13, display: 'flex', gap: 5 }}>
+          {writeTime}
+          {funcs}
+        </Grid>
       </Grid>
-    </Box>
+  // </Box>
   );
 };
 
@@ -110,13 +124,11 @@ export const Comment = (props) => {
     commentMentions,
     renewCommentList,
     contents,
-    /* commentList, */
   } = props;
 
   const [id] = useContext(AuthContext);
   const classes = useStyles();
 
-  // const [tagList, setTagList] = useState([]);
   const [visibility, setVisibility] = useState({
     form: 'none',
     content: 'block',
@@ -138,88 +150,82 @@ export const Comment = (props) => {
       <Box marginLeft={commentStyle.marginLeft}>
         <Box>
           <Grid container direction="row" xs={12} justify="space-between" style={{ padding: '1% 0' }}>
-            <Grid item container direction="row" xs={8}>
-              <Grid item>
+            <Grid item container direction="row" xs={12} alignItems="flex-start">
+              <Grid item style={{ width: 35 }}>
                 <UserImage imgPath={writer.profileImgPath} />
               </Grid>
-              <Grid item container direction="column" xs={2} style={{ padding: '0 1%' }}>
-                <UserId userId={writer.id} />
-                <DateInfo dateTime={writeTime} />
-              </Grid>
+              <Content
+                  writer={(<UserId userId={writer.id} />)}
+                  writeTime={<DateInfo dateTime={writeTime} />}
+                  funcs={(<div style={{ width: '80%' }}>
+                      <span
+                          style={{ cursor: 'pointer' }}
+                          onClick={() => {
+                            setForUpdate(false);
+                            if (visibility.form === 'none') {
+                              setVisibility({
+                                form: 'block',
+                                content: 'block', // 대댓글 -> 수정 전환 대비
+                              });
+                            } else if (visibility.form === 'block' && visibility.content === 'none') {
+                              setVisibility({
+                                form: 'block',
+                                content: 'block',
+                              });
+                            } else {
+                              setVisibility({
+                                form: 'none',
+                                content: 'block',
+                              });
+                            }
+                          }}
+                        >
+                          답글달기&nbsp;
+                        </span>
+                        {
+                          writer.id === id ? ( <>
+                        <span
+                          style={{ cursor: 'pointer' }}
+                          onClick={async () => {
+                            if (visibility.content === 'block') {
+                              setForUpdate(true);
+                              setVisibility({
+                                form: 'block',
+                                content: 'none',
+                              });
+                            } else {
+                              setForUpdate(false);
+                              setVisibility({
+                                form: 'none',
+                                content: 'block',
+                              });
+                            }
+                          }}
+                        >
+                          수정하기&nbsp;
+                        </span>
+                        <span
+                          style={{ cursor: 'pointer' }}
+                          onClick={async () => {
+                            if (window.confirm('정말로 삭제하시겠습니까?')) {
+                              const status = await DeleteComment(commentId);
+                              if (status === 200) {
+                                  renewCommentList(-1);
+                              }
+                            }
+                          }}
+                        >
+                          삭제하기&nbsp;
+                        </span>
+                        </>) : null
+                      }
+                  </div>)
+                  }
+                visibility={visibility.content}
+                contents={contents}
+                tagList={commentMentions}
+              />
             </Grid>
-            <Grid item visibility={commentStyle.buttonDisplay}>
-            <Box
-                visibility={commentStyle.buttonDisplay}
-                className={classes.icon}
-                onClick={() => {
-                  setForUpdate(false);
-                  if (visibility.form === 'none') {
-                    setVisibility({
-                      form: 'block',
-                      content: 'block', // 대댓글 -> 수정 전환 대비
-                    });
-                  } else if (visibility.form === 'block' && visibility.content === 'none') {
-                    setVisibility({
-                      form: 'block',
-                      content: 'block',
-                    });
-                  } else {
-                    setVisibility({
-                      form: 'none',
-                      content: 'block',
-                    });
-                  }
-                }}
-              >
-                <ReplyIcon color="action" fontSize="small" />
-              </Box>
-              {
-                writer.id === id ? ( <>
-              <Box
-                className={classes.icon}
-                onClick={async () => {
-                  if (visibility.content === 'block') {
-                    setForUpdate(true);
-                    setVisibility({
-                      form: 'block',
-                      content: 'none',
-                    });
-                  } else {
-                    setForUpdate(false);
-                    setVisibility({
-                      form: 'none',
-                      content: 'block',
-                    });
-                  }
-                }}
-              >
-                <BorderColorIcon color="action" fontSize="small" />
-              </Box>
-              <Box
-                className={classes.icon}
-                onClick={async () => {
-                  if (window.confirm('정말로 삭제하시겠습니까?')) {
-                    const status = await DeleteComment(commentId);
-                    if (status === 200) {
-                        renewCommentList(-1);
-                    }
-                  }
-                }}
-              >
-                <CloseIcon color="action" fontSize="small" />
-              </Box>
-              </>) : null
-              }
-            </Grid>
-          </Grid>
-        </Box>
-        <Box>
-          <Grid item style={{ padding: '1%' }}>
-            <Content
-              visibility={visibility.content}
-              contents={contents}
-              tagList={commentMentions}
-            />
           </Grid>
         </Box>
       </Box>

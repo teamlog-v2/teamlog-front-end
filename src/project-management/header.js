@@ -91,7 +91,7 @@ const ProjectTitle = (props) => {
   const { title, introduction } = props;
 
   return (
-    <Box width="100%">
+    <Box width="100%" style={{ padding: '2% 0' }}>
       <Typography
         component="h2"
         variant="h5"
@@ -100,7 +100,7 @@ const ProjectTitle = (props) => {
         noWrap
         className={classes.toolbarTitle}
       >
-        {title}
+        <strong>{title}</strong>
       </Typography>
       <Typography component="div">{introduction}</Typography>
     </Box>

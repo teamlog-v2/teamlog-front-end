@@ -4,6 +4,7 @@ import { PeopleAlt, Public } from '@material-ui/icons';
 
 const AccessModifier = ({ postData, updatePostData }) => {
   const { accessModifier } = postData;
+
   return (
     <Button
       size="small"
@@ -16,7 +17,7 @@ const AccessModifier = ({ postData, updatePostData }) => {
       }}
     >
       {
-        accessModifier === 'PUBLIC' ? '포스트 외부 공개' : '포스트 내부 공개'
+        accessModifier === 'PUBLIC' ? '포스트 공개' : '포스트 비공개'
       }
     </Button>
 );

@@ -20,7 +20,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ProjectForm() {
+export default function ProjectForm({ teamIdVal = null, updateOpen }) {
+  console.log(teamIdVal);
   const classes = useStyles();
 
   const [name, setName] = useState('');
@@ -44,6 +45,7 @@ export default function ProjectForm() {
       introduction,
       accessModifier: isPrivate ? 'PRIVATE' : 'PUBLIC',
       masterId: id,
+      teamId: teamIdVal,
     };
 
     return fetch('/api/projects', {
@@ -66,6 +68,7 @@ export default function ProjectForm() {
           res.json().then((project) => {
             console.log(project);
             setIsProcessing(false);
+            updateOpen(false);
             history.push(`/projects/${project.id}`);
           });
         }
@@ -179,7 +182,8 @@ export default function ProjectForm() {
         <Button
           style={{ paddingRight: '1rem' }}
           onClick={() => {
-            history.goBack();
+            updateOpen(false);
+            // history.goBack();
           }}
         >
           <ArrowLeft />

@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function TeamForm() {
+export default function TeamForm({ updateOpen }) {
   const classes = useStyles();
 
   const [name, setName] = useState('');
@@ -64,6 +64,7 @@ export default function TeamForm() {
         if (res.status >= 200 && res.status < 300) {
           res.json().then((team) => {
             setIsProcessing(false);
+            updateOpen(false);
             history.push(`/teams/${team.id}`);
           });
         }
@@ -177,7 +178,8 @@ export default function TeamForm() {
         <Button
           style={{ paddingRight: '1rem' }}
           onClick={() => {
-            history.goBack();
+            updateOpen(false);
+            // history.goBack();
           }}
         >
           <ArrowLeft />

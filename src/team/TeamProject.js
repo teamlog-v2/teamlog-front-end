@@ -40,7 +40,7 @@ const TeamProject = () => {
           <AddIcon />
         </Fab>
         <ResponsiveDialog open={open} updateOpen={setOpen}>
-          <ProjectForm />
+          <ProjectForm teamIdVal={id} updateOpen={setOpen} />
         </ResponsiveDialog>
       </Container>
     );
