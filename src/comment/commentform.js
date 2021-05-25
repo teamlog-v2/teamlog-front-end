@@ -50,6 +50,7 @@ const CommentForm = (props) => {
       projectId,
       renewCommentList,
       forUpdate,
+      setForUpdate,
       contents,
     } = props;
     const [options, setOptions] = useState([]);
@@ -67,6 +68,7 @@ const CommentForm = (props) => {
 
     useEffect(async () => {
       if (forUpdate) {
+        console.log(contents);
         setState({ ...state, userInput: contents });
       } else {
         setState({ ...state, userInput: '' });
@@ -255,6 +257,7 @@ const CommentForm = (props) => {
 
                     if (status === 200) {
                       setState({ ...state, userInput: '' });
+                      setForUpdate(false);
                       renewCommentList(0);
                     }
                   } else {

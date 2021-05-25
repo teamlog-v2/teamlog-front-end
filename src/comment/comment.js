@@ -69,7 +69,6 @@ const Content = (props) => {
   const classes = useStyles();
 
   const stringSplit = contents.split(`\n`);
-  console.log(stringSplit);
 
   return (
    // <Box display={visibility}>
@@ -79,7 +78,6 @@ const Content = (props) => {
 
         {stringSplit
         ? stringSplit.map((string, index) => {
-          console.log(index);
           const wordSplit = string.split(' ');
           return <Grid item>
             {index == 0 ? (writer) : <></>}
@@ -248,6 +246,7 @@ export const Comment = (props) => {
           renewCommentList={RenewCommentList}
           contents={contents}
           forUpdate={forUpdate}
+          setForUpdate={setForUpdate}
         />
       </Box>
     </Box>
