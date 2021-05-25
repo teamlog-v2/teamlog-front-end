@@ -205,13 +205,14 @@ const CommentForm = (props) => {
       setOpen(false);
     };
 
-    // const theme = createMuiTheme({
-    //   palette: {
-    //     primary: {
-    //       main: 'rgb(220, 220, 220)',
-    //     },
-    //   },
-    // });
+    const theme = createMuiTheme({
+      palette: {
+        primary: {
+          // main: 'rgb(220, 220, 220)',
+          main: '#593875',
+        },
+      },
+    });
 
     return (
       <Container disableGutters style={{ margin: '2% 0', padding: '0 2%' }}>

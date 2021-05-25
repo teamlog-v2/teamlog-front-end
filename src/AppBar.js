@@ -11,12 +11,17 @@ import {
   useScrollTrigger,
 } from '@material-ui/core';
 import { ArrowDropDown, Notifications, Search } from '@material-ui/icons';
+import GetAppIcon from '@material-ui/icons/GetApp';
 import React, { useContext, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import AuthContext, { setAccessToken } from './contexts/auth';
+import ResponsiveDialog from './organisms/ResponsiveDialog';
+import ProjectForm from './project/ProjectForm';
+import TeamForm from './team/TeamForm';
 
 function HideOnScroll(props) {
   const { children, window } = props;
+  console.log('bar');
   // Note that you normally won't need to set the window ref as useScrollTrigger
   // will default to window.
   // This is only being set here because the demo is in an iframe.
@@ -72,26 +77,25 @@ const useStyles = makeStyles((theme) => ({
 
 let deferredInstallPrompt = null;
 
-  window.addEventListener('beforeinstallprompt', (e) => {
-    // Stash the event so it can be triggered later.
-    deferredInstallPrompt = e;
-    // Update UI notify the user they can install the PWA
-    // Optionally, send analytics event that PWA install promo was shown.
-    console.log('\'beforeinstallprompt\' event was fired.');
-  });
+window.addEventListener('beforeinstallprompt', (e) => {
+  // Stash the event so it can be triggered later.
+  deferredInstallPrompt = e;
+  // Update UI notify the user they can install the PWA
+  // Optionally, send analytics event that PWA install promo was shown.
+  console.log("'beforeinstallprompt' event was fired.");
+});
 
 function userClickedAddToHome() {
   deferredInstallPrompt.prompt();
 
-  deferredInstallPrompt.userChoice
-   .then((choiceResult) => {
- if (choiceResult.outcome === 'accepted') {
-   // 유저가 홈 스크린에 어플리케이션 추가에 동의
- } else {
-   // 유저가 홈 스크린에 어플리케이션 추가를 거부
- }
- deferredInstallPrompt = null;
-});
+  deferredInstallPrompt.userChoice.then((choiceResult) => {
+    if (choiceResult.outcome === 'accepted') {
+      // 유저가 홈 스크린에 어플리케이션 추가에 동의
+    } else {
+      // 유저가 홈 스크린에 어플리케이션 추가를 거부
+    }
+    deferredInstallPrompt = null;
+  });
 }
 
 export default function AppBar() {
@@ -101,6 +105,8 @@ export default function AppBar() {
   const [id, setContextId, profileImgPath] = useContext(AuthContext);
 
   const [anchorEl, setAnchorEl] = useState(null);
+  const [isProjectFormOpened, setIsProjectFormOpened] = useState(false);
+  const [isTeamFormOpened, setIsTeamFormOpened] = useState(false);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -120,15 +126,19 @@ export default function AppBar() {
     return (
       <>
         <Div>
-          <Button className="add-button" onClick={userClickedAddToHome}>앱</Button>
+          <IconButton onClick={userClickedAddToHome}>
+            <GetAppIcon style={{ fontSize: '1.125rem', color: 'white' }} />
+          </IconButton>
+          {/* <Button className="add-button" onClick={userClickedAddToHome}>앱</Button> */}
           <IconButton
             onClick={() => {
               history.push('/search');
             }}
           >
-            <Search style={{ fontSize: '1rem' }} />
+            <Search style={{ fontSize: '1rem', color: 'white' }} />
           </IconButton>
           <Button
+            style={{ color: 'white' }}
             onClick={() => {
               history.push('/login');
             }}
@@ -144,6 +154,9 @@ export default function AppBar() {
     <>
       <Backdrop open={!!anchorEl} style={{ zIndex: 1000 }} />
       <Div>
+        <IconButton onClick={userClickedAddToHome}>
+          <GetAppIcon style={{ fontSize: '1.125rem', color: 'white' }} />
+        </IconButton>
         <IconButton
           onClick={() => {
             history.push('/search');
@@ -175,7 +188,8 @@ export default function AppBar() {
           <MenuItem
             onClick={() => {
               handleClose();
-              history.push('/create-project');
+              setIsProjectFormOpened(true);
+              // history.push('/create-project');
             }}
           >
             프로젝트 생성
@@ -183,7 +197,8 @@ export default function AppBar() {
           <MenuItem
             onClick={() => {
               handleClose();
-              history.push('/create-team');
+              setIsTeamFormOpened(true);
+              // history.push('/create-team');
             }}
           >
             팀 생성
@@ -198,6 +213,12 @@ export default function AppBar() {
             로그아웃
           </MenuItem>
         </Menu>
+        <ResponsiveDialog open={isProjectFormOpened} updateOpen={setIsProjectFormOpened}>
+          <ProjectForm />
+        </ResponsiveDialog>
+        <ResponsiveDialog open={isTeamFormOpened} updateOpen={setIsTeamFormOpened}>
+          <TeamForm />
+        </ResponsiveDialog>
       </Div>
     </>
   );

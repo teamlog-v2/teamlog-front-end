@@ -84,9 +84,8 @@ const Content = (props) => {
               to={`/users/${string.split('@')[1]}`}
               style={{ textDecoration: 'none', cursor: 'pointer' }}
               >
-                <span style={{ color: '#C16AF5', fontWeight: 600 }}>{string.split('@')[1]}&nbsp;</span>
-              </Link>
-              ) 
+                <span style={{ color: '#593875', fontWeight: 600 }}>{string.split('@')[1]}&nbsp;</span>
+              </Link>) 
             : (<span>{string}&nbsp;</span>)
           )
         : []}

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'teamlog-cache-v1';
+const CACHE_NAME = 'teamlog-cache-v2';
 
 const FILES_TO_CACHE = [
   'offline.html',

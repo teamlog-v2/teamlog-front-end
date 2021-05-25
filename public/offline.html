@@ -1,12 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <style>
+        .frame {
+            position: absolute;
+            width: 90%;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            background: white;
+        }
+
+        .wait {
+            font-size: 2.5em;
+            font-weight: 600;
+            color: #543971;
+            margin: 0.2em;
+        }
+
+        .notice {
+            font-size: 1.2em;
+        }
+    </style>
+    <title>오프라인</title>
 </head>
+
 <body>
-    오프라인이라서 못불러와요 힝...
+    <div class="frame">
+        <div class="wait">잠시만요!!!</div>
+        <div class="notice">TeamLog를 이용하고 싶으시다면</div>
+        <div class="notice">인터넷 연결이 필요합니다.</div>
+    </div>
 </body>
+
 </html>
