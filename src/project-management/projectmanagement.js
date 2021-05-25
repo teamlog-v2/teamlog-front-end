@@ -158,7 +158,7 @@ const ProjectManagement = () => {
                   open={isProjectUpdatFormOpened}
                   updateOpen={setIsProjectUpdatFormOpened}
                 >
-                  <ProjectUpdateForm project={project} />
+                  <ProjectUpdateForm updateOpen={setIsProjectUpdatFormOpened} project={project} />
                 </ResponsiveDialog>
               </Grid>
               <Grid item>
