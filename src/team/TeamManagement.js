@@ -63,14 +63,14 @@ const TeamManagement = () => {
     const { id: teamId } = useParams();
     const [isLogin, setIsLogin] = useState(true);
     const [isLoaded, setIsLoaded] = useState(false);
-    const [isTeamUpdatFormOpened, setIsTeamUpdatFormOpened] = useState(false);
     const [team, setTeam] = useState(); // 팀
     const [members, setMembers] = useState([]); // 멤버
     const [applicants, setApplicants] = useState([]); // 신청한 유저
     const [invitees, setInvitees] = useState([]); // 초대받은 유저
     const [master, setMaster] = useState([]); // 마스터
+    const [isTeamUpdatFormOpened, setIsTeamUpdatFormOpened] = useState(false); // 팀 수정 폼 띄울지 여부
     const [openUserSelect, setOpenUserSelect] = useState(false); // 마스터 선택 폼 띄울지 여부
-    const [openInviteeSelect, setOpenInviteeSelect] = useState(false);
+    const [openInviteeSelect, setOpenInviteeSelect] = useState(false); // 초대할 유저 선택 폼 띄울지 여부
 
     useEffect(async () => {
         const teamResponse = await GetTeam(teamId);
@@ -161,7 +161,7 @@ const TeamManagement = () => {
                   open={isTeamUpdatFormOpened}
                   updateOpen={setIsTeamUpdatFormOpened}
                 >
-                  <TeamUpdateForm team={team} />
+                  <TeamUpdateForm updateOpen={setIsTeamUpdatFormOpened} team={team} />
                 </ResponsiveDialog>
               </Grid>
               <Grid item>

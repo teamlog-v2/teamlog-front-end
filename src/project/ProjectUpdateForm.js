@@ -19,7 +19,7 @@ import {
     },
   }));
 
-  export default function ProjectUpdateForm({ project }) {
+  export default function ProjectUpdateForm({ updateOpen, project }) {
     const classes = useStyles();
 
     const [name, setName] = useState(project.name);
@@ -72,6 +72,7 @@ import {
             res.json().then(() => {
               setIsProcessing(false);
               // history.push(`/projects/${project.id}`);
+              updateOpen(false);
               window.location.replace(`/projects/${project.id}/projectmanagement`);
             });
           }
@@ -185,7 +186,8 @@ import {
           <Button
             style={{ paddingRight: '1rem' }}
             onClick={() => {
-              history.goBack();
+              updateOpen(false);
+              // history.goBack();
             }}
           >
             <ArrowLeft />

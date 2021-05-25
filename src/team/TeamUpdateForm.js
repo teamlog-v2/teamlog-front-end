@@ -20,7 +20,7 @@ import {
     },
   }));
 
-  export default function TeamUpdateForm({ team }) {
+  export default function TeamUpdateForm({ updateOpen, team }) {
     const classes = useStyles();
 
     const [name, setName] = useState(team.name);
@@ -73,7 +73,9 @@ import {
           if (res.status >= 200 && res.status < 300) {
             res.json().then((teamItem) => {
               setIsProcessing(false);
-              history.push(`/teams/${teamItem.id}`);
+              updateOpen(false);
+              window.location.replace(`/teams/${team.id}/teammanagement`);
+              // history.push(`/teams/${teamItem.id}`);
             });
           }
         })
@@ -187,7 +189,8 @@ import {
           <Button
             style={{ paddingRight: '1rem' }}
             onClick={() => {
-              history.goBack();
+              updateOpen(false);
+              // history.goBack();
             }}
           >
             <ArrowLeft />

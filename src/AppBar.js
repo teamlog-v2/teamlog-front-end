@@ -214,10 +214,10 @@ export default function AppBar() {
           </MenuItem>
         </Menu>
         <ResponsiveDialog open={isProjectFormOpened} updateOpen={setIsProjectFormOpened}>
-          <ProjectForm />
+          <ProjectForm updateOpen={setIsProjectFormOpened} />
         </ResponsiveDialog>
         <ResponsiveDialog open={isTeamFormOpened} updateOpen={setIsTeamFormOpened}>
-          <TeamForm />
+          <TeamForm updateOpen={setIsTeamFormOpened} />
         </ResponsiveDialog>
       </Div>
     </>
