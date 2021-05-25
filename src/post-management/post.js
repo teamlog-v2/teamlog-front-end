@@ -38,10 +38,15 @@ const canAccess = (relation, modifier) => modifier === 'PUBLIC' ||
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    margin: '5% 0',
+    margin: '5.5% 0',
   },
   children: {
-    padding: '1%',
+    [theme.breakpoints.down('sm')]: {
+      padding: '2.5%',
+    },
+    [theme.breakpoints.up('md')]: {
+      padding: '1.5%',
+    },
   },
   chip: {
     zIndex: 1,
@@ -61,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     display: 'flex',
     flexDirection: 'column',
-    border: '1px solid #F2F2F2',
+    border: '1px solid #eee',
   },
   header: {
     position: 'relative',
@@ -72,9 +77,14 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'left',
   },
   menu: {
+    [theme.breakpoints.down('sm')]: {
+      right: 0,
+    },
+    [theme.breakpoints.up('md')]: {
+      right: 0,
+    },
     cursor: 'pointer',
     position: 'absolute',
-    right: 0,
   },
   postMenu: {
     zIndex: 3,
@@ -212,7 +222,7 @@ const PostMenu = (props) => {
             >
               <Paper
                 className={classes.postMenu}
-                style={{ zIndex: 2, opacity: 0.9 }}
+                style={{ zIndex: 2 }}
                 elevation={1}
               >
                 <ClickAwayListener onClickAway={handleClose}>
@@ -366,7 +376,7 @@ export const Post = (props) => {
         <Card className={classes.paper} elevation={0}>
           <Container disableGutters>
             <Box className={classes.children}>
-              <Grid container className={classes.header} xs={12} direction="row">
+              <Grid container className={classes.header} xs={12} direction="row" alignItems="center">
                 <Grid item xs={10}>
                   <Grid container className={classes.user} alignItems="center">
                     <Grid item>
@@ -442,6 +452,7 @@ export const Post = (props) => {
                 <Box className={classes.children}>
                   <p style={{ whiteSpace: 'pre-wrap', margin: '0 0' }}>{content.contents}</p>
                 </Box>
+                <Divider style={{ margin: '0.5% 1%' }} />
                 <Box className={classes.children}>
                   <LikerCounter
                     count={likerCounter}

@@ -34,7 +34,7 @@ const UpdateHistory = (props) => {
             if (history.length) {
               return history.map((inform, index) => (
                 <>
-                  <Grid container direction="row" alignItems="center">
+                  <Grid container direction="row" alignItems="center" style={{ padding: '1%' }}>
                     <UserImage imgPath={inform.writer.profileImgPath} />
                     <UserId userId={inform.writer.id} />님이&nbsp;
                     <DateInfo dateTime={inform.writeTime} />&nbsp;글을 수정했습니다.

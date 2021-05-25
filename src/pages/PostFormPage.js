@@ -70,8 +70,8 @@ const PostForm = (props) => {
 
   const contentRef = useRef(null);
   const [postData, setPostData] = useState({
-    accessModifier: 'PRIVATE',
-    commentModifier: 'PRIVATE',
+    accessModifier: 'PUBLIC',
+    commentModifier: 'PUBLIC',
     hashtags: [],
     address: '',
   });
@@ -231,7 +231,9 @@ const PostForm = (props) => {
             </Grid>
           </Grid>
           <Grid item xs={12}>
-            <Divider className={classes.children} />
+            <Divider />
+          </Grid>
+          <Grid item xs={12}>
             <Grid container direction="column">
               <Grid item>
                 <HashtagInput
@@ -245,21 +247,27 @@ const PostForm = (props) => {
                 direction="row"
                 alignItems="flex-start"
                 xs={12}
-                className={classes.children}
+                style={{ margin: '2% 0' }}
               >
-                <span
-                  style={{ fontSize: 'smaller', margin: '0.5% 0', cursor: 'default' }}
-                >
-                  이런 해시태그는 어떠세요?&nbsp;
-                </span>
+                <Grid item style={{ width: 150 }}>
+                  <Tooltip title="오른쪽 태그들을 눌러보세요" arrow>
+                    <span
+                      style={{ fontSize: 13, cursor: 'default' }}
+                    >
+                      이런 해시태그는 어때요?&nbsp;
+                    </span>
+                  </Tooltip>
+                </Grid>
                 <HashtagRecommender
                   postData={postData}
                   recommendedHashtags={recommendedHashtags}
                   updatePostData={setPostData}
                 />
-                <Divider className={classes.children} />
               </Grid>
             </Grid>
+          </Grid>
+          <Grid item xs={12}>
+            <Divider />
           </Grid>
           <Grid item xs={12}>
             <Uploader

@@ -123,13 +123,13 @@ const ProjectMain = (props) => {
           justify="center"
           direction="column"
           style={{ margin: '0 auto' }}>
-          <Container className={classes.children} disableGutters>
-            <Title title={project.name} />
+          <Container disableGutters style={{ paddingTop: '5%' }}>
+            {/* <Title title={project.name} /> */}
             <Introduction
               {...project}
             />
           </Container>
-          <Container className={classes.children} disableGutters>
+          <Container disableGutters>
             {posts.length === 0 ? (
               <Grid
               container

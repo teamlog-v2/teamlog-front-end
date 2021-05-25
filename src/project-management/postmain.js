@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
       margin: '2% 0',
     },
     [theme.breakpoints.up('md')]: {
-      margin: '1% 0',
+      margin: '1.5% 0',
     },
   },
   mainGrid: {
@@ -193,7 +193,7 @@ const PostMain = (props) => {
                 <TextField
                   placeholder="검색어를 입력하세요."
                   InputProps={{
-                    endAdornment: (
+                    startAdornment: (
                       <InputAdornment>
                         <Search />
                       </InputAdornment>
