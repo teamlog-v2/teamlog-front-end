@@ -157,6 +157,13 @@ export default function HomePage() {
   }, [followingProjects]);
 
   useEffect(() => {
+    console.log(invitations === null);
+    console.log(belongingProjects === null);
+    console.log(tasksCounter.current !== belongingProjects?.length);
+    console.log(belongingPostsCounter.current !== belongingProjects?.length);
+    console.log(followingProjects === null);
+    console.log(followingPostsCounter.current !== followingProjects?.length);
+    console.log(followingUsersPosts === null);
     if (
       invitations === null ||
       belongingProjects === null ||
@@ -201,6 +208,8 @@ export default function HomePage() {
     console.log(invitations);
   }, [
     invitations,
+    belongingProjects,
+    followingProjects,
     taskWrappers,
     belongingPosts,
     followingPosts,
@@ -309,6 +318,7 @@ function TasksCard({ tasksWrapper }) {
                     backgroundColor: 'white',
                     borderRadius: '1rem',
                     padding: '0.25rem',
+                    whiteSpace: 'nowrap',
                   }}
                 >
                   <CustomEm>
@@ -380,7 +390,13 @@ function UnitCard({ children }) {
 
 function SmallCard({ children }) {
   return (
-    <Box bgcolor="#593875" color="white" padding="0.5rem" borderRadius="1rem">
+    <Box
+      bgcolor="#593875"
+      color="white"
+      padding="0.5rem"
+      borderRadius="1rem"
+      whiteSpace="nowrap"
+    >
       {children}
     </Box>
   );
