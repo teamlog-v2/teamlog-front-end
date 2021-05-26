@@ -96,8 +96,7 @@ const ThumbnailList = ({ files, updateFiles, handleDeleteList }) => {
                         <CardMedia
                           component="video"
                           src={id ? url.slice(url.indexOf('/resources')) : url}
-                          autoPlay
-                          control
+                          controls
                           style={{ width: '200px', height: '200px' }}
                         />
                       ) : (

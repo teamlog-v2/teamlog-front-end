@@ -199,7 +199,7 @@ const TaskContainer = (props) => {
   return (
     <>
       <Container maxWidth="md">
-        <Grid style={{ margin: '2% 0' }}>
+        <Grid style={{ margin: '3% 0' }}>
           {
             relation === 'MEMBER' || relation === 'MASTER' ? (
               <Button variant="outlined" color="primary" onClick={handleClickOpen}>
@@ -253,10 +253,12 @@ const TaskContainer = (props) => {
                       <Paper
                         elevation={0}
                         style={{
-                          border: '2px solid #eee',
+                          border: '1px solid #eee',
                           padding: 10,
                           opacity: 0.5,
-                          margin: '5px 0 5px 0' }}
+                          margin: '10px 0 5px 0',
+                          boxShadow: '0px 0px 2px 1px #eee',
+                        }}
                       >
                         <Typography>
                           {`${status[ind].name} 태스크가 없습니다`}

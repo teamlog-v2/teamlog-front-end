@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Grid, TextField, Paper, makeStyles, InputAdornment, Divider, Tooltip, Button, Card, ClickAwayListener } from '@material-ui/core';
+import { Grid, TextField, Paper, makeStyles, InputAdornment, Divider, Tooltip, Button, Card, ClickAwayListener, CardMedia } from '@material-ui/core';
 import { Backspace, Close, LocationOn } from '@material-ui/icons';
 import { useParams } from 'react-router';
 import PlacesSearchApi from '../organisms/PlacesSearchApi';
