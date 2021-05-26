@@ -359,9 +359,9 @@ function TasksCard({ tasksWrapper }) {
                 &nbsp;{mainTask.taskName}
               </SmallCard>
             </CustomLink>
-            <Box>
+            <Box marginLeft="0.25rem">
               <CustomLink to={`/projects/${project.id}/task`}>
-                <CustomEm>&nbsp;등 {tasks.length}건의 태스크</CustomEm>
+                <CustomEm>등 {tasks.length}건의 태스크</CustomEm>
               </CustomLink>
               가 업데이트 되었습니다.
             </Box>

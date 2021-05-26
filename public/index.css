@@ -1,4 +1,6 @@
 html, body, #app {
   margin: 0;
   height: 100%;
+  word-wrap: break-word;
+  word-break: keep-all;
 }
