@@ -450,7 +450,7 @@ export const Post = (props) => {
                   <MediaList media={content.media} />
                 )}
                 <Box className={classes.children}>
-                  <p style={{ wordBreak: 'break-all', margin: '0 0' }}>{content.contents}</p>
+                  <p style={{ wordBreak: 'break-all', margin: '0 0', whiteSpace: 'pre-wrap' }}>{content.contents}</p>
                 </Box>
                 <Divider style={{ margin: '0.5% 1%' }} />
                 <Box className={classes.children}>
