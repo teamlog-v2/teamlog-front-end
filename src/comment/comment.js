@@ -15,6 +15,7 @@ import { DateInfo } from '../post-management/datetime';
 import CommentForm from './commentform';
 import { DeleteComment } from './commentapi';
 import AuthContext from '../contexts/auth';
+import { GifRounded } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
   more: {
@@ -73,7 +74,7 @@ const Content = (props) => {
   return (
    // <Box display={visibility}>
    <>
-      <Grid className={classes.commentGrid} item container direction="column">
+      <Grid className={classes.commentGrid} item container direction="column" style={{ wordBreak: 'break-all'}}>
       {/* {writer}&nbsp; */}
 
         {stringSplit
