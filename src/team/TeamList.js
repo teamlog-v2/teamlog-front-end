@@ -40,7 +40,7 @@ export default function TeamList() {
         </Grid>
 ) : (teams.map((team) => (
   <Grid key={team.id} item sm={6} xs={12}>
-    <Link to={`/teams/${team.id}`} style={{ textDecoration: 'none' }}>
+    <Link to={`/teams/${team.id}/project`} style={{ textDecoration: 'none' }}>
       <Card elevation={2}>
         <Box padding="0.5em" display="inline-block">
           <img src={teamIcon} alt="teamIcon" width="40px" height="40px" />

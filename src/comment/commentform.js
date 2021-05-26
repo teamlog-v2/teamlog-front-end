@@ -27,8 +27,8 @@ const useStyles = makeStyles(() => ({
       cursor: 'pointer',
     },
     friends: {
-      width: '20em',
-      height: '25em',
+      width: '18em',
+      height: '24em',
       overflow: 'auto',
     },
     replyTarget: {
