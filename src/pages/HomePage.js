@@ -231,12 +231,29 @@ export default function HomePage() {
 
   return (
     <Template bgcolor="#F8F8F8">
-      <Typography variant="h3" color="primary">
-        🥳 최근 소식
-      </Typography>
-      <Box height="1rem" />
-      <Divider />
-      <Box height="1rem" />
+      {invitations.length === 0 && units.length === 0 ? (
+        <>
+          <Typography variant="h3" color="primary">
+            😅 최근 소식이 없네요...
+          </Typography>
+          <Box height="1rem" />
+          <Divider />
+          <Box height="1rem" />
+          <Typography variant="body1" align="center">
+            프로젝트에 참여해서 여정을 기록해보세요!
+          </Typography>
+          <Box height="1rem" />
+        </>
+      ) : (
+        <>
+          <Typography variant="h3" color="primary">
+            🥳 최근 소식
+          </Typography>
+          <Box height="1rem" />
+          <Divider />
+          <Box height="1rem" />
+        </>
+      )}
 
       {invitations.map((invitation) => (
         <InvitationsCard key={invitation.id} invitation={invitation} />
