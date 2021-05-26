@@ -40,12 +40,8 @@ const Uploader = ({ attachedFiles, updateAttachedFiles,
     });
   };
 
-  const getTypeofFile = (name) => {
-    const token = name.split('.');
-    const extension = token[token.length - 1];
-    if (extension === 'mp4') {
-      return 'VIDEO';
-    }
+  const getTypeofFile = (type) => {
+    if (type.includes('video')) return 'VIDEO';
     return 'IMAGE';
   };
 
@@ -69,7 +65,7 @@ const Uploader = ({ attachedFiles, updateAttachedFiles,
       fileWithThumbnail.push({
         url: URL.createObjectURL(file), // 일시적 URL
         file,
-        type: getTypeofFile(file.name),
+        type: getTypeofFile(file.type),
       });
     });
     newFiles = newFiles.concat(fileWithThumbnail);
