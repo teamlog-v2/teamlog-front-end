@@ -1,10 +1,13 @@
 import {
   Grid,
   Badge,
+  Popover,
   IconButton,
-  Avatar,
-  Dialog,
   DialogTitle,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  Avatar,
   Backdrop,
   CircularProgress,
   List,
@@ -16,6 +19,7 @@ import {
   TextField,
   withStyles,
   Box,
+  Typography,
 } from '@material-ui/core';
 import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -65,11 +69,33 @@ const UserEditForm = ({ match }) => {
   const [introduction, setIntroduction] = useState();
   const [defaultImage, setDefaultImage] = useState(false);
   const [profileImg, setProfileImg] = useState();
-  const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [alertOpen, setAlertOpen] = useState(false);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+    console.log(anchorEl);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleSetName = (value) => {
+    if (value.length <= 12) {
+      setName(value);
+    }
+  };
+
+  const handleSetIntroduction = (value) => {
+    if (value.length <= 100) {
+      setIntroduction(value);
+    }
+  };
 
   const handleUpload = (event) => {
-    setOpen(false);
+    setAnchorEl(null);
     if (event.target.files[0].size > 5242880) {
       alert('이미지는 5Mb 용량까지 가능합니다.');
       return;
@@ -79,13 +105,13 @@ const UserEditForm = ({ match }) => {
   };
 
   const rollbackImage = () => {
-    setOpen(false);
+    setAnchorEl(null);
     setProfileImg(null);
     setDefaultImage(false);
   };
 
   const resetImage = () => {
-    setOpen(false);
+    setAnchorEl(null);
     setProfileImg(null);
     setDefaultImage(true);
   };
@@ -156,14 +182,28 @@ const UserEditForm = ({ match }) => {
     return <div />;
   }
 
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
+
   return (
     <>
       <Backdrop className={classes.backdrop} open={isLoading}>
         <CircularProgress color="inherit" />
       </Backdrop>
-      <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogTitle>프로필 사진 변경</DialogTitle>
-        <Divider className={classes.bold} />
+      <Popover
+        id={id}
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+      >
         <List>
           <input
             accept="image/*"
@@ -193,11 +233,11 @@ const UserEditForm = ({ match }) => {
             </>
           ) : null}
         </List>
-      </Dialog>
+      </Popover>
       <Container component="main" maxWidth="xs">
-        <Grid container spacing={3}>
+        <Grid container spacing={2}>
           <Grid item xs={12} align="center">
-            <IconButton onClick={() => setOpen(true)}>
+            <IconButton onClick={handleClick}>
               <Badge
                 overlap="circle"
                 anchorOrigin={{
@@ -226,12 +266,17 @@ const UserEditForm = ({ match }) => {
               id="name"
               label="이름"
               name="name"
-              inputProps={{ maxLength: 12 }}
               defaultValue={name}
-              onChange={(event) => setName(event.target.value)}
+              value={name}
+              onChange={(event) => handleSetName(event.target.value)}
             />
+            <Box display="flex" justifyContent="center">
+              <Box>
+                <Typography color="primary" variant="caption">{name.length}/12</Typography>
+              </Box>
+            </Box>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} align="center">
             <TextField
               fullWidth
               variant="outlined"
@@ -240,10 +285,15 @@ const UserEditForm = ({ match }) => {
               label="소개"
               multiline
               rows={5}
-              inputProps={{ maxLength: 100 }}
               defaultValue={introduction}
-              onChange={(event) => setIntroduction(event.target.value)}
+              value={introduction}
+              onChange={(event) => handleSetIntroduction(event.target.value)}
             />
+            <Box display="flex" justifyContent="center">
+              <Box>
+                <Typography color="primary" variant="caption">{introduction.length}/100</Typography>
+              </Box>
+            </Box>
           </Grid>
           <Grid item xs={12} spacing={2} align="center">
             <Box
@@ -256,13 +306,38 @@ const UserEditForm = ({ match }) => {
               <Button variant="contained" color="primary" onClick={handleSubmit}>
                 완료
               </Button>
-              <Button variant="outlined" color="primary" onClick={() => history.goBack()}>
+              <Button variant="outlined" color="primary" onClick={() => setAlertOpen(true)}>
                 취소
               </Button>
             </Box>
           </Grid>
         </Grid>
       </Container>
+      <Dialog
+        open={alertOpen}
+        onClose={() => { setAlertOpen(false); }}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogContent style={{ width: 230, textAlign: 'start' }}>
+          <DialogContentText id="alert-dialog-description">
+            변경사항은 저장되지 않습니다.
+            <br />
+            취소하시겠습니까?
+          </DialogContentText>
+        </DialogContent>
+        <Grid container direction="row" justify="space-evenly">
+          <Button
+            onClick={() => history.goBack()}
+            color="primary"
+            autoFocus
+          >확인
+          </Button>
+          <Button onClick={() => { setAlertOpen(false); }}>
+            취소
+          </Button>
+        </Grid>
+      </Dialog>
     </>
   );
 };
