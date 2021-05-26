@@ -51,14 +51,15 @@ const useStyles = makeStyles((theme) => ({
   chip: {
     zIndex: 1,
     position: 'absolute',
-    padding: '3px 12px',
+    padding: '3px 10px',
     borderRadius: '500px',
-    fontSize: '14px',
     [theme.breakpoints.down('sm')]: {
       margin: '2%',
+      fontSize: '11px',
     },
     [theme.breakpoints.up('md')]: {
       margin: '0.5%',
+      fontSize: '14px',
     },
     backgroundColor: '#FFFFFF',
     opacity: 0.8,
@@ -236,13 +237,13 @@ const PostMenu = (props) => {
                         updateOpen(true);
                       }}
                     >
-                      <Edit />&nbsp;포스트 수정
+                      <Edit />&nbsp;<strong>포스트 수정</strong>
                     </MenuItem>
                     <MenuItem onClick={() => { updateHistoryOpen(true); }}>
-                      <History />&nbsp;수정 내역
+                      <History />&nbsp;<strong>수정 내역</strong>
                     </MenuItem>
                     <MenuItem onClick={() => { setAlertOpen(true); }}>
-                      <Delete />&nbsp;포스트 삭제
+                      <Delete />&nbsp;<strong>포스트 삭제</strong>
                     </MenuItem>
                   </MenuList>
                 </ClickAwayListener>

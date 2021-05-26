@@ -1,7 +1,20 @@
 import React from 'react';
-import { Grid, Chip, Button } from '@material-ui/core';
+import { Grid, Chip, Button, makeStyles } from '@material-ui/core';
 import styled from 'styled-components';
 import { isDuplicateData } from '../utils';
+
+const useStyles = makeStyles((theme) => ({
+  grid: {
+    [theme.breakpoints.down('sm')]: {
+      width: '85%',
+      margin: '0 2%',
+    },
+    [theme.breakpoints.up('md')]: {
+      width: '90%',
+      margin: '0 1%',
+    },
+  },
+}));
 
 const StyledClickableSpan = styled.span`
   cursor: pointer;
@@ -17,6 +30,7 @@ const HashtagRecommender = ({
   postData,
   updatePostData,
 }) => {
+  const classes = useStyles();
   const { hashtags } = postData;
 
   const handleChipClick = (value) => (event) => {
@@ -38,8 +52,8 @@ const HashtagRecommender = ({
       container
       direction="row"
       alignItems="center"
-      xs={8}
       spacing={1}
+      style={{ width: '60%' }}
     >
       {
         recommendedHashtags.length !== 0 ? (

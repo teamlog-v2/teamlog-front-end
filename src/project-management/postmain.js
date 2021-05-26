@@ -10,6 +10,8 @@ import {
   Card,
   Tooltip,
   Select,
+  InputBase,
+  fade,
 } from '@material-ui/core';
 import Container from '@material-ui/core/Container';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -182,23 +184,17 @@ const PostMain = (props) => {
               md={10}
               justify="center"
               direction="column"
-              style={{ margin: '0 auto' }}
+              style={{ margin: '2% auto' }}
             >
               <Grid
                 className={classes.children}
                 item
                 container
-                direction="row-reverse"
+                alignItems="center"
               >
-                <TextField
+                <Search />
+                <InputBase
                   placeholder="검색어를 입력하세요."
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment>
-                        <Search />
-                      </InputAdornment>
-                    ),
-                  }}
                   onChange={(event) => {
                     setKeyword(event.target.value);
                   }}

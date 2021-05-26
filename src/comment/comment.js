@@ -76,11 +76,10 @@ const Content = (props) => {
    <>
       <Grid className={classes.commentGrid} item container direction="column" style={{ wordBreak: 'break-all'}}>
       {/* {writer}&nbsp; */}
-
         {stringSplit
         ? stringSplit.map((string, index) => {
           const wordSplit = string.split(' ');
-          return <Grid item>
+          return <Grid container item alignItems="center">
             {index == 0 ? (writer) : <></>}
           {
             wordSplit.map((word) => 
@@ -98,8 +97,7 @@ const Content = (props) => {
         }
           )
         : []}
-
-        <Grid container item direction="row" style={{ fontSize: 13, display: 'flex', gap: 5 }}>
+        <Grid container item direction="row" style={{ fontSize: 13, display: 'flex', gap: '1%' }} alignItems="center">
           {writeTime}
           {funcs}
         </Grid>
@@ -159,7 +157,7 @@ export const Comment = (props) => {
     <Box className={classes.comment}>
       <Box marginLeft={commentStyle.marginLeft}>
         <Box>
-          <Grid container direction="row" xs={12} justify="space-between" style={{ padding: '1% 0' }}>
+          <Grid container direction="row" xs={12} justify="space-between" style={{ margin: '1% 0' }}>
             <Grid item container direction="row" xs={12} alignItems="flex-start">
               <Grid item style={{ width: 35 }}>
                 <UserImage imgPath={writer.profileImgPath} />
@@ -167,8 +165,8 @@ export const Comment = (props) => {
               <Content
                   writer={(<UserId userId={writer.id} />)}
                   writeTime={<DateInfo dateTime={writeTime} />}
-                  funcs={(<div style={{ width: '80%' }}>
-                    {type === "parent" ? (<span
+                  funcs={(<>
+                    {type === "parent" && (<span
                           style={{ cursor: 'pointer' }}
                           onClick={() => {
                             setForUpdate(false);
@@ -191,9 +189,9 @@ export const Comment = (props) => {
                           }}
                         >
                           답글달기&nbsp;
-                        </span>) : (<></>)}
+                        </span>)}
                         {
-                          writer.id === id ? ( <>
+                          writer.id === id && (<>
                         <span
                           style={{ cursor: 'pointer' }}
                           onClick={async () => {
@@ -227,9 +225,9 @@ export const Comment = (props) => {
                         >
                           삭제하기&nbsp;
                         </span>
-                        </>) : null
+                        </>)
                       }
-                  </div>)
+                  </>)
                   }
                 visibility={visibility.content}
                 contents={contents}

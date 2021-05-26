@@ -93,7 +93,7 @@ class PlaceSearchApi extends React.Component {
                         : 'suggestion-item';
                       // inline style for demonstration purpose
                       const style = suggestion.active
-                        ? { cursor: 'pointer', color: '#C16AF5' }
+                        ? { cursor: 'pointer', color: '#593875' }
                         : { cursor: 'pointer' };
                       return (
                         <Grid

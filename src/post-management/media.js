@@ -1,7 +1,6 @@
 import { Box } from '@material-ui/core';
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { VerifiedUserOutlined } from '@material-ui/icons';
 import jQuery from 'jquery';
 window.$ = window.jQuery = jQuery;
 
@@ -59,7 +58,7 @@ const Video = (props) => {
 
   return (
     <Box>
-      <video className={classes.align} controls>
+      <video className={classes.align} controls autoPlay muted>
         <source src={url}></source>
       </video>
     </Box>
