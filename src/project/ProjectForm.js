@@ -61,7 +61,6 @@ export default function ProjectForm({ teamIdVal = null, updateOpen }) {
     }
     setIsProcessing(true);
 
-    // 팀 내에서 등록할 때는 팀 아이디도 필요할 듯
     request()
       .then((res) => {
         if (res.status >= 200 && res.status < 300) {

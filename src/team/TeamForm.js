@@ -65,7 +65,7 @@ export default function TeamForm({ updateOpen }) {
           res.json().then((team) => {
             setIsProcessing(false);
             updateOpen(false);
-            history.push(`/teams/${team.id}`);
+            history.push(`/teams/${team.id}/project`);
           });
         }
       })
