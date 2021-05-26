@@ -576,11 +576,11 @@ export const CompressedPost = (props) => {
         <Typography>{post.contents}</Typography>
 
         {/* 첨부 파일 및 좋아요 댓글 개수 */}
-        <div style={{ display: 'flex', gap: '8px' }}>
+        {/* <div style={{ display: 'flex', gap: '8px' }}>
           <FileList className={classes.file} files={post.files} />
           <LikerCounter count={post.likeCount} />
           <CommentCounter count={post.commentCount} />
-        </div>
+        </div> */}
 
         {/* 댓글 */}
         {/* <CommentList projectId={post.project.id} postId={post.id} /> */}

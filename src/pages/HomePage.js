@@ -12,6 +12,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import AuthContext from '../contexts/auth';
 import { DateInfo } from '../post-management/datetime';
+import { CompressedPost } from '../post-management/post';
 
 // 1. 프로젝트 2. 게시물 (3. 댓글)
 // 태스크
@@ -379,7 +380,7 @@ function TasksCard({ tasksWrapper }) {
 }
 
 function PostCard({ postWrapper }) {
-  const { project, wrapperTime } = postWrapper;
+  const { project, wrapperTime, post } = postWrapper;
   const history = useHistory();
 
   return (
@@ -390,7 +391,7 @@ function PostCard({ postWrapper }) {
       &nbsp;
       <DateInfo dateTime={wrapperTime} />
       <Box height="1rem" />
-      <Box>포스트 업데이트 알림, 여기에 압축된 포스트가 들어갑니다!</Box>
+      <CompressedPost post={post} />
     </UnitCard>
   );
 }
