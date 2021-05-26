@@ -355,14 +355,15 @@ function TasksCard({ tasksWrapper }) {
                     })()}
                   </CustomEm>
                 </span>
-                &nbsp;&nbsp;{mainTask.taskName}&nbsp;
+                &nbsp;{mainTask.taskName}
               </SmallCard>
             </CustomLink>
-            &nbsp;
-            <CustomLink to={`/projects/${project.id}/task`}>
-              <CustomEm>등 {tasks.length}건의 태스크</CustomEm>
-            </CustomLink>
-            가 업데이트 되었습니다.
+            <Box>
+              <CustomLink to={`/projects/${project.id}/task`}>
+                <CustomEm>&nbsp;등 {tasks.length}건의 태스크</CustomEm>
+              </CustomLink>
+              가 업데이트 되었습니다.
+            </Box>
           </Box>
         </Box>
         <IconButton
@@ -412,7 +413,7 @@ function SmallCard({ children }) {
       color="white"
       padding="0.5rem"
       borderRadius="1rem"
-      whiteSpace="nowrap"
+      lineHeight="2rem"
     >
       {children}
     </Box>
