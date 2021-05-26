@@ -1,6 +1,9 @@
 import {
   Grid,
   Avatar,
+  ExpansionPanel,
+  ExpansionPanelSummary,
+  ExpansionPanelDetails,
   Typography,
   Container,
   makeStyles,
@@ -12,6 +15,7 @@ import {
 import { TabContext, TabList, TabPanel } from '@material-ui/lab';
 import React, { useEffect, useState } from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ProjectListContainer from '../project/ProjectListContainer';
 import TeamList from '../team/TeamList';
 import UserList from './UserList';
@@ -24,6 +28,13 @@ import {
 } from './userService';
 
 const useStyles = makeStyles((theme) => ({
+  multiLineEllipsis: {
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    display: '-webkit-box',
+    '-webkit-line-clamp': 3,
+    '-webkit-box-orient': 'vertical',
+  },
   large: {
     width: theme.spacing(15),
     height: theme.spacing(15),
@@ -119,10 +130,24 @@ const MyPage = ({ match }) => {
 
   return (
     <>
-      <Container component="main" disableGutters maxWidth="md" style={{ marginTop: '4rem' }}>
-        <Grid container spacing={2}>
+      <Container
+        component="main"
+        disableGutters
+        maxWidth="md"
+        style={{ marginTop: '2rem' }}
+      >
+        <Grid container style={{ gap: 15 }}>
           <Grid item xs={12} align="center">
-            <Avatar className={classes.large} src={user.profileImgPath ? user.profileImgPath.slice(user.profileImgPath.search('/resources/')) : ''} />
+            <Avatar
+              className={classes.large}
+              src={
+                user.profileImgPath
+                  ? user.profileImgPath.slice(
+                      user.profileImgPath.search('/resources/'),
+                    )
+                  : ''
+              }
+            />
           </Grid>
           <Grid item xs={12} align="center">
             <Typography component="h1" variant="h5">
@@ -130,35 +155,47 @@ const MyPage = ({ match }) => {
             </Typography>
           </Grid>
           <Grid item xs={12} align="center">
-            <Typography variant="body1" color="textSecondary">
-              <pre style={{ fontFamily: 'inherit', margin: 0 }}>
-                {user.introduction}
-              </pre>
+            <Typography
+              color="textSecondary"
+              style={{
+                whiteSpace: 'pre-line',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
+            >
+              {user.introduction}
             </Typography>
           </Grid>
           <Grid item xs={12} align="center">
-            {user.isMe ? (
-              <Button variant="outlined" onClick={() => history.push(`/users/${match.params.userId}/edit`)}>
-                프로필 편집
-              </Button>
-            ) : (
+            {user.isMe === null ? null : (
               <>
-                {user.isFollow === true ? (
+                {user.isMe ? (
                   <Button
                     variant="outlined"
-                    color="primary"
-                    onClick={unfollowUser}
+                    onClick={() => history.push(`/users/${match.params.userId}/edit`)}
                   >
-                    팔로잉
+                    프로필 편집
                   </Button>
                 ) : (
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={followUser}
-                  >
-                    팔로우
-                  </Button>
+                  <>
+                    {user.isFollow === true ? (
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        onClick={unfollowUser}
+                      >
+                        팔로잉
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={followUser}
+                      >
+                        팔로우
+                      </Button>
+                    )}
+                  </>
                 )}
               </>
             )}
@@ -183,10 +220,18 @@ const MyPage = ({ match }) => {
             <TeamList />
           </TabPanel>
           <TabPanel disableGutters value="3">
-            <UserList type="FOLLOWER" userId={user.id} fetchData={getUserFollower} />
+            <UserList
+              type="FOLLOWER"
+              userId={user.id}
+              fetchData={getUserFollower}
+            />
           </TabPanel>
           <TabPanel disableGutters value="4">
-            <UserList type="FOLLOWING" userId={user.id} fetchData={getUserFollowing} />
+            <UserList
+              type="FOLLOWING"
+              userId={user.id}
+              fetchData={getUserFollowing}
+            />
           </TabPanel>
         </TabContext>
       </Container>
