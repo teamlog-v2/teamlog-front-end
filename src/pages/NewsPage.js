@@ -443,7 +443,7 @@ function TeamInvitationsCard({ invitation }) {
             팀 초대
           </Typography>
           <Typography variant="body1">
-            <CustomLink to={`/teams/${teamId}`}>{teamName}</CustomLink>
+            <CustomLink to={`/teams/${teamId}/project`}>{teamName}</CustomLink>
             에 초대되었습니다.
           </Typography>
 
@@ -486,7 +486,7 @@ function TeamInvitationsCard({ invitation }) {
         </Box>
         <IconButton
           onClick={() => {
-            history.push(`/teams/${teamId}`);
+            history.push(`/teams/${teamId}/project`);
           }}
         >
           <Reply />
