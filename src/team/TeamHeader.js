@@ -19,6 +19,7 @@ import { useFetchData } from '../hooks/hooks';
 import ErrorContext from '../contexts/error';
 // import { AcceptTeam, ApplyTeam } from './teamapi';
 import teamIcon from './team.png';
+import AuthContext from '../contexts/auth';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -196,10 +197,11 @@ const TopButton = ({ isTeamLoaded, teamId, relation }) => {
 
 const Header = ({ sections, updateRelation }) => {
   const { id: teamId } = useParams();
+  const [userId] = useContext(AuthContext);
   const { pathname } = useLocation();
 
   const [team, isTeamLoaded, teamLoadError] = useFetchData(`/api/teams/${teamId}`);
-  console.log(team);
+
   const title = team?.name;
   const introduction = team?.introduction;
   const relation = team?.relation;
@@ -231,7 +233,9 @@ const Header = ({ sections, updateRelation }) => {
           <img src={teamIcon} alt="teamIcon" width="40px" height="40px" />
         </Box>
         <TeamTitle title={title} introduction={introduction} />
-        <TopButton teamId={teamId} isTeamLoaded={isTeamLoaded} relation={relation} />
+        {userId === null ?
+        (<></>) :
+        (<TopButton teamId={teamId} isTeamLoaded={isTeamLoaded} relation={relation} />)}
         <Link
           to={`/teams/${teamId}/teammanagement`}
           style={{ textDecoration: 'none' }}
