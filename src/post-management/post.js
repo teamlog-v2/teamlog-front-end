@@ -9,13 +9,40 @@ import Paper from '@material-ui/core/Paper';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
-import React, { useState, useEffect, useRef, useCallback, useContext } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useContext,
+} from 'react';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { Menu, History, Delete, Edit, Close, MoreVert } from '@material-ui/icons';
-import { Avatar, Button, Card, Chip, Grid, Dialog, DialogContentText, DialogTitle, DialogContent, DialogActions, Tooltip, Divider, IconButton } from '@material-ui/core';
+import {
+  Menu,
+  History,
+  Delete,
+  Edit,
+  Close,
+  MoreVert,
+} from '@material-ui/icons';
+import {
+  Avatar,
+  Button,
+  Card,
+  Chip,
+  Grid,
+  Dialog,
+  DialogContentText,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Tooltip,
+  Divider,
+  IconButton,
+} from '@material-ui/core';
 
 import { Route } from 'react-router';
 import FileList from './fileList';
@@ -33,8 +60,11 @@ import UpdateHistory from './updateHistory';
 /** 관계와 접근제어자를 입력받아서
  * visible 한지 반환
  */
-const canAccess = (relation, modifier) => modifier === 'PUBLIC' ||
-            (relation === 'MEMBER' || relation === 'MASTER');
+const canAccess = (relation, modifier) => {
+  return (
+    modifier === 'PUBLIC' || relation === 'MEMBER' || relation === 'MASTER'
+  );
+};
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -153,8 +183,14 @@ const PostMenu = (props) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
   const anchorRef = useRef(null);
-  const { content, setIsPostLoading, setFormData, initPosts,
-    updateOpen, updateHistoryOpen } = props;
+  const {
+    content,
+    setIsPostLoading,
+    setFormData,
+    initPosts,
+    updateOpen,
+    updateHistoryOpen,
+  } = props;
 
   const handleToggle = () => {
     setMenuOpen((prevOpen) => !prevOpen);
@@ -217,7 +253,7 @@ const PostMenu = (props) => {
               {...TransitionProps}
               style={{
                 transformOrigin:
-                placement === 'bottom' ? 'center top' : 'center bottom',
+                  placement === 'bottom' ? 'center top' : 'center bottom',
                 zIndex: 3,
               }}
             >
@@ -232,18 +268,30 @@ const PostMenu = (props) => {
                     id="menu-list-grow"
                     onKeyDown={handleListKeyDown}
                   >
-                    <MenuItem onClick={() => {
+                    <MenuItem
+                      onClick={() => {
                         if (!updateOpen) return;
                         updateOpen(true);
                       }}
                     >
-                      <Edit />&nbsp;<strong>포스트 수정</strong>
+                      <Edit />
+                      &nbsp;<strong>포스트 수정</strong>
                     </MenuItem>
-                    <MenuItem onClick={() => { updateHistoryOpen(true); }}>
-                      <History />&nbsp;<strong>수정 내역</strong>
+                    <MenuItem
+                      onClick={() => {
+                        updateHistoryOpen(true);
+                      }}
+                    >
+                      <History />
+                      &nbsp;<strong>수정 내역</strong>
                     </MenuItem>
-                    <MenuItem onClick={() => { setAlertOpen(true); }}>
-                      <Delete />&nbsp;<strong>포스트 삭제</strong>
+                    <MenuItem
+                      onClick={() => {
+                        setAlertOpen(true);
+                      }}
+                    >
+                      <Delete />
+                      &nbsp;<strong>포스트 삭제</strong>
                     </MenuItem>
                   </MenuList>
                 </ClickAwayListener>
@@ -254,7 +302,9 @@ const PostMenu = (props) => {
       </div>
       <Dialog
         open={alertOpen}
-        onClose={() => { setAlertOpen(false); }}
+        onClose={() => {
+          setAlertOpen(false);
+        }}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -265,13 +315,15 @@ const PostMenu = (props) => {
           </DialogContentText>
         </DialogContent>
         <Grid container direction="row" justify="space-evenly">
-          <Button
-            onClick={handlePostDelete}
-            color="primary"
-            autoFocus
-          >삭제
+          <Button onClick={handlePostDelete} color="primary" autoFocus>
+            삭제
           </Button>
-          <Button onClick={() => { setAlertOpen(false); }} color="primary">
+          <Button
+            onClick={() => {
+              setAlertOpen(false);
+            }}
+            color="primary"
+          >
             취소
           </Button>
         </Grid>
@@ -307,11 +359,7 @@ const MediaList = ({ media }) => {
   return (
     <>
       <Grid container direction="row-reverse">
-        <span
-          className={classes.chip}
-        >
-          {`${curIndex}/${media.length}`}
-        </span>
+        <span className={classes.chip}>{`${curIndex}/${media.length}`}</span>
       </Grid>
       <Box id="mediaBox" textAlign="center">
         <Carousel
@@ -321,13 +369,12 @@ const MediaList = ({ media }) => {
           autoPlay={false}
           animation="slide"
           cycleNavigation={false}
-          indicatorIconButtonProps={{
-          }}
+          indicatorIconButtonProps={{}}
           indicators={false}
           activeIndicatorIconButtonProps={{
-              style: {
-                  color: '#C16AF5', // 2
-              },
+            style: {
+              color: '#C16AF5', // 2
+            },
           }}
         >
           {media.map((item, i) => (
@@ -342,8 +389,16 @@ const MediaList = ({ media }) => {
 };
 
 export const Post = (props) => {
-  const { content, maxWidth, setIsPostLoading, setFormData,
-    initPosts, relation, updatePost, hashtags: projectHashtags } = props;
+  const {
+    content,
+    maxWidth,
+    setIsPostLoading,
+    setFormData,
+    initPosts,
+    relation,
+    updatePost,
+    hashtags: projectHashtags,
+  } = props;
 
   const [open, setOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
@@ -377,126 +432,142 @@ export const Post = (props) => {
         <Card className={classes.paper} elevation={0}>
           <Container disableGutters>
             <Box className={classes.children}>
-              <Grid container className={classes.header} xs={12} direction="row" alignItems="center">
+              <Grid
+                container
+                className={classes.header}
+                xs={12}
+                direction="row"
+                alignItems="center"
+              >
                 <Grid item xs={10}>
                   <Grid container className={classes.user} alignItems="center">
                     <Grid item>
                       <UserImage imgPath={content.writer.profileImgPath} />
                     </Grid>
-                    <Grid item container direction="column" xs={2} style={{ padding: '0 1%' }}>
+                    <Grid
+                      item
+                      container
+                      direction="column"
+                      xs={2}
+                      style={{ padding: '0 1%' }}
+                    >
                       <UserId userId={content.writer.id} />
                       <DateInfo dateTime={content.writeTime} />
                     </Grid>
                   </Grid>
                 </Grid>
-                {
-                  relation === 'MEMBER' || relation === 'MASTER'
-                  ? (
-                    <Grid item className={classes.menu}>
-                      <PostMenu
-                        content={content}
-                        setIsPostLoading={setIsPostLoading}
-                        setFormData={setFormData}
-                        initPosts={initPosts}
-                        updateOpen={setOpen}
-                        updateHistoryOpen={setHistoryOpen}
-                      />
-                    </Grid>
-                  ) : null
-                }
+                {relation === 'MEMBER' || relation === 'MASTER' ? (
+                  <Grid item className={classes.menu}>
+                    <PostMenu
+                      content={content}
+                      setIsPostLoading={setIsPostLoading}
+                      setFormData={setFormData}
+                      initPosts={initPosts}
+                      updateOpen={setOpen}
+                      updateHistoryOpen={setHistoryOpen}
+                    />
+                  </Grid>
+                ) : null}
               </Grid>
             </Box>
           </Container>
-          {
-            canAccess(relation, content.accessModifier) ?
-            (
-              <>
-                {content.address ? (
-                  <Grid className={classes.children} container alignItems="center">
-                    <Grid container alignItems="center">
-                      <RoomIcon color="primary" />
-                      <span style={{ fontWeight: 600 }}>{content.address.split('#')[0]}</span>
-                    </Grid>
-                  </Grid>
-                   ) : null}
-                {content?.hashtags.length > 0
-                  ? (
-                    <Grid className={classes.children}>
-                      <Grid container direction="row" spacing={1}>
-                        {content.hashtags.map((item, index) => {
-                        return (
-                          <Grid item>
-                            <Chip
-                              className="tags"
-                              key={index}
-                              label={`#${item}`}
-                              variant="outlined"
-                              size="small"
-                              onClick={() => {
-                                // handleChipClick(index);
-                                // handleToggle(index);
-                                }}
-                              color="primary"
-                            />
-                          </Grid>
-                            );
-                          })}
-                      </Grid>
-                    </Grid>
-                  ) : null}
-                {content.files.length !== 0 && (
-                  <FileList files={content.files} />
-                )}
-                {content.media.length !== 0 && (
-                  <MediaList media={content.media} />
-                )}
-                <Box className={classes.children}>
-                  <p style={{ wordBreak: 'break-all', margin: '0 0', whiteSpace: 'pre-wrap' }}>{content.contents}</p>
-                </Box>
-                <Divider style={{ margin: '0.5% 1%' }} />
-                <Box className={classes.children}>
-                  <LikerCounter
-                    count={likerCounter}
-                    setLikerCounter={SetLikerCounter}
-                    postId={content.id}
-                  />
-                  &nbsp;
-                  <CommentCounter count={commentCounter} />
-                </Box>
-                {
-                  canAccess(relation, content.commentModifier) ? (
-                    <Container disableGutters>
-                      <CommentList
-                        projectId={content.project.id}
-                        postId={content.id}
-                        setCommentCounter={SetCommentCounter}
-                      />
-                    </Container>
-                  ) : (
-                    <span
-                      style={{
-                        backgroundColor: '#F8F8F8',
-                        textAlign: 'center',
-                        padding: '1% 0',
-                        fontSize: 'smaller' }}
-                    >
-                      댓글을 볼 수 있는 권한이 없습니다
+          {canAccess(relation, content.accessModifier) ? (
+            <>
+              {content.address ? (
+                <Grid
+                  className={classes.children}
+                  container
+                  alignItems="center"
+                >
+                  <Grid container alignItems="center">
+                    <RoomIcon color="primary" />
+                    <span style={{ fontWeight: 600 }}>
+                      {content.address.split('#')[0]}
                     </span>
-                      )
-                  }
-              </>
+                  </Grid>
+                </Grid>
+              ) : null}
+              {content?.hashtags.length > 0 ? (
+                <Grid className={classes.children}>
+                  <Grid container direction="row" spacing={1}>
+                    {content.hashtags.map((item, index) => {
+                      return (
+                        <Grid item>
+                          <Chip
+                            className="tags"
+                            key={index}
+                            label={`#${item}`}
+                            variant="outlined"
+                            size="small"
+                            onClick={() => {
+                              // handleChipClick(index);
+                              // handleToggle(index);
+                            }}
+                            color="primary"
+                          />
+                        </Grid>
+                      );
+                    })}
+                  </Grid>
+                </Grid>
+              ) : null}
+              {content.files.length !== 0 && <FileList files={content.files} />}
+              {content.media.length !== 0 && (
+                <MediaList media={content.media} />
+              )}
+              <Box className={classes.children}>
+                <p
+                  style={{
+                    wordBreak: 'break-all',
+                    margin: '0 0',
+                    whiteSpace: 'pre-wrap',
+                  }}
+                >
+                  {content.contents}
+                </p>
+              </Box>
+              <Divider style={{ margin: '0.5% 1%' }} />
+              <Box className={classes.children}>
+                <LikerCounter
+                  count={likerCounter}
+                  setLikerCounter={SetLikerCounter}
+                  postId={content.id}
+                />
+                &nbsp;
+                <CommentCounter count={commentCounter} />
+              </Box>
+              {canAccess(relation, content.commentModifier) ? (
+                <Container disableGutters>
+                  <CommentList
+                    projectId={content.project.id}
+                    postId={content.id}
+                    setCommentCounter={SetCommentCounter}
+                  />
+                </Container>
+              ) : (
+                <span
+                  style={{
+                    backgroundColor: '#F8F8F8',
+                    textAlign: 'center',
+                    padding: '1% 0',
+                    fontSize: 'smaller',
+                  }}
+                >
+                  댓글을 볼 수 있는 권한이 없습니다
+                </span>
+              )}
+            </>
           ) : (
             <Grid
               style={{
                 backgroundColor: '#F8F8F8',
                 textAlign: 'center',
                 padding: '10% 0',
-                }}
+              }}
             >
               포스트를 볼 수 있는 권한이 없습니다
             </Grid>
-            )
-          }
+          )}
           <Container disableGutters />
         </Card>
       </Container>
@@ -511,7 +582,9 @@ export const Post = (props) => {
       <Dialog
         open={historyOpen}
         updateOpen={setHistoryOpen}
-        onClose={() => { setHistoryOpen(false); }}
+        onClose={() => {
+          setHistoryOpen(false);
+        }}
       >
         <UpdateHistory id={content.id} updateOpen={setHistoryOpen} />
       </Dialog>
@@ -519,73 +592,276 @@ export const Post = (props) => {
   );
 };
 
-export const CompressedPost = (props) => {
-  const { post } = props;
+const CompressedMediaList = ({ media }) => {
   const classes = useStyles();
+
+  const [curIndex, setCurIndex] = useState(1);
 
   return (
     <>
-      {/* 사용자 정보 */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
-          margin: '16px',
-        }}
-      >
-        <Avatar src={post.writer.profileImgPath} />
-        <Typography>{post.writer.name}</Typography>
-      </div>
+      <Grid container direction="row-reverse">
+        <span className={classes.chip}>{`${curIndex}/${media.length}`}</span>
+      </Grid>
+      <Box id="mediaBox" textAlign="center">
+        <Carousel
+          onChange={(index) => {
+            setCurIndex(index + 1);
+          }}
+          autoPlay={false}
+          animation="slide"
+          cycleNavigation={false}
+          indicatorIconButtonProps={{}}
+          indicators={false}
+          activeIndicatorIconButtonProps={{
+            style: {
+              color: '#C16AF5', // 2
+            },
+          }}
+        >
+          {media.map((file, i) => {
+            const { fileDownloadUri } = file;
+            const url = fileDownloadUri.slice(
+              fileDownloadUri.indexOf('/resources'),
+            );
 
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '8px',
-          margin: '16px',
-        }}
-      >
-        <Carousel useKeyboardArrows autoPlay={false} showStatus={false} showThumbs={false}>
-          {post.media.map((file) => (
-            <Box key={file.fileDownloadUri} className={classes.media} height="30em">
-              <Media file={file} />
-            </Box>
-        ))}
+            if (file.contentType.includes('video')) {
+              return (
+                <Box bgcolor="black" key={fileDownloadUri}>
+                  <video controls autoPlay muted>
+                    <source src={url} />
+                  </video>
+                </Box>
+              );
+            }
+
+            if (file.contentType.includes('image')) {
+              return (
+                <img
+                  src={fileDownloadUri.slice(
+                    fileDownloadUri.indexOf('/resources'),
+                  )}
+                  alt="이미지"
+                  width="100%"
+                />
+              );
+            }
+
+            return null;
+          })}
         </Carousel>
-
-        {/* 날짜 */}
-        <DateInfo dateTime={post.writeTime} fs="12px" />
-
-        {/* 해쉬태그들 */}
-        <div style={{ display: 'flex', gap: '8px' }}>
-          {post.hashtags.map((item) => {
-          return (
-            <Chip
-              className="tags"
-              key={item}
-              label={`#${item}`}
-              variant="outlined"
-              size="small"
-              color="primary"
-            />
-          );
-        })}
-        </div>
-
-        {/* 본문 */}
-        <Typography>{post.contents}</Typography>
-
-        {/* 첨부 파일 및 좋아요 댓글 개수 */}
-        {/* <div style={{ display: 'flex', gap: '8px' }}>
-          <FileList className={classes.file} files={post.files} />
-          <LikerCounter count={post.likeCount} />
-          <CommentCounter count={post.commentCount} />
-        </div> */}
-
-        {/* 댓글 */}
-        {/* <CommentList projectId={post.project.id} postId={post.id} /> */}
-      </div>
+      </Box>
     </>
   );
 };
+
+export const CompressedPost = (props) => {
+  const { post, noTime } = props;
+
+  const [historyOpen, setHistoryOpen] = useState(false);
+
+  const classes = useStyles();
+  const [likerCounter, setLikerCounter] = useState(post.likeCount);
+  const [commentCounter, setCommentCounter] = useState(post.commentCount);
+
+  const SetCommentCounter = useCallback((counterEvent) => {
+    setCommentCounter(commentCounter + counterEvent);
+  }); // 댓글 개수 조정
+
+  const SetLikerCounter = useCallback((counterEvent) => {
+    setLikerCounter(likerCounter + counterEvent);
+  }); // 좋아요 개수 조정
+
+  useEffect(() => {
+    setCommentCounter(post.commentCount);
+    setLikerCounter(post.likeCount);
+  }, [post.id]);
+
+  return (
+    <>
+      <Container disableGutters>
+        <Card className={classes.paper} elevation={0}>
+          <Container disableGutters>
+            <Box className={classes.children}>
+              <Grid
+                container
+                className={classes.header}
+                xs={12}
+                direction="row"
+                alignItems="center"
+              >
+                <Grid item xs={10}>
+                  <Grid container className={classes.user} alignItems="center">
+                    <Grid item>
+                      <UserImage imgPath={post.writer.profileImgPath} />
+                    </Grid>
+                    <Grid
+                      item
+                      container
+                      direction="column"
+                      xs={2}
+                      style={{ padding: '0 1%' }}
+                    >
+                      <UserId userId={post.writer.id} />
+                      {!noTime && <DateInfo dateTime={post.writeTime} />}
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Box>
+          </Container>
+          <>
+            {post.address ? (
+              <Grid className={classes.children} container alignItems="center">
+                <Grid container alignItems="center">
+                  <RoomIcon color="primary" />
+                  <span style={{ fontWeight: 600 }}>
+                    {post.address.split('#')[0]}
+                  </span>
+                </Grid>
+              </Grid>
+            ) : null}
+            {post?.hashtags.length > 0 ? (
+              <Grid className={classes.children}>
+                <Grid container direction="row" spacing={1}>
+                  {post.hashtags.map((item, index) => {
+                    return (
+                      <Grid item>
+                        <Chip
+                          className="tags"
+                          key={index}
+                          label={`#${item}`}
+                          variant="outlined"
+                          size="small"
+                          onClick={() => {
+                            // handleChipClick(index);
+                            // handleToggle(index);
+                          }}
+                          color="primary"
+                        />
+                      </Grid>
+                    );
+                  })}
+                </Grid>
+              </Grid>
+            ) : null}
+            {post.files.length !== 0 && <FileList files={post.files} />}
+            {post.media.length !== 0 && (
+              <CompressedMediaList media={post.media} />
+            )}
+            <Box className={classes.children}>
+              <p
+                style={{
+                  // wordBreak: 'break-all',
+                  margin: '0 0',
+                  whiteSpace: 'pre-wrap',
+                }}
+              >
+                {post.contents}
+              </p>
+            </Box>
+            <Divider style={{ margin: '0.5% 1%' }} />
+            <Box className={classes.children}>
+              <LikerCounter
+                count={likerCounter}
+                setLikerCounter={SetLikerCounter}
+                postId={post.id}
+              />
+              &nbsp;
+              <CommentCounter count={commentCounter} />
+            </Box>
+
+            <Container disableGutters>
+              <CommentList
+                projectId={post.project.id}
+                postId={post.id}
+                setCommentCounter={SetCommentCounter}
+              />
+            </Container>
+          </>
+          <Container disableGutters />
+        </Card>
+      </Container>
+      {/* 다이얼로그 */}
+      <Dialog
+        open={historyOpen}
+        updateOpen={setHistoryOpen}
+        onClose={() => {
+          setHistoryOpen(false);
+        }}
+      >
+        <UpdateHistory id={post.id} updateOpen={setHistoryOpen} />
+      </Dialog>
+    </>
+  );
+};
+
+// export const CompressedPost = (props) => {
+//   const { post } = props;
+//   const classes = useStyles();
+
+//   return (
+//     <>
+//       {/* 사용자 정보 */}
+//       <div
+//         style={{
+//           display: 'flex',
+//           alignItems: 'center',
+//           gap: '8px',
+//           margin: '16px',
+//         }}
+//       >
+//         <Avatar src={post.writer.profileImgPath} />
+//         <Typography>{post.writer.name}</Typography>
+//       </div>
+
+//       <div
+//         style={{
+//           display: 'flex',
+//           flexDirection: 'column',
+//           gap: '8px',
+//           margin: '16px',
+//         }}
+//       >
+//         <Carousel useKeyboardArrows autoPlay={false} showStatus={false} showThumbs={false}>
+//           {post.media.map((file) => (
+//             <Box key={file.fileDownloadUri} className={classes.media} height="30em">
+//               <Media file={file} />
+//             </Box>
+//         ))}
+//         </Carousel>
+
+//         {/* 날짜 */}
+//         <DateInfo dateTime={post.writeTime} fs="12px" />
+
+//         {/* 해쉬태그들 */}
+//         <div style={{ display: 'flex', gap: '8px' }}>
+//           {post.hashtags.map((item) => {
+//           return (
+//             <Chip
+//               className="tags"
+//               key={item}
+//               label={`#${item}`}
+//               variant="outlined"
+//               size="small"
+//               color="primary"
+//             />
+//           );
+//         })}
+//         </div>
+
+//         {/* 본문 */}
+//         <Typography>{post.contents}</Typography>
+
+//         {/* 첨부 파일 및 좋아요 댓글 개수 */}
+//         {/* <div style={{ display: 'flex', gap: '8px' }}>
+//           <FileList className={classes.file} files={post.files} />
+//           <LikerCounter count={post.likeCount} />
+//           <CommentCounter count={post.commentCount} />
+//         </div> */}
+
+//         {/* 댓글 */}
+//         {/* <CommentList projectId={post.project.id} postId={post.id} /> */}
+//       </div>
+//     </>
+//   );
+// };

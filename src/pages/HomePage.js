@@ -391,7 +391,7 @@ function PostCard({ postWrapper }) {
       &nbsp;
       <DateInfo dateTime={wrapperTime} />
       <Box height="1rem" />
-      <CompressedPost post={post} />
+      <CompressedPost post={post} noTime />
     </UnitCard>
   );
 }
@@ -414,7 +414,7 @@ function SmallCard({ children }) {
       color="white"
       padding="0.5rem"
       borderRadius="1rem"
-      lineHeight="2rem"
+      lineHeight="1.75rem"
     >
       {children}
     </Box>
