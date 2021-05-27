@@ -18,6 +18,7 @@ import { Button } from '@material-ui/core';
 import { useFetchData } from '../hooks/hooks';
 import ErrorContext from '../contexts/error';
 import { AcceptProject, ApplyProject, InvitationAccept } from './projectapi';
+import AuthContext from '../contexts/auth';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -205,6 +206,7 @@ const Header = ({ sections, updateRelation }) => {
 
   updateRelation(project?.relation ?? 'NONE');
 
+  const [userId] = useContext(AuthContext);
   const { useHandleError } = useContext(ErrorContext);
   useHandleError(projectLoadError);
 
@@ -226,7 +228,9 @@ const Header = ({ sections, updateRelation }) => {
     <>
       <Toolbar className={classes.toolbar}>
         <ProjectTitle title={title} introduction={introduction} />
-        <TopButton projectId={projectId} isProjectLoaded={isProjectLoaded} relation={relation} />
+        {userId === null ?
+        (<></>) :
+        (<TopButton projectId={projectId} isProjectLoaded={isProjectLoaded} relation={relation} />)}
       </Toolbar>
 
       <Paper className={classes.root}>
