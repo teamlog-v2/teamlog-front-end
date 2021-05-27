@@ -32,7 +32,13 @@ const ProjectFollower = () => {
 
     if (followersResponse.status === 200) {
       setFollowers(await followersResponse.json());
-      const followProjects = await GetFollowProjects(userId);
+
+      if (userId == null) {
+        setIsLoaded(true);
+        return;
+      }
+
+      const followProjects = await GetFollowProjects(userId); // 유저가 팔로우한 프로젝트 조회
 
       if (followProjects.status === 401) {
         setIsLogin(false);
@@ -118,15 +124,16 @@ const ProjectFollower = () => {
             <Grid item style={{ margin: '1em 0' }} xs={9} sm={10}>
               <Typography variant="h6">⭐ 팔로워</Typography>
             </Grid>
-            <Grid item style={{ margin: '1em 0' }} xs={3} sm={2}>
-              {isFollowing ? (
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  fullWidth
-                  onClick={Unfollow}
-                >팔로잉
-                </Button>
+            {userId === null ? (<></>) : (
+              <Grid item style={{ margin: '1em 0' }} xs={3} sm={2}>
+                {isFollowing ? (
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    fullWidth
+                    onClick={Unfollow}
+                  >팔로잉
+                  </Button>
               ) : (
                 <Button
                   variant="contained"
@@ -136,7 +143,8 @@ const ProjectFollower = () => {
                 >팔로우
                 </Button>
               )}
-            </Grid>
+              </Grid>
+)}
           </Grid>
           <Grid container spacing={2}>
             { followers.length > 0 ? (followers.map((member) => (
