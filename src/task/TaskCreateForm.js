@@ -15,9 +15,11 @@ import {
   Dialog,
   Avatar,
   makeStyles,
+  IconButton,
 } from '@material-ui/core';
-import { AvatarGroup } from '@material-ui/lab';
 import AddIcon from '@material-ui/icons/Add';
+import RemoveIcon from '@material-ui/icons/Remove';
+import EditTwoToneIcon from '@material-ui/icons/EditTwoTone';
 import MultiTimePicker from './MultiTimePicker';
 import { createTask, putTask } from './taskService';
 import UserSelect from '../user/UserSelect';
@@ -26,6 +28,10 @@ const useStyles = makeStyles((theme) => ({
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: '#fff',
+  },
+  small: {
+    width: theme.spacing(3),
+    height: theme.spacing(3),
   },
 }));
 
@@ -36,16 +42,21 @@ const getDate = (date) => {
     formattedDate[1] = month - 1;
     return new Date(...formattedDate);
   }
-  return new Date();
-}
+  return null;
+};
 
-const TaskCreateForm = ({ projectId, addTaskInContainer, handleClose, task, updateTask }) => {
+const TaskCreateForm = ({
+  projectId,
+  addTaskInContainer,
+  handleClose,
+  task,
+  updateTask,
+}) => {
   const classes = useStyles();
-  const [taskName, setTaskName] = useState(task?.taskName??'');
-  const [status, setStatus] = useState(task?.status??0);
-
+  const [taskName, setTaskName] = useState(task?.taskName ?? '');
+  const [status, setStatus] = useState(task?.status ?? 0);
   const [deadline, setDeadline] = useState(getDate(task?.deadline));
-  const [selectedUsers, setSelectedUsers] = useState(task?.performers??[]);
+  const [selectedUsers, setSelectedUsers] = useState(task?.performers ?? []);
   const [openUserSelect, setopenUserSelect] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -74,6 +85,11 @@ const TaskCreateForm = ({ projectId, addTaskInContainer, handleClose, task, upda
     let performersId = selectedUsers.map(({ id }) => id);
 
     console.log(deadline);
+    if(taskName.length === 0) {
+      alert("태스크 이름을 1자 이상 입력해주세요.")
+      setIsProcessing(false);
+      return;
+    }
 
     const data = {
       taskName,
@@ -93,8 +109,7 @@ const TaskCreateForm = ({ projectId, addTaskInContainer, handleClose, task, upda
 
       if (task) {
         console.log('put');
-      }
-      else console.log('create');
+      } else console.log('create');
 
       const { status } = response;
       const res = await response.json();
@@ -118,6 +133,28 @@ const TaskCreateForm = ({ projectId, addTaskInContainer, handleClose, task, upda
     }
   };
 
+  const AddButton = ({ label, action }) => (
+    <IconButton onClick={action}>
+      <Avatar className={classes.small} style={{ backgroundColor: '#593875' }}>
+        <AddIcon />
+      </Avatar>
+      <Typography variant="caption" style={{ color: 'black' }}>
+        &nbsp;{label}
+      </Typography>
+    </IconButton>
+  );
+
+  const RemoveButton = ({ action }) => (
+    <IconButton onClick={() => action()}>
+      <Avatar className={classes.small} style={{ backgroundColor: '#593875' }}>
+        <RemoveIcon />
+      </Avatar>
+      <Typography variant="caption" style={{ color: 'black' }}>
+        &nbsp;삭제
+      </Typography>
+    </IconButton>
+  );
+
   return (
     <>
       <Backdrop className={classes.backdrop} open={isProcessing}>
@@ -134,9 +171,7 @@ const TaskCreateForm = ({ projectId, addTaskInContainer, handleClose, task, upda
                 handleClose={handleUserSelectClose}
               />
             </Dialog>
-            <Grid container spacing={2}>
-              <Grid item xs={12} align="center">
-              </Grid>
+            <Grid container style={{ gap: 20 }}>
               <Grid item xs={12}>
                 <TextField
                   autoComplete="taskName"
@@ -144,55 +179,21 @@ const TaskCreateForm = ({ projectId, addTaskInContainer, handleClose, task, upda
                   fullWidth
                   id="taskName"
                   label="태스크 이름"
-                  autoFocus
                   value={taskName}
                   onChange={handleTaskNameChange}
                 />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body1" color="textSecondary">
-                  태스크 수행자
-                </Typography>
-                <Button
-                  variant="transparent"
-                  color="primary"
-                  onClick={handleClickOpen}
-                >
-                  {selectedUsers.length === 0 ? (
-                    <Avatar color="primary">
-                      <AddIcon />
-                    </Avatar>
-                  ) : (
-                    <>
-                      <AvatarGroup max={4}>
-                        {selectedUsers.map((user) => (
-                          <Avatar alt={user.name} src={user.profileImgPath} />
-                        ))}
-                      </AvatarGroup>
-                    </>
-                  )}
-                </Button>
-              </Grid>
-              <Grid item xs={12}>
-                <MultiTimePicker
-                  id="deadline"
-                  name="deadline"
-                  label="마감일"
-                  value={deadline}
-                  getDeadlineValue={getDeadlineValue}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <FormLabel component="legend">태스크 상태</FormLabel>
+                <FormLabel component="legend">진행 상태</FormLabel>
                 <RadioGroup value={status} onChange={handleStatusChange} row>
                   <FormControlLabel
                     value={0}
-                    control={<Radio color="primary"/>}
+                    control={<Radio color="primary" />}
                     label="진행 전"
                   />
                   <FormControlLabel
                     value={1}
-                    control={<Radio color="primary"/>}
+                    control={<Radio color="primary" />}
                     label="진행 중"
                   />
                   <FormControlLabel
@@ -202,8 +203,140 @@ const TaskCreateForm = ({ projectId, addTaskInContainer, handleClose, task, upda
                   />
                 </RadioGroup>
               </Grid>
+              <Grid
+                container
+                direction="column"
+                justify="flex-start"
+                alignItems="flex-start"
+              >
+                {' '}
+                <Grid
+                  container
+                  item
+                  direction="row"
+                  justify="flex-start"
+                  alignItems="center"
+                >
+                  <Grid item>
+                    <Typography
+                      variant="body1"
+                      color="textSecondary"
+                      align="center"
+                    >
+                      태스크 수행자
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    {selectedUsers.length === 0 ? (
+                      <AddButton label="추가" action={handleClickOpen} />
+                    ) : (
+                      <>
+                        <IconButton onClick={handleClickOpen}>
+                          <Avatar
+                            className={classes.small}
+                            style={{
+                              background: 'transparent',
+                            }}
+                          >
+                            <EditTwoToneIcon color="primary" />
+                          </Avatar>
+                          <Typography
+                            variant="caption"
+                            style={{ color: 'black' }}
+                          >
+                            &nbsp;수정
+                          </Typography>
+                        </IconButton>
+                      </>
+                    )}
+                  </Grid>
+                  <Grid></Grid>
+                </Grid>
+                <Grid item xs={12}>
+                  <Button onClick={handleClickOpen}>
+                  <Box display="flex" flexDirection="row">
+                    {selectedUsers.length === 0 ? (
+                      <>
+                        <Typography>😱없음😱</Typography>
+                      </>
+                    ) : (
+                      <>
+                        {selectedUsers.length > 5 ? (
+                          <>
+                            {selectedUsers.slice(0, 5).map((user) => (
+                              <Box paddingLeft="5px" paddingRight="5px">
+                                <Avatar
+                                  alt={user.name}
+                                  src={user.profileImgPath}
+                                />
+                                <Typography variant="caption">
+                                  {user.name}
+                                </Typography>
+                              </Box>
+                            ))}
+                            <Box paddingLeft="5px" paddingRight="5px">
+                              <Avatar>+{selectedUsers.length - 5}</Avatar>
+                            </Box>
+                          </>
+                        ) : (
+                          <>
+                            {selectedUsers.map((user) => (
+                              <Box paddingLeft="5px" paddingRight="5px">
+                                <Avatar
+                                  alt={user.name}
+                                  src={user.profileImgPath}
+                                />
+                                <Typography variant="caption">
+                                  {user.name}
+                                </Typography>
+                              </Box>
+                            ))}
+                          </>
+                        )}
+                      </>
+                    )}
+                  </Box>
+                  </Button>
+                </Grid>
+              </Grid>
+              <Grid item xs={12}>
+                <Grid
+                  container
+                  direction="row"
+                  justify="flex-start"
+                  alignItems="center"
+                >
+                  <Grid item>
+                    <Typography
+                      variant="body1"
+                      color="textSecondary"
+                      align="center"
+                    >
+                      마감일
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    {deadline === null ? (
+                      <AddButton
+                        label="등록"
+                        action={() => setDeadline(new Date())}
+                      />
+                    ) : (
+                      <RemoveButton action={() => setDeadline(null)} />
+                    )}
+                  </Grid>
+                </Grid>
+                {deadline === null ? null : (
+                  <MultiTimePicker
+                    id="deadline"
+                    name="deadline"
+                    value={deadline}
+                    getDeadlineValue={getDeadlineValue}
+                  />
+                )}
+              </Grid>
             </Grid>
-            <Box paddingTop="12px" paddingBottom="12px">
+            <Box paddingTop="20px" paddingBottom="12px">
               <Button
                 type="submit"
                 fullWidth

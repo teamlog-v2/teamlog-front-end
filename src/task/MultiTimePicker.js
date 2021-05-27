@@ -13,7 +13,6 @@ const MultiTimePicker = ({ label, value, getDeadlineValue }) => {
     <MuiPickersUtilsProvider locale={koLocale} utils={DateFnsUtils}>
       <KeyboardDateTimePicker
         variant="dialog"
-        minutesStep={15}
         label={label}
         inputVariant="outlined"
         value={selectedDate}
