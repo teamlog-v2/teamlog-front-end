@@ -164,7 +164,11 @@ export default function AppBar() {
         >
           <Search style={{ fontSize: '1.125rem', color: 'white' }} />
         </IconButton>
-        <IconButton>
+        <IconButton
+          onClick={() => {
+            history.push('/news');
+          }}
+        >
           <Notifications style={{ fontSize: '1.125rem', color: 'white' }} />
         </IconButton>
         <Button onClick={handleClick}>

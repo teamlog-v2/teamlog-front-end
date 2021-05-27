@@ -34,7 +34,7 @@ function cmpTimeStr(a, b) {
 
 //
 // 최신, 인기?
-export default function HomePage() {
+export default function NewsPage() {
   const [userId] = useContext(AuthContext);
   const [isLoaded, setIsLoaded] = useState(false);
   const [invitations, setInvitations] = useState(null);
@@ -119,6 +119,21 @@ export default function HomePage() {
             setTaskWrappers((prev) => [...prev, taskWrapper]);
           }
           tasksCounter.current += 1;
+
+          // if (res.length > 0) {
+          //   const curTaskWrappers = [];
+          //   res.forEach((task) => {
+          //     curTaskWrappers.push({
+          //       type: 'TASKS',
+          //       tasks: [task],
+          //       project,
+          //       wrapperTime: task.updateTime,
+          //       wrapperTimeStr: task.updateTimeStr,
+          //     });
+          //   });
+          //   setTaskWrappers((prev) => [...prev, ...curTaskWrappers]);
+          // }
+          // tasksCounter.current += 1;
         });
     });
 
@@ -224,7 +239,7 @@ export default function HomePage() {
         <Box display="flex" alignItems="center">
           <CircularProgress />
           <Box width="1rem" />
-          <Typography>환영합니다! 최근 소식을 가져오고 있습니다...</Typography>
+          <Typography>최근 소식을 가져오고 있습니다...</Typography>
         </Box>
       </Template>
     );
