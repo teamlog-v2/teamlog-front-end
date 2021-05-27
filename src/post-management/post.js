@@ -626,20 +626,17 @@ const CompressedMediaList = ({ media }) => {
 
             if (file.contentType.includes('video')) {
               return (
-                <Box bgcolor="black" key={fileDownloadUri}>
-                  <video controls autoPlay muted>
-                    <source src={url} />
-                  </video>
-                </Box>
+                <video key={url} controls autoPlay muted width="100%">
+                  <source src={url} />
+                </video>
               );
             }
 
             if (file.contentType.includes('image')) {
               return (
                 <img
-                  src={fileDownloadUri.slice(
-                    fileDownloadUri.indexOf('/resources'),
-                  )}
+                  key={url}
+                  src={url}
                   alt="이미지"
                   width="100%"
                 />
