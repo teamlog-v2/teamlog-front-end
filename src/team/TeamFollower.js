@@ -33,6 +33,12 @@ const TeamFollower = () => {
 
     if (followersResponse.status === 200) {
       setFollowers(await followersResponse.json());
+
+      if (userId === null) {
+        setIsLoaded(true);
+        return;
+      }
+
       const followTeams = await GetFollowTeams(userId);
 
       if (followTeams.status === 401) {
@@ -119,15 +125,16 @@ const TeamFollower = () => {
             <Grid item style={{ margin: '1em 0' }} xs={9} sm={10}>
               <Typography variant="h6">⭐ 팔로워</Typography>
             </Grid>
-            <Grid item style={{ margin: '1em 0' }} xs={3} sm={2}>
-              {isFollowing ? (
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  fullWidth
-                  onClick={Unfollow}
-                >팔로잉
-                </Button>
+            {userId === null ? (<></>) : (
+              <Grid item style={{ margin: '1em 0' }} xs={3} sm={2}>
+                {isFollowing ? (
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    fullWidth
+                    onClick={Unfollow}
+                  >팔로잉
+                  </Button>
               ) : (
                 <Button
                   variant="contained"
@@ -137,7 +144,9 @@ const TeamFollower = () => {
                 >팔로우
                 </Button>
               )}
-            </Grid>
+              </Grid>
+            )}
+
           </Grid>
           <Grid container spacing={2}>
             { followers.length > 0 ? (followers.map((member) => (
