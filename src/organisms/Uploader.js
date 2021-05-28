@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Grid, Button, Tooltip } from '@material-ui/core';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import Attachment from '@material-ui/icons/Attachment';
@@ -45,15 +45,15 @@ const Uploader = ({ attachedFiles, updateAttachedFiles,
     return 'IMAGE';
   };
 
-  const handleMediaInputChange = (event) => { // click trigger
+  const handleMediaInputChange = async (event) => { // click trigger
     const uploadedFiles = [...event.target.files];
+
     const loadedFilesLength = uploadedFiles.length;
     if ([...mediaFiles].length + loadedFilesLength > 10) {
       alert('사진 및 동영상은 최대 10개까지 업로드 가능합니다.');
       return;
     }
 
-    const fileWithThumbnail = [];
     let newFiles = [...mediaFiles];
 
     if (!isValidSize(mediaFiles, uploadedFiles, 200000)) { // 동영상은 얼마나 압축하는게 좋을까요
@@ -61,13 +61,31 @@ const Uploader = ({ attachedFiles, updateAttachedFiles,
       return;
     }
 
-    [...event.target.files].forEach((file) => {
-      fileWithThumbnail.push({
+    const fileWithThumbnail = await Promise.all([...event.target.files].map(async (file) => {
+      if (file.type.includes('video')) {
+          const url = URL.createObjectURL(file);
+
+          const notSupportedFormat = await new Promise((resolve, reject) => {
+            const video = document.createElement('video');
+            video.onloadedmetadata = () => (resolve(video.videoWidth === 0));
+            video.onerror = (error) => (reject(error));
+            video.src = url;
+            video.remove();
+        });
+
+        return {
+          url,
+          file,
+          type: getTypeofFile(file.type),
+          notSupportedFormat,
+        };
+      }
+      return {
         url: URL.createObjectURL(file), // 일시적 URL
         file,
         type: getTypeofFile(file.type),
-      });
-    });
+      };
+    }));
     newFiles = newFiles.concat(fileWithThumbnail);
     updateMediaFiles(newFiles);
   };

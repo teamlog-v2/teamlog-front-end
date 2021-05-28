@@ -1,6 +1,7 @@
-import React from 'react';
-import { Card, CardMedia } from '@material-ui/core';
+import React, { useEffect } from 'react';
+import { Card, CardMedia, Grid, Typography } from '@material-ui/core';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { VideoCallRounded } from '@material-ui/icons';
 
 const grid = 8;
 
@@ -22,13 +23,21 @@ const ThumbnailList = ({ files, updateFiles, handleDeleteList }) => {
     const { destination, source } = result;
     const { index } = source;
 
+    console.log(index);
+
     if (!destination) {
       // 삭제
       const current = document.querySelectorAll('.media')[index];
+
+      console.log(files);
+      console.log(index);
+
       current.style.border = 'none';
       const newFiles = files.filter((file, i) => {
-        if (index === i) URL.revokeObjectURL(file.url); // blob url 해제
-        if (file.id) handleDeleteList(file.id);
+        if (index === i) {
+          if (file.id) handleDeleteList(file.id);
+          else URL.revokeObjectURL(file.url);
+        }
         return index !== i;
       });
       updateFiles(newFiles);
@@ -51,7 +60,8 @@ const ThumbnailList = ({ files, updateFiles, handleDeleteList }) => {
 
     if (!destination) {
       // dropped outside the list
-      current.style.border = '3px solid #C900FF';
+      current.style.border = '3px solid #593875';
+      current.style.opacity = 0.9;
     } else current.style.border = 'none';
   };
 
@@ -72,7 +82,7 @@ const ThumbnailList = ({ files, updateFiles, handleDeleteList }) => {
             style={getListStyle(snapshot.isDraggingOver)}
             {...provided.droppableProps}
           >
-            {files.map(({ id, url, type }, index) => (
+            {files.map(({ id, url, type, file, fileName, notSupportedFormat }, index) => (
               <Draggable
                 key={`draggable-${index}`}
                 draggableId={`draggable-${index}`}
@@ -92,20 +102,33 @@ const ThumbnailList = ({ files, updateFiles, handleDeleteList }) => {
                     )}
                   >
                     <Card className="media">
-                      {type.includes('VIDEO') ? (
-                        <CardMedia
-                          component="video"
-                          src={id ? url.slice(url.indexOf('/resources')) : url}
-                          controls
-                          style={{ width: '200px', height: '200px' }}
-                        />
-                      ) : (
-                        <CardMedia
-                          component="img"
-                          src={id ? url.slice(url.indexOf('/resources')) : url}
-                          style={{ width: '200px', height: '200px' }}
-                        />
-                      )}
+                      {(() => {
+                        if (type.includes('VIDEO')) {
+                          if (notSupportedFormat) {
+                            return (<Card
+                              style={{ width: '200px', height: '200px' }}
+                            >
+                              <Grid container xs={12}
+                              style={{ margin: '30% 5%' }} alignItems="center" justify="center">
+                                <VideoCallRounded fontSize="large" />
+                                {file ? file.name : fileName}
+                              </Grid>
+                            </Card>);
+                          }
+                          return (<CardMedia
+                            component="video"
+                            src={id ? url.slice(url.indexOf('/resources')) : url}
+                            controls
+                            style={{ width: '200px', height: '200px' }}
+                          />);
+                         }
+                         return (<CardMedia
+                            component="img"
+                            src={id ? url.slice(url.indexOf('/resources')) : url}
+                            style={{ width: '200px', height: '200px' }}
+                          />
+                        );
+                      })()}
                     </Card>
                   </div>
                 )}

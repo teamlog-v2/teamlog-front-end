@@ -524,6 +524,13 @@ export const Post = (props) => {
                   }}
                 >
                   {content.contents}
+                  {/* {
+                    (content.contents.indexOf('https://') !== -1) && (
+                    <a href={content.contents.substring(content.contents.indexOf('http://'))}>
+                      {content.contents.substring(content.contents.indexOf('http://'))}
+                    </a>
+                    )
+                  } */}
                 </p>
               </Box>
               <Divider style={{ margin: '0.5% 1%' }} />

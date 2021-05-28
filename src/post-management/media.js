@@ -1,7 +1,8 @@
-import { Box } from '@material-ui/core';
-import React from 'react';
+import { Box, Grid } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import jQuery from 'jquery';
+import { VideoCallRounded } from '@material-ui/icons';
 window.$ = window.jQuery = jQuery;
 
 const useStyles = makeStyles(() => ({
@@ -47,20 +48,37 @@ const ImageContent = ({ file }) => {
 };
 
 const Video = (props) => {
-  const { fileDownloadUri } = props.file;
+  const { fileName, fileDownloadUri } = props.file;
+  const [notSupportedFormat, setNotSupportedFormat] = useState(false);
+
+  useEffect(async () => {
+    const result = await new Promise((resolve, reject) => {
+      const video = document.createElement('video');
+      video.onloadedmetadata = () => (resolve(video.videoWidth === 0));
+      video.onerror = (error) => (reject(error));
+      video.src = fileDownloadUri;
+      video.remove();
+    });
+    setNotSupportedFormat(result);
+  }, []);
 
   const url = fileDownloadUri.slice(fileDownloadUri.indexOf('/resources'));
   const classes = useStyles();
 
-  const image = new Image();
-  image.src = url.toString();
-  console.log(image.videoWidth);
-
-  return (
+  return notSupportedFormat ? (
+    <Box>
+      <Grid className={classes.align} container xs={12} alignItems="center" justify="center"
+      style={{ color: 'white', fontSize: 'larger' }} direction="column">
+        <VideoCallRounded fontSize="large" />
+        {fileName}
+        <span style={{ opacity: 0.6, margin: '1%' }}>(브라우저에서 지원하지않는 형식입니다)</span>
+      </Grid>
+    </Box>
+  ) : (
     <Box>
       <video className={classes.align} controls autoPlay muted>
         <source src={url}></source>
       </video>
     </Box>
-  );
+  )
 };
