@@ -38,7 +38,7 @@ export default function MapPage() {
 
   // render ========
   return (
-    <Box overflow="hidden">
+    <Box maxWidth="100%" overflow="hidden">
       <ExplorerWrapperBox
         explorer={explorer}
         isOpen={open}
