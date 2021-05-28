@@ -26,9 +26,9 @@ const SettingPage = () => {
 
     return (
       <Container disableGutters>
-        <Grid Container direction="column">
+        <Grid container direction="column">
           <Grid item>
-            <Typography variant="h4" style={{ margin: '0.5em 0.5em 0.5em' }}>
+            <Typography variant="h5" style={{ margin: '0.5em 0.5em 0.5em' }}>
               ⚙️팀 / 프로젝트 설정
             </Typography>
           </Grid>

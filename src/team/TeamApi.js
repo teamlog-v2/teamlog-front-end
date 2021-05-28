@@ -238,3 +238,15 @@ export const ApplyTeam = async (teamId) => {
 
   return response;
 };
+
+// 팀 가입 취소
+export const CancelApplyTeam = async (joinId, memberId) => {
+  const response = await fetch(`/api/team-joins/${joinId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  return response;
+};

@@ -2,7 +2,7 @@ import { Box, Button, Card, CircularProgress, Container, Grid, Typography } from
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ManufactureDate } from '../post-management/datetime';
-import { GetUserTeams, GetInvitedTeams, GetAppliedTeams, KickOutTeamMember, AcceptTeam, RefuseTeam, LeaveTeam } from './TeamApi';
+import { GetUserTeams, GetInvitedTeams, GetAppliedTeams, KickOutTeamMember, AcceptTeam, RefuseTeam, LeaveTeam, CancelApplyTeam } from './TeamApi';
 import teamIcon from './team.png';
 import AuthContext from '../contexts/auth';
 
@@ -14,7 +14,7 @@ const ParticipatingTeams = ({ userId, teams, setTeams }) => {
             container
             justify="center"
             alignItems="center"
-            style={{ height: '50vh' }}
+            style={{ height: '20vh' }}
           >
             아직 참여 중인 팀이 없어요. 😢
           </Grid>
@@ -65,7 +65,7 @@ const ParticipatingTeams = ({ userId, teams, setTeams }) => {
     );
 };
 
-const AppliedTeams = ({ teams }) => {
+const AppliedTeams = ({ teams, setTeams }) => {
     console.log(teams);
     // teamId가 null로 오는 상황...
     return (
@@ -75,6 +75,7 @@ const AppliedTeams = ({ teams }) => {
             container
             justify="center"
             alignItems="center"
+            style={{ height: '20vh' }}
           >
             가입 신청하신 팀이 없어요. 😢
           </Grid>
@@ -83,12 +84,12 @@ const AppliedTeams = ({ teams }) => {
           <Card elevation={2}>
             <Grid container>
               <Grid item xs={9}>
-                <Link to={`/teams/${team.id}/project`} style={{ textDecoration: 'none' }}>
+                <Link to={`/teams/${team.teamId}/project`} style={{ textDecoration: 'none' }}>
                   <Grid item container xs={12}>
-                    <Grid container item padding="0.5em" xs={2} justify="center" alignItems="center" style={{ margin: '0.5em' }}>
+                    <Grid container item xs={2} justify="center" alignItems="center" style={{ margin: '0.5em' }}>
                       <img src={teamIcon} alt="teamIcon" width="40px" height="40px" />
                     </Grid>
-                    <Grid container item margin="0.5rem 0.75rem" xs={9} alignItems="center">
+                    <Grid container item xs={9} alignItems="center">
                       <Typography color="textPrimary" noWrap>
                         {team.teamName}
                       </Typography>
@@ -98,7 +99,21 @@ const AppliedTeams = ({ teams }) => {
               </Grid>
               <Grid container item xs={3} spacing={1} justify="flex-end" alignItems="center">
                 <Grid item>
-                  <Button color="primary" variant="outlined">취소</Button>
+                  <Button
+                    color="primary"
+                    variant="outlined"
+                    onClick={async () => {
+                        if (window.confirm('팀 신청을 취소하시겠습니까?')) {
+                            const { status } = await CancelApplyTeam(team.id);
+                            if (status === 200) {
+                                const appliedTeamsResponse = await GetAppliedTeams();
+                                setTeams(await appliedTeamsResponse.json());
+                            }
+                        }
+                    }}
+                  >
+                    취소
+                  </Button>
                 </Grid>
               </Grid>
             </Grid>
@@ -118,6 +133,7 @@ const InvitedTeams = ({ teams, userId, setUserTeams, setInvitedTeams }) => {
             container
             justify="center"
             alignItems="center"
+            style={{ height: '20vh' }}
           >
             초대받은 팀이 없어요. 😢
           </Grid>
@@ -131,7 +147,7 @@ const InvitedTeams = ({ teams, userId, setUserTeams, setInvitedTeams }) => {
                   <Grid container item padding="0.5em" xs={2} justify="center" alignItems="center" style={{ margin: '0.5em' }}>
                     <img src={teamIcon} alt="teamIcon" width="40px" height="40px" />
                   </Grid>
-                  <Grid container item margin="0.5rem 0.75rem" xs={9} alignItems="center">
+                  <Grid container item xs={9} alignItems="center">
                     <Typography color="textPrimary" noWrap>
                       {team.teamName}
                     </Typography>
@@ -198,7 +214,7 @@ const TeamSetting = ({ match }) => {
     const { userId } = match.params;
     const [isLoaded, setIsLoaded] = useState(false);
     const [userTeams, setUserTeams] = useState([]);
-    const [appliedTeams, setAppliedTeam] = useState([]);
+    const [appliedTeams, setAppliedTeams] = useState([]);
     const [invitedTeams, setInvitedTeams] = useState([]);
 
     useEffect(async () => {
@@ -211,7 +227,7 @@ const TeamSetting = ({ match }) => {
             && appliedTeamsResponse.status === 200) {
             setUserTeams(await userTeamsResponse.json());
             setInvitedTeams(await invitedTeamResponse.json());
-            setAppliedTeam(await appliedTeamsResponse.json());
+            setAppliedTeams(await appliedTeamsResponse.json());
             setIsLoaded(true);
         }
     }, []);
@@ -236,18 +252,18 @@ const TeamSetting = ({ match }) => {
     }
 
     return (
-      <Container maxWidth="md" disableGutters>
-        <Grid container direction="column" style={{ marginLeft: '1em' }}>
+      <Container maxWidth="md">
+        <Grid container direction="column">
           <Grid item>
-            <Typography variant="h5">참여 중</Typography>
+            <Typography variant="h6">참여 중</Typography>
             <ParticipatingTeams userId={userId} teams={userTeams} setTeams={setUserTeams} />
           </Grid>
           <Grid item style={{ marginTop: '5em' }}>
-            <Typography variant="h5">가입 신청</Typography>
-            <AppliedTeams teams={appliedTeams} />
+            <Typography variant="h6">가입 신청</Typography>
+            <AppliedTeams teams={appliedTeams} setTeams={setAppliedTeams} />
           </Grid>
           <Grid item style={{ marginTop: '5em' }}>
-            <Typography variant="h5">초대</Typography>
+            <Typography variant="h6">초대</Typography>
             <InvitedTeams
               teams={invitedTeams}
               userId={userId}

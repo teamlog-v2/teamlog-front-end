@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { InvitationAccept, RefuseProject, LeaveProject, GetUserProjects, GetInvitedProjects, GetAppliedProjects } from './projectapi';
 
 const ProjectItem = ({ project }) => (
-  <Link to={`/projects/${project.id}`} style={{ textDecoration: 'none' }}>
+  <Link to={`/projects/${project.projectId}`} style={{ textDecoration: 'none' }}>
     <Card elevation={2}>
       <CardMedia style={{ height: 180 }} image={project.thumbnail} />
       <CardContent>
@@ -32,11 +32,13 @@ const ParticipatingTeams = ({ userId, projects, setProjects }) => {
                       </Link>
                       <CardContent>
                         <Grid container direction="column">
-                          <Grid item>
-                            <Typography gutterBottom variant="h6">
-                              {project.name}
-                            </Typography>
-                          </Grid>
+                          <Link to={`/projects/${project.id}`} style={{ textDecoration: 'none', color: 'black' }}>
+                            <Grid item>
+                              <Typography gutterBottom variant="h6">
+                                {project.name}
+                              </Typography>
+                            </Grid>
+                          </Link>
                           <Grid contianer item style={{ textAlign: 'right' }}>
                             <Grid item>
                               <Button
@@ -86,16 +88,18 @@ const AppliedProjects = ({ userId, projects, setProjects }) => {
                   <Grid item md={4} sm={6} xs={12}>
                     {/* <Link to={`/projects/${project.id}`} style={{ textDecoration: 'none' }}> */}
                     <Card elevation={2}>
-                      <Link to={`/projects/${project.id}`} style={{ textDecoration: 'none' }}>
+                      <Link to={`/projects/${project.projectId}`} style={{ textDecoration: 'none' }}>
                         <CardMedia style={{ height: 180 }} image={project.thumbnail} />
                       </Link>
                       <CardContent>
                         <Grid container direction="column">
-                          <Grid item>
-                            <Typography gutterBottom variant="h6">
-                              {project.projectName}
-                            </Typography>
-                          </Grid>
+                          <Link to={`/projects/${project.projectId}`} style={{ textDecoration: 'none', color: 'black' }}>
+                            <Grid item>
+                              <Typography gutterBottom variant="h6">
+                                {project.projectName}
+                              </Typography>
+                            </Grid>
+                          </Link>
                           <Grid contianer item style={{ textAlign: 'right' }}>
                             <Grid item>
                               <Button
@@ -149,11 +153,13 @@ const InvitedProjects = ({ userId, projects, setUserProjects, setInvitedProjects
                       </Link>
                       <CardContent>
                         <Grid container direction="column">
-                          <Grid item>
-                            <Typography gutterBottom variant="h6">
-                              {project.projectName}
-                            </Typography>
-                          </Grid>
+                          <Link to={`/projects/${project.id}`} style={{ textDecoration: 'none', color: 'block' }}>
+                            <Grid item>
+                              <Typography gutterBottom variant="h6">
+                                {project.projectName}
+                              </Typography>
+                            </Grid>
+                          </Link>
                           <Grid contianer item style={{ textAlign: 'right' }}>
                             <Button
                               color="primary"
@@ -220,7 +226,7 @@ const ProjectSetting = ({ match }) => {
     const { userId } = match.params;
     const [isLoaded, setIsLoaded] = useState(false);
     const [userProjects, setUserProjects] = useState([]);
-    const [appliedProjects, setAppliedProject] = useState([]);
+    const [appliedProjects, setAppliedProjects] = useState([]);
     const [invitedProjects, setInvitedProjects] = useState([]);
 
     useEffect(async () => {
@@ -233,7 +239,7 @@ const ProjectSetting = ({ match }) => {
             && appliedProjectsResponse.status === 200) {
             setUserProjects(await userProjectsResponse.json());
             setInvitedProjects(await invitedProjectResponse.json());
-            setAppliedProject(await appliedProjectsResponse.json());
+            setAppliedProjects(await appliedProjectsResponse.json());
             setIsLoaded(true);
         }
     }, []);
@@ -261,7 +267,7 @@ const ProjectSetting = ({ match }) => {
       <Container maxWidth="md" disableGutters>
         <Grid container direction="column">
           <Grid item style={{ margin: '1em' }}>
-            <Typography variant="h5">참여 중</Typography>
+            <Typography variant="h6">참여 중</Typography>
             <ParticipatingTeams
               userId={userId}
               projects={userProjects}
@@ -269,11 +275,11 @@ const ProjectSetting = ({ match }) => {
             />
           </Grid>
           <Grid item style={{ marginLeft: '1em', marginTop: '5em' }}>
-            <Typography variant="h5">가입 신청</Typography>
-            <AppliedProjects projects={appliedProjects} />
+            <Typography variant="h6">가입 신청</Typography>
+            <AppliedProjects projects={appliedProjects} setProjects={setAppliedProjects} />
           </Grid>
           <Grid item style={{ marginLeft: '1em', marginTop: '4em' }}>
-            <Typography variant="h5">초대</Typography>
+            <Typography variant="h6">초대</Typography>
             <InvitedProjects
               userId={userId}
               projects={invitedProjects}
