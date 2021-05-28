@@ -1,6 +1,7 @@
 import {
   Avatar,
   Backdrop,
+  Box,
   Button,
   IconButton,
   makeStyles,
@@ -8,6 +9,7 @@ import {
   MenuItem,
   MenuList,
   Slide,
+  Typography,
   useScrollTrigger,
 } from '@material-ui/core';
 import { ArrowDropDown, Notifications, Search } from '@material-ui/icons';
@@ -123,7 +125,8 @@ export default function AppBar() {
 
   if (!id) {
     return (
-      <>
+      <Box display="flex" alignItems="center">
+        <Title />
         <Div>
           <IconButton onClick={userClickedAddToHome}>
             <GetAppIcon style={{ fontSize: '1.125rem', color: 'white' }} />
@@ -145,13 +148,14 @@ export default function AppBar() {
             로그인
           </Button>
         </Div>
-      </>
+      </Box>
     );
   }
 
   return (
-    <>
-      <Backdrop open={!!anchorEl} style={{ zIndex: 1000 }} />
+    <Box display="flex" alignItems="center">
+      <Backdrop open={!!anchorEl} style={{ zIndex: 1001 }} />
+      <Title />
       <Div>
         <IconButton onClick={userClickedAddToHome}>
           <GetAppIcon style={{ fontSize: '1.125rem', color: 'white' }} />
@@ -225,13 +229,31 @@ export default function AppBar() {
             로그아웃
           </MenuItem>
         </Menu>
-        <ResponsiveDialog open={isProjectFormOpened} updateOpen={setIsProjectFormOpened}>
+        <ResponsiveDialog
+          open={isProjectFormOpened}
+          updateOpen={setIsProjectFormOpened}
+        >
           <ProjectForm updateOpen={setIsProjectFormOpened} />
         </ResponsiveDialog>
-        <ResponsiveDialog open={isTeamFormOpened} updateOpen={setIsTeamFormOpened}>
+        <ResponsiveDialog
+          open={isTeamFormOpened}
+          updateOpen={setIsTeamFormOpened}
+        >
           <TeamForm updateOpen={setIsTeamFormOpened} />
         </ResponsiveDialog>
       </Div>
-    </>
+    </Box>
+  );
+}
+
+// ////////
+function Title() {
+  return (
+    <Link
+      to="/main"
+      style={{ zIndex: 1000, color: 'white', marginLeft: '1rem' }}
+    >
+      <Typography>TeamLog</Typography>
+    </Link>
   );
 }

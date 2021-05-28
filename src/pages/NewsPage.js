@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Card,
   Chip,
   CircularProgress,
@@ -38,6 +39,7 @@ export default function NewsPage() {
   const [userId] = useContext(AuthContext);
   const [isLoaded, setIsLoaded] = useState(false);
   const [invitations, setInvitations] = useState(null);
+  const [teamInvitations, setTeamInvitations] = useState(null);
   const [belongingProjects, setBelongingProjects] = useState(null);
   const [followingProjects, setFollowingProjects] = useState(null);
   const [followingUsersPosts, setFollowingUsersPosts] = useState(null);
@@ -52,12 +54,20 @@ export default function NewsPage() {
   const [units, setUnits] = useState(null);
 
   useEffect(() => {
-    // 초대장
+    // 프로젝트 초대장
     fetch('/api/users/project-invitation')
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
         setInvitations(res);
+      });
+
+    // 팀 초대장
+    fetch('/api/users/team-invitation')
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+        setTeamInvitations(res);
       });
 
     // 속한 프로젝트
@@ -182,6 +192,7 @@ export default function NewsPage() {
     console.log(followingUsersPosts === null);
     if (
       invitations === null ||
+      teamInvitations === null ||
       belongingProjects === null ||
       tasksCounter.current !== belongingProjects.length ||
       belongingPostsCounter.current !== belongingProjects.length ||
@@ -224,6 +235,7 @@ export default function NewsPage() {
     console.log(invitations);
   }, [
     invitations,
+    teamInvitations,
     belongingProjects,
     followingProjects,
     taskWrappers,
@@ -247,7 +259,9 @@ export default function NewsPage() {
 
   return (
     <Template bgcolor="#F8F8F8">
-      {invitations.length === 0 && units.length === 0 ? (
+      {invitations.length === 0 &&
+      invitations.length === 0 &&
+      units.length === 0 ? (
         <>
           <Typography variant="h3" color="primary">
             😅 최근 소식이 없네요...
@@ -275,6 +289,10 @@ export default function NewsPage() {
         <InvitationsCard key={invitation.id} invitation={invitation} />
       ))}
 
+      {teamInvitations.map((invitation) => (
+        <TeamInvitationsCard key={invitation.id} invitation={invitation} />
+      ))}
+
       {units.map((wrapper) => {
         switch (wrapper.type) {
           case 'POST':
@@ -299,8 +317,33 @@ export default function NewsPage() {
 
 // == 이하 중요하지 않음 ========
 function InvitationsCard({ invitation }) {
-  const { projectId, projectName } = invitation;
+  const { projectId, projectName, id: joinId } = invitation;
   const history = useHistory();
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState(null);
+
+  async function accept() {
+    setIsLoading(true);
+    const res = await fetch(`/api/project-joins/${joinId}`, {
+      method: 'POST',
+    });
+    if (res.status >= 200 && res.status < 300) {
+      setMessage('초대를 수락하였습니다.');
+      setIsLoading(false);
+    }
+  }
+
+  async function reject() {
+    setIsLoading(true);
+    const res = await fetch(`/api/project-joins/${joinId}`, {
+      method: 'DELETE',
+    });
+    if (res.status >= 200 && res.status < 300) {
+      setMessage('초대를 거절하였습니다.');
+      setIsLoading(false);
+    }
+  }
 
   return (
     <UnitCard>
@@ -313,10 +356,137 @@ function InvitationsCard({ invitation }) {
             <CustomLink to={`/projects/${projectId}`}>{projectName}</CustomLink>
             에 초대되었습니다.
           </Typography>
+
+          <Box marginLeft="0.5rem" marginTop="0.5rem" display="flex">
+            {(() => {
+              if (isLoading) {
+                return <CircularProgress />;
+              }
+
+              if (message) {
+                return (
+                  <Typography variant="body1" color="textSecondary">
+                    {message}
+                  </Typography>
+                );
+              }
+
+              return (
+                <>
+                  <Button
+                    onClick={accept}
+                    variant="contained"
+                    disableElevation
+                    color="primary"
+                  >
+                    수락
+                  </Button>
+                  <Button
+                    onClick={reject}
+                    variant="contained"
+                    disableElevation
+                    style={{ marginLeft: '0.5rem' }}
+                  >
+                    거절
+                  </Button>
+                </>
+              );
+            })()}
+          </Box>
         </Box>
         <IconButton
           onClick={() => {
             history.push(`/projects/${projectId}`);
+          }}
+        >
+          <Reply />
+        </IconButton>
+      </Box>
+    </UnitCard>
+  );
+}
+
+function TeamInvitationsCard({ invitation }) {
+  const { teamId, teamName, id: joinId } = invitation;
+  const history = useHistory();
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState(null);
+
+  async function accept() {
+    setIsLoading(true);
+    const res = await fetch(`/api/team-joins/${joinId}`, {
+      method: 'POST',
+    });
+    if (res.status >= 200 && res.status < 300) {
+      setMessage('초대를 수락하였습니다.');
+      setIsLoading(false);
+    }
+  }
+
+  async function reject() {
+    setIsLoading(true);
+    const res = await fetch(`/api/team-joins/${joinId}`, {
+      method: 'DELETE',
+    });
+    if (res.status >= 200 && res.status < 300) {
+      setMessage('초대를 거절하였습니다.');
+      setIsLoading(false);
+    }
+  }
+
+  return (
+    <UnitCard>
+      <Box display="flex" alignItems="center" justifyContent="space-between">
+        <Box>
+          <Typography variant="caption" color="textSecondary">
+            팀 초대
+          </Typography>
+          <Typography variant="body1">
+            <CustomLink to={`/teams/${teamId}/project`}>{teamName}</CustomLink>
+            에 초대되었습니다.
+          </Typography>
+
+          <Box marginLeft="0.5rem" marginTop="0.5rem" display="flex">
+            {(() => {
+              if (isLoading) {
+                return <CircularProgress />;
+              }
+
+              if (message) {
+                return (
+                  <Typography variant="body1" color="textSecondary">
+                    {message}
+                  </Typography>
+                );
+              }
+
+              return (
+                <>
+                  <Button
+                    onClick={accept}
+                    variant="contained"
+                    disableElevation
+                    color="primary"
+                  >
+                    수락
+                  </Button>
+                  <Button
+                    onClick={reject}
+                    variant="contained"
+                    disableElevation
+                    style={{ marginLeft: '0.5rem' }}
+                  >
+                    거절
+                  </Button>
+                </>
+              );
+            })()}
+          </Box>
+        </Box>
+        <IconButton
+          onClick={() => {
+            history.push(`/teams/${teamId}/project`);
           }}
         >
           <Reply />

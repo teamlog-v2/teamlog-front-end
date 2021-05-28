@@ -1,6 +1,7 @@
 /* eslint-disable */
 
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
 import { validateLogin } from '../user/userService';
 
 const AuthContext = React.createContext(null);
@@ -30,6 +31,8 @@ const AuthProvider = ({ children }) => {
   const [id, setId] = useState(null);
   const [profileImgPath, setProfileImgPath] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
+
+  const history = useHistory();
 
   useEffect(() => {
     const storedAccessToken = localStorage.getItem('access-token');

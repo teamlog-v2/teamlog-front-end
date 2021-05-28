@@ -20,15 +20,15 @@ const Cluster = (props) => {
     // border: '5px solid #f44336',
     borderRadius: K_SIZE,
     backgroundColor: 'white',
-    color: '#3f51b5',
+    color: '#593875',
     fontSize: 32,
     fontWeight: 'bold',
   };
 
   const greatPlaceStyleHover = {
     ...greatPlaceStyle,
-    // border: '5px solid #3f51b5',
-    color: '#f44336',
+    // border: '5px solid #593875',
+    // color: '#f44336',
   };
 
   return (
