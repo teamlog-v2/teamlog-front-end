@@ -44,45 +44,40 @@ export default function NewPostExplorer({
       bgcolor="rgba(0, 0, 0, 0.125)"
     >
       <Box
-        display="flex"
-        justifyContent="flex-end"
         position="absolute"
-        width="100%"
+        right="0px"
+        display="flex"
+        flexDirection="column"
+        alignItems="flex-end"
+        margin="1rem"
       >
-        <Box
-          display="flex"
-          flexDirection="column"
-          alignItems="flex-end"
-          margin="1rem"
+        <Fab
+          style={{ zIndex: 1, opacity: 0.9 }}
+          color="primary"
+          onClick={() => {
+            close?.();
+          }}
         >
-          <Fab
-            style={{ zIndex: 1, opacity: 0.9 }}
-            color="primary"
-            onClick={() => {
-              close?.();
-            }}
-          >
-            <Close style={{ color: 'white' }} />
-          </Fab>
-          {!isMobile && (
-            <>
-              <Box height="1rem" />
-              <Fab
-                style={{ zIndex: 1, opacity: 0.9 }}
-                color="primary"
-                onClick={() => {
-                  setFullMode?.((current) => !current);
-                }}
-              >
-                {isFullMode ? (
-                  <FullscreenExit style={{ color: 'white' }} />
-                ) : (
-                  <Fullscreen style={{ color: 'white' }} />
-                )}
-              </Fab>
-            </>
-          )}
-        </Box>
+          <Close style={{ color: 'white' }} />
+        </Fab>
+        {!isMobile && (
+          <>
+            <Box height="1rem" />
+            <Fab
+              style={{ zIndex: 1, opacity: 0.9 }}
+              color="primary"
+              onClick={() => {
+                setFullMode?.((current) => !current);
+              }}
+            >
+              {isFullMode ? (
+                <FullscreenExit style={{ color: 'white' }} />
+              ) : (
+                <Fullscreen style={{ color: 'white' }} />
+              )}
+            </Fab>
+          </>
+        )}
       </Box>
       <Box maxWidth="768px" margin="auto">
         {sortedPosts.map((post) => (
