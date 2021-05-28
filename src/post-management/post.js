@@ -600,7 +600,7 @@ const CompressedMediaList = ({ media }) => {
   return (
     <>
       <Grid container direction="row-reverse">
-        <span className={classes.chip}>{`${curIndex}/${media.length}`}</span>
+        {/* <span className={classes.chip}>{`${curIndex}/${media.length}`}</span> */}
       </Grid>
       <Box id="mediaBox" textAlign="center">
         <Carousel
