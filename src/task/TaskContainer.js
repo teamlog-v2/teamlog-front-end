@@ -163,15 +163,19 @@ const TaskContainer = (props) => {
         source,
         destination,
       );
+
       newState[fromStatusIndex] = result[fromStatusIndex];
       newState[toStatusIndex] = result[toStatusIndex];
     }
     const target = newState[toStatusIndex][destination.index];
+    target.status = toStatusIndex;
     const data = { status: toStatusIndex, priority: destination.index };
 
     updateTaskStatus(target.id, data)
       .then((res) => res.json())
-      .then((response) => console.log(response))
+      .then((response) => {
+        console.log(response);
+      })
       .catch((error) => console.error(error));
     setFocusedTask(null);
     setState(newState);
