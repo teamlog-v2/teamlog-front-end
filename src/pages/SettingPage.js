@@ -25,14 +25,14 @@ const SettingPage = () => {
     const [userId] = useContext(AuthContext);
 
     return (
-      <Container disableGutters>
+      <Container disableGutters maxWidth="md">
         <Grid container direction="column">
           <Grid item>
             <Typography variant="h5" style={{ margin: '0.5em 0.5em 0.5em' }}>
               ⚙️팀 / 프로젝트 설정
             </Typography>
           </Grid>
-          <Grid item> <Divider /> </Grid>
+          <Divider />
           <Container disableGutters maxWidth="md">
             <Grid container item spacing={2} style={{ margin: '0.5em' }}>
               <Grid item>
