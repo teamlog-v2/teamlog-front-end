@@ -12,7 +12,7 @@ import PostCreator from '../organisms/PostCreator';
 import Uploader from '../organisms/Uploader';
 import AttachmentList from '../organisms/AttachmentList';
 import CommentModifier from '../organisms/CommentModifier';
-import { getTypeofFile, resizeImage } from '../utils';
+import { detectSupportFormat, getTypeofFile, resizeImage } from '../utils';
 
 const useDeleteData = () => {
   const [deletedList, setDeletedList] = useState([]);
@@ -159,21 +159,16 @@ const PostForm = (props) => {
       // notSupportedFormat 속성을 가진 기존 미디어 파일 생성
       const settedMediaFiles = await Promise.all([...content.media].map(async (file) => {
         const { id: fileId, contentType, fileName, fileDownloadUri } = file;
+        const url = fileDownloadUri.slice(fileDownloadUri.indexOf('/resources'));
         const formatFile = {
-          url: fileDownloadUri,
+          url,
           type: getTypeofFile(contentType),
           fileName,
           id: fileId,
         };
 
         if (contentType.includes('video')) {
-            const notSupportedFormat = await new Promise((resolve, reject) => {
-              const video = document.createElement('video');
-              video.onloadedmetadata = () => (resolve(video.videoWidth === 0));
-              video.onerror = (error) => (reject(error));
-              video.src = fileDownloadUri;
-              video.remove();
-          });
+          const notSupportedFormat = await detectSupportFormat(url);
           return ({
             ...formatFile,
             notSupportedFormat,
@@ -183,11 +178,11 @@ const PostForm = (props) => {
       }));
       setMediaFiles(settedMediaFiles);
 
-      setAttachedFiles(content.files.map((file) => ({
+      setAttachedFiles(content.files.map(({ id: fileId, fileName, fileDownloadUri }) => ({
         file: {
-          url: file.fileDownloadUri,
-          name: file.fileName,
-          id: file.id,
+          url: fileDownloadUri.slice(fileDownloadUri.indexOf('/resources')),
+          name: fileName,
+          id: fileId,
         },
       })));
       setIsLoaded(true);

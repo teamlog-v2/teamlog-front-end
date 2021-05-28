@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Grid, Button, Tooltip } from '@material-ui/core';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import Attachment from '@material-ui/icons/Attachment';
-import { isValidSize } from '../utils';
+import { detectSupportFormat, isValidSize } from '../utils';
 
 const Uploader = ({ attachedFiles, updateAttachedFiles,
   mediaFiles, updateMediaFiles }) => {
@@ -64,14 +64,7 @@ const Uploader = ({ attachedFiles, updateAttachedFiles,
     const fileWithThumbnail = await Promise.all([...event.target.files].map(async (file) => {
       if (file.type.includes('video')) {
           const url = URL.createObjectURL(file);
-
-          const notSupportedFormat = await new Promise((resolve, reject) => {
-            const video = document.createElement('video');
-            video.onloadedmetadata = () => (resolve(video.videoWidth === 0));
-            video.onerror = (error) => (reject(error));
-            video.src = url;
-            video.remove();
-        });
+          const notSupportedFormat = await detectSupportFormat(url);
 
         return {
           url,

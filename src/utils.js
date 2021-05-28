@@ -1,3 +1,4 @@
+import { LocalConvenienceStoreOutlined } from '@material-ui/icons';
 import ImageResize from 'image-resize';
 
 /**
@@ -101,4 +102,15 @@ const resizeImage = async (file, tempURL) => {
   return blobToFile;
 };
 
-export { isDuplicateData, isValidSize, getFormat, getTypeofFile, resizeImage };
+const detectSupportFormat = async (url) => {
+  const notSupportedFormat = await new Promise((resolve, reject) => {
+    const video = document.createElement('video');
+    video.onloadedmetadata = () => (resolve(video.videoWidth === 0));
+    video.onerror = (error) => (reject(error));
+    video.src = url;
+    video.remove();
+  });
+  return notSupportedFormat;
+};
+
+export { isDuplicateData, isValidSize, getFormat, getTypeofFile, resizeImage, detectSupportFormat };
