@@ -17,7 +17,7 @@ import Tab from '@material-ui/core/Tab';
 import { Button } from '@material-ui/core';
 import { useFetchData } from '../hooks/hooks';
 import ErrorContext from '../contexts/error';
-// import { AcceptTeam, ApplyTeam } from './teamapi';
+import { ApplyTeam } from './TeamApi';
 import teamIcon from './team.png';
 import AuthContext from '../contexts/auth';
 
@@ -122,16 +122,17 @@ const TopButton = ({ isTeamLoaded, teamId, relation }) => {
   }
 
   const Apply = async () => {
-    // const response = await ApplyTeam(teamId);
+    const response = await ApplyTeam(teamId);
+    console.log(response);
 
-    // if (response.status === 401) {
-    //   setIsLogin(false);
-    //   return;
-    // }
+    if (response.status === 401) {
+      setIsLogin(false);
+      return;
+    }
 
-    // if (response.status === 201) {
-    //   setRelationState('APPLIED');
-    // }
+    if (response.status === 201) {
+      setRelationState('APPLIED');
+    }
   };
 
   const Accept = async () => {

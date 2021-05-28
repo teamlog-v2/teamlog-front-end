@@ -21,7 +21,6 @@ import TeamForm from './team/TeamForm';
 
 function HideOnScroll(props) {
   const { children, window } = props;
-  console.log('bar');
   // Note that you normally won't need to set the window ref as useScrollTrigger
   // will default to window.
   // This is only being set here because the demo is in an iframe.
@@ -206,6 +205,15 @@ export default function AppBar() {
             }}
           >
             팀 생성
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              handleClose();
+              history.push(`/users/${id}/setting`);
+              // /users/${id}/setting
+            }}
+          >
+            팀 / 프로젝트 설정
           </MenuItem>
           <MenuItem
             style={{ color: 'red' }}

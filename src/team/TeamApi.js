@@ -1,3 +1,15 @@
+// 유저 팀 리스트 조회
+export const GetUserTeams = async (userId) => {
+  const response = await fetch(`/api/teams/user/${userId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    return response;
+};
+
 // 팔로우한 팀 조회
 export const GetFollowTeams = async (userId) => {
     const response = await fetch(`/api/users/${userId}/team-follow`, {
@@ -70,6 +82,18 @@ export const GetTeamApplcants = async (teamId) => {
     return response;
 };
 
+// 팀 신청 유저 조회
+export const GetAppliedTeams = async (teamId) => {
+  const response = await fetch('/api/users/team-apply', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+  });
+
+  return response;
+};
+
 // 팀 초대 받은 유저 조회
 export const GetTeamInvitees = async (teamId) => {
     const response = await fetch(`/api/teams/${teamId}/joins/invitation`, {
@@ -80,6 +104,18 @@ export const GetTeamInvitees = async (teamId) => {
     });
 
     return response;
+};
+
+// 유저가 받은 팀 초대 조회
+export const GetInvitedTeams = async (teamId) => {
+  const response = await fetch('/api/users/team-invitation', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+  });
+
+  return response;
 };
 
 // 팀 멤버 조회
@@ -94,6 +130,7 @@ export const GetTeamMembers = async (teamId) => {
     return response;
 };
 
+// 팀 내 프로젝트 조회
 export const GetTeamProjects = async (teamId) => {
   const response = await fetch(`/api/teams/${teamId}/projects`, {
     method: 'GET',
@@ -105,10 +142,19 @@ export const GetTeamProjects = async (teamId) => {
   return response;
 };
 
-export const AcceptTeam = async (teamId) => {
+// 팀 초대 수락
+export const AcceptTeam = async (joinId) => {
+  const response = await fetch(`/api/team-joins/${joinId}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 
+  return response;
 };
 
+// 팀 초대 거절
 export const RefuseTeam = async (joinId) => {
   const response = await fetch(`/api/team-joins/${joinId}`, {
     method: 'DELETE',
@@ -117,12 +163,24 @@ export const RefuseTeam = async (joinId) => {
     },
   });
 
-  console.log(response);
   return response;
 };
 
+// 팀 삭제
 export const DeleteTeam = async (teamId) => {
   const response = await fetch(`/api/teams/${teamId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  return response;
+};
+
+// 팀 탈퇴
+export const LeaveTeam = async (teamId) => {
+  const response = await fetch(`/api/teams/${teamId}/members`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
@@ -141,7 +199,6 @@ export const KickOutTeamMember = async (teamId, memberId) => {
     },
   });
 
-  console.log(response.status);
   return response;
 };
 
@@ -168,4 +225,16 @@ export const JoinTeam = async (teamId, userId) => {
     });
 
     return response;
+};
+
+// 팀 가입
+export const ApplyTeam = async (teamId) => {
+  const response = await fetch(`/api/teams/${teamId}/joins`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+  });
+
+  return response;
 };

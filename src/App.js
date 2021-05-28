@@ -18,6 +18,8 @@ import TeamPage from './team/TeamPage';
 import SearchPage from './pages/SearchPage';
 import Team from './team/Team';
 import NewsPage from './pages/NewsPage';
+import SettingPage from './pages/SettingPage';
+import TeamSetting from './team/TeamSetting';
 // import MapPage from './map/MapPage';
 
 // 지도 api 낭비하기 싫어서 주석처리
@@ -44,6 +46,7 @@ const App = () => {
           <Route exact path="/users/:userId/edit" component={UserEditForm} />
           <Route exact path="/signup" component={SignUp} />
           <Route exact path="/login" component={SignIn} />
+          <Route path="/users/:userId/setting" component={SettingPage} />
 
           <Route component={NotFoundPage} />
         </Switch>

@@ -170,6 +170,18 @@ export const KickOutProjectMember = async (projectId, memberId) => {
   return response;
 };
 
+// 프로젝트 탈퇴
+export const LeaveProject = async (projectId) => {
+  const response = await fetch(`/api/projects/${projectId}/members`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  return response;
+};
+
 // 프로젝트 팔로우
 export const FollowProject = async (projectId) => {
   const response = await fetch(`/api/projects/${projectId}/followers`, {
@@ -186,6 +198,42 @@ export const FollowProject = async (projectId) => {
 export const UnFollowProject = async (projectId) => {
   const response = await fetch(`/api/projects/${projectId}/followers`, {
     method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  return response;
+};
+
+// 유저 프로젝트 리스트 조회
+export const GetUserProjects = async (userId) => {
+  const response = await fetch(`/api/projects/user/${userId}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  return response;
+};
+
+// 유저가 초대받은 프로젝트 조회
+export const GetInvitedProjects = async () => {
+  const response = await fetch('/api/users/project-invitation', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  return response;
+};
+
+// 유저가 가입 신청한 프로젝트 조회
+export const GetAppliedProjects = async () => {
+  const response = await fetch('/api/users/project-apply', {
+    method: 'GET',
     headers: {
       'Content-Type': 'application/json',
     },
