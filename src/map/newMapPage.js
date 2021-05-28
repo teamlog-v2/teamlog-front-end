@@ -12,6 +12,7 @@ export default function MapPage() {
   const [posts] = useFetchData('/api/posts/with-location');
   const [selectedPosts, setSelectedPosts] = useState(null);
   const [open, setOpen] = useState(false);
+  const [fullMode, setFullMode] = useState(false);
   const explorer = useRef(null);
 
   const points = useMemo(() => {
@@ -38,16 +39,22 @@ export default function MapPage() {
   // render ========
   return (
     <Box overflow="hidden">
-      <ExplorerWrapperBox explorer={explorer} isOpen={open}>
+      <ExplorerWrapperBox
+        explorer={explorer}
+        isOpen={open}
+        isFullMode={fullMode}
+      >
         <NewPostExplorer
           explorer={explorer}
           posts={selectedPosts}
           close={() => {
             setOpen(false);
           }}
+          isFullMode={fullMode}
+          setFullMode={setFullMode}
         />
       </ExplorerWrapperBox>
-      <MapWrapperBox isOpen={open}>
+      <MapWrapperBox isOpen={open} isFullMode={fullMode}>
         <CustomGoogleMap
           onChange={({ zoom: currentZoom, bounds: currentBounds }) => {
             setZoom(currentZoom);
@@ -109,13 +116,13 @@ export default function MapPage() {
 }
 
 //
-function MapWrapperBox({ children, isOpen, ...props }) {
+function MapWrapperBox({ children, isOpen, isFullMode, ...props }) {
   const isMobile = useMediaQuery({
     query: '(max-width:767px)',
   });
 
   let styles;
-  if (isMobile || !isOpen) {
+  if (isMobile || isFullMode || !isOpen) {
     styles = {
       width: '100%',
     };
@@ -140,7 +147,7 @@ function MapWrapperBox({ children, isOpen, ...props }) {
   );
 }
 
-function ExplorerWrapperBox({ children, isOpen, ...props }) {
+function ExplorerWrapperBox({ children, isOpen, isFullMode, ...props }) {
   const isMobile = useMediaQuery({
     query: '(max-width:767px)',
   });
@@ -149,9 +156,9 @@ function ExplorerWrapperBox({ children, isOpen, ...props }) {
   if (!isOpen) {
     styles = {
       left: '100%',
-      width: isMobile ? '100%' : '40%',
+      width: isFullMode || isMobile ? '100%' : '40%',
     };
-  } else if (isMobile) {
+  } else if (isFullMode || isMobile) {
     styles = {
       left: '0px',
       width: '100%',
@@ -175,9 +182,7 @@ function ExplorerWrapperBox({ children, isOpen, ...props }) {
       {...props}
     >
       <Box height="48px" />
-      <Box height="calc(100% - 48px)">
-        {children}
-      </Box>
+      <Box height="calc(100% - 48px)">{children}</Box>
     </Box>
   );
 }

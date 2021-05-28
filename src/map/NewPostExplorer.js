@@ -6,8 +6,9 @@ import {
   IconButton,
   Typography,
 } from '@material-ui/core';
-import { Close } from '@material-ui/icons';
+import { Close, Fullscreen, FullscreenExit } from '@material-ui/icons';
 import React, { useMemo } from 'react';
+import { useMediaQuery } from 'react-responsive';
 import { Link } from 'react-router-dom';
 import { DateInfo } from '../post-management/datetime';
 import { CompressedPost } from '../post-management/post';
@@ -16,14 +17,24 @@ function cmpTimeStr(a, b) {
   return new Date(b) - new Date(a);
 }
 
-export default function NewPostExplorer({ posts, close, explorer }) {
-  if (!posts) return null;
+export default function NewPostExplorer({
+  posts,
+  close,
+  explorer,
+  isFullMode,
+  setFullMode,
+}) {
+  const isMobile = useMediaQuery({
+    query: '(max-width:767px)',
+  });
 
   const sortedPosts = useMemo(() => {
-    return posts.sort((a, b) => {
+    return posts?.sort((a, b) => {
       return cmpTimeStr(a.writeTimeStr, b.writeTimeStr);
     });
   }, [posts]);
+
+  if (!posts) return null;
 
   return (
     <Box
@@ -32,22 +43,54 @@ export default function NewPostExplorer({ posts, close, explorer }) {
       ref={explorer}
       bgcolor="rgba(0, 0, 0, 0.125)"
     >
-      <Box display="flex" justifyContent="flex-end">
-        <Fab
-          style={{ zIndex: 1, position: 'absolute', margin: '1rem' }}
-          color="primary"
-          onClick={() => {
-            close();
-          }}
+      <Box
+        display="flex"
+        justifyContent="flex-end"
+        position="absolute"
+        width="100%"
+      >
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="flex-end"
+          margin="1rem"
         >
-          <Close style={{ color: 'white' }} />
-        </Fab>
-      </Box>
-      {sortedPosts.map((post) => (
-        <Box key={post.id} margin="2rem">
-          <PostCard post={post} />
+          <Fab
+            style={{ zIndex: 1 }}
+            color="primary"
+            onClick={() => {
+              close?.();
+            }}
+          >
+            <Close style={{ color: 'white' }} />
+          </Fab>
+          {!isMobile && (
+            <>
+              <Box height="1rem" />
+              <Fab
+                style={{ zIndex: 1 }}
+                color="primary"
+                onClick={() => {
+                  setFullMode?.((current) => !current);
+                }}
+              >
+                {isFullMode ? (
+                  <FullscreenExit style={{ color: 'white' }} />
+                ) : (
+                  <Fullscreen style={{ color: 'white' }} />
+                )}
+              </Fab>
+            </>
+          )}
         </Box>
-      ))}
+      </Box>
+      <Box maxWidth="768px" margin="auto">
+        {sortedPosts.map((post) => (
+          <Box key={post.id} margin="2rem">
+            <PostCard post={post} />
+          </Box>
+        ))}
+      </Box>
     </Box>
   );
 }
