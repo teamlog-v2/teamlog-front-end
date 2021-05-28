@@ -6,7 +6,7 @@ import PostMain from './postmain';
 import MemberTab from './MemberTab';
 import TaskContainer from '../task/TaskContainer';
 import ProjectFollower from './projectfollower';
-import ProjectManagement from './projectmanagement';
+import ProjectManagementPage from '../pages/ProjectManagementPage';
 
 export default function Project() {
   const sections = [
@@ -35,9 +35,8 @@ export default function Project() {
           />
         ))}
         <Route
-          exact
           path="/projects/:id/projectmanagement"
-          component={() => <ProjectManagement relation={relation} />}
+          component={() => <ProjectManagementPage relation={relation} />}
         />
       </Switch>
     </>
