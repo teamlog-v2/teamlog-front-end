@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Grid, TextField, Paper, makeStyles, InputAdornment, Divider, Tooltip, Button, Card, ClickAwayListener, CardMedia } from '@material-ui/core';
+import { Grid, TextField, Paper, makeStyles, InputAdornment, Divider, Tooltip, Button, Card, ClickAwayListener, CardMedia, CircularProgress, Typography } from '@material-ui/core';
 import { Backspace, Close, LocationOn } from '@material-ui/icons';
 import { useParams } from 'react-router';
+import { Skeleton } from '@material-ui/lab';
 import PlacesSearchApi from '../organisms/PlacesSearchApi';
 import ThumbnailList from '../organisms/ThumbnailList';
 import AccessModifier from '../organisms/AccessModifier';
@@ -28,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: 'white',
     [theme.breakpoints.down('sm')]: {
       margin: '0 0',
-      padding: '0 1%',
+      padding: '10% 5%',
     },
     [theme.breakpoints.up('md')]: {
       margin: '0 0',
@@ -36,11 +37,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   children: {
-    [theme.breakpoints.down('sm')]: {
-      margin: '4% 0',
-    },
-    [theme.breakpoints.up('md')]: {
-      margin: '3% 0',
+    [theme.breakpoints.down('md')]: {
+      margin: '2% 0',
     },
   },
 }));
@@ -68,7 +66,7 @@ const PostForm = (props) => {
   const isUpdateRequest = (content !== undefined);
   const postId = content?.id;
 
-  const contentRef = useRef(null);
+  const [text, setText] = useState('');
   const [postData, setPostData] = useState({
     accessModifier: 'PUBLIC',
     commentModifier: 'PUBLIC',
@@ -80,9 +78,10 @@ const PostForm = (props) => {
   const [recommendedHashtags, setRecommendedHashtags] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const { deletedList: deletedFileIdList, handleDeleteList } = useDeleteData();
+  const [isLoaded, setIsLoaded] = useState(!isUpdateRequest);
 
   const handleSubmit = async () => {
-    if (contentRef.current.value === '') {
+    if (text === '') {
       alert('등록할 내용이 없습니다.');
       return;
     }
@@ -92,7 +91,7 @@ const PostForm = (props) => {
     const data = {
       ...postData,
       projectId: id,
-      contents: contentRef.current.value,
+      contents: text,
       deletedFileIdList,
     };
 
@@ -149,19 +148,41 @@ const PostForm = (props) => {
 
   useEffect(async () => {
     if (content) {
-      contentRef.current.value = content.contents;
+      setText(content.contents);
       setPostData({
         address: content.address,
         accessModifier: content.accessModifier,
         commentModifier: content.commentModifier,
         hashtags: content.hashtags,
       });
-      setMediaFiles(content.media.map((file) => ({
-          url: file.fileDownloadUri,
-          type: getTypeofFile(file.fileName),
-          file,
-          id: file.id,
-        })));
+
+      // notSupportedFormat 속성을 가진 기존 미디어 파일 생성
+      const settedMediaFiles = await Promise.all([...content.media].map(async (file) => {
+        const { id: fileId, contentType, fileName, fileDownloadUri } = file;
+        const formatFile = {
+          url: fileDownloadUri,
+          type: getTypeofFile(contentType),
+          fileName,
+          id: fileId,
+        };
+
+        if (contentType.includes('video')) {
+            const notSupportedFormat = await new Promise((resolve, reject) => {
+              const video = document.createElement('video');
+              video.onloadedmetadata = () => (resolve(video.videoWidth === 0));
+              video.onerror = (error) => (reject(error));
+              video.src = fileDownloadUri;
+              video.remove();
+          });
+          return ({
+            ...formatFile,
+            notSupportedFormat,
+          });
+        }
+        return formatFile;
+      }));
+      setMediaFiles(settedMediaFiles);
+
       setAttachedFiles(content.files.map((file) => ({
         file: {
           url: file.fileDownloadUri,
@@ -169,11 +190,12 @@ const PostForm = (props) => {
           id: file.id,
         },
       })));
+      setIsLoaded(true);
     }
     setRecommendedHashtags(projectHashtags.length !== 0 ? randomHashtags(projectHashtags) : []);
   }, []);
 
-  return (
+  return isLoaded ? (
     <>
       <Grid item container justify="flex-end">
         <Close onClick={() => { updateOpen(false); }} style={{ cursor: 'pointer', margin: '1%' }} />
@@ -187,7 +209,7 @@ const PostForm = (props) => {
         <Grid container spacing={3}>
           <Grid container item direction="row" justify="space-between">
             <Grid container item direction="column">
-              <Grid item container direction="row" style={{ height: '50px' }}>
+              <Grid item container direction="row" style={{ height: '50px' }} className={classes.children}>
                 {
                   !isSearching ? (
                     <>
@@ -269,7 +291,7 @@ const PostForm = (props) => {
           <Grid item xs={12}>
             <Divider />
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} className={classes.children}>
             <Uploader
               attachedFiles={attachedFiles}
               updateAttachedFiles={setAttachedFiles}
@@ -316,7 +338,8 @@ const PostForm = (props) => {
               rowsMax={Infinity}
               multiline
               fullWidth
-              inputRef={contentRef}
+              value={text}
+              onChange={(event) => { setText(event.target.value); }}
             />
           </Grid>
           <Grid container item xs={12} justify="flex-end">
@@ -341,6 +364,18 @@ const PostForm = (props) => {
         </Grid>
       </Grid>
     </>
+  ) : (
+    <Grid
+      className={classes.root}
+      container
+      xs={12}
+      style={{ width: 800, minHeight: 600 }}
+    >
+      <Skeleton animation="wave" width="100%" height={50} />
+      <Skeleton animation="wave" width="100%" height={50} />
+      <Skeleton animation="wave" variant="rect" width="100%" height={118} />
+      <Skeleton animation="wave" variant="rect" width="100%" height={118} />
+    </Grid>
   );
 };
 

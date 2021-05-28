@@ -54,14 +54,12 @@ const getFormat = (type) => {
 };
 
 /**
- * 확장자로 사진인지 동영상인지 판별
- * @param {String} name 파일명
+ * 파일 속성인 contentType으로 사진인지 동영상인지 판별
+ * @param {String} contentType 파일명
  * @returns video or image
  */
-const getTypeofFile = (name) => {
-  const token = name.split('.');
-  const extension = token[token.length - 1];
-  if (extension === 'mp4') {
+const getTypeofFile = (contentType) => {
+  if (contentType.includes('video')) {
     return 'VIDEO';
   }
   return 'IMAGE';
