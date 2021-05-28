@@ -1,5 +1,5 @@
-import { Avatar, Box, Button, Card, CircularProgress, Container, Grid, makeStyles, Typography } from '@material-ui/core';
-import React, { useContext, useEffect, useState } from 'react';
+import { Avatar, Box, Button, Card, CardMedia, CircularProgress, Container, Grid, makeStyles, Typography } from '@material-ui/core';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import teamIcon from '../team/team.png';
 import AuthContext from '../contexts/auth';
@@ -9,6 +9,7 @@ import Introduction from './introduction';
 import TeamSelect from '../team/TeamSelect';
 import { GetProject } from './projectapi';
 import { GetTeam } from '../team/TeamApi';
+import { resizeImage } from '../utils';
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -30,6 +31,37 @@ const ProjectManagement = ({ match }) => {
 
   const handleUserSelectClose = () => {
       setIsTeamSelectOpened(false);
+  };
+
+  const thumbnailInput = useRef(null);
+  const onChangeThumbnailInput = async (event) => {
+    const [file] = event.target.files;
+
+    const formData = new FormData();
+    const data = {
+      projectId,
+    };
+    formData.append(
+      'key',
+      new Blob([JSON.stringify(data)], { type: 'application/json' }),
+    );
+
+    try {
+      const tempURL = URL.createObjectURL(file);
+      const resizedImage = await resizeImage(file, tempURL);
+      formData.append('thumbnail', resizedImage);
+
+      const res = await fetch(`/api/projects/${projectId}/thumbnail`, {
+        method: 'PUT',
+        body: formData,
+      });
+
+      if (res.status >= 200 && res.status < 300) {
+        setProject(await (await GetProject(projectId)).json());
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
     useEffect(async () => {
@@ -74,6 +106,33 @@ const ProjectManagement = ({ match }) => {
     return (
       <Container maxWidth="md">
         <Grid container style={{ marginBottom: '2em' }}>
+          <Grid item xs={9} sm={10}>
+            <Typography variant="h6">프로젝트 대표 이미지</Typography>
+          </Grid>
+          <Grid item style={{ marginTop: '1em', marginBottom: '4em' }}>
+            <Card style={{ marginRight: '1rem' }}>
+              <CardMedia
+                style={{ width: 200, height: 120 }}
+                image={project.thumbnail}
+              />
+              <Button
+                onClick={() => {
+                    thumbnailInput.current.click();
+                  }}
+                fullWidth
+              >
+                변경하기
+              </Button>
+              <Box display="none">
+                <input
+                  type="file"
+                  accept="image/*"
+                  ref={thumbnailInput}
+                  onChange={onChangeThumbnailInput}
+                />
+              </Box>
+            </Card>
+          </Grid>
           <Grid item style={{ margin: '1em 0' }} xs={9} sm={10}>
             <Typography variant="h6">프로젝트 정보</Typography>
           </Grid>
@@ -92,7 +151,7 @@ const ProjectManagement = ({ match }) => {
               <ProjectUpdateForm updateOpen={setIsProjectUpdatFormOpened} project={project} />
             </ResponsiveDialog>
           </Grid>
-          <Grid item>
+          <Grid item style={{ marginBottom: '2em' }}>
             <Introduction
               masterId={project.masterId}
               createTime={project.createTime}
@@ -101,7 +160,7 @@ const ProjectManagement = ({ match }) => {
             />
           </Grid>
         </Grid>
-        <Grid container style={{ marginBottom: '2em' }}>
+        <Grid container>
           <Grid item style={{ margin: '1em 0' }} xs={9} sm={10}>
             <Typography variant="h6">프로젝트 관리팀 설정</Typography>
           </Grid>
