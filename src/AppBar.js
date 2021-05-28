@@ -23,6 +23,7 @@ import TeamForm from './team/TeamForm';
 
 function HideOnScroll(props) {
   const { children, window } = props;
+  console.log('bar');
   // Note that you normally won't need to set the window ref as useScrollTrigger
   // will default to window.
   // This is only being set here because the demo is in an iframe.
@@ -54,7 +55,7 @@ const Div = ({ children }) => {
           <div
             style={{
               display: 'flex',
-              justifyContent: 'flex-end',
+              justifyContent: 'space-between',
               alignItems: 'center',
               backgroundColor: '#593875',
               height: '48px',
@@ -126,27 +127,29 @@ export default function AppBar() {
   if (!id) {
     return (
       <Box display="flex" alignItems="center">
-        <Title />
         <Div>
-          <IconButton onClick={userClickedAddToHome}>
-            <GetAppIcon style={{ fontSize: '1.125rem', color: 'white' }} />
-          </IconButton>
-          {/* <Button className="add-button" onClick={userClickedAddToHome}>앱</Button> */}
-          <IconButton
-            onClick={() => {
-              history.push('/search');
-            }}
-          >
-            <Search style={{ fontSize: '1rem', color: 'white' }} />
-          </IconButton>
-          <Button
-            style={{ color: 'white' }}
-            onClick={() => {
-              history.push('/login');
-            }}
-          >
-            로그인
-          </Button>
+          <Title />
+          <Box display="flex">
+            <IconButton onClick={userClickedAddToHome}>
+              <GetAppIcon style={{ fontSize: '1.125rem', color: 'white' }} />
+            </IconButton>
+            {/* <Button className="add-button" onClick={userClickedAddToHome}>앱</Button> */}
+            <IconButton
+              onClick={() => {
+                history.push('/search');
+              }}
+            >
+              <Search style={{ fontSize: '1rem', color: 'white' }} />
+            </IconButton>
+            <Button
+              style={{ color: 'white' }}
+              onClick={() => {
+                history.push('/login');
+              }}
+            >
+              로그인
+            </Button>
+          </Box>
         </Div>
       </Box>
     );
@@ -155,80 +158,73 @@ export default function AppBar() {
   return (
     <Box display="flex" alignItems="center">
       <Backdrop open={!!anchorEl} style={{ zIndex: 1001 }} />
-      <Title />
       <Div>
-        <IconButton onClick={userClickedAddToHome}>
-          <GetAppIcon style={{ fontSize: '1.125rem', color: 'white' }} />
-        </IconButton>
-        <IconButton
-          onClick={() => {
-            history.push('/search');
-          }}
-        >
-          <Search style={{ fontSize: '1.125rem', color: 'white' }} />
-        </IconButton>
-        <IconButton
-          onClick={() => {
-            history.push('/news');
-          }}
-        >
-          <Notifications style={{ fontSize: '1.125rem', color: 'white' }} />
-        </IconButton>
-        <Button onClick={handleClick}>
-          <Avatar className={classes.small} src={profileImgPath} />
-          <ArrowDropDown style={{ fontSize: '1rem', color: 'white' }} />
-        </Button>
-        <Menu
-          keepMounted
-          anchorEl={anchorEl}
-          open={!!anchorEl}
-          onClose={handleClose}
-        >
-          <MenuItem
+        <Title />
+        <Box display="flex">
+          <IconButton onClick={userClickedAddToHome}>
+            <GetAppIcon style={{ fontSize: '1.125rem', color: 'white' }} />
+          </IconButton>
+          <IconButton
             onClick={() => {
-              handleClose();
-              history.push(`/users/${id}`);
+              history.push('/search');
             }}
           >
-            마이페이지
-          </MenuItem>
-          <MenuItem
+            <Search style={{ fontSize: '1.125rem', color: 'white' }} />
+          </IconButton>
+          <IconButton
             onClick={() => {
-              handleClose();
-              setIsProjectFormOpened(true);
-              // history.push('/create-project');
+              history.push('/news');
             }}
           >
-            프로젝트 생성
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              handleClose();
-              setIsTeamFormOpened(true);
-              // history.push('/create-team');
-            }}
+            <Notifications style={{ fontSize: '1.125rem', color: 'white' }} />
+          </IconButton>
+          <Button onClick={handleClick}>
+            <Avatar className={classes.small} src={profileImgPath} />
+            <ArrowDropDown style={{ fontSize: '1rem', color: 'white' }} />
+          </Button>
+          <Menu
+            keepMounted
+            anchorEl={anchorEl}
+            open={!!anchorEl}
+            onClose={handleClose}
           >
-            팀 생성
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              handleClose();
-              history.push(`/users/${id}/setting`);
-              // /users/${id}/setting
-            }}
-          >
-            팀 / 프로젝트 설정
-          </MenuItem>
-          <MenuItem
-            style={{ color: 'red' }}
-            onClick={() => {
-              handleClose();
-              handleLogout();
-            }}
-          >
-            로그아웃
-          </MenuItem>
-        </Menu>
+            <MenuItem
+              onClick={() => {
+                handleClose();
+                history.push(`/users/${id}`);
+              }}
+            >
+              마이페이지
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                handleClose();
+                setIsProjectFormOpened(true);
+                // history.push('/create-project');
+              }}
+            >
+              프로젝트 생성
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                handleClose();
+                setIsTeamFormOpened(true);
+                // history.push('/create-team');
+              }}
+            >
+              팀 생성
+            </MenuItem>
+            <MenuItem
+              style={{ color: 'red' }}
+              onClick={() => {
+                handleClose();
+                handleLogout();
+              }}
+            >
+              로그아웃
+            </MenuItem>
+          </Menu>
+        </Box>
         <ResponsiveDialog
           open={isProjectFormOpened}
           updateOpen={setIsProjectFormOpened}
@@ -249,10 +245,7 @@ export default function AppBar() {
 // ////////
 function Title() {
   return (
-    <Link
-      to="/main"
-      style={{ zIndex: 1000, color: 'white', marginLeft: '1rem' }}
-    >
+    <Link to="/main" style={{ color: 'white', marginLeft: '1rem' }}>
       <Typography>TeamLog</Typography>
     </Link>
   );
