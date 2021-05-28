@@ -38,6 +38,9 @@ const MapPage = () => {
     <>
       <div
         style={{
+          position: 'absolute',
+          top: '0px',
+          width: '100%',
           height: '100%',
           display: 'flex',
           justifyContent: 'center',
@@ -51,7 +54,7 @@ const MapPage = () => {
               zIndex: 1,
               // backgroundColor: '#FFFFFF',
               width: '100%',
-              maxWidth: 1024,
+              maxWidth: 480,
             }}
           >
             <PostExplorer
