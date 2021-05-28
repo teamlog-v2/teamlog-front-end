@@ -1,6 +1,6 @@
-import { Box } from '@material-ui/core';
+import { Box, Fab } from '@material-ui/core';
 import GoogleMapReact from 'google-map-react';
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import useSupercluster from 'use-supercluster';
 import { useFetchData } from '../hooks/hooks';
@@ -11,6 +11,8 @@ import SimpleMarker from './SimpleMarker';
 export default function MapPage() {
   const [posts] = useFetchData('/api/posts/with-location');
   const [selectedPosts, setSelectedPosts] = useState(null);
+  const [open, setOpen] = useState(false);
+  const explorer = useRef(null);
 
   const points = useMemo(() => {
     return (posts || []).map((post, index) => ({
@@ -35,83 +37,102 @@ export default function MapPage() {
 
   // render ========
   return (
-    <WrapperBox>
-      <CustomGoogleMap
-        onChange={({ zoom: currentZoom, bounds: currentBounds }) => {
-          setZoom(currentZoom);
-          setBounds([
-            currentBounds.nw.lng,
-            currentBounds.se.lat,
-            currentBounds.se.lng,
-            currentBounds.nw.lat,
-          ]);
-        }}
-        onChildClick={(_, props) => {
-          setSelectedPosts(props.posts);
-        }}
-      >
-        {clusters.map((cluster) => {
-          const [lng, lat] = cluster.geometry.coordinates;
-          const {
-            cluster: isCluster,
-            point_count: pointCount,
-          } = cluster.properties;
+    <Box overflow="hidden">
+      <ExplorerWrapperBox explorer={explorer} isOpen={open}>
+        <NewPostExplorer
+          explorer={explorer}
+          posts={selectedPosts}
+          close={() => {
+            setOpen(false);
+          }}
+        />
+      </ExplorerWrapperBox>
+      <MapWrapperBox isOpen={open}>
+        <CustomGoogleMap
+          onChange={({ zoom: currentZoom, bounds: currentBounds }) => {
+            setZoom(currentZoom);
+            setBounds([
+              currentBounds.nw.lng,
+              currentBounds.se.lat,
+              currentBounds.se.lng,
+              currentBounds.nw.lat,
+            ]);
+          }}
+          onChildClick={(_, props) => {
+            explorer.current?.scrollTo?.(0, 0);
+            setSelectedPosts(props.posts);
+            setOpen(true);
+          }}
+        >
+          {clusters.map((cluster) => {
+            const [lng, lat] = cluster.geometry.coordinates;
+            const {
+              cluster: isCluster,
+              point_count: pointCount,
+            } = cluster.properties;
 
-          if (isCluster) {
-            const postIndices = supercluster
-              .getLeaves(cluster.id, Infinity)
-              .map((point) => point.properties.postIndex);
-            const postIds = [];
-            const postsBuilder = [];
-            postIndices.forEach((postIndex) => {
-              postIds.push(posts[postIndex].id);
-              postsBuilder.push(posts[postIndex]);
-            });
+            if (isCluster) {
+              const postIndices = supercluster
+                .getLeaves(cluster.id, Infinity)
+                .map((point) => point.properties.postIndex);
+              const postIds = [];
+              const postsBuilder = [];
+              postIndices.forEach((postIndex) => {
+                postIds.push(posts[postIndex].id);
+                postsBuilder.push(posts[postIndex]);
+              });
+              return (
+                <Cluster
+                  key={`CLUSTER_${postIds}`}
+                  lat={lat}
+                  lng={lng}
+                  pointCount={pointCount}
+                  posts={postsBuilder}
+                />
+              );
+            }
+
+            const postsBuilder = [posts[cluster.properties.postIndex]];
             return (
-              <Cluster
-                key={`CLUSTER_${postIds}`}
+              <SimpleMarker
+                key={`MARKER_${postsBuilder[0].id}`}
                 lat={lat}
                 lng={lng}
-                pointCount={pointCount}
                 posts={postsBuilder}
               />
             );
-          }
-
-          const postsBuilder = [posts[cluster.properties.postIndex]];
-          return (
-            <SimpleMarker
-              key={`MARKER_${postsBuilder[0].id}`}
-              lat={lat}
-              lng={lng}
-              posts={postsBuilder}
-            />
-          );
-        })}
-      </CustomGoogleMap>
-      {selectedPosts && selectedPosts.length !== 0 && (
-        <ExplorerWrapperBox>
-          <NewPostExplorer
-            posts={selectedPosts}
-            close={() => {
-              setSelectedPosts(null);
-            }}
-          />
-        </ExplorerWrapperBox>
-      )}
-    </WrapperBox>
+          })}
+        </CustomGoogleMap>
+      </MapWrapperBox>
+    </Box>
   );
 }
 
 //
-function WrapperBox({ children, ...props }) {
+function MapWrapperBox({ children, isOpen, ...props }) {
+  const isMobile = useMediaQuery({
+    query: '(max-width:767px)',
+  });
+
+  let styles;
+  if (isMobile || !isOpen) {
+    styles = {
+      width: '100%',
+    };
+  } else {
+    styles = {
+      width: '60%',
+    };
+  }
+
   return (
     <Box
+      style={{ transition: 'all 0.8s' }}
       position="absolute"
       top="0px"
       left="0px"
-      width="100%"
       height="100%"
+      {...styles}
       {...props}
     >
       {children}
@@ -119,17 +140,44 @@ function WrapperBox({ children, ...props }) {
   );
 }
 
-function ExplorerWrapperBox({ children, ...props }) {
+function ExplorerWrapperBox({ children, isOpen, ...props }) {
+  const isMobile = useMediaQuery({
+    query: '(max-width:767px)',
+  });
+
+  let styles;
+  if (!isOpen) {
+    styles = {
+      left: '100%',
+      width: isMobile ? '100%' : '40%',
+    };
+  } else if (isMobile) {
+    styles = {
+      left: '0px',
+      width: '100%',
+    };
+  } else {
+    styles = {
+      left: '60%',
+      width: '40%',
+    };
+  }
+
   return (
     <Box
+      style={{ transition: 'all 0.8s' }}
+      zIndex={1}
       position="absolute"
       top="0px"
-      zIndex={1}
-      width="100%"
-      maxWidth="480px"
+      left="0px"
+      height="100%"
+      {...styles}
       {...props}
     >
-      {children}
+      <Box height="48px" />
+      <Box height="calc(100% - 48px)">
+        {children}
+      </Box>
     </Box>
   );
 }

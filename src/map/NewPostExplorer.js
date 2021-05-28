@@ -1,15 +1,58 @@
-import { Box, Card, Typography } from '@material-ui/core';
-import React from 'react';
+import {
+  Box,
+  Button,
+  Card,
+  Fab,
+  IconButton,
+  Typography,
+} from '@material-ui/core';
+import { Close } from '@material-ui/icons';
+import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { DateInfo } from '../post-management/datetime';
 import { CompressedPost } from '../post-management/post';
 
-export default function NewPostExplorer({ posts, close }) {
-  return posts.map((post) => <PostCard key={post.id} post={post} />);
+function cmpTimeStr(a, b) {
+  return new Date(b) - new Date(a);
+}
+
+export default function NewPostExplorer({ posts, close, explorer }) {
+  if (!posts) return null;
+
+  const sortedPosts = useMemo(() => {
+    return posts.sort((a, b) => {
+      return cmpTimeStr(a.writeTimeStr, b.writeTimeStr);
+    });
+  }, [posts]);
+
+  return (
+    <Box
+      height="100%"
+      overflow="auto"
+      ref={explorer}
+      bgcolor="rgba(0, 0, 0, 0.125)"
+    >
+      <Box display="flex" justifyContent="flex-end">
+        <Fab
+          style={{ zIndex: 1, position: 'absolute', margin: '1rem' }}
+          color="primary"
+          onClick={() => {
+            close();
+          }}
+        >
+          <Close style={{ color: 'white' }} />
+        </Fab>
+      </Box>
+      {sortedPosts.map((post) => (
+        <Box key={post.id} margin="2rem">
+          <PostCard post={post} />
+        </Box>
+      ))}
+    </Box>
+  );
 }
 
 //
-
 function PostCard({ post }) {
   return (
     <Card>
