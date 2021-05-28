@@ -199,7 +199,7 @@ function CustomGoogleMap({ children, ...props }) {
         lat: 36.119485,
         lng: 128.3445734,
       }}
-      defaultZoom={4}
+      defaultZoom={6}
       hoverDistance={20}
       {...props}
     >
