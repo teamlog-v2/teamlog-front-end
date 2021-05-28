@@ -174,7 +174,7 @@ function ExplorerWrapperBox({ children, isOpen, isFullMode, ...props }) {
     <Box
       style={{ transition: 'all 0.8s' }}
       zIndex={1}
-      position="absolute"
+      position="fixed"
       top="0px"
       left="0px"
       height="100%"
