@@ -1,13 +1,24 @@
-import { Button, CircularProgress, Container, Grid, Typography } from '@material-ui/core';
+import { Avatar, Box, Button, Card, CircularProgress, Container, Grid, makeStyles, Typography } from '@material-ui/core';
 import React, { useContext, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import teamIcon from '../team/team.png';
 import AuthContext from '../contexts/auth';
 import ResponsiveDialog from '../organisms/ResponsiveDialog';
 import ProjectUpdateForm from '../project/ProjectUpdateForm';
 import Introduction from './introduction';
 import TeamSelect from '../team/TeamSelect';
 import { GetProject } from './projectapi';
+import { GetTeam } from '../team/TeamApi';
+
+const useStyles = makeStyles((theme) => ({
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
+}));
 
 const ProjectManagement = ({ match }) => {
+    const classes = useStyles();
     const [userId] = useContext(AuthContext);
     const [isLoaded, setIsLoaded] = useState(false);
     const { projectId } = match.params;
@@ -15,6 +26,11 @@ const ProjectManagement = ({ match }) => {
     const [isProjectUpdatFormOpened, setIsProjectUpdatFormOpened] = useState(false);
     const [isTeamSelectOpened, setIsTeamSelectOpened] = useState(false);
     const [project, setProject] = useState(); // 프로젝트
+    const [team, setTeam] = useState(null);
+
+  const handleUserSelectClose = () => {
+      setIsTeamSelectOpened(false);
+  };
 
     useEffect(async () => {
         const projectResponse = await GetProject(projectId);
@@ -23,7 +39,12 @@ const ProjectManagement = ({ match }) => {
             setIsLogin(false);
             return;
         }
-        setProject(await projectResponse.json());
+
+        const tempProject = await projectResponse.json();
+        setProject(tempProject);
+        if (tempProject.team !== null) {
+          setTeam(tempProject.team);
+        }
         setIsLoaded(true);
     }, []);
 
@@ -50,10 +71,8 @@ const ProjectManagement = ({ match }) => {
         );
     }
 
-    console.log(project);
-
     return (
-      <Container>
+      <Container maxWidth="md">
         <Grid container style={{ marginBottom: '2em' }}>
           <Grid item style={{ margin: '1em 0' }} xs={9} sm={10}>
             <Typography variant="h6">프로젝트 정보</Typography>
@@ -75,7 +94,7 @@ const ProjectManagement = ({ match }) => {
           </Grid>
           <Grid item>
             <Introduction
-              masterUserId={project.masterId}
+              masterId={project.masterId}
               createTime={project.createTime}
               followerCount={project.followerCount}
               memberCount={project.memberCount}
@@ -98,9 +117,51 @@ const ProjectManagement = ({ match }) => {
               open={isTeamSelectOpened}
               updateOpen={setIsTeamSelectOpened}
             >
-              <TeamSelect updateOpen={setIsProjectUpdatFormOpened} project={project} />
+              {console.log(team)}
+              <TeamSelect
+                userId={userId}
+                updateOpen={setIsProjectUpdatFormOpened}
+                currentTeam={team}
+                setCurrentTeam={setTeam}
+                projectId={projectId}
+                handleClose={handleUserSelectClose}
+              />
             </ResponsiveDialog>
           </Grid>
+        </Grid>
+        <Grid container spacing={2}>
+          {team === null ? (<div>팀 없어요</div>) : (
+            <Grid item sm={6} xs={12}>
+              <Card elevation={2}>
+                <Box display="flex" flexDirection="row">
+                  <Box flexGrow={1}>
+                    <Link to={`/teams/${team.id}/project`} style={{ textDecoration: 'none' }}>
+                      <Box display="flex" alignItems="center">
+                        <Avatar
+                          className={classes.profileImg}
+                          src={teamIcon}
+                          variant="square"
+                          style={{ margin: '0.5em' }}
+                        />
+                        <Typography variant="body1" color="textPrimary">
+                          {team.name}
+                        </Typography>
+                      </Box>
+                    </Link>
+                  </Box>
+                  <Box margin="10px" display="flex" alignItems="center">
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      size="small"
+                    >
+                      삭제
+                    </Button>
+                  </Box>
+                </Box>
+              </Card>
+            </Grid>
+      )}
         </Grid>
       </Container>
 );

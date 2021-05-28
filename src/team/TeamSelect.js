@@ -20,6 +20,9 @@ import {
     Search,
   } from '@material-ui/icons';
   import React, { useEffect, useState } from 'react';
+import { SetProjectTeam } from '../project-management/projectapi';
+  import teamIcon from './team.png';
+
 // import { DelegateProjectTeam } from './projectapi';
 
   const StyledList = withStyles({
@@ -30,6 +33,7 @@ import {
   })(List);
 
   const TeamSelect = ({
+    userId,
     projectId,
     currentTeam,
     setCurrentTeam,
@@ -37,7 +41,7 @@ import {
   }) => {
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
-    const [users, setUsers] = useState([]);
+    const [teams, setTeams] = useState([]);
     const [selectedTeam, setSelectedTeam] = useState([]);
     const [searchString, setSearchString] = useState('');
     console.log(setError);
@@ -46,7 +50,7 @@ import {
       (async () => {
         let result;
         try {
-          const response = await fetch(`/api/projects/${projectId}/members`, {
+          const response = await fetch(`/api/teams/user/${userId}`, {
             method: 'Get',
             headers: { 'Content-Type': 'application/json' },
           });
@@ -55,8 +59,10 @@ import {
           setIsLoaded(false);
           return;
         }
-        setUsers(result);
-        setSelectedTeam(currentTeam);
+        setTeams(result);
+        if (currentTeam !== null) {
+          setSelectedTeam([currentTeam]);
+        }
         setIsLoaded(true);
       })();
     }, []);
@@ -79,39 +85,42 @@ import {
               <CircularProgress />
             </Grid>
             <Grid item>
-              <Typography> 멤버 목록을 불러오고 있어요!</Typography>
+              <Typography> 팀 목록을 불러오고 있어요!</Typography>
             </Grid>
           </Grid>
         </Container>
       );
     }
 
-    const toggleSelectedUserId = (userId) => {
-      if (selectedTeam.includes(userId)) {
-        setSelectedTeam(currentTeam);
-      } else {
-        setSelectedTeam([userId]);
+    const toggleSelectedTeam = (tempTeam) => {
+      if (selectedTeam.length > 0 && (selectedTeam[0].id === tempTeam.id)) { // 이미 체크한 것
+        if (currentTeam != null) {
+          setSelectedTeam([currentTeam]);
+        } else {
+          setSelectedTeam([]);
+        }
+      } else { // 체크 안한 것
+        setSelectedTeam([tempTeam]);
       }
     };
 
-    const saveSelectedUsers = async () => {
-      if (window.confirm('정말로 마스터를 위임하시겠습니까?')) {
-        const selectedTeamId = selectedTeam[0];
-        const newTeam = users.find((user) => user.id === selectedTeamId);
-
-        // const response = await DelegateProjectTeam(projectId, newTeam.id);
-        // if (response.status === 200) {
-            console.log('ok');
+    const saveSelectedTeam = async () => {
+      if (window.confirm('해당 프로젝트에 팀을 설정하시겠습니까?')) {
+        const newTeam = teams.find((team) => team.id === selectedTeam[0].id);
+        setCurrentTeam(newTeam);
+        const response = await SetProjectTeam(projectId, newTeam.id);
+        if (response.status === 200) {
             setCurrentTeam(newTeam);
-            window.location.replace(`/projects/${projectId}`);
-        // }
+            handleClose(true);
+            // window.location.replace(`/projects/${projectId}`);
+        }
       }
     };
 
     return (
       <Container style={{ minWidth: '20em', height: '32em', margin: '1em 0' }}>
         <Box display="flex" justifyContent="center">
-          <Typography>선택된 마스터</Typography>
+          <Typography>선택된 팀</Typography>
         </Box>
         <Box
           width="100%"
@@ -127,15 +136,15 @@ import {
           {selectedTeam.length === 0 && (
             <Typography color="primary">-</Typography>
           )}
-          {selectedTeam.map((selectedUserId) => {
-            const user = users.find((team) => team.id === selectedUserId);
+          {selectedTeam.map((teamItem) => {
+            const selected = teams.find((team) => team.id === teamItem.id);
             return (
               <>
                 <ListItem>
                   <ListItemAvatar>
-                    <Avatar alt={user.name} src={user.profileImgPath} />
+                    <Avatar alt={selected.name} src={teamIcon} variant="square" />
                   </ListItemAvatar>
-                  <ListItemText primary={user.name} />
+                  <ListItemText primary={selected.name} />
 
                 </ListItem>
               </>
@@ -161,21 +170,21 @@ import {
         />
 
         <StyledList dense>
-          {users
-            .filter((user) => user.name.includes(searchString))
-            .map((user) => (
+          {teams
+            .filter((team) => team.name.includes(searchString))
+            .map((team) => (
               <ListItem
-                key={user.id}
+                key={team.id}
                 button
                 onClick={() => {
-                  toggleSelectedUserId(user.id);
+                  toggleSelectedTeam(team);
                 }}
               >
                 <ListItemAvatar>
-                  <Avatar alt={user.name} src={user.profileImgPath} />
+                  <Avatar alt={team.name} src={teamIcon} variant="square" />
                 </ListItemAvatar>
-                <ListItemText primary={user.name} />
-                {selectedTeam.includes(user.id) ? (
+                <ListItemText primary={team.name} />
+                {selectedTeam.length > 0 && (selectedTeam[0].id === team.id) ? (
                   <CheckBox color="primary" />
                 ) : (
                   <CheckBoxOutlineBlank color="primary" />
@@ -193,7 +202,11 @@ import {
           padding="8px"
           bgcolor="white"
         >
-          <Button variant="contained" color="primary" onClick={saveSelectedUsers}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={saveSelectedTeam}
+          >
             확인
           </Button>
           <Button onClick={handleClose} variant="contained">

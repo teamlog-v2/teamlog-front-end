@@ -10,6 +10,21 @@ export const GetProject = async (projectId) => {
   return response;
 };
 
+export const SetProjectTeam = async (projectId, teamIdVal) => {
+  const data = {
+    teamId: teamIdVal,
+  };
+  const response = await fetch(`/api/projects/${projectId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+
+  return response;
+};
+
 // 프로젝트 삭제
 export const DeleteProject = async (projectId) => {
   const response = await fetch(`/api/projects/${projectId}`, {

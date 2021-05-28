@@ -43,19 +43,23 @@ const ProjectManagementPage = () => {
                   value={type}
                   onClick={() => {
                     setType('PROJECT');
+                    console.log(type);
                 }}
                 >프로젝트 관리
                 </RadioButton>
               </Link>
             </Grid>
             <Grid item>
-              <Link to={`/projects/${projectId}/projectmanagement/members`} style={{ textDecoration: 'none' }}>
+              <Link
+                to={`/projects/${projectId}/projectmanagement/members`}
+                style={{ textDecoration: 'none' }}
+              >
                 <RadioButton
                   highlight="MEMBER"
                   value={type}
                   onClick={() => {
                   setType('MEMBER');
-              }}
+                }}
                 >멤버 관리
                 </RadioButton>
               </Link>
@@ -68,7 +72,7 @@ const ProjectManagementPage = () => {
           <Route exact path="/projects/:projectId/projectmanagement/members" component={ProjectMemberManagement} />
         </Switch>
       </>
-);
+    );
 };
 
 export default ProjectManagementPage;
