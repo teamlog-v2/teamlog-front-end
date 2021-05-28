@@ -56,7 +56,7 @@ export default function NewPostExplorer({
           margin="1rem"
         >
           <Fab
-            style={{ zIndex: 1 }}
+            style={{ zIndex: 1, opacity: 0.9 }}
             color="primary"
             onClick={() => {
               close?.();
@@ -68,7 +68,7 @@ export default function NewPostExplorer({
             <>
               <Box height="1rem" />
               <Fab
-                style={{ zIndex: 1 }}
+                style={{ zIndex: 1, opacity: 0.9 }}
                 color="primary"
                 onClick={() => {
                   setFullMode?.((current) => !current);
