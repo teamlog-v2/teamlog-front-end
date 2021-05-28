@@ -82,7 +82,7 @@ const ThumbnailList = ({ files, updateFiles, handleDeleteList }) => {
             style={getListStyle(snapshot.isDraggingOver)}
             {...provided.droppableProps}
           >
-            {files.map(({ id, url, type, file, fileName, notSupportedFormat }, index) => (
+            {files.map(({ url, type, file, fileName, notSupportedFormat }, index) => (
               <Draggable
                 key={`draggable-${index}`}
                 draggableId={`draggable-${index}`}
@@ -117,14 +117,14 @@ const ThumbnailList = ({ files, updateFiles, handleDeleteList }) => {
                           }
                           return (<CardMedia
                             component="video"
-                            src={id ? url.slice(url.indexOf('/resources')) : url}
+                            src={url}
                             controls
                             style={{ width: '200px', height: '200px' }}
                           />);
                          }
                          return (<CardMedia
                             component="img"
-                            src={id ? url.slice(url.indexOf('/resources')) : url}
+                            src={url}
                             style={{ width: '200px', height: '200px' }}
                           />
                         );

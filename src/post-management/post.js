@@ -49,7 +49,7 @@ import FileList from './fileList';
 import CommentList from '../comment/commentlist';
 import { UserImage, UserId } from './user';
 import { LikerCounter, CommentCounter } from './counter';
-import { Media } from './media';
+import { Media, Video } from './media';
 import { DateInfo } from './datetime';
 import MyPage from '../user/MyPage';
 import { DeletePost } from './postapi';
@@ -633,9 +633,7 @@ const CompressedMediaList = ({ media }) => {
 
             if (file.contentType.includes('video')) {
               return (
-                <video key={url} controls autoPlay muted width="100%">
-                  <source src={url} />
-                </video>
+                <Video file={file} compressed />
               );
             }
 

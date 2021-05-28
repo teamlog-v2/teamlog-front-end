@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import jQuery from 'jquery';
 import { VideoCallRounded } from '@material-ui/icons';
+import { detectSupportFormat } from '../utils';
 window.$ = window.jQuery = jQuery;
 
 const useStyles = makeStyles(() => ({
@@ -13,10 +14,17 @@ const useStyles = makeStyles(() => ({
     left: '50%',
     transform: 'translate(-50%, -50%)',
     objectFit: 'contain',
+    color: 'white',
   },
+  compressed: {
+    height: 400,
+    backgroundColor: 'black',
+    opacity: 0.9,
+    color: 'white',
+  }
 }));
 
-export const Media = ({ file }) => {
+const Media = ({ file }) => {
   const { contentType } = file;
   // 확장자 판별
   if (contentType.includes('video')) {
@@ -30,45 +38,32 @@ const ImageContent = ({ file }) => {
   const { fileName, fileDownloadUri } = file;
   const classes = useStyles();
 
-  // const image = new Image();
-  // image.src = fileDownloadUri;
-
-  // if (image.width >= image.height) {
   return (
     <Box width="100%" className={classes.align}>
       <img src={fileDownloadUri.slice(fileDownloadUri.indexOf('/resources'))} width="100%" />
     </Box>
   );
-  // }
-  //   return (
-  //     <Box height="100%" className={classes.align}>
-  //       <img src={fileDownloadUri} height="100%" />
-  //     </Box>
-  //   );
 };
 
-const Video = (props) => {
-  const { fileName, fileDownloadUri } = props.file;
+const Video = ({ file, compressed }) => {
+  const { fileName, fileDownloadUri } = file;
   const [notSupportedFormat, setNotSupportedFormat] = useState(false);
+  const url = fileDownloadUri.slice(fileDownloadUri.indexOf('/resources'));
 
   useEffect(async () => {
-    const result = await new Promise((resolve, reject) => {
-      const video = document.createElement('video');
-      video.onloadedmetadata = () => (resolve(video.videoWidth === 0));
-      video.onerror = (error) => (reject(error));
-      video.src = fileDownloadUri;
-      video.remove();
-    });
+    const result = await detectSupportFormat(url);
     setNotSupportedFormat(result);
   }, []);
 
-  const url = fileDownloadUri.slice(fileDownloadUri.indexOf('/resources'));
   const classes = useStyles();
 
   return notSupportedFormat ? (
     <Box>
-      <Grid className={classes.align} container xs={12} alignItems="center" justify="center"
-      style={{ color: 'white', fontSize: 'larger' }} direction="column">
+      <Grid className={!compressed ? classes.align : classes.compressed}
+      container xs={12}
+      alignItems="center"
+      justify="center" 
+      direction="column">
         <VideoCallRounded fontSize="large" />
         {fileName}
         <span style={{ opacity: 0.6, margin: '1%' }}>(브라우저에서 지원하지않는 형식입니다)</span>
@@ -76,9 +71,11 @@ const Video = (props) => {
     </Box>
   ) : (
     <Box>
-      <video className={classes.align} controls autoPlay muted>
+      <video className={!compressed ? classes.align : ''} controls autoPlay muted>
         <source src={url}></source>
       </video>
     </Box>
   )
 };
+
+export { Media, Video };
