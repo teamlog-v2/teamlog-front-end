@@ -190,7 +190,7 @@ const PostForm = (props) => {
     setRecommendedHashtags(projectHashtags.length !== 0 ? randomHashtags(projectHashtags) : []);
   }, []);
 
-  return isLoaded ? (
+  return (
     <>
       <Grid item container justify="flex-end">
         <Close onClick={() => { updateOpen(false); }} style={{ cursor: 'pointer', margin: '1%' }} />
@@ -205,45 +205,54 @@ const PostForm = (props) => {
           <Grid container item direction="row" justify="space-between">
             <Grid container item direction="column">
               <Grid item container direction="row" style={{ height: '50px' }} className={classes.children}>
-                {
-                  !isSearching ? (
-                    <>
+                {(() => {
+                  if (!isLoaded) {
+                    return (
                       <Grid item xs={8}>
-                        <TextField
-                          size="small"
-                          variant="standard"
-                          fullWidth
-                          helperText="필드를 눌러 장소를 검색하세요."
-                          placeholder="어디를 방문하셨나요?"
-                          InputProps={{
-                            startAdornment: (
-                              <InputAdornment>
-                                <LocationOn color="primary" style={{ paddingBottom: '2px' }} />
-                              </InputAdornment>
-                            ),
-                          }}
-                          value={postData.address ? postData.address.split('#')[0] : ''}
-                          onClick={() => { setIsSearching(true); }}
-                        />
+                        <Skeleton animation="wave" width="100%" height={50} />
                       </Grid>
-                      <Tooltip title="취소">
-                        <Backspace
-                          onClick={() => {
-                            setPostData({ ...postData, address: '', latitude: null, longitude: null });
-                          }}
-                          style={{ margin: '5px 0', color: '#DBDBDB', cursor: 'pointer' }}
-                        />
-                      </Tooltip>
-                    </>
-                  )
-                  : (
+                    );
+                  }
+                  if (!isSearching) {
+                    return (
+                      <>
+                        <Grid item xs={8}>
+                          <TextField
+                            size="small"
+                            variant="standard"
+                            fullWidth
+                            helperText="필드를 눌러 장소를 검색하세요."
+                            placeholder="어디를 방문하셨나요?"
+                            InputProps={{
+                              startAdornment: (
+                                <InputAdornment>
+                                  <LocationOn color="primary" style={{ paddingBottom: '2px' }} />
+                                </InputAdornment>
+                              ),
+                            }}
+                            value={postData.address ? postData.address.split('#')[0] : ''}
+                            onClick={() => { setIsSearching(true); }}
+                          />
+                        </Grid>
+                        <Tooltip title="취소">
+                          <Backspace
+                            onClick={() => {
+                              setPostData({ ...postData, address: '', latitude: null, longitude: null });
+                            }}
+                            style={{ margin: '5px 0', color: '#DBDBDB', cursor: 'pointer' }}
+                          />
+                        </Tooltip>
+                      </>
+                    );
+                  }
+                  return (
                     <PlacesSearchApi
                       postData={postData}
                       updateIsSearching={setIsSearching}
                       updatePostData={setPostData}
                     />
-                  )
-                }
+                  );
+                })()}
               </Grid>
             </Grid>
           </Grid>
@@ -275,11 +284,19 @@ const PostForm = (props) => {
                     </span>
                   </Tooltip>
                 </Grid>
-                <HashtagRecommender
-                  postData={postData}
-                  recommendedHashtags={recommendedHashtags}
-                  updatePostData={setPostData}
-                />
+                {
+                  isLoaded ? (
+                    <HashtagRecommender
+                      postData={postData}
+                      recommendedHashtags={recommendedHashtags}
+                      updatePostData={setPostData}
+                    />
+                  ) : (
+                    <Grid item container style={{ width: '60%' }} alignItems="center">
+                      <Skeleton animation="wave" width="100%" height={30} />
+                    </Grid>
+                  )
+                }
               </Grid>
             </Grid>
           </Grid>
@@ -327,15 +344,21 @@ const PostForm = (props) => {
             </Grid>
             ) : null}
           <Grid container item xs={12}>
-            <TextField
-              variant="outlined"
-              rows={5}
-              rowsMax={Infinity}
-              multiline
-              fullWidth
-              value={text}
-              onChange={(event) => { setText(event.target.value); }}
-            />
+            {
+              isLoaded ? (
+                <TextField
+                  variant="outlined"
+                  rows={5}
+                  rowsMax={Infinity}
+                  multiline
+                  fullWidth
+                  value={text}
+                  onChange={(event) => { setText(event.target.value); }}
+                />
+              ) : (
+                <Skeleton animation="wave" width="100%" height={150} />
+              )
+            }
           </Grid>
           <Grid container item xs={12} justify="flex-end">
             <div style={{ display: 'flex', gap: '0.5rem' }}>
@@ -359,19 +382,7 @@ const PostForm = (props) => {
         </Grid>
       </Grid>
     </>
-  ) : (
-    <Grid
-      className={classes.root}
-      container
-      xs={12}
-      style={{ width: 800, minHeight: 600 }}
-    >
-      <Skeleton animation="wave" width="100%" height={50} />
-      <Skeleton animation="wave" width="100%" height={50} />
-      <Skeleton animation="wave" variant="rect" width="100%" height={118} />
-      <Skeleton animation="wave" variant="rect" width="100%" height={118} />
-    </Grid>
-  );
+    );
 };
 
 export default PostForm;

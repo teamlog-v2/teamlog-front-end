@@ -234,7 +234,7 @@ const PostMain = (props) => {
               <Grid className={classes.children} item>
                 <Typography>
                   {posts.length === 0 &&
-                    !isPostsLoading &&
+                    !isPostsLoading && keyword !== '' &&
                     '검색된 게시물이 없습니다'}
                   {posts.length !== 0 &&
                     `총 ${postsTotalCount}개의 검색된 게시물 중 ${posts.length}개`}
