@@ -45,7 +45,7 @@ export default function LoginPopup({ handlePopup }) {
               handlePopup?.(null);
             }}
           >
-            로그인하지 않고 계속 이용하기
+            로그인하지 않고 이용하기
           </Anchor>
         </Box>
       </GapBox>
