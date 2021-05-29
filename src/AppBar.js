@@ -215,6 +215,14 @@ export default function AppBar() {
               팀 생성
             </MenuItem>
             <MenuItem
+              onClick={() => {
+                handleClose();
+                history.push(`/users/${id}/setting`);
+              }}
+            >
+              팀 / 프로젝트 관리
+            </MenuItem>
+            <MenuItem
               style={{ color: 'red' }}
               onClick={() => {
                 handleClose();

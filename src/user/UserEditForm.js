@@ -291,7 +291,7 @@ const UserEditForm = ({ match }) => {
             />
             <Box display="flex" justifyContent="center">
               <Box>
-                <Typography color="primary" variant="caption">{introduction.length}/100</Typography>
+                <Typography color="primary" variant="caption">{introduction === null ? 0 : introduction.length}/100</Typography>
               </Box>
             </Box>
           </Grid>

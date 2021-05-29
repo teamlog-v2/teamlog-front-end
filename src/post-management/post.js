@@ -511,7 +511,11 @@ export const Post = (props) => {
                   </Grid>
                 </Grid>
               ) : null}
-              {content.files.length !== 0 && <FileList files={content.files} />}
+              {content.files.length !== 0 && (
+                <Grid className={classes.children}>
+                  <FileList files={content.files} />
+                </Grid>
+              )}
               {content.media.length !== 0 && (
                 <MediaList media={content.media} />
               )}
@@ -746,7 +750,11 @@ export const CompressedPost = (props) => {
                 </Grid>
               </Grid>
             ) : null}
-            {post.files.length !== 0 && <FileList files={post.files} />}
+            {post.files.length !== 0 && (
+              <Grid className={classes.children}>
+                <FileList files={post.files} />
+              </Grid>
+            )}
             {post.media.length !== 0 && (
               <CompressedMediaList media={post.media} />
             )}
