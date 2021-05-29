@@ -7,7 +7,7 @@ import ResponsiveDialog from '../organisms/ResponsiveDialog';
 import ProjectUpdateForm from '../project/ProjectUpdateForm';
 import Introduction from './introduction';
 import TeamSelect from '../team/TeamSelect';
-import { DeleteProject, GetProject } from './projectapi';
+import { DeleteProject, GetProject, SetProjectTeam } from './projectapi';
 import { GetTeam } from '../team/TeamApi';
 import { resizeImage } from '../utils';
 
@@ -228,7 +228,7 @@ const ProjectManagement = (props) => {
             </Grid>
           </Grid>
           <Grid container spacing={2}>
-            {team === null ? (<>프로젝트 관리팀이 없습니다.</>) : (
+            {team === null ? (<Grid item>프로젝트 관리팀이 없습니다.</Grid>) : (
               <Grid item sm={6} xs={12}>
                 <Card elevation={2}>
                   <Box display="flex" flexDirection="row">
@@ -252,6 +252,15 @@ const ProjectManagement = (props) => {
                         variant="outlined"
                         color="primary"
                         size="small"
+                        onClick={async () => {
+                          if (window.confirm('프로젝트 관리 팀을 삭제하시겠습니까?')) {
+                            const response = await SetProjectTeam(projectId, null);
+                            console.log(response);
+                            if (response.status === 200) {
+                              setTeam(null);
+                            }
+                          }
+                        }}
                       >
                         삭제
                       </Button>
