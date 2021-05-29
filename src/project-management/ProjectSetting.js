@@ -1,31 +1,52 @@
-import { Button, Card, CardContent, CardMedia, CircularProgress, Container, Grid, Typography } from '@material-ui/core';
+import { Button, Card, CardContent, CardMedia, CircularProgress, Container, Grid, Typography, withStyles } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { InvitationAccept, RefuseProject, LeaveProject, GetUserProjects, GetInvitedProjects, GetAppliedProjects } from './projectapi';
 
-const ProjectItem = ({ project }) => (
-  <Link to={`/projects/${project.projectId}`} style={{ textDecoration: 'none' }}>
-    <Card elevation={2}>
-      <CardMedia style={{ height: 180 }} image={project.thumbnail} />
-      <CardContent>
-        <Typography gutterBottom variant="h6">
-          {project.name}
-        </Typography>
-        {/* <Typography variant="body2" gutterBottom>
-          {project.postCount} 개의 게시물
-        </Typography> */}
-      </CardContent>
-    </Card>
-  </Link>
-  );
+const DeleteButton = withStyles({
+  root: {
+      boxShadow: 'none',
+      textTransform: 'none',
+      fontSize: 14,
+      color: 'white',
+      padding: '6px 12px',
+      border: '1px solid',
+      lineHeight: 1.5,
+      backgroundColor: 'rgb(220, 0, 78)',
+      borderColor: 'rgb(220, 0, 78)',
+      fontFamily: [
+        '-apple-system',
+        'BlinkMacSystemFont',
+        '"Segoe UI"',
+        'Roboto',
+        '"Helvetica Neue"',
+        'Arial',
+        'sans-serif',
+        '"Apple Color Emoji"',
+        '"Segoe UI Emoji"',
+        '"Segoe UI Symbol"',
+      ].join(','),
+      '&:hover': {
+        backgroundColor: 'rgb(162, 0, 56)',
+        borderColor: 'rgb(162, 0, 56)',
+        boxShadow: '-0.05em 0.05em 0.2em 0.1em rgba(0, 0, 0, 0.3)',
+      },
+      '&:active': {
+        backgroundColor: 'rgb(162, 0, 56)',
+        borderColor: 'rgb(162, 0, 56)',
+        boxShadow: '-0.05em 0.05em 0.2em 0.1em rgba(0, 0, 0, 0.3)',
+      },
+    },
+})(Button);
 
 const ParticipatingTeams = ({ userId, projects, setProjects }) => {
+    const history = useHistory();
+
     return (
       <Grid container spacing={2}>
         {projects.length > 0 ?
                 projects.map((project) => (
                   <Grid item md={4} sm={6} xs={12}>
-                    {/* <Link to={`/projects/${project.id}`} style={{ textDecoration: 'none' }}> */}
                     <Card elevation={2}>
                       <Link to={`/projects/${project.id}`} style={{ textDecoration: 'none' }}>
                         <CardMedia style={{ height: 180 }} image={project.thumbnail} />
@@ -41,10 +62,21 @@ const ParticipatingTeams = ({ userId, projects, setProjects }) => {
                           </Link>
                           <Grid contianer item style={{ textAlign: 'right' }}>
                             <Grid item>
-                              <Button
-                                color="primary"
-                                variant="contained"
-                                onClick={async () => {
+                              {project.masterId === userId ? (
+                                <Button
+                                  color="primary"
+                                  variant="contained"
+                                  justify="flex-end"
+                                  alignItems="center"
+                                  onClick={() => { history.push(`/projects/${project.id}/projectmanagement`); }}
+                                >
+                                  관리
+                                </Button>
+                              ) : (
+                                <DeleteButton
+                                  color="primary"
+                                  variant="contained"
+                                  onClick={async () => {
                                     if (window.confirm('정말로 프로젝트를 탈퇴하시겠습니까?')) {
                                       const { status }
                                       = await LeaveProject(project.id);
@@ -54,14 +86,15 @@ const ParticipatingTeams = ({ userId, projects, setProjects }) => {
                                         }
                                     }
                                 }}
-                              >탈퇴
-                              </Button>
+                                >탈퇴
+                                </DeleteButton>
+                              )}
+
                             </Grid>
                           </Grid>
                         </Grid>
                       </CardContent>
                     </Card>
-                    {/* </Link> */}
                   </Grid>
                 ))
                 :
