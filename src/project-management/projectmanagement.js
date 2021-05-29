@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Card, CardMedia, CircularProgress, Container, Grid, makeStyles, Typography } from '@material-ui/core';
+import { Avatar, Box, Button, Card, CardMedia, CircularProgress, Container, Grid, makeStyles, Typography, withStyles } from '@material-ui/core';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import teamIcon from '../team/team.png';
@@ -7,7 +7,7 @@ import ResponsiveDialog from '../organisms/ResponsiveDialog';
 import ProjectUpdateForm from '../project/ProjectUpdateForm';
 import Introduction from './introduction';
 import TeamSelect from '../team/TeamSelect';
-import { GetProject } from './projectapi';
+import { DeleteProject, GetProject } from './projectapi';
 import { GetTeam } from '../team/TeamApi';
 import { resizeImage } from '../utils';
 
@@ -17,6 +17,42 @@ const useStyles = makeStyles((theme) => ({
     color: '#fff',
   },
 }));
+
+const DeleteButton = withStyles({
+  root: {
+      boxShadow: 'none',
+      textTransform: 'none',
+      fontSize: 14,
+      color: 'white',
+      padding: '6px 12px',
+      border: '1px solid',
+      lineHeight: 1.5,
+      backgroundColor: 'rgb(220, 0, 78)',
+      borderColor: 'rgb(220, 0, 78)',
+      fontFamily: [
+        '-apple-system',
+        'BlinkMacSystemFont',
+        '"Segoe UI"',
+        'Roboto',
+        '"Helvetica Neue"',
+        'Arial',
+        'sans-serif',
+        '"Apple Color Emoji"',
+        '"Segoe UI Emoji"',
+        '"Segoe UI Symbol"',
+      ].join(','),
+      '&:hover': {
+        backgroundColor: 'rgb(162, 0, 56)',
+        borderColor: 'rgb(162, 0, 56)',
+        boxShadow: '-0.05em 0.05em 0.2em 0.1em rgba(0, 0, 0, 0.3)',
+      },
+      '&:active': {
+        backgroundColor: 'rgb(162, 0, 56)',
+        borderColor: 'rgb(162, 0, 56)',
+        boxShadow: '-0.05em 0.05em 0.2em 0.1em rgba(0, 0, 0, 0.3)',
+      },
+    },
+})(Button);
 
 const ProjectManagement = (props) => {
     const classes = useStyles();
@@ -162,67 +198,97 @@ const ProjectManagement = (props) => {
             />
           </Grid>
         </Grid>
-        <Grid container>
-          <Grid item style={{ margin: '1em 0' }} xs={9} sm={10}>
-            <Typography variant="h6">프로젝트 관리팀 설정</Typography>
+        <Grid container style={{ marginBottom: '4em' }}>
+          <Grid container>
+            <Grid item style={{ margin: '1em 0' }} xs={9} sm={10}>
+              <Typography variant="h6">프로젝트 관리팀 설정</Typography>
+            </Grid>
+            <Grid item style={{ margin: '1em 0' }} xs={3} sm={2}>
+              <Button
+                variant="contained"
+                color="primary"
+                fullWidth
+                onClick={() => { setIsTeamSelectOpened(true); }}
+              >설정
+              </Button>
+              <ResponsiveDialog
+                open={isTeamSelectOpened}
+                updateOpen={setIsTeamSelectOpened}
+              >
+                {console.log(team)}
+                <TeamSelect
+                  userId={userId}
+                  updateOpen={setIsProjectUpdatFormOpened}
+                  currentTeam={team}
+                  setCurrentTeam={setTeam}
+                  projectId={projectId}
+                  handleClose={handleUserSelectClose}
+                />
+              </ResponsiveDialog>
+            </Grid>
           </Grid>
-          <Grid item style={{ margin: '1em 0' }} xs={3} sm={2}>
-            <Button
-              variant="contained"
-              color="primary"
-              fullWidth
-              onClick={() => { setIsTeamSelectOpened(true); }}
-            >설정
-            </Button>
-            <ResponsiveDialog
-              open={isTeamSelectOpened}
-              updateOpen={setIsTeamSelectOpened}
-            >
-              {console.log(team)}
-              <TeamSelect
-                userId={userId}
-                updateOpen={setIsProjectUpdatFormOpened}
-                currentTeam={team}
-                setCurrentTeam={setTeam}
-                projectId={projectId}
-                handleClose={handleUserSelectClose}
-              />
-            </ResponsiveDialog>
+          <Grid container spacing={2}>
+            {team === null ? (<>프로젝트 관리팀이 없습니다.</>) : (
+              <Grid item sm={6} xs={12}>
+                <Card elevation={2}>
+                  <Box display="flex" flexDirection="row">
+                    <Box flexGrow={1}>
+                      <Link to={`/teams/${team.id}/project`} style={{ textDecoration: 'none' }}>
+                        <Box display="flex" alignItems="center">
+                          <Avatar
+                            className={classes.profileImg}
+                            src={teamIcon}
+                            variant="square"
+                            style={{ margin: '0.5em' }}
+                          />
+                          <Typography variant="body1" color="textPrimary">
+                            {team.name}
+                          </Typography>
+                        </Box>
+                      </Link>
+                    </Box>
+                    <Box margin="10px" display="flex" alignItems="center">
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        size="small"
+                      >
+                        삭제
+                      </Button>
+                    </Box>
+                  </Box>
+                </Card>
+              </Grid>
+      )}
           </Grid>
         </Grid>
-        <Grid container spacing={2}>
-          {team === null ? (<div>팀 없어요</div>) : (
-            <Grid item sm={6} xs={12}>
-              <Card elevation={2}>
-                <Box display="flex" flexDirection="row">
-                  <Box flexGrow={1}>
-                    <Link to={`/teams/${team.id}/project`} style={{ textDecoration: 'none' }}>
-                      <Box display="flex" alignItems="center">
-                        <Avatar
-                          className={classes.profileImg}
-                          src={teamIcon}
-                          variant="square"
-                          style={{ margin: '0.5em' }}
-                        />
-                        <Typography variant="body1" color="textPrimary">
-                          {team.name}
-                        </Typography>
-                      </Box>
-                    </Link>
-                  </Box>
-                  <Box margin="10px" display="flex" alignItems="center">
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      size="small"
-                    >
-                      삭제
-                    </Button>
-                  </Box>
-                </Box>
-              </Card>
-            </Grid>
-      )}
+        <Grid container>
+          <Grid item style={{ margin: '1em 0' }} xs={9} sm={10}>
+            <Typography variant="h6" style={{ color: 'rgb(220, 0, 78)' }}>
+              프로젝트 삭제
+            </Typography>
+          </Grid>
+          <Grid item style={{ margin: '1em 0' }} xs={3} sm={2}>
+            <DeleteButton
+              fullWidth
+              onClick={async () => {
+                    if (window.confirm('프로젝트 내의 내용은 모두 사라집니다. 정말 그래도 삭제하시겠습니까?')) {
+                        const { status } = await DeleteProject(projectId);
+
+                        if (status === 401) {
+                            setIsLogin(false);
+                            return;
+                        }
+
+                        if (status === 200) {
+                            window.location.replace(`/users/${project.masterId}`);
+                        }
+                    }
+                }}
+            >
+              삭제
+            </DeleteButton>
+          </Grid>
         </Grid>
       </Container>
 );

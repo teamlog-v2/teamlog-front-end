@@ -17,42 +17,6 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
-const DeleteButton = withStyles({
-    root: {
-        boxShadow: 'none',
-        textTransform: 'none',
-        fontSize: 14,
-        color: 'white',
-        padding: '6px 12px',
-        border: '1px solid',
-        lineHeight: 1.5,
-        backgroundColor: 'rgb(220, 0, 78)',
-        borderColor: 'rgb(220, 0, 78)',
-        fontFamily: [
-          '-apple-system',
-          'BlinkMacSystemFont',
-          '"Segoe UI"',
-          'Roboto',
-          '"Helvetica Neue"',
-          'Arial',
-          'sans-serif',
-          '"Apple Color Emoji"',
-          '"Segoe UI Emoji"',
-          '"Segoe UI Symbol"',
-        ].join(','),
-        '&:hover': {
-          backgroundColor: 'rgb(162, 0, 56)',
-          borderColor: 'rgb(162, 0, 56)',
-          boxShadow: '-0.05em 0.05em 0.2em 0.1em rgba(0, 0, 0, 0.3)',
-        },
-        '&:active': {
-          backgroundColor: 'rgb(162, 0, 56)',
-          borderColor: 'rgb(162, 0, 56)',
-          boxShadow: '-0.05em 0.05em 0.2em 0.1em rgba(0, 0, 0, 0.3)',
-        },
-      },
-})(Button);
-
 const ProjectMemberManagement = (props) => {
     const { projectId } = useParams();
     const { setType } = props;
@@ -423,34 +387,6 @@ const ProjectMemberManagement = (props) => {
         </Grid>
         <Grid item style={{ marginTop: '2em' }}>
           <Divider />
-        </Grid>
-        <Grid container>
-          <Grid item style={{ margin: '1em 0' }} xs={9} sm={10}>
-            <Typography variant="h6" style={{ color: 'rgb(220, 0, 78)' }}>
-              프로젝트 삭제
-            </Typography>
-          </Grid>
-          <Grid item style={{ margin: '1em 0' }} xs={3} sm={2}>
-            <DeleteButton
-              fullWidth
-              onClick={async () => {
-                    if (window.confirm('프로젝트 내의 내용은 모두 사라집니다. 정말 그래도 삭제하시겠습니까?')) {
-                        const { status } = await DeleteProject(projectId);
-
-                        if (status === 401) {
-                            setIsLogin(false);
-                            return;
-                        }
-
-                        if (status === 200) {
-                            window.location.replace(`/users/${master.id}`);
-                        }
-                    }
-                }}
-            >
-              삭제
-            </DeleteButton>
-          </Grid>
         </Grid>
       </Container>
 );
