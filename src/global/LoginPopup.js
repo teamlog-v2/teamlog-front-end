@@ -61,22 +61,27 @@ function LoginForm() {
   async function login() {
     setIsProcessing(true);
 
-    let res;
-    res = await fetchLogin({ id, password });
-    res = await res.json();
-    if (res.message) {
+    try {
+      let res;
+      res = await fetchLogin({ id, password });
+      res = await res.json();
+      if (res.message) {
+        setIsProcessing(false);
+        return;
+      }
+      localStorage.setItem('access-token', res.token);
+      setAccessToken(res.token);
+      res = await validateLogin();
+      res = await res.json();
+      if (res.status) {
+        setIsProcessing(false);
+        return;
+      }
+      window.location.reload(false);
+    } catch (err) {
+      console.error(err);
       setIsProcessing(false);
-      return;
     }
-    localStorage.setItem('access-token', res.token);
-    setAccessToken(res.token);
-    res = await validateLogin();
-    res = await res.json();
-    if (res.status) {
-      setIsProcessing(false);
-      return;
-    }
-    window.location.reload(false);
   }
 
   return (
