@@ -10,7 +10,7 @@ import ResponsiveDialog from '../organisms/ResponsiveDialog';
 import AuthContext from '../contexts/auth';
 import ProjectUpdateForm from '../project/ProjectUpdateForm';
 import ProjectMemberManagement from '../project-management/ProjectMemberManagement';
-import ProjectManagement from '../project-management/ProjectManagement';
+import ProjectManagement from '../project-management/projectmanagement';
 
 const RadioButton = ({ children, onClick, highlight, value, ...props }) => {
   console.log(value);
@@ -29,7 +29,7 @@ const RadioButton = ({ children, onClick, highlight, value, ...props }) => {
 };
 
 const ProjectManagementPage = () => {
-    const [type, setType] = useState('PROJECT');
+    const [type, setType] = useState();
     const { id: projectId } = useParams();
 
     return (
@@ -41,10 +41,6 @@ const ProjectManagementPage = () => {
                 <RadioButton
                   highlight="PROJECT"
                   value={type}
-                  onClick={() => {
-                    setType('PROJECT');
-                    console.log(type);
-                }}
                 >프로젝트 관리
                 </RadioButton>
               </Link>
@@ -57,9 +53,6 @@ const ProjectManagementPage = () => {
                 <RadioButton
                   highlight="MEMBER"
                   value={type}
-                  onClick={() => {
-                  setType('MEMBER');
-                }}
                 >멤버 관리
                 </RadioButton>
               </Link>
@@ -68,8 +61,12 @@ const ProjectManagementPage = () => {
         </Container>
         <Switch>
           <Redirect exact path="/projects/:projectId/projectmanagement" to="/projects/:projectId/projectmanagement/project" />
-          <Route exact path="/projects/:projectId/projectmanagement/project" component={ProjectManagement} />
-          <Route exact path="/projects/:projectId/projectmanagement/members" component={ProjectMemberManagement} />
+          <Route exact path="/projects/:projectId/projectmanagement/project">
+            <ProjectManagement setType={setType} />
+          </Route>
+          <Route exact path="/projects/:projectId/projectmanagement/members">
+            <ProjectMemberManagement setType={setType} />
+          </Route>
         </Switch>
       </>
     );

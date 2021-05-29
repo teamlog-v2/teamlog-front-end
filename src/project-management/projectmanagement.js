@@ -1,6 +1,6 @@
 import { Avatar, Box, Button, Card, CardMedia, CircularProgress, Container, Grid, makeStyles, Typography } from '@material-ui/core';
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import teamIcon from '../team/team.png';
 import AuthContext from '../contexts/auth';
 import ResponsiveDialog from '../organisms/ResponsiveDialog';
@@ -18,17 +18,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ProjectManagement = ({ match }) => {
+const ProjectManagement = (props) => {
     const classes = useStyles();
+    const { projectId } = useParams();
     const [userId] = useContext(AuthContext);
     const [isLoaded, setIsLoaded] = useState(false);
-    const { projectId } = match.params;
     const [isLogin, setIsLogin] = useState(true);
     const [isProjectUpdatFormOpened, setIsProjectUpdatFormOpened] = useState(false);
     const [isTeamSelectOpened, setIsTeamSelectOpened] = useState(false);
     const [project, setProject] = useState(); // 프로젝트
     const [team, setTeam] = useState(null);
 
+    const { setType } = props;
+    setType('PROJECT');
   const handleUserSelectClose = () => {
       setIsTeamSelectOpened(false);
   };

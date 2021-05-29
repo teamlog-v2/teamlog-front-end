@@ -1,6 +1,6 @@
 import { Avatar, Box, Button, Card, CircularProgress, Container, Divider, Grid, makeStyles, Typography, withStyles } from '@material-ui/core';
 import React, { useContext, useEffect, useState } from 'react';
-import { Switch, Link, Redirect } from 'react-router-dom';
+import { Switch, Link, Redirect, useParams } from 'react-router-dom';
 import AuthContext from '../contexts/auth';
 import ResponsiveDialog from '../organisms/ResponsiveDialog';
 import ProjectUpdateForm from '../project/ProjectUpdateForm';
@@ -53,8 +53,10 @@ const DeleteButton = withStyles({
       },
 })(Button);
 
-const ProjectMemberManagement = ({ match }) => {
-    const { projectId } = match.params;
+const ProjectMemberManagement = (props) => {
+    const { projectId } = useParams();
+    const { setType } = props;
+    setType('MEMBER');
     const [userId] = useContext(AuthContext); // 유저 정보
 
     const classes = useStyles();
