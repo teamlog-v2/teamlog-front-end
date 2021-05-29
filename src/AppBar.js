@@ -14,6 +14,7 @@ import { ArrowDropDown, Notifications, Search } from '@material-ui/icons';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import React, { useContext, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import icon from './teamlogIcon_white.png';
 import AuthContext, { setAccessToken } from './contexts/auth';
 import LoginPopup from './global/LoginPopup';
 import SignupPopup from './global/SignupPopup';
@@ -247,16 +248,11 @@ export default function AppBar() {
 // ////////
 function Title() {
   return (
-    <Link
-      to="/main"
-      style={{
-        color: 'white',
-        marginLeft: '1rem',
-        fontWeight: '300',
-        textDecoration: 'none',
-      }}
-    >
-      TeamLog
+    <Link to="/main" style={{ color: 'white', marginLeft: '1rem', fontWeight: '300', textDecoration: 'none' }}>
+      <Box display="inline-block" style={{ verticalAlign: 'middle' }}>
+        <img src={icon} alt="tl" width="33px" height="30px" />
+      </Box>
+      <Box display="inline-block">TeamLog</Box>
     </Link>
   );
 }

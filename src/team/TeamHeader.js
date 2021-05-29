@@ -18,7 +18,6 @@ import { Button } from '@material-ui/core';
 import { useFetchData } from '../hooks/hooks';
 import ErrorContext from '../contexts/error';
 import { ApplyTeam } from './TeamApi';
-import teamIcon from './team.png';
 import AuthContext from '../contexts/auth';
 
 const useStyles = makeStyles((theme) => ({
@@ -230,9 +229,6 @@ const Header = ({ sections, updateRelation }) => {
   return (
     <>
       <Toolbar className={classes.toolbar}>
-        <Box paddingRight="1em">
-          <img src={teamIcon} alt="teamIcon" width="40px" height="40px" />
-        </Box>
         <TeamTitle title={title} introduction={introduction} />
         {userId === null ?
         (<></>) :

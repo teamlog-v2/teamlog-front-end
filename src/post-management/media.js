@@ -1,8 +1,9 @@
 import { Box, Grid } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import ResponsiveDialog from '../organisms/ResponsiveDialog';
 import jQuery from 'jquery';
-import { VideoCallRounded } from '@material-ui/icons';
+import { CancelRounded, Close, VideoCallRounded } from '@material-ui/icons';
 import { detectSupportFormat } from '../utils';
 window.$ = window.jQuery = jQuery;
 
@@ -24,6 +25,15 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
+const CloseButton = ({ handleClick }) => (
+  <span
+    style={{ margin: '1%', color: 'white', float: 'right', cursor: 'pointer' }}
+    onClick={handleClick}
+  >
+    닫기
+  </span>
+);
+
 const Media = ({ file }) => {
   const { contentType } = file;
   // 확장자 판별
@@ -36,18 +46,27 @@ const Media = ({ file }) => {
 
 const ImageContent = ({ file }) => {
   const { fileName, fileDownloadUri } = file;
+  const [open, setOpen] = useState(false);
   const classes = useStyles();
 
-  return (
-    <Box width="100%" className={classes.align}>
+  return (<>
+    <Box width="100%" className={classes.align} onClick={() => { setOpen(true); }} style={{ cursor: 'pointer' }}>
       <img src={fileDownloadUri.slice(fileDownloadUri.indexOf('/resources'))} width="100%" />
     </Box>
+    <ResponsiveDialog open={open} updateOpen={setOpen} bgColor="black" max={"md"}>
+      <div>
+        <CloseButton handleClick={() => { setOpen(false); }} />
+        <img src={fileDownloadUri.slice(fileDownloadUri.indexOf('/resources'))} width="100%" />
+      </div>
+    </ResponsiveDialog>
+    </>
   );
 };
 
 const Video = ({ file, compressed }) => {
   const { fileName, fileDownloadUri } = file;
   const [notSupportedFormat, setNotSupportedFormat] = useState(false);
+  const [open, setOpen] = useState(false);
   const url = fileDownloadUri.slice(fileDownloadUri.indexOf('/resources'));
 
   useEffect(async () => {
@@ -69,12 +88,21 @@ const Video = ({ file, compressed }) => {
         <span style={{ opacity: 0.6, margin: '1%' }}>(브라우저에서 지원하지않는 형식입니다)</span>
       </Grid>
     </Box>
-  ) : (
-    <Box>
+  ) : (<>
+    <Box style={{ cursor: 'pointer' }} onClick={() => { setOpen(true); }} style={{ cursor: 'pointer' }}>
       <video className={!compressed ? classes.align : ''} controls autoPlay muted>
         <source src={url}></source>
       </video>
     </Box>
+    <ResponsiveDialog open={open} updateOpen={setOpen} bgColor="black" max={"md"}>
+      <div>
+        <CloseButton handleClick={() => { setOpen(false); }} />
+        <video controls autoPlay muted width="100%">
+          <source src={url}></source>
+        </video>
+      </div>
+  </ResponsiveDialog>
+  </>
   )
 };
 

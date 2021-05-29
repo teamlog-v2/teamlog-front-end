@@ -21,7 +21,6 @@ import {
   } from '@material-ui/icons';
   import React, { useEffect, useState } from 'react';
 import { SetProjectTeam } from '../project-management/projectapi';
-  import teamIcon from './team.png';
 
 // import { DelegateProjectTeam } from './projectapi';
 
@@ -45,6 +44,7 @@ import { SetProjectTeam } from '../project-management/projectapi';
     const [selectedTeam, setSelectedTeam] = useState([]);
     const [searchString, setSearchString] = useState('');
     console.log(setError);
+    console.log(selectedTeam);
 
     useEffect(() => {
       (async () => {
@@ -138,14 +138,12 @@ import { SetProjectTeam } from '../project-management/projectapi';
           )}
           {selectedTeam.map((teamItem) => {
             const selected = teams.find((team) => team.id === teamItem.id);
+            console.log(teams);
+            console.log(teamItem);
             return (
               <>
                 <ListItem>
-                  <ListItemAvatar>
-                    <Avatar alt={selected.name} src={teamIcon} variant="square" />
-                  </ListItemAvatar>
                   <ListItemText primary={selected.name} />
-
                 </ListItem>
               </>
             );
@@ -179,10 +177,8 @@ import { SetProjectTeam } from '../project-management/projectapi';
                 onClick={() => {
                   toggleSelectedTeam(team);
                 }}
+                style={{ margin: '0.5em 0' }}
               >
-                <ListItemAvatar>
-                  <Avatar alt={team.name} src={teamIcon} variant="square" />
-                </ListItemAvatar>
                 <ListItemText primary={team.name} />
                 {selectedTeam.length > 0 && (selectedTeam[0].id === team.id) ? (
                   <CheckBox color="primary" />

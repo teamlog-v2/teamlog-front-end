@@ -3,7 +3,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { ManufactureDate } from '../post-management/datetime';
 import { GetUserTeams, GetInvitedTeams, GetAppliedTeams, KickOutTeamMember, AcceptTeam, RefuseTeam, LeaveTeam, CancelApplyTeam } from './TeamApi';
-import teamIcon from './team.png';
 import AuthContext from '../contexts/auth';
 
 const DeleteButton = withStyles({
@@ -58,15 +57,12 @@ const ParticipatingTeams = ({ userId, teams, setTeams }) => {
   ) : (teams.map((team) => (
     <Grid key={team.id} item sm={6} xs={12}>
       <Card elevation={2}>
-        <Grid container>
+        <Grid container style={{ padding: '0.6em' }}>
           <Grid item xs={9}>
             <Link to={`/teams/${team.id}/project`} style={{ textDecoration: 'none' }}>
               <Grid item container xs={12}>
-                <Grid container item padding="0.5em" xs={2} justify="center" alignItems="center" style={{ margin: '0.5em' }}>
-                  <img src={teamIcon} alt="teamIcon" width="40px" height="40px" />
-                </Grid>
-                <Grid container item margin="0.5rem 0.75rem" xs={9} alignItems="center">
-                  <Typography color="textPrimary" noWrap>
+                <Grid container item xs={12}>
+                  <Typography color="textPrimary" noWrap style={{ marginTop: '0.5em' }}>
                     {team.name}
                   </Typography>
                 </Grid>
@@ -133,15 +129,12 @@ const AppliedTeams = ({ teams, setTeams }) => {
       ) : (teams.map((team) => (
         <Grid key={team.id} item sm={6} xs={12}>
           <Card elevation={2}>
-            <Grid container>
+            <Grid container style={{ padding: '0.6em' }}>
               <Grid item xs={9}>
                 <Link to={`/teams/${team.teamId}/project`} style={{ textDecoration: 'none' }}>
                   <Grid item container xs={12}>
-                    <Grid container item xs={2} justify="center" alignItems="center" style={{ margin: '0.5em' }}>
-                      <img src={teamIcon} alt="teamIcon" width="40px" height="40px" />
-                    </Grid>
-                    <Grid container item xs={9} alignItems="center">
-                      <Typography color="textPrimary" noWrap>
+                    <Grid container item xs={12} alignItems="center">
+                      <Typography color="textPrimary" noWrap style={{ marginTop: '0.5em' }}>
                         {team.teamName}
                       </Typography>
                     </Grid>
@@ -191,15 +184,12 @@ const InvitedTeams = ({ teams, userId, setUserTeams, setInvitedTeams }) => {
     ) : (teams.map((team) => (
       <Grid key={team.id} item sm={6} xs={12}>
         <Card elevation={2}>
-          <Grid container>
+          <Grid container style={{ padding: '0.6em' }}>
             <Grid item xs={7}>
               <Link to={`/teams/${team.id}/project`} style={{ textDecoration: 'none' }}>
                 <Grid item container xs={12}>
-                  <Grid container item padding="0.5em" xs={2} justify="center" alignItems="center" style={{ margin: '0.5em' }}>
-                    <img src={teamIcon} alt="teamIcon" width="40px" height="40px" />
-                  </Grid>
                   <Grid container item xs={9} alignItems="center">
-                    <Typography color="textPrimary" noWrap>
+                    <Typography color="textPrimary" noWrap style={{ marginTop: '0.5em' }}>
                       {team.teamName}
                     </Typography>
                   </Grid>
