@@ -1,12 +1,49 @@
-import { Box, Button, Card, CircularProgress, Container, Grid, Typography } from '@material-ui/core';
+import { Box, Button, Card, CircularProgress, Container, Grid, Typography, withStyles } from '@material-ui/core';
 import React, { useContext, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { ManufactureDate } from '../post-management/datetime';
 import { GetUserTeams, GetInvitedTeams, GetAppliedTeams, KickOutTeamMember, AcceptTeam, RefuseTeam, LeaveTeam, CancelApplyTeam } from './TeamApi';
 import teamIcon from './team.png';
 import AuthContext from '../contexts/auth';
 
+const DeleteButton = withStyles({
+  root: {
+      boxShadow: 'none',
+      textTransform: 'none',
+      fontSize: 14,
+      color: 'white',
+      padding: '6px 12px',
+      border: '1px solid',
+      lineHeight: 1.5,
+      backgroundColor: 'rgb(220, 0, 78)',
+      borderColor: 'rgb(220, 0, 78)',
+      fontFamily: [
+        '-apple-system',
+        'BlinkMacSystemFont',
+        '"Segoe UI"',
+        'Roboto',
+        '"Helvetica Neue"',
+        'Arial',
+        'sans-serif',
+        '"Apple Color Emoji"',
+        '"Segoe UI Emoji"',
+        '"Segoe UI Symbol"',
+      ].join(','),
+      '&:hover': {
+        backgroundColor: 'rgb(162, 0, 56)',
+        borderColor: 'rgb(162, 0, 56)',
+        boxShadow: '-0.05em 0.05em 0.2em 0.1em rgba(0, 0, 0, 0.3)',
+      },
+      '&:active': {
+        backgroundColor: 'rgb(162, 0, 56)',
+        borderColor: 'rgb(162, 0, 56)',
+        boxShadow: '-0.05em 0.05em 0.2em 0.1em rgba(0, 0, 0, 0.3)',
+      },
+    },
+})(Button);
+
 const ParticipatingTeams = ({ userId, teams, setTeams }) => {
+  const history = useHistory();
     return (
       <Grid container spacing={1}>
         {teams.length === 0 ? (
@@ -38,12 +75,25 @@ const ParticipatingTeams = ({ userId, teams, setTeams }) => {
           </Grid>
           <Grid container item xs={3} spacing={1} justify="flex-end" alignItems="center">
             <Grid item>
-              <Button
-                color="primary"
-                variant="contained"
-                justify="flex-end"
-                alignItems="center"
-                onClick={async () => {
+              {userId === team.masterId
+              ? (
+                <Button
+                  color="primary"
+                  variant="contained"
+                  justify="flex-end"
+                  alignItems="center"
+                  onClick={() => { history.push(`/teams/${team.id}/teammanagement`); }}
+                >
+                  관리
+                </Button>
+)
+              : (
+                <DeleteButton
+                  color="primary"
+                  variant="contained"
+                  justify="flex-end"
+                  alignItems="center"
+                  onClick={async () => {
                 if (window.confirm('정말로 팀을 탈퇴하시겠습니까?')) {
                     const { status } = await LeaveTeam(team.id, userId);
                     if (status === 200) {
@@ -52,9 +102,10 @@ const ParticipatingTeams = ({ userId, teams, setTeams }) => {
                     }
                 }
             }}
-              >
-                탈퇴
-              </Button>
+                >
+                  탈퇴
+                </DeleteButton>
+)}
             </Grid>
           </Grid>
         </Grid>
@@ -232,6 +283,7 @@ const TeamSetting = ({ match }) => {
         }
     }, []);
 
+    console.log(userTeams);
     if (!isLoaded) {
         return (
           <Grid
