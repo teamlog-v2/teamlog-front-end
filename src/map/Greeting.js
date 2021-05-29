@@ -44,7 +44,11 @@ function LoginForm({ setOpen }) {
           borderRadius="0.25rem"
           {...bottomGap}
         >
-          <form>
+          <form
+            onSubmit={() => {
+              console.log('gogo');
+            }}
+          >
             <TextField
               {...bottomGap}
               size="small"

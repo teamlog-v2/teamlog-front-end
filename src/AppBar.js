@@ -253,8 +253,8 @@ export default function AppBar() {
 // ////////
 function Title() {
   return (
-    <Link to="/main" style={{ color: 'white', marginLeft: '1rem' }}>
-      <Typography>TeamLog</Typography>
+    <Link to="/main" style={{ color: 'white', marginLeft: '1rem', fontWeight: '300', textDecoration: 'none' }}>
+      TeamLog
     </Link>
   );
 }
