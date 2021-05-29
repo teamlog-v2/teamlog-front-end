@@ -128,6 +128,7 @@ export default function NewsPage() {
             };
             setTaskWrappers((prev) => [...prev, taskWrapper]);
           }
+          setTaskWrappers((prev) => [...prev]);
           tasksCounter.current += 1;
 
           // if (res.length > 0) {
