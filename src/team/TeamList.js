@@ -5,7 +5,6 @@ import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { useFetchData } from '../hooks/hooks';
 import { ManufactureDate } from '../post-management/datetime';
-import teamIcon from './team.png';
 
 export default function TeamList() {
   const { userId } = useParams();
@@ -42,9 +41,6 @@ export default function TeamList() {
   <Grid key={team.id} item sm={6} xs={12}>
     <Link to={`/teams/${team.id}/project`} style={{ textDecoration: 'none' }}>
       <Card elevation={2}>
-        <Box padding="0.5em" display="inline-block">
-          <img src={teamIcon} alt="teamIcon" width="40px" height="40px" />
-        </Box>
         <Box display="inline-block" margin="0.5rem 0.75rem">
           <Typography color="textPrimary">
             {team.name}

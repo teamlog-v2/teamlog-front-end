@@ -1,7 +1,6 @@
 import { Avatar, Box, Button, Card, CardMedia, CircularProgress, Container, Grid, makeStyles, Typography, withStyles } from '@material-ui/core';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import teamIcon from '../team/team.png';
 import AuthContext from '../contexts/auth';
 import ResponsiveDialog from '../organisms/ResponsiveDialog';
 import ProjectUpdateForm from '../project/ProjectUpdateForm';
@@ -235,13 +234,7 @@ const ProjectManagement = (props) => {
                     <Box flexGrow={1}>
                       <Link to={`/teams/${team.id}/project`} style={{ textDecoration: 'none' }}>
                         <Box display="flex" alignItems="center">
-                          <Avatar
-                            className={classes.profileImg}
-                            src={teamIcon}
-                            variant="square"
-                            style={{ margin: '0.5em' }}
-                          />
-                          <Typography variant="body1" color="textPrimary">
+                          <Typography variant="body1" color="textPrimary" style={{ margin: '0.6em' }}>
                             {team.name}
                           </Typography>
                         </Box>
