@@ -1,7 +1,7 @@
 {
     "name": "TeamLog",
     "short_name": "TeamLog",
-    "start_url": "public/index.html",
+    "start_url": "https://teamlog.netlify.app/login",
     "display": "standalone",
     "icons": [
       {
