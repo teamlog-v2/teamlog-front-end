@@ -5,7 +5,6 @@ import { useMediaQuery } from 'react-responsive';
 import useSupercluster from 'use-supercluster';
 import { useFetchData } from '../hooks/hooks';
 import Cluster from './Cluster';
-import Greeting from './Greeting';
 import NewPostExplorer from './NewPostExplorer';
 import SimpleMarker from './SimpleMarker';
 
@@ -40,7 +39,6 @@ export default function MapPage() {
   // render ========
   return (
     <Box overflow="hidden">
-      <Greeting />
       <ExplorerWrapperBox
         explorer={explorer}
         isOpen={open}

@@ -7,9 +7,7 @@ import {
   makeStyles,
   Menu,
   MenuItem,
-  MenuList,
   Slide,
-  Typography,
   useScrollTrigger,
 } from '@material-ui/core';
 import { ArrowDropDown, Notifications, Search } from '@material-ui/icons';
@@ -17,18 +15,14 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import React, { useContext, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import AuthContext, { setAccessToken } from './contexts/auth';
+import LoginPopup from './global/LoginPopup';
+import SignupPopup from './global/SignupPopup';
 import ResponsiveDialog from './organisms/ResponsiveDialog';
 import ProjectForm from './project/ProjectForm';
 import TeamForm from './team/TeamForm';
 
-function HideOnScroll(props) {
-  const { children, window } = props;
-  console.log('bar');
-  // Note that you normally won't need to set the window ref as useScrollTrigger
-  // will default to window.
-  // This is only being set here because the demo is in an iframe.
+function HideOnScroll({ children }) {
   const trigger = useScrollTrigger({
-    target: window ? window() : undefined,
     threshold: 0,
   });
 
@@ -39,36 +33,29 @@ function HideOnScroll(props) {
   );
 }
 
-const Div = ({ children }) => {
+function Wrapper({ children, ...props }) {
   return (
     <>
       <HideOnScroll>
-        <div
-          style={{
-            zIndex: 999,
-            // position: 'sticky',
-            // top: '0px',
-            width: '100%',
-            position: 'fixed',
-          }}
+        <Box
+          position="fixed"
+          top={0}
+          zIndex={999}
+          width="100%"
+          height="48px"
+          {...props}
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          bgcolor="#593875"
         >
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              backgroundColor: '#593875',
-              height: '48px',
-            }}
-          >
-            {children}
-          </div>
-        </div>
+          {children}
+        </Box>
       </HideOnScroll>
-      <div style={{ height: '48px' }} />
+      <Box height="48px" />
     </>
   );
-};
+}
 
 const useStyles = makeStyles((theme) => ({
   small: {
@@ -88,9 +75,9 @@ window.addEventListener('beforeinstallprompt', (e) => {
 });
 
 function userClickedAddToHome() {
-  deferredInstallPrompt.prompt();
+  deferredInstallPrompt?.prompt?.();
 
-  deferredInstallPrompt.userChoice.then((choiceResult) => {
+  deferredInstallPrompt?.userChoice?.then((choiceResult) => {
     if (choiceResult.outcome === 'accepted') {
       // 유저가 홈 스크린에 어플리케이션 추가에 동의
     } else {
@@ -110,9 +97,12 @@ export default function AppBar() {
   const [isProjectFormOpened, setIsProjectFormOpened] = useState(false);
   const [isTeamFormOpened, setIsTeamFormOpened] = useState(false);
 
+  const [popup, setPopup] = useState('login');
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -126,39 +116,43 @@ export default function AppBar() {
 
   if (!id) {
     return (
-      <Box display="flex" alignItems="center">
-        <Div>
-          <Title />
-          <Box display="flex">
-            <IconButton onClick={userClickedAddToHome}>
-              <GetAppIcon style={{ fontSize: '1.125rem', color: 'white' }} />
-            </IconButton>
-            {/* <Button className="add-button" onClick={userClickedAddToHome}>앱</Button> */}
-            <IconButton
-              onClick={() => {
-                history.push('/search');
-              }}
-            >
-              <Search style={{ fontSize: '1rem', color: 'white' }} />
-            </IconButton>
-            <Button
-              style={{ color: 'white' }}
-              onClick={() => {
-                history.push('/login');
-              }}
-            >
-              로그인
-            </Button>
-          </Box>
-        </Div>
-      </Box>
+      <>
+        {popup === 'login' && <LoginPopup handlePopup={setPopup} />}
+        {popup === 'signup' && <SignupPopup handlePopup={setPopup} />}
+        <Box display="flex" alignItems="center">
+          <Wrapper>
+            <Title />
+            <Box display="flex">
+              <IconButton onClick={userClickedAddToHome}>
+                <GetAppIcon style={{ fontSize: '1.125rem', color: 'white' }} />
+              </IconButton>
+              {/* <Button className="add-button" onClick={userClickedAddToHome}>앱</Button> */}
+              <IconButton
+                onClick={() => {
+                  history.push('/search');
+                }}
+              >
+                <Search style={{ fontSize: '1rem', color: 'white' }} />
+              </IconButton>
+              <Button
+                style={{ color: 'white' }}
+                onClick={() => {
+                  setPopup('login');
+                }}
+              >
+                로그인
+              </Button>
+            </Box>
+          </Wrapper>
+        </Box>
+      </>
     );
   }
 
   return (
     <Box display="flex" alignItems="center">
       <Backdrop open={!!anchorEl} style={{ zIndex: 1001 }} />
-      <Div>
+      <Wrapper>
         <Title />
         <Box display="flex">
           <IconButton onClick={userClickedAddToHome}>
@@ -245,7 +239,7 @@ export default function AppBar() {
         >
           <TeamForm updateOpen={setIsTeamFormOpened} />
         </ResponsiveDialog>
-      </Div>
+      </Wrapper>
     </Box>
   );
 }
@@ -253,7 +247,15 @@ export default function AppBar() {
 // ////////
 function Title() {
   return (
-    <Link to="/main" style={{ color: 'white', marginLeft: '1rem', fontWeight: '300', textDecoration: 'none' }}>
+    <Link
+      to="/main"
+      style={{
+        color: 'white',
+        marginLeft: '1rem',
+        fontWeight: '300',
+        textDecoration: 'none',
+      }}
+    >
       TeamLog
     </Link>
   );
