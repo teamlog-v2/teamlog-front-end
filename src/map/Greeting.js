@@ -98,7 +98,7 @@ function LoginForm({ setOpen }) {
 function Intro(props) {
   return (
     <Box fontSize="1.75rem" fontWeight="300" {...props}>
-      <span style={{ fontSize: '2.25rem' }}>TeamLog</span> 에서,
+      TeamLog에서,
       <br />
       팀의 여정을 기록하세요.
     </Box>
