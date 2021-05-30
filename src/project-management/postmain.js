@@ -12,13 +12,15 @@ import {
   Select,
   InputBase,
   fade,
+  Box,
+  Button,
 } from '@material-ui/core';
 import Container from '@material-ui/core/Container';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
 import Search from '@material-ui/icons/Search';
-import { Edit } from '@material-ui/icons';
-import { useParams } from 'react-router-dom';
+import { Edit, Map } from '@material-ui/icons';
+import { useHistory, useParams } from 'react-router-dom';
 import Postlist from '../post-management/postlist';
 import HashtagChooser from '../organisms/HashtagChooser';
 import useFetchPosts from '../hooks/useFetchPosts';
@@ -73,6 +75,7 @@ let resource = 1;
 const PostMain = (props) => {
   const classes = useStyles();
   const projectId = useParams().id;
+  const history = useHistory();
   const [open, setOpen] = useState(false);
   const [isPostLoading, setIsPostLoading] = useState(false);
   const [formData, setFormData] = useState(null);
@@ -190,15 +193,27 @@ const PostMain = (props) => {
                 className={classes.children}
                 item
                 container
+                justify="space-between"
                 alignItems="center"
               >
-                <Search />
-                <InputBase
-                  placeholder="검색어를 입력하세요."
-                  onChange={(event) => {
-                    setKeyword(event.target.value);
+                <Box display="flex" alignItems="center">
+                  <Search />
+                  <InputBase
+                    placeholder="검색어를 입력하세요."
+                    onChange={(event) => {
+                      setKeyword(event.target.value);
+                    }}
+                  />
+                </Box>
+                <Button
+                  color="primary"
+                  onClick={() => {
+                    history.push(`/projects/${projectId}/map`);
                   }}
-                />
+                >
+                  <Map />
+                  &nbsp;지도로 탐색하기
+                </Button>
               </Grid>
               <Grid className={classes.children} item container direction="row">
                 <HashtagChooser
@@ -216,7 +231,10 @@ const PostMain = (props) => {
                 justify="flex-end"
                 xs={12}
               >
-                <FormControl variant="outlined" style={{ height: 30, width: 120 }}>
+                <FormControl
+                  variant="outlined"
+                  style={{ height: 30, width: 120 }}
+                >
                   <Select
                     native
                     onChange={(event) => {
@@ -234,65 +252,56 @@ const PostMain = (props) => {
               <Grid className={classes.children} item>
                 <Typography>
                   {posts.length === 0 &&
-                    !isPostsLoading && keyword !== '' &&
+                    !isPostsLoading &&
+                    keyword !== '' &&
                     '검색된 게시물이 없습니다'}
                   {posts.length !== 0 &&
                     `총 ${postsTotalCount}개의 검색된 게시물 중 ${posts.length}개`}
                 </Typography>
-                {
-                  isPostLoading ? (
-                    <Card
-                      className={classes.children}
-                      elevation={0}
-                      xs={12}
-                    >
-                      <Grid
-                        item
-                        container
-                        alignItems="center"
-                        style={{ border: '1px solid #eee', padding: '1%' }}
-                      >
-                        <CircularProgress />
-                        &nbsp;업로드 중
-                      </Grid>
-                    </Card>
-                  )
-                  : null
-                }
-                {
-                  (posts.length === 0 && keyword === '') && !isPostsLoading ? (
+                {isPostLoading ? (
+                  <Card className={classes.children} elevation={0} xs={12}>
                     <Grid
+                      item
                       container
-                      justify="center"
                       alignItems="center"
-                      style={{ height: '50vh', fontWeight: 600 }}
+                      style={{ border: '1px solid #eee', padding: '1%' }}
                     >
-                      아직 등록된 글이 없어요. 😢
+                      <CircularProgress />
+                      &nbsp;업로드 중
                     </Grid>
-                    ) : (
-                      <Postlist
-                        posts={posts}
-                        hashtags={hashtags}
-                        setIsPostLoading={setIsPostLoading}
-                        setFormData={setFormData}
-                        initPosts={initPosts}
-                        updatePost={updatePost}
-                        relation={relation}
-                      />
-                    )
-                  }
-                {
-                  (relation === 'MEMBER' || relation === 'MASTER')
-                  && (
+                  </Card>
+                ) : null}
+                {posts.length === 0 && keyword === '' && !isPostsLoading ? (
+                  <Grid
+                    container
+                    justify="center"
+                    alignItems="center"
+                    style={{ height: '50vh', fontWeight: 600 }}
+                  >
+                    아직 등록된 글이 없어요. 😢
+                  </Grid>
+                ) : (
+                  <Postlist
+                    posts={posts}
+                    hashtags={hashtags}
+                    setIsPostLoading={setIsPostLoading}
+                    setFormData={setFormData}
+                    initPosts={initPosts}
+                    updatePost={updatePost}
+                    relation={relation}
+                  />
+                )}
+                {(relation === 'MEMBER' || relation === 'MASTER') && (
                   <Fab
                     className={classes.button}
                     color="primary"
-                    onClick={() => { setOpen(true); }}
+                    onClick={() => {
+                      setOpen(true);
+                    }}
                   >
                     <Edit />
                   </Fab>
-                  )
-                }
+                )}
                 <Grid
                   container
                   justify="center"

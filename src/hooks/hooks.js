@@ -119,6 +119,7 @@ const useFetchData = (url) => {
 
     // state 합치는 것도 고민
     setIsLoaded(false);
+    setData(null);
     setError(null);
   }
 

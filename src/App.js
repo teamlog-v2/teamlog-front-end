@@ -35,6 +35,7 @@ const App = () => {
 
           <Route path="/create-project" component={ProjectForm} />
           <Route path="/project" component={ProjectListContainer} />
+          <Route path="/projects/:id/map" component={MapPage} />
           <Route path="/projects/:id" component={Project} />
 
           <Route path="/create-team" component={TeamForm} />
