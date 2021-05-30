@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import ResponsiveDialog from '../organisms/ResponsiveDialog';
 import jQuery from 'jquery';
 import { CancelRounded, Close, VideoCallRounded } from '@material-ui/icons';
-import { detectSupportFormat } from '../utils';
+import { convertResourceUrl, detectSupportFormat } from '../utils';
 window.$ = window.jQuery = jQuery;
 
 const useStyles = makeStyles(() => ({
@@ -51,12 +51,12 @@ const ImageContent = ({ file }) => {
 
   return (<>
     <Box width="100%" className={classes.align} onClick={() => { setOpen(true); }} style={{ cursor: 'pointer' }}>
-      <img src={fileDownloadUri.slice(fileDownloadUri.indexOf('/resources'))} width="100%" />
+      <img src={convertResourceUrl(fileDownloadUri)} width="100%" />
     </Box>
     <ResponsiveDialog open={open} updateOpen={setOpen} bgColor="black" max={"md"}>
       <div>
         <CloseButton handleClick={() => { setOpen(false); }} />
-        <img src={fileDownloadUri.slice(fileDownloadUri.indexOf('/resources'))} width="100%" />
+        <img src={convertResourceUrl(fileDownloadUri)} width="100%" />
       </div>
     </ResponsiveDialog>
     </>
@@ -67,7 +67,7 @@ const Video = ({ file, compressed }) => {
   const { fileName, fileDownloadUri } = file;
   const [notSupportedFormat, setNotSupportedFormat] = useState(false);
   const [open, setOpen] = useState(false);
-  const url = fileDownloadUri.slice(fileDownloadUri.indexOf('/resources'));
+  const url = convertResourceUrl(fileDownloadUri);
 
   useEffect(async () => {
     const result = await detectSupportFormat(url);
@@ -91,14 +91,14 @@ const Video = ({ file, compressed }) => {
   ) : (<>
     <Box style={{ cursor: 'pointer' }} onClick={() => { setOpen(true); }} style={{ cursor: 'pointer' }}>
       <video className={!compressed ? classes.align : ''} controls autoPlay muted>
-        <source src={url}></source>
+        <source src={convertResourceUrl(url)}></source>
       </video>
     </Box>
     <ResponsiveDialog open={open} updateOpen={setOpen} bgColor="black" max={"md"}>
       <div>
         <CloseButton handleClick={() => { setOpen(false); }} />
         <video controls autoPlay muted width="100%">
-          <source src={url}></source>
+          <source src={convertResourceUrl(url)}></source>
         </video>
       </div>
   </ResponsiveDialog>

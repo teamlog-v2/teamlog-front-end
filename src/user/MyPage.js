@@ -26,6 +26,7 @@ import {
   follow,
   unfollow,
 } from './userService';
+import { convertResourceUrl } from '../utils';
 
 const useStyles = makeStyles((theme) => ({
   multiLineEllipsis: {
@@ -142,9 +143,7 @@ const MyPage = ({ match }) => {
               className={classes.large}
               src={
                 user.profileImgPath
-                  ? user.profileImgPath.slice(
-                      user.profileImgPath.search('/resources/'),
-                    )
+                  ? convertResourceUrl(user.profileImgPath)
                   : ''
               }
             />

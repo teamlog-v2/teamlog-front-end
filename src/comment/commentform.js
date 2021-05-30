@@ -17,6 +17,7 @@ import {
 } from '@material-ui/core/styles';
 import { GetProjectMembers } from '../project-management/projectapi';
 import { CreateComment, /* GetComment, */ UpdateComment } from './commentapi';
+import { convertResourceUrl } from '../utils';
 
 const useStyles = makeStyles(() => ({
     more: {
@@ -340,7 +341,7 @@ const CommentForm = (props) => {
                   onClick={onClick}
                 >
                   <ListItemIcon>
-                    <Avatar src={item.profileImgPath} />
+                    <Avatar src={convertResourceUrl(item.profileImgPath)} />
                   </ListItemIcon>
                   <ListItemText primary={item.name} secondary={item.id} />
                 </MenuItem>

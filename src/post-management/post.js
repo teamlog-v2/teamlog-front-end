@@ -56,6 +56,7 @@ import { DeletePost } from './postapi';
 import ResponsiveDialog from '../organisms/ResponsiveDialog';
 import PostFormPage from '../pages/PostFormPage';
 import UpdateHistory from './updateHistory';
+import { convertResourceUrl } from '../utils';
 
 /** 관계와 접근제어자를 입력받아서
  * visible 한지 반환
@@ -645,7 +646,7 @@ const CompressedMediaList = ({ media }) => {
               return (
                 <img
                   key={url}
-                  src={url}
+                  src={convertResourceUrl(url)}
                   alt="이미지"
                   width="100%"
                 />

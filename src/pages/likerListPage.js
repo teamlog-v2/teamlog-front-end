@@ -2,6 +2,7 @@ import { Avatar, Box, Card, Container, Divider, Grid, makeStyles, Typography } f
 import { Close } from '@material-ui/icons';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { convertResourceUrl } from '../utils';
 
 const useStyles = makeStyles(() => ({
     profileImg: {
@@ -44,7 +45,7 @@ const LikerList = ({ likerList, updateOpen }) => {
                                   <Box display="flex" alignItems="center">
                                     <Avatar
                                       className={classes.profileImg}
-                                      src={liker.profileImgPath}
+                                      src={convertResourceUrl(liker.profileImgPath)}
                                     />
                                     <Typography variant="body1" color="textPrimary">
                                       {liker.name}

@@ -8,6 +8,7 @@ import Introduction from './introduction';
 import InviteesSelect from './inviteesSelect';
 import MasterSelect from './masterSelect';
 import { AcceptProject, DeleteProject, GetProject, GetProjectApplcants, GetProjectInvitees, GetProjectMembers, KickOutProjectMember, RefuseProject } from './projectapi';
+import { convertResourceUrl } from '../utils';
 
 const useStyles = makeStyles(() => ({
     profileImg: {
@@ -141,7 +142,7 @@ const ProjectMemberManagement = (props) => {
                       <Box display="flex" alignItems="center">
                         <Avatar
                           className={classes.profileImg}
-                          src={invitee.user.profileImgPath}
+                          src={convertResourceUrl(invitee.user.profileImgPath)}
                         />
                         <Typography variant="body1" color="textPrimary">
                           {invitee.user.name}
@@ -199,7 +200,7 @@ const ProjectMemberManagement = (props) => {
                         <Box display="flex" alignItems="center">
                           <Avatar
                             className={classes.profileImg}
-                            src={applicant.user.profileImgPath}
+                            src={convertResourceUrl(applicant.user.profileImgPath)}
                           />
                           <Typography variant="body1" color="textPrimary">
                             {applicant.user.name}
@@ -293,7 +294,7 @@ const ProjectMemberManagement = (props) => {
                         <Box display="flex" alignItems="center">
                           <Avatar
                             className={classes.profileImg}
-                            src={member.profileImgPath}
+                            src={convertResourceUrl(member.profileImgPath)}
                           />
                           <Typography variant="body1" color="textPrimary">
                             {member.name}
@@ -372,7 +373,7 @@ const ProjectMemberManagement = (props) => {
                       <Box display="flex" alignItems="center">
                         <Avatar
                           className={classes.profileImg}
-                          src={master.profileImgPath}
+                          src={convertResourceUrl(master.profileImgPath)}
                         />
                         <Typography variant="body1" color="textPrimary">
                           {master.name}

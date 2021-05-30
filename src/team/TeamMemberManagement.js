@@ -7,6 +7,7 @@ import ResponsiveDialog from '../organisms/ResponsiveDialog';
 import InviteesSelect from './InviteesSelect';
 import MasterSelect from './MasterSelect';
 import { AcceptTeam, GetTeam, GetTeamApplcants, GetTeamInvitees, GetTeamMembers, KickOutTeamMember, RefuseTeam } from './TeamApi';
+import { convertResourceUrl } from '../utils';
 
 const useStyles = makeStyles(() => ({
     profileImg: {
@@ -133,7 +134,7 @@ const TeamMemberManagement = (props) => {
                       <Box display="flex" alignItems="center">
                         <Avatar
                           className={classes.profileImg}
-                          src={invitee.user.profileImgPath}
+                          src={convertResourceUrl(invitee.user.profileImgPath)}
                         />
                         <Typography variant="body1" color="textPrimary">
                           {invitee.user.name}
@@ -191,7 +192,7 @@ const TeamMemberManagement = (props) => {
                         <Box display="flex" alignItems="center">
                           <Avatar
                             className={classes.profileImg}
-                            src={applicant.user.profileImgPath}
+                            src={convertResourceUrl(applicant.user.profileImgPath)}
                           />
                           <Typography variant="body1" color="textPrimary">
                             {applicant.user.name}
@@ -285,7 +286,7 @@ const TeamMemberManagement = (props) => {
                         <Box display="flex" alignItems="center">
                           <Avatar
                             className={classes.profileImg}
-                            src={member.profileImgPath}
+                            src={convertResourceUrl(member.profileImgPath)}
                           />
                           <Typography variant="body1" color="textPrimary">
                             {member.name}
@@ -364,7 +365,7 @@ const TeamMemberManagement = (props) => {
                       <Box display="flex" alignItems="center">
                         <Avatar
                           className={classes.profileImg}
-                          src={master.profileImgPath}
+                          src={convertResourceUrl(master.profileImgPath)}
                         />
                         <Typography variant="body1" color="textPrimary">
                           {master.name}

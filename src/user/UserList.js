@@ -12,6 +12,7 @@ import { Skeleton } from '@material-ui/lab';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { follow, unfollow } from './userService';
+import { convertResourceUrl } from '../utils';
 
 const useStyles = makeStyles(() => ({
   profileImg: {
@@ -89,7 +90,7 @@ const UserList = ({ type, userId, fetchData }) => {
                           <Box display="flex" alignItems="center">
                             <Avatar
                               className={classes.profileImg}
-                              src={user.profileImgPath}
+                              src={convertResourceUrl(user.profileImgPath)}
                             />
                             <Typography variant="body1" color="textPrimary">
                               {user.name}

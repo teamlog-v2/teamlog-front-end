@@ -157,7 +157,7 @@ const UserSelect = ({
               }}
             >
               <ListItemAvatar>
-                <Avatar alt={user.name} src={user.profileImgPath} />
+                <Avatar alt={user.name} src={convertResourceUrl(user.profileImgPath)} />
               </ListItemAvatar>
               <ListItemText primary={`${user.name} (${user.id})`} />
               {selectedUserIds.includes(user.id) ? (

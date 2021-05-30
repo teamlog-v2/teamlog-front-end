@@ -4,6 +4,7 @@ import { Redirect, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import AuthContext from '../contexts/auth';
 import { GetFollowProjects, GetProjectFollowers, UnFollowProject, FollowProject } from './projectapi';
+import { resizeImage, convertResourceUrl } from '../utils';
 
 const useStyles = makeStyles(() => ({
   profileImg: {
@@ -159,7 +160,7 @@ const ProjectFollower = () => {
                         <Box display="flex" alignItems="center">
                           <Avatar
                             className={classes.profileImg}
-                            src={member.profileImgPath}
+                            src={convertResourceUrl(member.profileImgPath)}
                           />
                           <Typography variant="body1" color="textPrimary">
                             {member.name}

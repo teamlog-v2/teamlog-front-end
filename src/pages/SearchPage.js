@@ -21,6 +21,7 @@ import { Link } from 'react-router-dom';
 import ProjectItem from '../project/ProjectItem';
 import { ManufactureDate } from '../post-management/datetime';
 import teamIcon from '../team/team.png';
+import { convertResourceUrl } from '../utils';
 
 export default function SearchPage() {
   const [query, setQuery] = useState('');
@@ -260,7 +261,7 @@ function UserItem({ user }) {
     <Link to={`/users/${user.id}`} style={{ textDecoration: 'none' }}>
       <Card elevation={2}>
         <Box display="flex" alignItems="center">
-          <Avatar className={classes.profileImg} src={user.profileImgPath} />
+          <Avatar className={classes.profileImg} src={convertResourceUrl(user.profileImgPath)} />
           <Typography variant="body1" color="textPrimary">
             {user.name}
           </Typography>

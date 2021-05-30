@@ -21,6 +21,7 @@ import {
   } from '@material-ui/icons';
   import React, { useEffect, useState } from 'react';
 import { DelegateProjectMaster } from './projectapi';
+import { convertResourceUrl } from '../utils';
 
   const StyledList = withStyles({
     root: {
@@ -133,7 +134,7 @@ import { DelegateProjectMaster } from './projectapi';
               <>
                 <ListItem>
                   <ListItemAvatar>
-                    <Avatar alt={user.name} src={user.profileImgPath} />
+                    <Avatar alt={user.name} src={convertResourceUrl(user.profileImgPath)} />
                   </ListItemAvatar>
                   <ListItemText primary={user.name} />
 
@@ -172,7 +173,7 @@ import { DelegateProjectMaster } from './projectapi';
                 }}
               >
                 <ListItemAvatar>
-                  <Avatar alt={user.name} src={user.profileImgPath} />
+                  <Avatar alt={user.name} src={convertResourceUrl(user.profileImgPath)} />
                 </ListItemAvatar>
                 <ListItemText primary={user.name} />
                 {selectedMaster.includes(user.id) ? (
