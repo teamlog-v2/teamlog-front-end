@@ -22,6 +22,7 @@ function ProjectAnchor() {
   return (
     <Box
       position="fixed"
+      zIndex={1}
       left={0}
       margin="1rem"
       padding="0.25rem 0.5rem"
