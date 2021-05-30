@@ -8,6 +8,12 @@
   to = "http://3.15.16.150:8090/resources/:splat"
   status = 200
 
+
+[[redirects]]
+  from = "/pusher/*"
+  to = "http://202.31.202.150:80/:splat"
+  status = 200
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
