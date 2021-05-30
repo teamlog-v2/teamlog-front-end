@@ -1,6 +1,7 @@
 import { Button, Card, CardContent, CardMedia, CircularProgress, Container, Grid, Typography, withStyles } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import { convertResourceUrl } from '../utils';
 import { InvitationAccept, RefuseProject, LeaveProject, GetUserProjects, GetInvitedProjects, GetAppliedProjects } from './projectapi';
 
 const DeleteButton = withStyles({
@@ -49,7 +50,7 @@ const ParticipatingTeams = ({ userId, projects, setProjects }) => {
                   <Grid item md={4} sm={6} xs={12}>
                     <Card elevation={2}>
                       <Link to={`/projects/${project.id}`} style={{ textDecoration: 'none' }}>
-                        <CardMedia style={{ height: 180 }} image={project.thumbnail} />
+                        <CardMedia style={{ height: 180 }} image={convertResourceUrl(project.thumbnail)} />
                       </Link>
                       <CardContent>
                         <Grid container direction="column">
@@ -121,7 +122,7 @@ const AppliedProjects = ({ userId, projects, setProjects }) => {
                   <Grid item md={4} sm={6} xs={12}>
                     <Card elevation={2}>
                       <Link to={`/projects/${project.projectId}`} style={{ textDecoration: 'none' }}>
-                        <CardMedia style={{ height: 180 }} image={project.thumbnail} />
+                        <CardMedia style={{ height: 180 }} image={convertResourceUrl(project.thumbnail)} />
                       </Link>
                       <CardContent>
                         <Grid container xs={12} direction="column">
@@ -181,7 +182,7 @@ const InvitedProjects = ({ userId, projects, setUserProjects, setInvitedProjects
                   <Grid item md={4} sm={6} xs={12}>
                     <Card elevation={2}>
                       <Link to={`/projects/${project.projectId}`} style={{ textDecoration: 'none' }}>
-                        <CardMedia style={{ height: 180 }} image={project.thumbnail} />
+                        <CardMedia style={{ height: 180 }} image={convertResourceUrl(project.thumbnail)} />
                       </Link>
                       <CardContent>
                         <Grid container direction="column">

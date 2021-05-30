@@ -116,7 +116,7 @@ const detectSupportFormat = async (url) => {
 };
 
 const convertResourceUrl = (src) => {
-  if (src.indexOf('http://3.15.16.150:8090/resources') === 0) {
+  if (src?.indexOf?.('http://3.15.16.150:8090/resources') === 0) {
     return src.slice(src.indexOf('/resources'));
   }
 
