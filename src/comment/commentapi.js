@@ -1,4 +1,4 @@
-export const CreateComment = (
+export const CreateComment = async (
   parentCommentIdVal,
   postIdVal,
   contentsVal,
@@ -12,13 +12,13 @@ export const CreateComment = (
     commentMentions: commentMentionsVal,
   };
 
-  const status = fetch('/api/comments/', {
+  const status = await fetch('/api/comments/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(comment),
-  }).then((res) => res.status);
+  }).then(async (res) => res.status);
 
   return status;
 };
@@ -84,4 +84,23 @@ export const DeleteComment = async (commentId) => {
     },
   ).then((res) => res.status);
   return status;
+};
+
+export const PostCommentNotification = async (writerId, postId) => {
+  console.log(writerId, postId);
+
+  const target = await fetch(`/api/posts/${postId}`).then((res) => res.json()).then((res) => res.writer.id);
+
+  const res = await fetch('/pusher/push-notification', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        target,
+        source: writerId,
+        type: 'comment',
+      }),
+  });
+  console.log(res);
 };
