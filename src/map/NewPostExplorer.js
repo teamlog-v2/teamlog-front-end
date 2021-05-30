@@ -100,7 +100,7 @@ function PostCard({ post }) {
         {!projectId && (
           <>
             <Typography variant="" color="primary">
-              <CustomLink to={`/projects/${post.project.id}/map`}>
+              <CustomLink to={`/projects/${post.project.id}`}>
                 {post.project.name}
               </CustomLink>
             </Typography>
