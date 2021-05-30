@@ -10,6 +10,7 @@ import {
     ListItem,
     ListItemAvatar,
     ListItemText,
+    makeStyles,
     TextField,
     Typography,
     withStyles,
@@ -21,6 +22,14 @@ import {
   } from '@material-ui/icons';
   import React, { useEffect, useState } from 'react';
 import { DelegateTeamMaster } from './TeamApi';
+
+const useStyles = makeStyles((theme) => ({
+  frame: {
+    [theme.breakpoints.up('md')]: {
+      width: '20em',
+    },
+  },
+}));
 
   const StyledList = withStyles({
     root: {
@@ -41,6 +50,8 @@ import { DelegateTeamMaster } from './TeamApi';
     const [selectedMaster, setSelectedMaster] = useState([]);
     const [searchString, setSearchString] = useState('');
     console.log(setError);
+
+    const classes = useStyles();
 
     useEffect(() => {
       (async () => {
@@ -67,7 +78,7 @@ import { DelegateTeamMaster } from './TeamApi';
 
     if (!isLoaded) {
       return (
-        <Container style={{ minWidth: '20em', height: '32em', margin: '1em 0' }}>
+        <Container className={classes.frame} style={{ minWidth: '20em', height: '32em', margin: '1em 0' }}>
           <Grid
             container
             direction="column"

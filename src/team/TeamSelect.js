@@ -10,6 +10,7 @@ import {
     ListItem,
     ListItemAvatar,
     ListItemText,
+    makeStyles,
     TextField,
     Typography,
     withStyles,
@@ -23,6 +24,14 @@ import {
 import { SetProjectTeam } from '../project-management/projectapi';
 
 // import { DelegateProjectTeam } from './projectapi';
+
+  const useStyles = makeStyles((theme) => ({
+    frame: {
+      [theme.breakpoints.up('md')]: {
+        width: '20em',
+      },
+    },
+  }));
 
   const StyledList = withStyles({
     root: {
@@ -45,6 +54,8 @@ import { SetProjectTeam } from '../project-management/projectapi';
     const [searchString, setSearchString] = useState('');
     console.log(setError);
     console.log(selectedTeam);
+
+    const classes = useStyles();
 
     useEffect(() => {
       (async () => {
@@ -118,7 +129,7 @@ import { SetProjectTeam } from '../project-management/projectapi';
     };
 
     return (
-      <Container style={{ minWidth: '20em', height: '32em', margin: '1em 0' }}>
+      <Container className={classes.frame} style={{ minWidth: '20em', height: '32em', margin: '1em 0' }}>
         <Box display="flex" justifyContent="center">
           <Typography>선택된 팀</Typography>
         </Box>
