@@ -127,10 +127,11 @@ const useFetchData = (url) => {
     let isMounted = true;
 
     (async () => {
+      let response;
       let result;
 
       try {
-        result = await fetch(url);
+        response = await fetch(url);
       } catch (err) {
         if (!isMounted) {
           return;
@@ -143,29 +144,28 @@ const useFetchData = (url) => {
         return;
       }
 
-      switch (result.status) {
+      try {
+        result = await response.json();
+      } catch (err) {
+        if (!isMounted) {
+          return;
+        }
+
+        setError(err);
+        return;
+      }
+      if (!isMounted) {
+        return;
+      }
+      switch (response.status) {
         case 200:
           break;
         case 401:
         case 403:
         case 404:
         default:
-          setError(result.status);
+          setError(result.message);
           return;
-      }
-
-      try {
-        result = await result.json();
-      } catch (err) {
-        if (!isMounted) {
-          return;
-        }
-
-        setError(err);
-        return;
-      }
-      if (!isMounted) {
-        return;
       }
 
       setData(result);
