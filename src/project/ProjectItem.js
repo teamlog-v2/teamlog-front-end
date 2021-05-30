@@ -8,7 +8,7 @@ const ProjectItem = ({ project }) => (
     <Card elevation={2}>
       <CardMedia style={{ height: 180 }} image={project.thumbnail} />
       <CardContent>
-        <Typography gutterBottom variant="h6">
+        <Typography gutterBottom variant="h6" noWrap>
           {project.name}
         </Typography>
         <Typography variant="body2" gutterBottom>

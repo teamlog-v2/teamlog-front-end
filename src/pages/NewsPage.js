@@ -443,7 +443,7 @@ function TeamInvitationsCard({ invitation }) {
           <Typography variant="caption" color="textSecondary">
             팀 초대
           </Typography>
-          <Typography variant="body1">
+          <Typography variant="body1" style={{ wordBreak: 'break-all' }}>
             <CustomLink to={`/teams/${teamId}/project`}>{teamName}</CustomLink>
             에 초대되었습니다.
           </Typography>
