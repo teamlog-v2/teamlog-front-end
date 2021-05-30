@@ -154,6 +154,23 @@ const PostMain = (props) => {
         body: formData,
         headers: {},
       });
+
+      /* pusher test */
+      if (res.status === 201) {
+          await fetch('http://localhost:3001/push-notification', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            source: '_doyeonjang_', // user id
+            projectId,
+            type: 'post',
+          }),
+        });
+      }
+      /* pusher test */
+
       if (res.status === 201) {
         // const post = await res.json();
         console.log('성공적으로 등록');
