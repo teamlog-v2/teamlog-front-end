@@ -32,7 +32,7 @@ function ProjectAnchor() {
         color="primary"
         variant="contained"
         onClick={() => {
-          history.push(`/projects/${project.id}`);
+          history.push(`/projects/${project.id}/post`);
         }}
       >
         <Map />&nbsp;{project.name}
