@@ -9,6 +9,7 @@ import {
   useEffect,
   useState,
   useRef,
+  useContext,
 } from 'react';
 import {
   createMuiTheme,
@@ -16,7 +17,8 @@ import {
   ThemeProvider,
 } from '@material-ui/core/styles';
 import { GetProjectMembers } from '../project-management/projectapi';
-import { CreateComment, /* GetComment, */ UpdateComment } from './commentapi';
+import { CreateComment, /* GetComment, */ UpdateComment, PostCommentNotification } from './commentapi';
+import AuthContext from '../contexts/auth';
 import { convertResourceUrl } from '../utils';
 
 const useStyles = makeStyles(() => ({
@@ -67,6 +69,7 @@ const CommentForm = (props) => {
       userInput: '',
       tagStartIndex: -1,
     });
+    const [userId] = useContext(AuthContext);
 
     useEffect(async () => {
       if (forUpdate) {
@@ -271,6 +274,10 @@ const CommentForm = (props) => {
                     }
                   } else {
                     // 댓글 등록
+
+                    /*
+                     * post writer id / comment writer id
+                     */
                     const status = await CreateComment(
                       id,
                       postId,
@@ -279,6 +286,7 @@ const CommentForm = (props) => {
                     );
 
                     if (status === 201) {
+                        PostCommentNotification(userId, postId);
                         renewCommentList(1);
                         setState({ ...state, userInput: '' });
                     }
