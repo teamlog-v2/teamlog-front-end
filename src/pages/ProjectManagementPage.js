@@ -13,8 +13,6 @@ import ProjectMemberManagement from '../project-management/ProjectMemberManageme
 import ProjectManagement from '../project-management/projectmanagement';
 
 const RadioButton = ({ children, onClick, highlight, value, ...props }) => {
-  console.log(value);
-  // console.log(highlight);
   return (
     <Button
       fullWidth

@@ -4,7 +4,7 @@ import TeamHeader from './TeamHeader';
 import TeamProject from './TeamProject';
 import TeamMember from './TeamMember';
 import TeamFollower from './TeamFollower';
-import TeamManagement from './TeamManagement';
+import TeamManagementPage from '../pages/TeamManagementPage';
 
 export default function Team() {
   const sections = [
@@ -30,7 +30,7 @@ export default function Team() {
             )}
           />
         ))}
-        <Route exact path="/teams/:id/teammanagement" component={() => <TeamManagement relation={relation} />} />
+        <Route path="/teams/:id/teammanagement" component={() => <TeamManagementPage relation={relation} />} />
       </Switch>
     </>
   );
