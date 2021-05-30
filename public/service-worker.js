@@ -1,3 +1,7 @@
+/* pusher test */
+importScripts("https://js.pusher.com/beams/service-worker.js");
+/* pusher test */
+
 const CACHE_NAME = 'teamlog-cache-v2';
 
 const FILES_TO_CACHE = [
