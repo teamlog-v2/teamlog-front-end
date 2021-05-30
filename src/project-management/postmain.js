@@ -157,7 +157,7 @@ const PostMain = (props) => {
 
       /* pusher test */
       if (res.status === 201) {
-          await fetch('http://localhost:3001/push-notification', {
+          await fetch('http://202.31.202.150:80/push-notification', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
