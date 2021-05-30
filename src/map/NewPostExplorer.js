@@ -9,7 +9,7 @@ import {
 import { Close, Fullscreen, FullscreenExit } from '@material-ui/icons';
 import React, { useMemo } from 'react';
 import { useMediaQuery } from 'react-responsive';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { DateInfo } from '../post-management/datetime';
 import { CompressedPost } from '../post-management/post';
 
@@ -92,18 +92,24 @@ export default function NewPostExplorer({
 
 //
 function PostCard({ post }) {
+  const { id: projectId } = useParams();
+
   return (
     <Card>
       <Box padding="1rem">
-        <Typography variant="" color="primary">
-          <CustomLink to={`/projects/${post.project.id}`}>
-            {post.project.name}
-          </CustomLink>
-        </Typography>
-        &nbsp;
-        <DateInfo dateTime={post.writeTime} />
-        <Box height="1rem" />
-        <CompressedPost post={post} noTime />
+        {!projectId && (
+          <>
+            <Typography variant="" color="primary">
+              <CustomLink to={`/projects/${post.project.id}/map`}>
+                {post.project.name}
+              </CustomLink>
+            </Typography>
+            &nbsp;
+            <DateInfo dateTime={post.writeTime} />
+            <Box height="1rem" />
+          </>
+        )}
+        <CompressedPost post={post} noTime={!projectId} />
       </Box>
     </Card>
   );

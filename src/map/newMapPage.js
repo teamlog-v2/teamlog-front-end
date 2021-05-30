@@ -1,19 +1,65 @@
-import { Box } from '@material-ui/core';
+import { Box, Button, Link as Anchor } from '@material-ui/core';
+import { Map } from '@material-ui/icons';
 import GoogleMapReact from 'google-map-react';
 import React, { useMemo, useRef, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
+import { useHistory, useParams } from 'react-router';
 import useSupercluster from 'use-supercluster';
 import { useFetchData } from '../hooks/hooks';
 import Cluster from './Cluster';
 import NewPostExplorer from './NewPostExplorer';
 import SimpleMarker from './SimpleMarker';
 
+function ProjectAnchor() {
+  const { id: projectId } = useParams();
+  const [project] = useFetchData(`/api/projects/${projectId}`);
+  const history = useHistory();
+
+  if (!project) {
+    return null;
+  }
+
+  return (
+    <Box
+      position="fixed"
+      left={0}
+      margin="1rem"
+      padding="0.25rem 0.5rem"
+      style={{ opacity: 0.9 }}
+    >
+      <Button
+        size="small"
+        color="primary"
+        variant="contained"
+        onClick={() => {
+          history.push(`/projects/${project.id}`);
+        }}
+      >
+        <Map />&nbsp;{project.name}
+      </Button>
+    </Box>
+  );
+}
+
 export default function MapPage() {
-  const [posts] = useFetchData('/api/posts/with-location');
+  const { id: projectId } = useParams();
+  const [prevProjectId, setPrevProjectId] = useState(projectId);
+
+  const [posts] = useFetchData(
+    projectId
+      ? `/api/projects/${projectId}/posts/with-location`
+      : '/api/posts/with-location',
+  );
   const [selectedPosts, setSelectedPosts] = useState(null);
   const [open, setOpen] = useState(false);
   const [fullMode, setFullMode] = useState(false);
   const explorer = useRef(null);
+
+  if (prevProjectId !== projectId) {
+    setPrevProjectId(projectId);
+    setSelectedPosts(null);
+    setOpen(false);
+  }
 
   const points = useMemo(() => {
     return (posts || []).map((post, index) => ({
@@ -44,6 +90,7 @@ export default function MapPage() {
         isOpen={open}
         isFullMode={fullMode}
       >
+        {projectId && <ProjectAnchor />}
         <NewPostExplorer
           explorer={explorer}
           posts={selectedPosts}
@@ -71,7 +118,7 @@ export default function MapPage() {
             setOpen(true);
           }}
         >
-          {clusters.map((cluster) => {
+          {posts && clusters.map((cluster) => {
             const [lng, lat] = cluster.geometry.coordinates;
             const {
               cluster: isCluster,
