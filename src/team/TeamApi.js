@@ -142,9 +142,21 @@ export const GetTeamProjects = async (teamId) => {
   return response;
 };
 
-// 팀 초대 수락
+// 팀 초대 및 신청 수락
 export const AcceptTeam = async (joinId) => {
   const response = await fetch(`/api/team-joins/${joinId}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  return response;
+};
+
+// 팀 신청 수락
+export const InvitationAccept = async (teamId) => {
+  const response = await fetch(`/api/teams/${teamId}/members`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
