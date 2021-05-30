@@ -114,7 +114,7 @@ const TeamManagement = (props) => {
       </Grid>
     ) : (
       <>
-        <Container maxWidth="md" style={{ marginTop: '2em', marginBottom: '2em' }}>
+        <Container maxWidth="md" style={{ marginTop: '2em', marginBottom: '2em' }} disableGutters>
           <Container>
             <Grid container style={{ marginBottom: '2em' }}>
               <Grid item style={{ margin: '1em 0' }} xs={9} sm={10}>

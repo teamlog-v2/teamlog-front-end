@@ -41,15 +41,15 @@ export default function TeamList() {
   <Grid key={team.id} item sm={6} xs={12}>
     <Link to={`/teams/${team.id}/project`} style={{ textDecoration: 'none' }}>
       <Card elevation={2}>
-        <Box display="inline-block" margin="0.5rem 0.75rem">
-          <Typography color="textPrimary">
+        <Grid display="inline-block" style={{ margin: '0.5rem 0.75rem' }}>
+          <Typography color="textPrimary" noWrap>
             {team.name}
           </Typography>
           <Typography variant="body2" color="textSecondary">
             마지막 업데이트&nbsp;·&nbsp;
             {ManufactureDate(team.updateTime)}
           </Typography>
-        </Box>
+        </Grid>
       </Card>
     </Link>
   </Grid>
