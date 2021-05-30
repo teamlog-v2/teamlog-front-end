@@ -60,7 +60,7 @@ export const DateInfo = (props) => {
   const { dateTime } = props;
   const date = new Date(...dateTime);
 
-  date.setMonth(date.getUTCMonth() - 1);
+  date.setUTCMonth(date.getUTCMonth() - 1);
 
   return (
     <Tooltip title={date.toLocaleString()}>
