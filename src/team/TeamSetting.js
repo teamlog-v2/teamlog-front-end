@@ -185,14 +185,12 @@ const InvitedTeams = ({ teams, userId, setUserTeams, setInvitedTeams }) => {
       <Grid key={team.id} item sm={6} xs={12}>
         <Card elevation={2}>
           <Grid container style={{ padding: '0.6em' }}>
-            <Grid item xs={7}>
+            <Grid container item xs={7} alignItems="center">
               <Link to={`/teams/${team.id}/project`} style={{ textDecoration: 'none' }}>
-                <Grid item container xs={12}>
-                  <Grid container item xs={9} alignItems="center">
-                    <Typography color="textPrimary" noWrap style={{ marginTop: '0.5em' }}>
-                      {team.teamName}
-                    </Typography>
-                  </Grid>
+                <Grid item container xs={5}>
+                  <Typography color="textPrimary" noWrap style={{ marginTop: '0.5em' }}>
+                    {team.teamName}
+                  </Typography>
                 </Grid>
               </Link>
             </Grid>
@@ -296,15 +294,15 @@ const TeamSetting = ({ match }) => {
     return (
       <Container maxWidth="md">
         <Grid container direction="column">
-          <Grid item>
+          <Grid item xs={12}>
             <Typography variant="h6">참여 중</Typography>
             <ParticipatingTeams userId={userId} teams={userTeams} setTeams={setUserTeams} />
           </Grid>
-          <Grid item style={{ marginTop: '5em' }}>
+          <Grid item xs={12} style={{ marginTop: '5em' }}>
             <Typography variant="h6">가입 신청</Typography>
             <AppliedTeams teams={appliedTeams} setTeams={setAppliedTeams} />
           </Grid>
-          <Grid item style={{ marginTop: '5em' }}>
+          <Grid item xs={12} style={{ marginTop: '5em' }}>
             <Typography variant="h6">초대</Typography>
             <InvitedTeams
               teams={invitedTeams}

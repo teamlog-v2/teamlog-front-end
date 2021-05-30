@@ -231,16 +231,16 @@ const ProjectManagement = (props) => {
               <Grid item sm={6} xs={12}>
                 <Card elevation={2}>
                   <Box display="flex" flexDirection="row">
-                    <Box flexGrow={1}>
+                    <Grid item xs={8}>
                       <Link to={`/teams/${team.id}/project`} style={{ textDecoration: 'none' }}>
                         <Box display="flex" alignItems="center">
-                          <Typography variant="body1" color="textPrimary" style={{ margin: '0.6em' }}>
+                          <Typography variant="body1" noWrap color="textPrimary" style={{ margin: '0.8em' }}>
                             {team.name}
                           </Typography>
                         </Box>
                       </Link>
-                    </Box>
-                    <Box margin="10px" display="flex" alignItems="center">
+                    </Grid>
+                    <Grid item xs={4} display="flex" alignItems="center" style={{ textAlign: 'right', margin: '0.5em' }}>
                       <Button
                         variant="outlined"
                         color="primary"
@@ -257,7 +257,7 @@ const ProjectManagement = (props) => {
                       >
                         삭제
                       </Button>
-                    </Box>
+                    </Grid>
                   </Box>
                 </Card>
               </Grid>

@@ -14,7 +14,7 @@ import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import { Button } from '@material-ui/core';
+import { Button, Grid } from '@material-ui/core';
 import { useFetchData } from '../hooks/hooks';
 import ErrorContext from '../contexts/error';
 import { AcceptProject, ApplyProject, InvitationAccept } from './projectapi';
@@ -225,10 +225,16 @@ const Header = ({ sections, updateRelation }) => {
   return (
     <>
       <Toolbar className={classes.toolbar}>
-        <ProjectTitle title={title} introduction={introduction} />
-        {userId === null ?
-        (<></>) :
+        <Grid container>
+          <Grid item xs={10} sm={11}>
+            <ProjectTitle title={title} introduction={introduction} />
+          </Grid>
+          <Grid container item xs={2} sm={1} justify="center" alignItems="center">
+            {userId === null ?
+              (<></>) :
         (<TopButton projectId={projectId} isProjectLoaded={isProjectLoaded} relation={relation} />)}
+          </Grid>
+        </Grid>
       </Toolbar>
 
       <Paper className={classes.root}>

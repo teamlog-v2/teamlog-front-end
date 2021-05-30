@@ -43,7 +43,7 @@ const ParticipatingTeams = ({ userId, projects, setProjects }) => {
     const history = useHistory();
 
     return (
-      <Grid container spacing={2}>
+      <Grid container xs={12} spacing={2}>
         {projects.length > 0 ?
                 projects.map((project) => (
                   <Grid item md={4} sm={6} xs={12}>
@@ -54,13 +54,13 @@ const ParticipatingTeams = ({ userId, projects, setProjects }) => {
                       <CardContent>
                         <Grid container direction="column">
                           <Link to={`/projects/${project.id}`} style={{ textDecoration: 'none', color: 'black' }}>
-                            <Grid item>
-                              <Typography gutterBottom variant="h6">
+                            <Grid item xs={6}>
+                              <Typography gutterBottom variant="h6" noWrap>
                                 {project.name}
                               </Typography>
                             </Grid>
                           </Link>
-                          <Grid contianer item style={{ textAlign: 'right' }}>
+                          <Grid contianer item xs={12} style={{ textAlign: 'right' }}>
                             <Grid item>
                               {project.masterId === userId ? (
                                 <Button
@@ -115,25 +115,24 @@ const ParticipatingTeams = ({ userId, projects, setProjects }) => {
 
 const AppliedProjects = ({ userId, projects, setProjects }) => {
     return (
-      <Grid container spacing={2}>
+      <Grid container xs={12} spacing={2}>
         {projects.length > 0 ?
                 projects.map((project) => (
                   <Grid item md={4} sm={6} xs={12}>
-                    {/* <Link to={`/projects/${project.id}`} style={{ textDecoration: 'none' }}> */}
                     <Card elevation={2}>
                       <Link to={`/projects/${project.projectId}`} style={{ textDecoration: 'none' }}>
                         <CardMedia style={{ height: 180 }} image={project.thumbnail} />
                       </Link>
                       <CardContent>
-                        <Grid container direction="column">
+                        <Grid container xs={12} direction="column">
                           <Link to={`/projects/${project.projectId}`} style={{ textDecoration: 'none', color: 'black' }}>
-                            <Grid item>
-                              <Typography gutterBottom variant="h6">
+                            <Grid item xs={6}>
+                              <Typography gutterBottom variant="h6" noWrap>
                                 {project.projectName}
                               </Typography>
                             </Grid>
                           </Link>
-                          <Grid contianer item style={{ textAlign: 'right' }}>
+                          <Grid contianer item xs={12} style={{ textAlign: 'right' }}>
                             <Grid item>
                               <Button
                                 color="primary"
@@ -176,18 +175,18 @@ const AppliedProjects = ({ userId, projects, setProjects }) => {
 const InvitedProjects = ({ userId, projects, setUserProjects, setInvitedProjects }) => {
     console.log(projects);
     return (
-      <Grid container spacing={2}>
+      <Grid container xs={12} spacing={2}>
         {projects.length > 0 ?
                 projects.map((project) => (
                   <Grid item md={4} sm={6} xs={12}>
                     <Card elevation={2}>
-                      <Link to={`/projects/${project.id}`} style={{ textDecoration: 'none' }}>
+                      <Link to={`/projects/${project.projectId}`} style={{ textDecoration: 'none' }}>
                         <CardMedia style={{ height: 180 }} image={project.thumbnail} />
                       </Link>
                       <CardContent>
                         <Grid container direction="column">
-                          <Link to={`/projects/${project.id}`} style={{ textDecoration: 'none', color: 'block' }}>
-                            <Grid item>
+                          <Link to={`/projects/${project.projectId}`} style={{ textDecoration: 'none', color: 'black' }}>
+                            <Grid item xs={6}>
                               <Typography gutterBottom variant="h6">
                                 {project.projectName}
                               </Typography>
@@ -298,8 +297,8 @@ const ProjectSetting = ({ match }) => {
 
     return (
       <Container maxWidth="md" disableGutters>
-        <Grid container direction="column">
-          <Grid item style={{ margin: '1em' }}>
+        <Grid xs={12} container direction="column">
+          <Grid xs={12} item style={{ margin: '1em' }}>
             <Typography variant="h6">참여 중</Typography>
             <ParticipatingTeams
               userId={userId}
@@ -307,11 +306,11 @@ const ProjectSetting = ({ match }) => {
               setProjects={setUserProjects}
             />
           </Grid>
-          <Grid item style={{ marginLeft: '1em', marginTop: '5em' }}>
+          <Grid item xs={12} style={{ marginLeft: '1em', marginRight: '1em', marginTop: '5em' }}>
             <Typography variant="h6">가입 신청</Typography>
             <AppliedProjects projects={appliedProjects} setProjects={setAppliedProjects} />
           </Grid>
-          <Grid item style={{ marginLeft: '1em', marginTop: '4em' }}>
+          <Grid item xs={12} style={{ marginLeft: '1em', marginRight: '1em', marginTop: '4em' }}>
             <Typography variant="h6">초대</Typography>
             <InvitedProjects
               userId={userId}

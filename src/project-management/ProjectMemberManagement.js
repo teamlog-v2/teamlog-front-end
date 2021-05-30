@@ -103,7 +103,7 @@ const ProjectMemberManagement = (props) => {
               <CircularProgress />
             </Grid>
             <Grid item>
-              <Typography> 프로젝트 멤버 설정 페이지를 불러오고 있어요! </Typography>
+              <Typography> 프로젝트 멤버 관리 페이지를 불러오고 있어요! </Typography>
             </Grid>
           </Grid>
         );
