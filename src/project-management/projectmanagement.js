@@ -8,7 +8,7 @@ import Introduction from './introduction';
 import TeamSelect from '../team/TeamSelect';
 import { DeleteProject, GetProject, SetProjectTeam } from './projectapi';
 import { GetTeam } from '../team/TeamApi';
-import { resizeImage } from '../utils';
+import { convertResourceUrl, resizeImage } from '../utils';
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -150,7 +150,7 @@ const ProjectManagement = (props) => {
             <Card style={{ marginRight: '1rem' }}>
               <CardMedia
                 style={{ width: 200, height: 120 }}
-                image={project.thumbnail}
+                image={convertResourceUrl(project.thumbnail)}
               />
               <Button
                 onClick={() => {

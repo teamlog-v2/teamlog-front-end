@@ -4,6 +4,7 @@ import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import ErrorContext from '../contexts/error';
 import { useFetchData } from '../hooks/hooks';
+import { convertResourceUrl } from '../utils';
 
 const useStyles = makeStyles(() => ({
   profileImg: {
@@ -39,7 +40,7 @@ const Master = (props) => {
                     <Box display="flex" alignItems="center">
                       <Avatar
                         className={classes.profileImg}
-                        src={master.profileImgPath}
+                        src={convertResourceUrl(master.profileImgPath)}
                       />
                       <Typography variant="body1" color="textPrimary">
                         {master.name}
@@ -82,7 +83,7 @@ const Member = (props) => {
                     <Box display="flex" alignItems="center">
                       <Avatar
                         className={classes.profileImg}
-                        src={member.profileImgPath}
+                        src={convertResourceUrl(member.profileImgPath)}
                       />
                       <Typography variant="body1" color="textPrimary">
                         {member.name}

@@ -19,6 +19,7 @@ import {
 import { GetProjectMembers } from '../project-management/projectapi';
 import { CreateComment, /* GetComment, */ UpdateComment, PostCommentNotification } from './commentapi';
 import AuthContext from '../contexts/auth';
+import { convertResourceUrl } from '../utils';
 
 const useStyles = makeStyles(() => ({
     more: {
@@ -348,7 +349,7 @@ const CommentForm = (props) => {
                   onClick={onClick}
                 >
                   <ListItemIcon>
-                    <Avatar src={item.profileImgPath} />
+                    <Avatar src={convertResourceUrl(item.profileImgPath)} />
                   </ListItemIcon>
                   <ListItemText primary={item.name} secondary={item.id} />
                 </MenuItem>

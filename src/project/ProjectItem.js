@@ -2,11 +2,12 @@ import React from 'react';
 import { Card, CardContent, CardMedia, Typography } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { ManufactureDate } from '../post-management/datetime';
+import { convertResourceUrl } from '../utils';
 
 const ProjectItem = ({ project }) => (
   <Link to={`/projects/${project.id}`} style={{ textDecoration: 'none' }}>
     <Card elevation={2}>
-      <CardMedia style={{ height: 180 }} image={project.thumbnail} />
+      <CardMedia style={{ height: 180 }} image={convertResourceUrl(project.thumbnail)} />
       <CardContent>
         <Typography gutterBottom variant="h6" noWrap>
           {project.name}

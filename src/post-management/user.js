@@ -2,6 +2,7 @@ import React from 'react';
 import { Avatar, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
+import { convertResourceUrl } from '../utils';
 
 const useStyles = makeStyles(() => ({
   user: {
@@ -21,7 +22,7 @@ const UserImage = (props) => {
 
   const { imgPath = '' } = props;
 
-  return <Avatar className={classes.small} src={imgPath ? imgPath.slice(imgPath.indexOf('/resources')) : ''} />;
+  return <Avatar className={classes.small} src={imgPath ? convertResourceUrl(imgPath) : ''} />;
 };
 
 const UserId = (props) => {

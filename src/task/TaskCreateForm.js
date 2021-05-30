@@ -267,7 +267,7 @@ const TaskCreateForm = ({
                               <Box paddingLeft="5px" paddingRight="5px">
                                 <Avatar
                                   alt={user.name}
-                                  src={user.profileImgPath}
+                                  src={convertResourceUrl(user.profileImgPath)}
                                 />
                                 <Typography variant="caption">
                                   {user.name}
@@ -284,7 +284,7 @@ const TaskCreateForm = ({
                               <Box paddingLeft="5px" paddingRight="5px">
                                 <Avatar
                                   alt={user.name}
-                                  src={user.profileImgPath}
+                                  src={convertResourceUrl(user.profileImgPath)}
                                 />
                                 <Typography variant="caption">
                                   {user.name}

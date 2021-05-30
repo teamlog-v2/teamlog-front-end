@@ -27,7 +27,7 @@ import ImageResize from 'image-resize';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import { updateUser, getUser, validateLogin } from './userService';
 import AuthContext from '../contexts/auth';
-import { resizeImage } from '../utils';
+import { resizeImage, convertResourceUrl } from '../utils';
 
 const useStyles = makeStyles((theme) => ({
   large: {
@@ -212,7 +212,9 @@ const UserEditForm = ({ match }) => {
             id="file"
             onChange={handleUpload}
           />
-          <>{/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}</>
+          <>
+            {/* eslint-disable jsx-a11y/label-has-associated-control */}
+          </>
           <label htmlFor="file">
             <ListItem button>프로필 사진 변경</ListItem>
           </label>
@@ -244,7 +246,11 @@ const UserEditForm = ({ match }) => {
                   vertical: 'bottom',
                   horizontal: 'right',
                 }}
-                badgeContent={<SmallAvatar><PhotoCamera /></SmallAvatar>}
+                badgeContent={(
+                  <SmallAvatar>
+                    <PhotoCamera />
+                  </SmallAvatar>
+                )}
               >
                 {profileImg ? (
                   <Avatar
@@ -253,9 +259,14 @@ const UserEditForm = ({ match }) => {
                   />
                 ) : (
                   <>
-                    {defaultImage ?
-                      <Avatar className={classes.large} /> :
-                      <Avatar className={classes.large} src={user.profileImgPath} />}
+                    {defaultImage ? (
+                      <Avatar className={classes.large} />
+                    ) : (
+                      <Avatar
+                        className={classes.large}
+                        src={convertResourceUrl(user.profileImgPath)}
+                      />
+                    )}
                   </>
                 )}
               </Badge>
@@ -272,7 +283,9 @@ const UserEditForm = ({ match }) => {
             />
             <Box display="flex" justifyContent="center">
               <Box>
-                <Typography color="primary" variant="caption">{name.length}/12</Typography>
+                <Typography color="primary" variant="caption">
+                  {name.length}/12
+                </Typography>
               </Box>
             </Box>
           </Grid>
@@ -291,7 +304,9 @@ const UserEditForm = ({ match }) => {
             />
             <Box display="flex" justifyContent="center">
               <Box>
-                <Typography color="primary" variant="caption">{introduction === null ? 0 : introduction.length}/100</Typography>
+                <Typography color="primary" variant="caption">
+                  {introduction === null ? 0 : introduction.length}/100
+                </Typography>
               </Box>
             </Box>
           </Grid>
@@ -303,10 +318,18 @@ const UserEditForm = ({ match }) => {
               justifyContent="center"
               alignItems="center"
             >
-              <Button variant="contained" color="primary" onClick={handleSubmit}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleSubmit}
+              >
                 완료
               </Button>
-              <Button variant="outlined" color="primary" onClick={() => setAlertOpen(true)}>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={() => setAlertOpen(true)}
+              >
                 취소
               </Button>
             </Box>
@@ -315,7 +338,9 @@ const UserEditForm = ({ match }) => {
       </Container>
       <Dialog
         open={alertOpen}
-        onClose={() => { setAlertOpen(false); }}
+        onClose={() => {
+          setAlertOpen(false);
+        }}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -327,13 +352,14 @@ const UserEditForm = ({ match }) => {
           </DialogContentText>
         </DialogContent>
         <Grid container direction="row" justify="space-evenly">
-          <Button
-            onClick={() => history.goBack()}
-            color="primary"
-            autoFocus
-          >확인
+          <Button onClick={() => history.goBack()} color="primary" autoFocus>
+            확인
           </Button>
-          <Button onClick={() => { setAlertOpen(false); }}>
+          <Button
+            onClick={() => {
+              setAlertOpen(false);
+            }}
+          >
             취소
           </Button>
         </Grid>

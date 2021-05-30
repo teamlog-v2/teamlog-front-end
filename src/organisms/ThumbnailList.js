@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Card, CardMedia, Grid, Typography } from '@material-ui/core';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { VideoCallRounded } from '@material-ui/icons';
+import { convertResourceUrl } from '../utils';
 
 const grid = 8;
 
@@ -117,14 +118,14 @@ const ThumbnailList = ({ files, updateFiles, handleDeleteList }) => {
                           }
                           return (<CardMedia
                             component="video"
-                            src={url}
+                            src={convertResourceUrl(url)}
                             controls
                             style={{ width: '200px', height: '200px' }}
                           />);
                          }
                          return (<CardMedia
                             component="img"
-                            src={url}
+                            src={convertResourceUrl(url)}
                             style={{ width: '200px', height: '200px' }}
                           />
                         );

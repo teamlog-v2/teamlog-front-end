@@ -48,7 +48,7 @@ const getFormat = (type) => {
     case 'image/png':
       return 'png';
     case 'image/gif':
-        return 'gif';
+      return 'gif';
     default:
       return 'jpg';
   }
@@ -77,8 +77,8 @@ const resizeImage = async (file, tempURL) => {
   const width = await new Promise((resolve, reject) => {
     const image = new Image();
     image.src = tempURL;
-    image.onload = () => (resolve(image.width));
-    image.onerror = (error) => (reject(error));
+    image.onload = () => resolve(image.width);
+    image.onerror = (error) => reject(error);
   });
 
   let newWidth = 0;
@@ -90,12 +90,14 @@ const resizeImage = async (file, tempURL) => {
   const format = getFormat(type);
   let blob = null;
   if (file.size > 300000 && (format === 'jpg' || format === 'png')) {
-        blob = await imageResize.updateOptions({
-          format,
-          outputType: 'blob',
-          quality: 0.85,
-          width: newWidth,
-        }).play(tempURL);
+    blob = await imageResize
+      .updateOptions({
+        format,
+        outputType: 'blob',
+        quality: 0.85,
+        width: newWidth,
+      })
+      .play(tempURL);
   } else blob = new Blob([file]);
 
   const blobToFile = new File([blob], name, { type });
@@ -105,12 +107,28 @@ const resizeImage = async (file, tempURL) => {
 const detectSupportFormat = async (url) => {
   const notSupportedFormat = await new Promise((resolve, reject) => {
     const video = document.createElement('video');
-    video.onloadedmetadata = () => (resolve(video.videoWidth === 0));
-    video.onerror = (error) => (reject(error));
+    video.onloadedmetadata = () => resolve(video.videoWidth === 0);
+    video.onerror = (error) => reject(error);
     video.src = url;
     video.remove();
   });
   return notSupportedFormat;
 };
 
-export { isDuplicateData, isValidSize, getFormat, getTypeofFile, resizeImage, detectSupportFormat };
+const convertResourceUrl = (src) => {
+  if (src?.indexOf?.('http://3.15.16.150:8090/resources') === 0) {
+    return src.slice(src.indexOf('/resources'));
+  }
+
+  return src;
+};
+
+export {
+  isDuplicateData,
+  isValidSize,
+  getFormat,
+  getTypeofFile,
+  resizeImage,
+  detectSupportFormat,
+  convertResourceUrl,
+};

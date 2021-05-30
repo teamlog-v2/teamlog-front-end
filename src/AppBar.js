@@ -21,6 +21,7 @@ import SignupPopup from './global/SignupPopup';
 import ResponsiveDialog from './organisms/ResponsiveDialog';
 import ProjectForm from './project/ProjectForm';
 import TeamForm from './team/TeamForm';
+import { convertResourceUrl } from './utils';
 
 function HideOnScroll({ children }) {
   const trigger = useScrollTrigger({
@@ -174,7 +175,7 @@ export default function AppBar() {
             <Notifications style={{ fontSize: '1.125rem', color: 'white' }} />
           </IconButton>
           <Button onClick={handleClick}>
-            <Avatar className={classes.small} src={profileImgPath} />
+            <Avatar className={classes.small} src={convertResourceUrl(profileImgPath)} />
             <ArrowDropDown style={{ fontSize: '1rem', color: 'white' }} />
           </Button>
           <Menu

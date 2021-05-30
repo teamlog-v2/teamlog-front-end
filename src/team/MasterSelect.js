@@ -22,6 +22,7 @@ import {
   } from '@material-ui/icons';
   import React, { useEffect, useState } from 'react';
 import { DelegateTeamMaster } from './TeamApi';
+import { convertResourceUrl } from '../utils';
 
 const useStyles = makeStyles((theme) => ({
   frame: {
@@ -144,7 +145,7 @@ const useStyles = makeStyles((theme) => ({
               <>
                 <ListItem style={{ backgroundColor: 'white' }}>
                   <ListItemAvatar>
-                    <Avatar alt={user.name} src={user.profileImgPath} />
+                    <Avatar alt={user.name} src={convertResourceUrl(user.profileImgPath)} />
                   </ListItemAvatar>
                   <ListItemText primary={user.name} />
 
@@ -183,7 +184,7 @@ const useStyles = makeStyles((theme) => ({
                 }}
               >
                 <ListItemAvatar>
-                  <Avatar alt={user.name} src={user.profileImgPath} />
+                  <Avatar alt={user.name} src={convertResourceUrl(user.profileImgPath)} />
                 </ListItemAvatar>
                 <ListItemText primary={user.name} />
                 {selectedMaster.includes(user.id) ? (

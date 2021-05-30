@@ -23,6 +23,7 @@ import {
   } from '@material-ui/icons';
   import React, { useEffect, useState } from 'react';
 import { GetTeamInvitees, JoinTeam } from './TeamApi';
+import { convertResourceUrl } from '../utils';
 
   const StyledList = withStyles({
     root: {
@@ -193,7 +194,7 @@ import { GetTeamInvitees, JoinTeam } from './TeamApi';
                 }}
               >
                 <ListItemAvatar>
-                  <Avatar alt={user.name} src={user.profileImgPath} />
+                  <Avatar alt={user.name} src={convertResourceUrl(user.profileImgPath)} />
                 </ListItemAvatar>
                 <ListItemText primary={user.name} />
                 {selectedUserIds.includes(user.id) ? (
