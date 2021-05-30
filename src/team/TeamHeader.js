@@ -17,7 +17,7 @@ import Tab from '@material-ui/core/Tab';
 import { Button, Grid } from '@material-ui/core';
 import { useFetchData } from '../hooks/hooks';
 import ErrorContext from '../contexts/error';
-import { ApplyTeam } from './TeamApi';
+import { AcceptTeam, ApplyTeam } from './TeamApi';
 import AuthContext from '../contexts/auth';
 
 const useStyles = makeStyles((theme) => ({
@@ -92,7 +92,7 @@ const TeamTitle = (props) => {
   const { title, introduction } = props;
 
   return (
-    <Box width="100%">
+    <Box width="100%" style={{ padding: '2% 0' }}>
       <Typography
         component="h2"
         variant="h5"
@@ -101,7 +101,7 @@ const TeamTitle = (props) => {
         noWrap
         className={classes.toolbarTitle}
       >
-        {title}
+        <strong>{title}</strong>
       </Typography>
       <Typography component="div">{introduction}</Typography>
     </Box>
@@ -135,16 +135,16 @@ const TopButton = ({ isTeamLoaded, teamId, relation }) => {
   };
 
   const Accept = async () => {
-    // const response = await AcceptTeam(teamId);
+    const response = await AcceptTeam(teamId);
 
-    // if (response.status === 401) {
-    //   setIsLogin(false);
-    //   return;
-    // }
+    if (response.status === 401) {
+      setIsLogin(false);
+      return;
+    }
 
-    // if (response.status === 200) {
-    //   setRelationState('MEMBER');
-    // }
+    if (response.status === 200) {
+      setRelationState('MEMBER');
+    }
   };
 
   switch (relationState) {
