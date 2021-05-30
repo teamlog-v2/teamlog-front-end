@@ -102,7 +102,7 @@ const TeamMemberManagement = (props) => {
     }
 
     return (
-      <Container>
+      <Container maxWidth="md">
         <Grid container style={{ marginBottom: '2em' }}>
           <Grid item style={{ margin: '1em 0' }} xs={9} sm={10}>
             <Typography variant="h6">초대한 멤버</Typography>
