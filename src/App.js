@@ -29,8 +29,8 @@ const App = () => {
       <AuthProvider>
         <AppBar />
         <Switch>
-          {/* <Redirect exact path="/" to="/main" />
-          <Route exact path="/main" component={MapPage} /> */}
+          <Redirect exact path="/" to="/main" />
+          <Route exact path="/main" component={MapPage} />
           <Route exact path="/news" component={NewsPage} />
 
           <Route path="/create-project" component={ProjectForm} />
