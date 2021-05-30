@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Typography,
   Grid,
@@ -27,6 +27,7 @@ import useFetchPosts from '../hooks/useFetchPosts';
 import { useFetchData } from '../hooks/hooks';
 import PostFormPage from '../pages/PostFormPage';
 import ResponsiveDialog from '../organisms/ResponsiveDialog';
+import AuthContext from '../contexts/auth';
 
 const useStyles = makeStyles((theme) => ({
   /* 반응형 스타일 */
@@ -79,6 +80,8 @@ const PostMain = (props) => {
   const [open, setOpen] = useState(false);
   const [isPostLoading, setIsPostLoading] = useState(false);
   const [formData, setFormData] = useState(null);
+
+  const [userId] = useContext(AuthContext);
 
   const { relation } = props;
 
@@ -163,7 +166,7 @@ const PostMain = (props) => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            source: '_doyeonjang_', // user id
+            source: userId, // user id
             projectId,
             type: 'post',
           }),
