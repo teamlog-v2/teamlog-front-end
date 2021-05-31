@@ -91,7 +91,7 @@ export const PostCommentNotification = async (writerId, postId) => {
 
   const target = await fetch(`/api/posts/${postId}`).then((res) => res.json()).then((res) => res.writer.id);
 
-  const res = await fetch('/push-notification', {
+  const res = await fetch('/pusher/push-notification', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
