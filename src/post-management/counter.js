@@ -9,6 +9,7 @@ import ResponsiveDialog from '../organisms/ResponsiveDialog';
 import LikerList from '../pages/likerListPage';
 import { CreateLiker, DeleteLiker, GetLiker } from './postlikeapi';
 import './heart.css';
+import { requestNewPostLikeNotification } from '../pusherUtils';
 
 const useStyles = makeStyles(() => ({
   likerCursor: {
@@ -49,6 +50,7 @@ export const LikerCounter = (props) => {
     let status;
     if (!like) {
       status = await CreateLiker(postId);
+      requestNewPostLikeNotification(postId, userId);
       setLikerCounter(1);
     } else {
       status = await DeleteLiker(postId);
