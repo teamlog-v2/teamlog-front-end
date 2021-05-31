@@ -265,7 +265,6 @@ const PostMain = (props) => {
                   >
                     <option value="1">최신 순</option>
                     <option value="-1">오래된 순</option>
-                    <option value="like">좋아요 순(미구현)</option>
                   </Select>
                 </FormControl>
               </Grid>
