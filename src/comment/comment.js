@@ -165,7 +165,7 @@ export const Comment = (props) => {
                   writer={(<UserId userId={writer.id} />)}
                   writeTime={<DateInfo dateTime={writeTime} />}
                   funcs={(<>
-                    {type === "parent" && (<span
+                    {type === "parent" && id && (<span
                           style={{ cursor: 'pointer' }}
                           onClick={() => {
                             setForUpdate(false);

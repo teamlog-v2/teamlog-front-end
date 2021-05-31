@@ -34,7 +34,8 @@ export const LikerCounter = (props) => {
     const response = await GetLiker(postId);
     setLikers(response);
     const contains = (val) => response.some(({ id }) => id.includes(val));
-    if (contains(userId)) { // 아이디 변경 필요
+    if (contains(userId)) {
+      // 아이디 변경 필요
       setLike(1);
     } else {
       setLike(0);
@@ -68,7 +69,13 @@ export const LikerCounter = (props) => {
 
   const Icon = () => {
     if (like === 2) {
-      return <FavoriteIcon className="gelatine" fontSize="small" style={{ color: '#F5575A' }} />;
+      return (
+        <FavoriteIcon
+          className="gelatine"
+          fontSize="small"
+          style={{ color: '#F5575A' }}
+        />
+      );
     }
     if (like === 1) {
       return <FavoriteIcon fontSize="small" style={{ color: '#F5575A' }} />;
@@ -79,7 +86,8 @@ export const LikerCounter = (props) => {
   const TooltipTitle = () => {
     if (likers.length === 0) {
       return '가장 먼저 좋아요를 눌러보세요!';
-    } if (likers.length === 1) {
+    }
+    if (likers.length === 1) {
       return `${likers[0].id}님이 좋아합니다.`;
     }
     return `${likers[0].id}님 외 ${likers.length - 1}명이 좋아합니다.`;
@@ -87,15 +95,26 @@ export const LikerCounter = (props) => {
 
   return isLoaded ? (
     <>
-      <Box className={classes.likerCursor} display="inline-block" onClick={() => LikeIt()}>
+      <Box
+        className={userId ? classes.likerCursor : null}
+        display="inline-block"
+        onClick={userId ? () => LikeIt() : null}
+      >
         <Icon />
       </Box>
       <Tooltip title={TooltipTitle()}>
-        <Box className={classes.likerCursor} display="inline-block" onClick={() => setIsLikerListOpened(true)}>
+        <Box
+          className={classes.likerCursor}
+          display="inline-block"
+          onClick={() => setIsLikerListOpened(true)}
+        >
           {count}
         </Box>
       </Tooltip>
-      <ResponsiveDialog open={isLikerListOpened} updateOpen={setIsLikerListOpened}>
+      <ResponsiveDialog
+        open={isLikerListOpened}
+        updateOpen={setIsLikerListOpened}
+      >
         <LikerList likerList={likers} updateOpen={setIsLikerListOpened} />
       </ResponsiveDialog>
     </>

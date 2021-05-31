@@ -247,6 +247,7 @@ const CommentForm = (props) => {
                 value={state.userInput}
                 onSelect={onSelect}
                 onKeyDown={onKeyDown}
+                disabled={!userId}
               />
             </>
           </Box>
