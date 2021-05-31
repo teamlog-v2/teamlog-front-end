@@ -16,8 +16,6 @@ import {
   Button,
 } from '@material-ui/core';
 import Container from '@material-ui/core/Container';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import TextField from '@material-ui/core/TextField';
 import Search from '@material-ui/icons/Search';
 import { Edit, Map } from '@material-ui/icons';
 import { useHistory, useParams } from 'react-router-dom';
@@ -28,6 +26,7 @@ import { useFetchData } from '../hooks/hooks';
 import PostFormPage from '../pages/PostFormPage';
 import ResponsiveDialog from '../organisms/ResponsiveDialog';
 import AuthContext from '../contexts/auth';
+import { requestNewPostNotification } from '../pusherUtils';
 
 const useStyles = makeStyles((theme) => ({
   /* 반응형 스타일 */
@@ -158,28 +157,11 @@ const PostMain = (props) => {
         headers: {},
       });
 
-      /* pusher test */
       if (res.status === 201) {
-          await fetch('/pusher/push-notification', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            source: userId, // user id
-            projectId,
-            type: 'post',
-          }),
-        });
-      }
-      /* pusher test */
-
-      if (res.status === 201) {
-        // const post = await res.json();
         console.log('성공적으로 등록');
+        requestNewPostNotification(userId, projectId);
         setIsPostLoading(false);
         setFormData(null);
-        // 해시태그 가져오기
         initPosts();
       }
     } catch (error) {
