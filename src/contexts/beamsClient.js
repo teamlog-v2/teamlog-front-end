@@ -8,11 +8,16 @@ const BeamsClientProvider = ({ children }) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    const beamsClient = new PusherPushNotifications.Client({
-      instanceId: "9626f19b-467e-44bb-9702-f4ea986cab5e",
-    });
-    setClient(beamsClient);
-    setIsLoaded(true);
+    try {
+      const beamsClient = new PusherPushNotifications.Client({
+        instanceId: "9626f19b-467e-44bb-9702-f4ea986cab5e",
+      });
+      setClient(beamsClient);
+      setIsLoaded(true);
+    } catch (error) {
+      console.log(error);
+      setIsLoaded(true);
+    }
   }, []);
 
   if (!isLoaded) {
