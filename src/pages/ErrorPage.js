@@ -1,23 +1,44 @@
 import { Box, Button, Container, Typography } from '@material-ui/core';
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import icon from '../teamlogIcon.png';
 
 const ErrorPage = ({ error }) => {
   const history = useHistory();
 
   return (
-    <Box textAlign="center" margin="8rem 0">
-      <Typography variant="h1">{`${error}`}</Typography>
-      <Box height="1rem" />
-      <Button
-        color="primary"
-        variant="outlined"
-        onClick={() => {
-          history.push('/');
-        }}
+    <Box
+      height="100%"
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+    >
+      <img src={icon} alt="TeamLog" style={{ maxWidth: '16rem' }} />
+      <Box
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
+        bgcolor="#F8F8F8"
+        padding="2rem"
       >
-        홈으로
-      </Button>
+        <Box fontSize="2rem" fontWeight="lighter" whiteSpace="pre">
+          {`${error}`}
+        </Box>
+        <Box height="1rem" />
+        <Button
+          size="large"
+          color="primary"
+          variant="contained"
+          disableElevation
+          onClick={() => {
+            history.push('/');
+          }}
+        >
+          홈으로
+        </Button>
+      </Box>
     </Box>
   );
 };
