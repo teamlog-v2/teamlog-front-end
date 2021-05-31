@@ -15,7 +15,7 @@ export const SetProjectTeam = async (projectId, teamIdVal) => {
   const data = {
     teamId: teamIdVal,
   };
-  const response = await fetch(`/api/projects/${projectId}`, {
+  const response = await fetch(`/api/projects/${projectId}/team`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
