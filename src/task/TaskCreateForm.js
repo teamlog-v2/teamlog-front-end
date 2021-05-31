@@ -24,6 +24,7 @@ import MultiTimePicker from './MultiTimePicker';
 import { createTask, putTask, CreateTaskNotification } from './taskService';
 import UserSelect from '../user/UserSelect';
 import AuthContext from '../contexts/auth';
+import { convertResourceUrl } from '../utils';
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
