@@ -58,9 +58,9 @@ export const ManufactureDate = (dateTime) => {
 
 export const DateInfo = (props) => {
   const { dateTime } = props;
-  const date = new Date(...dateTime);
-
-  date.setUTCMonth(date.getUTCMonth() - 1);
+  const dateBuilder = dateTime.slice();
+  dateBuilder[1] -= 1;
+  const date = new Date(...dateBuilder);
 
   return (
     <Tooltip title={date.toLocaleString()}>
