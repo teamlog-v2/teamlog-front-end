@@ -15,7 +15,6 @@ import { DateInfo } from '../post-management/datetime';
 import CommentForm from './commentform';
 import { DeleteComment } from './commentapi';
 import AuthContext from '../contexts/auth';
-import { GifRounded } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
   more: {

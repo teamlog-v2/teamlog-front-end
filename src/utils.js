@@ -111,6 +111,7 @@ const detectSupportFormat = async (url) => {
     video.src = url;
     video.remove();
   });
+  console.log(`${url} notSupported? ${notSupportedFormat}`);
   return notSupportedFormat;
 };
 

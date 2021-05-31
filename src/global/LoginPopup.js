@@ -80,7 +80,7 @@ function LoginForm() {
         setIsProcessing(false);
         return;
       }
-      subscribe(client, res.id);
+      await subscribe(client, res.id);
       window.location.reload(false);
     } catch (err) {
       console.error(err);
