@@ -12,7 +12,7 @@ export const DeletePost = async (id) => {
 
 // 게시물 수정 알림
 export const UpdatePostNotification = async (userId, projectId, postId) => {
-  const project = await fetch(`http://3.15.16.150:8090/api/projects/${projectId}`)
+  const project = await fetch(`/api/projects/${projectId}`)
   .then((res) => res.json());
 
   console.log(project);
