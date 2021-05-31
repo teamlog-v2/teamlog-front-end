@@ -110,7 +110,7 @@ export const requestNewPostLikeNotification = async (postId, source) => {
   try {
     if (!target || !source || !projectId) throw `can't notify new reply`;
 
-    await fetch('http://localhost:80/push-notification', {
+    await fetch('/pusher/push-notification', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
