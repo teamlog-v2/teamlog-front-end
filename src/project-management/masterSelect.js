@@ -102,7 +102,7 @@ import { convertResourceUrl } from '../utils';
 
         const response = await DelegateProjectMaster(projectId, newMaster.id);
         if (response.status === 200) {
-            DelegateProjectMasterNotification(project, masterId, newMaster.);
+            // DelegateProjectMasterNotification(project, masterId, newMaster.id);
             setCurrentMaster(newMaster);
             window.location.replace(`/projects/${projectId}`);
         }
