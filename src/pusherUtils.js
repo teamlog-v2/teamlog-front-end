@@ -1,4 +1,4 @@
-const subscribe = (beamsClient, id) => {
+export const subscribe = (beamsClient, id) => {
  if (!beamsClient) return;
 
   return beamsClient
@@ -13,7 +13,7 @@ const subscribe = (beamsClient, id) => {
       .catch(console.error);
 };
 
-const unsubscribe = (beamsClient) => {
+export const unsubscribe = (beamsClient) => {
   if (!beamsClient) return;
 
   beamsClient.getDeviceInterests()
@@ -24,12 +24,14 @@ const unsubscribe = (beamsClient) => {
     .catch(e => console.error('Could not clear device interests', e));
 };
 
-const requestNewPostNotification = async (userId, projectId) => {
+export const requestNewPostNotification = async (userId, projectId) => {
   const targets = await fetch(`/api/projects/${projectId}/members`)
   .then((res) => res.json()).then((res) => res.map((member) => member.id));
 
   const projectName = await fetch(`/api/projects/${projectId}`)
   .then((res) => res.json()).then((res) => res.name);
+
+  console.log(userId, projectId, targets, projectName);
 
   try {
       if (!targets || !projectName) throw `can't notify new post`;
@@ -52,7 +54,7 @@ const requestNewPostNotification = async (userId, projectId) => {
     }
 };
 
-const requestNewCommentNotification = async (writerId, postId, projectId) => {
+export const requestNewCommentNotification = async (writerId, postId, projectId) => {
   const target = await fetch(`/api/posts/${postId}`).then((res) => res.json()).then((res) => res.writer.id);
   
   try {
@@ -75,7 +77,7 @@ const requestNewCommentNotification = async (writerId, postId, projectId) => {
   }
 };
 
-const requestNewReplyNotification = async (target, source, projectId) => {
+export const requestNewReplyNotification = async (target, source, projectId) => {
   try {
     if (!target || !source || !projectId) throw `can't notify new reply`;
 
@@ -96,4 +98,31 @@ const requestNewReplyNotification = async (target, source, projectId) => {
   }
 };
 
-export { subscribe, unsubscribe, requestNewPostNotification, requestNewCommentNotification, requestNewReplyNotification };
+
+export const requestNewPostLikeNotification = async (postId, source) => {
+  const { target, projectId } = await fetch(`/api/posts/${postId}`)
+    .then((res) => res.json())
+    .then((res) => ({
+    target: res.writer.id,
+    projectId: res.project.id,
+  }));
+
+  try {
+    if (!target || !source || !projectId) throw `can't notify new reply`;
+
+    await fetch('http://localhost:80/push-notification', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        target,
+        source,
+        projectId,
+        type: 'postLike',
+      }),
+  });
+  } catch (error) {
+    console.log(error);
+  }
+};
