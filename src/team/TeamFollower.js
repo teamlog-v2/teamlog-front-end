@@ -166,7 +166,10 @@ const TeamFollower = () => {
                             src={convertResourceUrl(member.profileImgPath)}
                           />
                           <Typography variant="body1" color="textPrimary">
-                            {member.name}
+                            {member.name}&nbsp;
+                          </Typography>
+                          <Typography variant="body1" color="textPrimary">
+                            ({member.id})
                           </Typography>
                         </Box>
                       </Link>

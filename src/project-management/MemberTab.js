@@ -43,7 +43,10 @@ const Master = (props) => {
                         src={convertResourceUrl(master.profileImgPath)}
                       />
                       <Typography variant="body1" color="textPrimary">
-                        {master.name}
+                        {master.name}&nbsp;
+                      </Typography>
+                      <Typography variant="body1" color="textPrimary">
+                        ({master.id})
                       </Typography>
                     </Box>
                   </Link>
@@ -86,7 +89,10 @@ const Member = (props) => {
                         src={convertResourceUrl(member.profileImgPath)}
                       />
                       <Typography variant="body1" color="textPrimary">
-                        {member.name}
+                        {member.name}&nbsp;
+                      </Typography>
+                      <Typography variant="body1" color="textPrimary">
+                        ({member.id})
                       </Typography>
                     </Box>
                   </Link>

@@ -167,6 +167,9 @@ const ProjectFollower = () => {
                           <Typography variant="body1" color="textPrimary">
                             {member.name}
                           </Typography>
+                          <Typography variant="body1" color="textPrimary">
+                            ({member.id})
+                          </Typography>
                         </Box>
                       </Link>
                     </Box>

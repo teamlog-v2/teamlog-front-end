@@ -118,7 +118,7 @@ const useStyles = makeStyles((theme) => ({
             console.log('ok');
             DelegateTeamMasterNotification(teamId, currentMasterId, newMaster.id);
             setCurrentMaster(newMaster);
-            window.location.replace(`/teams/${teamId}`);
+            window.location.replace(`/teams/${teamId}/project`);
         }
       }
     };

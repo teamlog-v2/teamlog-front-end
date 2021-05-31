@@ -96,6 +96,7 @@ const TeamManagement = (props) => {
     if (!isLogin) {
         return <Redirect to="/login" />;
     }
+    console.log(team);
 
     return !isLoaded ? (
       <Grid
