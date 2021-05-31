@@ -24,6 +24,7 @@ import {
   Search,
 } from '@material-ui/icons';
 import { useEffect, useState } from 'react';
+import { convertResourceUrl } from '../utils';
 
 const StyledList = withStyles({
   root: {
