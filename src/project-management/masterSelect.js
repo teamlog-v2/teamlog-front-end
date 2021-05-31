@@ -20,7 +20,7 @@ import {
     Search,
   } from '@material-ui/icons';
   import React, { useEffect, useState } from 'react';
-import { DelegateProjectMaster } from './projectapi';
+import { DelegateProjectMaster, DelegateProjectMasterNotification } from './projectapi';
 import { convertResourceUrl } from '../utils';
 
   const StyledList = withStyles({
@@ -102,7 +102,7 @@ import { convertResourceUrl } from '../utils';
 
         const response = await DelegateProjectMaster(projectId, newMaster.id);
         if (response.status === 200) {
-            console.log('ok');
+            // DelegateProjectMasterNotification(project, masterId, newMaster.id);
             setCurrentMaster(newMaster);
             window.location.replace(`/projects/${projectId}`);
         }

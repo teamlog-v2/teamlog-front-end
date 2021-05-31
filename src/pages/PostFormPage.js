@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import { Grid, TextField, Paper, makeStyles, InputAdornment, Divider, Tooltip, Button, Card, ClickAwayListener, CardMedia, CircularProgress, Typography } from '@material-ui/core';
 import { Backspace, Close, LocationOn } from '@material-ui/icons';
 import { useParams } from 'react-router';
@@ -13,6 +13,8 @@ import Uploader from '../organisms/Uploader';
 import AttachmentList from '../organisms/AttachmentList';
 import CommentModifier from '../organisms/CommentModifier';
 import { detectSupportFormat, getTypeofFile, resizeImage } from '../utils';
+import { UpdatePostNotification } from '../post-management/postapi';
+import AuthContext from '../contexts/auth';
 
 const useDeleteData = () => {
   const [deletedList, setDeletedList] = useState([]);
@@ -60,8 +62,9 @@ const randomHashtags = (hashtags) => {
 
 const PostForm = (props) => {
   const { id } = useParams();
-  const { content, hashtags: projectHashtags, updateOpen, updateFormData, updatePost } = props;
-
+  console.log(id);
+  const {
+    projectId, content, hashtags: projectHashtags, updateOpen, updateFormData, updatePost } = props;
   const classes = useStyles();
   const isUpdateRequest = (content !== undefined);
   const postId = content?.id;
@@ -73,6 +76,7 @@ const PostForm = (props) => {
     hashtags: [],
     address: '',
   });
+  const [userId] = useContext(AuthContext);
   const [mediaFiles, setMediaFiles] = useState([]);
   const [attachedFiles, setAttachedFiles] = useState([]);
   const [recommendedHashtags, setRecommendedHashtags] = useState([]);
@@ -134,6 +138,9 @@ const PostForm = (props) => {
       if (res.status === 200) {
         const result = await res.json();
         console.log('성공적으로 수정');
+        console.log(id);
+        console.log('----------------');
+        UpdatePostNotification(userId, id, postId);
         updatePost(postId, result);
         updateOpen(false);
         return;

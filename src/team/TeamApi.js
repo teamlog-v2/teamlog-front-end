@@ -1,3 +1,5 @@
+import { GetProject, GetProjectMembers } from '../project-management/projectapi';
+
 // 유저 팀 리스트 조회
 export const GetUserTeams = async (userId) => {
   const response = await fetch(`/api/teams/user/${userId}`, {
@@ -215,9 +217,9 @@ export const KickOutTeamMember = async (teamId, memberId) => {
 };
 
 // 마스터 위임
-export const DelegateTeamMaster = async (projectId, masterId) => {
+export const DelegateTeamMaster = async (teamId, masterId) => {
     console.log(masterId);
-    const response = await fetch(`/api/teams/${projectId}/master?new-master=${masterId}`, { // 아이디 변경 필요
+    const response = await fetch(`/api/teams/${teamId}/master?new-master=${masterId}`, { // 아이디 변경 필요
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -261,4 +263,78 @@ export const CancelApplyTeam = async (joinId, memberId) => {
   });
 
   return response;
+};
+
+// 팀 프로젝트 생성 알림
+export const CreateTeamProjectNotification = async (userId, teamId, projectName) => {
+  const res = await fetch('/pusher/push-notification', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      projectName,
+      teamId,
+      source: userId,
+      type: 'create_team_project',
+    }),
+  });
+
+  console.log(res);
+};
+
+// 팀 팔로우 알림
+export const FollowTeamNotification = async (teamId, userId) => {
+  console.log(userId);
+  const res = await fetch('/pusher/push-notification', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      teamId,
+      source: userId,
+      type: 'follow_team',
+    }),
+});
+
+console.log(res);
+};
+
+// 팀 초대 알림
+export const InviteTeamNotification = async (teamId, userId, invitees) => {
+  console.log(invitees);
+  const res = await fetch('/pusher/push-notification', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      teamId,
+      targets: invitees,
+      source: userId,
+      type: 'invite_team',
+    }),
+});
+
+console.log(res);
+};
+
+// 팀 마스터 위임 알림
+export const DelegateTeamMasterNotification = async (teamId, masterId, newMasterId) => {
+  console.log(`${teamId} ${masterId} ${newMasterId}`);
+  const res = await fetch('/pusher/push-notification', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      teamId,
+      target: newMasterId,
+      source: masterId,
+      type: 'delegate_team_master',
+    }),
+});
+
+console.log(res);
 };
