@@ -13,7 +13,7 @@ import { Comment } from './comment';
 import { GetComment } from './commentapi';
 import CommentForm from './commentform';
 
-const CommentList = ({ setCommentCounter, projectId, postId }) => {
+const CommentList = ({ setCommentCounter, projectId, postId, type }) => {
   const [commentList, setCommentList] = useState([]);
   const [moreVisibility, setMoreVisibility] = useState([]);
   const [commentSize, setCommentSize] = useState(5); // 5의 배수
@@ -92,12 +92,14 @@ const CommentList = ({ setCommentCounter, projectId, postId }) => {
            댓글 더 보기...
          </span>
        </Box>
-       <CommentForm
-         parentCommentId={null}
-         projectId={projectId}
-         postId={postId}
-         renewCommentList={RenewCommentList}
-       />
+       {type === 'compressed' ? (<></>) : (
+         <CommentForm
+           parentCommentId={null}
+           projectId={projectId}
+           postId={postId}
+           renewCommentList={RenewCommentList}
+         />
+)}
      </>
   ) : (
     <>

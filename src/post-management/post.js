@@ -662,7 +662,7 @@ const CompressedMediaList = ({ media }) => {
 };
 
 export const CompressedPost = (props) => {
-  const { post, noTime } = props;
+  const { post, noTime, type } = props;
 
   const [historyOpen, setHistoryOpen] = useState(false);
 
@@ -685,7 +685,7 @@ export const CompressedPost = (props) => {
 
   return (
     <>
-      <Container disableGutters>
+      <Container className={type ? classes.root : ''} disableGutters>
         <Card className={classes.paper} elevation={0}>
           <Container disableGutters>
             <Box className={classes.children}>
@@ -786,6 +786,7 @@ export const CompressedPost = (props) => {
                 projectId={post.project.id}
                 postId={post.id}
                 setCommentCounter={SetCommentCounter}
+                type="compressed"
               />
             </Container>
           </>
