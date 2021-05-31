@@ -10,6 +10,7 @@ export const GetProject = async (projectId) => {
   return response;
 };
 
+// 프로젝트 내 팀 설정
 export const SetProjectTeam = async (projectId, teamIdVal) => {
   const data = {
     teamId: teamIdVal,
@@ -254,4 +255,61 @@ export const GetAppliedProjects = async () => {
   });
 
   return response;
+};
+
+// 프로젝트 팔로우 알림
+export const FollowProjectNotification = async (projectId, userId) => {
+  const objective = await GetProject(projectId).then((res) => res.json()).then((res) => res.name);
+  const target = await GetProjectMembers(projectId).then((res) => res.json());
+
+  const res = await fetch('/pusher/push-notification', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      projectId,
+      target,
+      objective,
+      source: userId,
+      type: 'follow_project',
+    }),
+});
+
+console.log(res);
+};
+
+// 프로젝트 초대 알림
+export const InviteProjectNotification = async (projectId, userId, invitees) => {
+  console.log(invitees);
+  const res = await fetch('/pusher/push-notification', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      projectId,
+      targets: invitees,
+      source: userId,
+      type: 'invite_project',
+    }),
+});
+
+console.log(res);
+};
+
+// 프로젝트 마스터 위임 알림
+export const DelegateProjectMasterNotification = async (projectId, masterId, newMasterId) => {
+  const res = await fetch('/pusher/push-notification', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      projectId,
+      target: newMasterId,
+      source: masterId,
+      type: 'delegate_team_master',
+    }),
+  });
 };

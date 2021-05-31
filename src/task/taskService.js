@@ -1,3 +1,5 @@
+import { GetProject, GetProjectMembers } from '../project-management/projectapi';
+
 const headersData = { 'Content-Type': 'application/json' };
 
 const getTasksByProject = (projectId) => fetch(`/api/projects/${projectId}/tasks`, {
@@ -28,4 +30,33 @@ const deleteTask = (taskId) => fetch(`/api/tasks/${taskId}`, {
     headers: headersData,
   });
 
-export { getTasksByProject, createTask, updateTaskStatus, putTask, deleteTask };
+  // 태스크 생성 알림
+const CreateTaskNotification = async (userId, projectId) => {
+  const objective = await GetProject(projectId).then((res) => res.json()).then((res) => res.name);
+  const target = await GetProjectMembers(projectId).then((res) => res.json());
+
+  const res = await fetch('/pusher/push-notification', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      projectId,
+      target,
+      objective,
+      source: userId,
+      type: 'create_task',
+    }),
+  });
+
+  console.log(res);
+};
+
+export {
+  getTasksByProject,
+  createTask,
+  updateTaskStatus,
+  putTask,
+  deleteTask,
+  CreateTaskNotification,
+};

@@ -21,9 +21,10 @@ import {
     CheckBoxOutlineBlank,
     Search,
   } from '@material-ui/icons';
-  import React, { useEffect, useState } from 'react';
-import { GetProjectInvitees, JoinProject } from './projectapi';
+  import React, { useContext, useEffect, useState } from 'react';
+import { GetProjectInvitees, JoinProject, InviteProjectNotification } from './projectapi';
 import { convertResourceUrl } from '../utils';
+import AuthContext from '../contexts/auth';
 
   const StyledList = withStyles({
     root: {
@@ -49,12 +50,14 @@ import { convertResourceUrl } from '../utils';
     handleClose,
   }) => {
     const classes = useStyles();
+    const [masterId] = useContext(AuthContext);
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [users, setUsers] = useState([]);
     const [selectedUserIds, setSelectedUserIds] = useState([]);
     const [searchString, setSearchString] = useState('');
     console.log(setError);
+    console.log('hello');
 
     useEffect(() => {
       (async () => {
@@ -111,16 +114,21 @@ import { convertResourceUrl } from '../utils';
 
     const saveSelectedUsers = async () => {
       const selectedInvitees = [];
+      const invitedUserIds = [];
       selectedUserIds.map((selectedUserId) => {
         const temp = users.find((user) => user.id === selectedUserId);
         selectedInvitees.push(temp);
       });
       selectedInvitees.map(async (invitee) => {
+        invitedUserIds.push(invitee.id);
         const response = await JoinProject(projectId, invitee.id);
         if (response.status !== 201) {
           window.alert('error');
         }
       });
+
+      console.log('okay');
+      InviteProjectNotification(projectId, masterId, invitedUserIds);
 
       const inviteesResponse = await GetProjectInvitees(projectId);
       if (inviteesResponse.status === 200) {

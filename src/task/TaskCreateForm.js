@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Container,
   Backdrop,
@@ -21,8 +21,9 @@ import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import EditTwoToneIcon from '@material-ui/icons/EditTwoTone';
 import MultiTimePicker from './MultiTimePicker';
-import { createTask, putTask } from './taskService';
+import { createTask, putTask, CreateTaskNotification } from './taskService';
 import UserSelect from '../user/UserSelect';
+import AuthContext from '../contexts/auth';
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -59,6 +60,8 @@ const TaskCreateForm = ({
   const [selectedUsers, setSelectedUsers] = useState(task?.performers ?? []);
   const [openUserSelect, setopenUserSelect] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+
+  const [userId] = useContext(AuthContext);
 
   const handleClickOpen = () => {
     setopenUserSelect(true);
@@ -120,6 +123,8 @@ const TaskCreateForm = ({
       if (status === 201) {
         addTaskInContainer(res);
         handleClose();
+        CreateTaskNotification(userId, projectId);
+        console.log('ok');
       } else if (status === 200) {
         updateTask(res);
         handleClose();
