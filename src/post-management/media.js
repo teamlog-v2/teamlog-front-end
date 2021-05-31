@@ -91,16 +91,16 @@ const Video = ({ file, compressed }) => {
   ) : (<>
     <Box
       style={{ cursor: 'pointer' }}
-      onClick={() => { setOpen(true); }}
+      onClick={() => { setOpen(false); }}
       style={{ cursor: 'pointer' }}>
-      <video className={!compressed ? classes.align : ''} controls autoPlay muted>
+      <video className={!compressed ? classes.align : ''} autoPlay playsInline controls muted width="100%">
         <source src={convertResourceUrl(url)}></source>
       </video>
     </Box>
     <ResponsiveDialog open={open} updateOpen={setOpen} bgColor="black" max={"md"}>
       <div>
         <CloseButton handleClick={() => { setOpen(false); }} />
-        <video controls autoPlay muted width="100%">
+        <video controls muted width="100%">
           <source src={convertResourceUrl(url)}></source>
         </video>
       </div>
