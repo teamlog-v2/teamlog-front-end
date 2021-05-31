@@ -62,7 +62,7 @@ const randomHashtags = (hashtags) => {
 
 const PostForm = (props) => {
   const { id } = useParams();
-  console.log(id);
+
   const {
     projectId, content, hashtags: projectHashtags, updateOpen, updateFormData, updatePost } = props;
   const classes = useStyles();
@@ -75,6 +75,8 @@ const PostForm = (props) => {
     commentModifier: 'PUBLIC',
     hashtags: [],
     address: '',
+    latitude: 0,
+    longitude: 0,
   });
   const [userId] = useContext(AuthContext);
   const [mediaFiles, setMediaFiles] = useState([]);
@@ -157,10 +159,12 @@ const PostForm = (props) => {
     if (content) {
       setText(content.contents);
       setPostData({
-        address: content.address,
         accessModifier: content.accessModifier,
         commentModifier: content.commentModifier,
         hashtags: content.hashtags,
+        address: content.address,
+        latitude: content.latitude,
+        longitude: content.longitude,
       });
 
       // notSupportedFormat 속성을 가진 기존 미디어 파일 생성

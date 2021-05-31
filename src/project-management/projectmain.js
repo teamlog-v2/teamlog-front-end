@@ -141,7 +141,8 @@ const ProjectMain = (props) => {
               아직 등록된 글이 없어요. 😢
             </Grid>
             ) : (
-              <Postlist posts={posts} Component={CompressedPost} relation={relation} />              )}
+              <Postlist posts={posts} Component={CompressedPost} relation={relation} />
+              )}
               <Grid
                 container
                 justify="center"

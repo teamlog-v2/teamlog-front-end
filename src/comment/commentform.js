@@ -17,9 +17,10 @@ import {
   ThemeProvider,
 } from '@material-ui/core/styles';
 import { GetProjectMembers } from '../project-management/projectapi';
-import { CreateComment, /* GetComment, */ UpdateComment, PostCommentNotification } from './commentapi';
+import { CreateComment, /* GetComment, */ UpdateComment } from './commentapi';
 import AuthContext from '../contexts/auth';
 import { convertResourceUrl } from '../utils';
+import { requestNewCommentNotification, requestNewReplyNotification } from '../pusherUtils';
 
 const useStyles = makeStyles(() => ({
     more: {
@@ -55,6 +56,7 @@ const CommentForm = (props) => {
       forUpdate,
       setForUpdate,
       contents,
+      parentWriterId,
     } = props;
     const [options, setOptions] = useState([]);
     const inputRef = useRef();
@@ -280,14 +282,15 @@ const CommentForm = (props) => {
                      * post writer id / comment writer id
                      */
                     const status = await CreateComment(
-                      id,
+                      id, // parent
                       postId,
                       inputRef.current.value,
                       setSelectedUser(inputRef.current.value),
                     );
 
                     if (status === 201) {
-                        PostCommentNotification(userId, postId);
+                        if (id === userId) requestNewCommentNotification(userId, postId, projectId);
+                        else requestNewReplyNotification(parentWriterId, userId, projectId);
                         renewCommentList(1);
                         setState({ ...state, userInput: '' });
                     }

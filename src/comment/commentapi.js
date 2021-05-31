@@ -85,22 +85,3 @@ export const DeleteComment = async (commentId) => {
   ).then((res) => res.status);
   return status;
 };
-
-export const PostCommentNotification = async (writerId, postId) => {
-  console.log(writerId, postId);
-
-  const target = await fetch(`/api/posts/${postId}`).then((res) => res.json()).then((res) => res.writer.id);
-
-  const res = await fetch('/pusher/push-notification', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        target,
-        source: writerId,
-        type: 'comment',
-      }),
-  });
-  console.log(res);
-};
