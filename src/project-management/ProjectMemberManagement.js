@@ -145,7 +145,10 @@ const ProjectMemberManagement = (props) => {
                           src={convertResourceUrl(invitee.user.profileImgPath)}
                         />
                         <Typography variant="body1" color="textPrimary">
-                          {invitee.user.name}
+                          {invitee.user.name}&nbsp;
+                        </Typography>
+                        <Typography variant="body1" color="textPrimary">
+                          ({invitee.user.id})
                         </Typography>
                       </Box>
                     </Box>
@@ -203,7 +206,10 @@ const ProjectMemberManagement = (props) => {
                             src={convertResourceUrl(applicant.user.profileImgPath)}
                           />
                           <Typography variant="body1" color="textPrimary">
-                            {applicant.user.name}
+                            {applicant.user.name}&nbsp;
+                          </Typography>
+                          <Typography variant="body1" color="textPrimary">
+                            ({applicant.user.id})
                           </Typography>
                         </Box>
                       </Link>
@@ -297,7 +303,10 @@ const ProjectMemberManagement = (props) => {
                             src={convertResourceUrl(member.profileImgPath)}
                           />
                           <Typography variant="body1" color="textPrimary">
-                            {member.name}
+                            {member.name}&nbsp;
+                          </Typography>
+                          <Typography variant="body1" color="textPrimary">
+                            ({member.id})
                           </Typography>
                         </Box>
                       </Link>
@@ -376,7 +385,10 @@ const ProjectMemberManagement = (props) => {
                           src={convertResourceUrl(master.profileImgPath)}
                         />
                         <Typography variant="body1" color="textPrimary">
-                          {master.name}
+                          {master.name}&nbsp;
+                        </Typography>
+                        <Typography variant="body1" color="textPrimary">
+                          ({master.id})
                         </Typography>
                       </Box>
                     </Link>

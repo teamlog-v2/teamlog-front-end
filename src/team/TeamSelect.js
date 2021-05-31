@@ -179,6 +179,9 @@ import { SetProjectTeam } from '../project-management/projectapi';
         />
 
         <StyledList dense>
+          {teams.length === 0 && (
+          <Typography>소속된 팀이 없습니다.</Typography>
+          )}
           {teams
             .filter((team) => team.name.includes(searchString))
             .map((team) => (
@@ -212,6 +215,7 @@ import { SetProjectTeam } from '../project-management/projectapi';
           <Button
             variant="contained"
             color="primary"
+            disabled={teams.length === 0 ? true : ''}
             onClick={saveSelectedTeam}
           >
             확인
