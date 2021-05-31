@@ -21,9 +21,10 @@ import {
     CheckBoxOutlineBlank,
     Search,
   } from '@material-ui/icons';
-  import React, { useEffect, useState } from 'react';
-import { GetTeamInvitees, JoinTeam } from './TeamApi';
+  import React, { useContext, useEffect, useState } from 'react';
+import { GetTeamInvitees, InviteTeamNotification, JoinTeam } from './TeamApi';
 import { convertResourceUrl } from '../utils';
+import AuthContext from '../contexts/auth';
 
   const StyledList = withStyles({
     root: {
@@ -49,6 +50,7 @@ import { convertResourceUrl } from '../utils';
     handleClose,
   }) => {
     const classes = useStyles();
+    const [masterId] = useContext(AuthContext);
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [users, setUsers] = useState([]);
@@ -111,16 +113,20 @@ import { convertResourceUrl } from '../utils';
 
     const saveSelectedUsers = async () => {
       const selectedInvitees = [];
+      const invitedUserIds = [];
       selectedUserIds.map((selectedUserId) => {
         const temp = users.find((user) => user.id === selectedUserId);
         selectedInvitees.push(temp);
       });
       selectedInvitees.map(async (invitee) => {
+        invitedUserIds.push(invitee.id);
         const response = await JoinTeam(teamId, invitee.id);
         if (response.status !== 201) {
           window.alert('error');
         }
       });
+
+      InviteTeamNotification(teamId, masterId, invitedUserIds);
 
       const inviteesResponse = await GetTeamInvitees(teamId);
       if (inviteesResponse.status === 200) {

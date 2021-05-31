@@ -21,7 +21,7 @@ import {
     Search,
   } from '@material-ui/icons';
   import React, { useEffect, useState } from 'react';
-import { DelegateTeamMaster } from './TeamApi';
+import { DelegateTeamMaster, DelegateTeamMasterNotification } from './TeamApi';
 import { convertResourceUrl } from '../utils';
 
 const useStyles = makeStyles((theme) => ({
@@ -51,6 +51,7 @@ const useStyles = makeStyles((theme) => ({
     const [selectedMaster, setSelectedMaster] = useState([]);
     const [searchString, setSearchString] = useState('');
     console.log(setError);
+    console.log(currentMaster);
 
     const classes = useStyles();
 
@@ -109,11 +110,13 @@ const useStyles = makeStyles((theme) => ({
     const saveSelectedUsers = async () => {
       if (window.confirm('정말로 마스터를 위임하시겠습니까?')) {
         const selectedMasterId = selectedMaster[0];
+        const currentMasterId = currentMaster[0];
         const newMaster = users.find((user) => user.id === selectedMasterId);
 
         const response = await DelegateTeamMaster(teamId, newMaster.id);
         if (response.status === 200) {
             console.log('ok');
+            DelegateTeamMasterNotification(teamId, currentMasterId, newMaster.id);
             setCurrentMaster(newMaster);
             window.location.replace(`/teams/${teamId}`);
         }

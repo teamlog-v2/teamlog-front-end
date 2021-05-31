@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Redirect, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import AuthContext from '../contexts/auth';
-import { GetFollowTeams, GetTeamFollowers, UnFollowTeam, FollowTeam } from './TeamApi';
+import { GetFollowTeams, GetTeamFollowers, UnFollowTeam, FollowTeam, FollowTeamNotification } from './TeamApi';
 import { convertResourceUrl } from '../utils';
 
 const useStyles = makeStyles(() => ({
@@ -80,6 +80,7 @@ const TeamFollower = () => {
       if (followersResponse.status === 200) {
         setFollowers(await followersResponse.json());
       }
+      FollowTeamNotification(teamId, userId);
     }
   };
 

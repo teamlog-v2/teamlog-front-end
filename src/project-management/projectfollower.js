@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Redirect, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import AuthContext from '../contexts/auth';
-import { GetFollowProjects, GetProjectFollowers, UnFollowProject, FollowProject } from './projectapi';
+import { GetFollowProjects, GetProjectFollowers, UnFollowProject, FollowProject, FollowProjectNotification } from './projectapi';
 import { resizeImage, convertResourceUrl } from '../utils';
 
 const useStyles = makeStyles(() => ({
@@ -67,6 +67,7 @@ const ProjectFollower = () => {
 
   const Follow = async () => {
     const response = await FollowProject(projectId);
+    console.log(response);
 
     if (response.status === 401) {
       isLogin(false);
@@ -78,6 +79,7 @@ const ProjectFollower = () => {
       const followersResponse = await GetProjectFollowers(projectId);
       if (followersResponse.status === 200) {
         setFollowers(await followersResponse.json());
+        FollowProjectNotification(projectId, userId);
       }
     }
   };
