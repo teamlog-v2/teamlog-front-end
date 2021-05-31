@@ -67,7 +67,7 @@ export default function ProjectForm({ teamIdVal = null, updateOpen }) {
         if (res.status >= 200 && res.status < 300) {
           res.json().then((project) => {
             console.log(project);
-            CreateTeamProjectNotification(userId, teamIdVal, project.name);
+            CreateTeamProjectNotification(userId, teamIdVal, project.id, project.name);
             setIsProcessing(false);
             updateOpen(false);
             history.push(`/projects/${project.id}`);

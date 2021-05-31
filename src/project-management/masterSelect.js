@@ -98,11 +98,12 @@ import { convertResourceUrl } from '../utils';
     const saveSelectedUsers = async () => {
       if (window.confirm('정말로 마스터를 위임하시겠습니까?')) {
         const selectedMasterId = selectedMaster[0];
+        const currentMasterId = currentMaster[0];
         const newMaster = users.find((user) => user.id === selectedMasterId);
 
         const response = await DelegateProjectMaster(projectId, newMaster.id);
         if (response.status === 200) {
-            // DelegateProjectMasterNotification(project, masterId, newMaster.id);
+            DelegateProjectMasterNotification(projectId, currentMasterId, newMaster.id);
             setCurrentMaster(newMaster);
             window.location.replace(`/projects/${projectId}`);
         }

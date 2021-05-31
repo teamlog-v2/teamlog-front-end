@@ -266,7 +266,7 @@ export const CancelApplyTeam = async (joinId, memberId) => {
 };
 
 // 팀 프로젝트 생성 알림
-export const CreateTeamProjectNotification = async (userId, teamId, projectName) => {
+export const CreateTeamProjectNotification = async (userId, teamId, projectId, projectName) => {
   const res = await fetch('/pusher/push-notification', {
     method: 'POST',
     headers: {
@@ -275,6 +275,7 @@ export const CreateTeamProjectNotification = async (userId, teamId, projectName)
     body: JSON.stringify({
       projectName,
       teamId,
+      projectId,
       source: userId,
       type: 'create_team_project',
     }),

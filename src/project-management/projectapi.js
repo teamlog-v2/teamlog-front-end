@@ -309,7 +309,7 @@ export const DelegateProjectMasterNotification = async (projectId, masterId, new
       projectId,
       target: newMasterId,
       source: masterId,
-      type: 'delegate_team_master',
+      type: 'delegate_project_master',
     }),
   });
 };
