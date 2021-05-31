@@ -22,6 +22,7 @@ import ResponsiveDialog from './organisms/ResponsiveDialog';
 import ProjectForm from './project/ProjectForm';
 import TeamForm from './team/TeamForm';
 import { convertResourceUrl } from './utils';
+import { unsubscribe } from './pusherUtils';
 
 function HideOnScroll({ children }) {
   const trigger = useScrollTrigger({
@@ -111,6 +112,7 @@ export default function AppBar() {
 
   const handleLogout = async () => {
     localStorage.removeItem('access-token');
+    unsubscribe();
     setAccessToken('');
     setContextId(null);
     history.push('/');

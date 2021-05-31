@@ -48,7 +48,6 @@ const AuthProvider = ({ children }) => {
 
       if (!result.status) {
         setId(result.id);
-        regist(result.id);
         setProfileImgPath(result.profileImgPath);
       }
       setIsLoaded(true);
@@ -64,28 +63,6 @@ const AuthProvider = ({ children }) => {
     <AuthContext.Provider value={[id, setId, profileImgPath, setProfileImgPath]}>{children}</AuthContext.Provider>
   );
 };
-
-/** pusher test **/
-const regist = (id) => {
-  try {
-    const beamsClient = new PusherPushNotifications.Client({
-      instanceId: "9626f19b-467e-44bb-9702-f4ea986cab5e",
-    });
-  
-    beamsClient
-      .start()
-      .then((beamsClient) => beamsClient.getDeviceId())
-      .then((deviceId) =>
-        console.log("Successfully registered with Beams. Device ID:", deviceId)
-      )
-      .then(() => beamsClient.addDeviceInterest(id)) // 본인 아이디
-      .then(() => beamsClient.getDeviceInterests())
-      .then((interests) => console.log("Current interests:", interests))
-      .catch(console.error);
-  } catch (err) {
-    console.log(err);
-  }
-}
 
 export default AuthContext;
 
