@@ -245,6 +245,7 @@ export const Comment = (props) => {
           contents={contents}
           forUpdate={forUpdate}
           setForUpdate={setForUpdate}
+          parentWriterId={writer.id} 
         />
       </Box>
     </Box>

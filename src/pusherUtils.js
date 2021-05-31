@@ -24,4 +24,76 @@ const unsubscribe = (beamsClient) => {
     .catch(e => console.error('Could not clear device interests', e));
 };
 
-export { subscribe, unsubscribe };
+const requestNewPostNotification = async (userId, projectId) => {
+  const targets = await fetch(`/api/projects/${projectId}/members`)
+  .then((res) => res.json()).then((res) => res.map((member) => member.id));
+
+  const projectName = await fetch(`/api/projects/${projectId}`)
+  .then((res) => res.json()).then((res) => res.name);
+
+  try {
+      if (!targets || !projectName) throw `can't notify new post`;
+  
+      await fetch('/pusher/push-notification', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          source: userId, // user id
+          targets,
+          projectId,
+          projectName,
+          type: 'post',
+        }),
+      });
+    } catch (error) {
+      console.log(error);
+    }
+};
+
+const requestNewCommentNotification = async (writerId, postId, projectId) => {
+  const target = await fetch(`/api/posts/${postId}`).then((res) => res.json()).then((res) => res.writer.id);
+  
+  try {
+    if (!target) throw `can't notify new comment`;
+
+    await fetch('/pusher/push-notification', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        target,
+        source: writerId,
+        projectId,
+        type: 'comment',
+      }),
+  });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const requestNewReplyNotification = async (target, source, projectId) => {
+  try {
+    if (!target || !source || !projectId) throw `can't notify new reply`;
+
+    await fetch('/pusher/push-notification', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        target,
+        source,
+        projectId,
+        type: 'reply',
+      }),
+  });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export { subscribe, unsubscribe, requestNewPostNotification, requestNewCommentNotification, requestNewReplyNotification };
