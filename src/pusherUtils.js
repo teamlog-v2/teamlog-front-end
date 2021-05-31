@@ -1,6 +1,6 @@
-
-
 const subscribe = (beamsClient, id) => {
+  if (!beamsClient) return;
+
   beamsClient
       .start()
       .then((beamsClient) => beamsClient.getDeviceId())
@@ -14,6 +14,11 @@ const subscribe = (beamsClient, id) => {
 };
 
 const unsubscribe = (beamsClient) => {
+  if (!beamsClient) return;
+
+  beamsClient.getDeviceInterests()
+    .then((interests) => console.log(interests, "bye bye"));
+
   beamsClient.clearDeviceInterests()
     .then(() => console.log('Device interests have been cleared'))
     .catch(e => console.error('Could not clear device interests', e));
