@@ -129,7 +129,7 @@ export default function SearchPage() {
         >
           <CollectionsBookmark />
           <Box minWidth="0.5rem" />
-          프로젝트 검색
+          프로젝트
         </RadioButton>
         <Box minWidth="1rem" />
         <RadioButton
@@ -141,7 +141,7 @@ export default function SearchPage() {
           }}
         >
           <Apartment />
-          <Box minWidth="0.5rem" />팀 검색
+          <Box minWidth="0.5rem" />팀
         </RadioButton>
         <Box minWidth="1rem" />
         <RadioButton
@@ -154,7 +154,7 @@ export default function SearchPage() {
         >
           <Group />
           <Box minWidth="0.5rem" />
-          사용자 검색
+          사용자
         </RadioButton>
       </Box>
       <Box marginBottom="1rem" />
