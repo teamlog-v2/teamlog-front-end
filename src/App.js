@@ -3,6 +3,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 
 import { ErrorProvider } from './contexts/error';
 import { AuthProvider } from './contexts/auth';
+import { BeamsClientProvider } from './contexts/beamsClient';
 
 import ProjectListContainer from './project/ProjectListContainer';
 import Project from './project-management/project';
@@ -27,31 +28,33 @@ const App = () => {
   return (
     <ErrorProvider>
       <AuthProvider>
-        <AppBar />
-        <Switch>
-          {/* <Redirect exact path="/" to="/main" />
-          <Route exact path="/main" component={MapPage} /> */}
-          <Route exact path="/news" component={NewsPage} />
+        <BeamsClientProvider>
+          <AppBar />
+          <Switch>
+            {/* <Redirect exact path="/" to="/main" />
+            <Route exact path="/main" component={MapPage} /> */}
+            <Route exact path="/news" component={NewsPage} />
 
-          <Route path="/create-project" component={ProjectForm} />
-          <Route path="/project" component={ProjectListContainer} />
-          <Route path="/projects/:id/map" component={MapPage} />
-          <Route path="/projects/:id" component={Project} />
+            <Route path="/create-project" component={ProjectForm} />
+            <Route path="/project" component={ProjectListContainer} />
+            <Route path="/projects/:id/map" component={MapPage} />
+            <Route path="/projects/:id" component={Project} />
 
-          <Route path="/create-team" component={TeamForm} />
-          <Route path="/teams/:id/settings" />
-          <Route path="/teams/:id" component={Team} />
+            <Route path="/create-team" component={TeamForm} />
+            <Route path="/teams/:id/settings" />
+            <Route path="/teams/:id" component={Team} />
 
-          <Route path="/search" component={SearchPage} />
+            <Route path="/search" component={SearchPage} />
 
-          <Route exact path="/users/:userId" component={MyPage} />
-          <Route exact path="/users/:userId/edit" component={UserEditForm} />
-          <Route exact path="/signup" component={SignUp} />
-          <Route exact path="/login" component={SignIn} />
-          <Route path="/users/:userId/setting" component={SettingPage} />
+            <Route exact path="/users/:userId" component={MyPage} />
+            <Route exact path="/users/:userId/edit" component={UserEditForm} />
+            <Route exact path="/signup" component={SignUp} />
+            <Route exact path="/login" component={SignIn} />
+            <Route path="/users/:userId/setting" component={SettingPage} />
 
-          <Route component={NotFoundPage} />
-        </Switch>
+            <Route component={NotFoundPage} />
+          </Switch>
+        </BeamsClientProvider>
       </AuthProvider>
     </ErrorProvider>
   );

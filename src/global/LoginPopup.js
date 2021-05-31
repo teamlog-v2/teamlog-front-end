@@ -5,6 +5,7 @@ import AuthContext, { setAccessToken } from '../contexts/auth';
 import withGap from '../higherOrderComponents/withGap';
 import { login as fetchLogin, validateLogin } from '../user/userService';
 import { subscribe } from '../pusherUtils';
+import BeamsClientContext from '../contexts/beamsClient';
 
 const GapBox = withGap(Box);
 
@@ -58,6 +59,7 @@ function LoginForm() {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [client] = useContext(BeamsClientContext);
 
   async function login() {
     setIsProcessing(true);
@@ -78,7 +80,7 @@ function LoginForm() {
         setIsProcessing(false);
         return;
       }
-      subscribe(res.id);
+      subscribe(client, res.id);
       window.location.reload(false);
     } catch (err) {
       console.error(err);

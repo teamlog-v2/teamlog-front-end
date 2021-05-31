@@ -23,6 +23,7 @@ import ProjectForm from './project/ProjectForm';
 import TeamForm from './team/TeamForm';
 import { convertResourceUrl } from './utils';
 import { unsubscribe } from './pusherUtils';
+import BeamsClientContext from './contexts/beamsClient';
 
 function HideOnScroll({ children }) {
   const trigger = useScrollTrigger({
@@ -95,6 +96,7 @@ export default function AppBar() {
   const history = useHistory();
 
   const [id, setContextId, profileImgPath] = useContext(AuthContext);
+  const [client, setClient] = useContext(BeamsClientContext);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [isProjectFormOpened, setIsProjectFormOpened] = useState(false);
@@ -112,7 +114,8 @@ export default function AppBar() {
 
   const handleLogout = async () => {
     localStorage.removeItem('access-token');
-    unsubscribe();
+    unsubscribe(client);
+    setClient(null);
     setAccessToken('');
     setContextId(null);
     history.push('/');

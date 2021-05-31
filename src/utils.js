@@ -1,4 +1,3 @@
-import { LocalConvenienceStoreOutlined } from '@material-ui/icons';
 import ImageResize from 'image-resize';
 
 /**
