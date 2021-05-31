@@ -4,6 +4,7 @@ import { useLocation } from 'react-router';
 import AuthContext, { setAccessToken } from '../contexts/auth';
 import withGap from '../higherOrderComponents/withGap';
 import { login as fetchLogin, validateLogin } from '../user/userService';
+import { subscribe } from '../pusherUtils';
 
 const GapBox = withGap(Box);
 
@@ -77,6 +78,7 @@ function LoginForm() {
         setIsProcessing(false);
         return;
       }
+      subscribe(res.id);
       window.location.reload(false);
     } catch (err) {
       console.error(err);
