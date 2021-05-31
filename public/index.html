@@ -49,6 +49,9 @@
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('service-worker.js').then((reg) => console.log('Service worker registered.', reg));
+      const beamsClient = new PusherPushNotifications.Client({
+        instanceId: "9626f19b-467e-44bb-9702-f4ea986cab5e",
+      });
     }
   </script>
   <script
