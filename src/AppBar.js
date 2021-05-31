@@ -115,7 +115,6 @@ export default function AppBar() {
   const handleLogout = async () => {
     localStorage.removeItem('access-token');
     unsubscribe(client);
-    setClient(null);
     setAccessToken('');
     setContextId(null);
     history.push('/');

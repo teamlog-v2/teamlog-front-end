@@ -82,7 +82,8 @@
     "src/post-management/comment.js",
     "src/post-management/commentlist.js",
     "src/comment/comment.js",
-    "src/pusherUtils.js"
+    "src/pusherUtils.js",
+    "public/service-worker.js"
   ],
   "browserslist": {
     "production": [
