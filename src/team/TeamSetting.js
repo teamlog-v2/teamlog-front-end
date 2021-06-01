@@ -187,8 +187,8 @@ const InvitedTeams = ({ teams, userId, setUserTeams, setInvitedTeams }) => {
           <Grid container style={{ padding: '0.6em' }}>
             <Grid container item xs={7} alignItems="center">
               <Link to={`/teams/${team.teamId}/project`} style={{ textDecoration: 'none' }}>
-                <Grid item container xs={5}>
-                  <Typography color="textPrimary" noWrap style={{ marginTop: '0.5em' }}>
+                <Grid item container xs={12}>
+                  <Typography color="textPrimary" style={{ marginTop: '0.5em' }}>
                     {team.teamName}
                   </Typography>
                 </Grid>
