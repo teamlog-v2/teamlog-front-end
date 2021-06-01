@@ -204,7 +204,7 @@ import AuthContext from '../contexts/auth';
                 <ListItemAvatar>
                   <Avatar alt={user.name} src={convertResourceUrl(user.profileImgPath)} />
                 </ListItemAvatar>
-                <ListItemText primary={user.name} />
+                <ListItemText primary={`${user.name} (${user.id})`} />
                 {selectedUserIds.includes(user.id) ? (
                   <CheckBox color="primary" />
                 ) : (
