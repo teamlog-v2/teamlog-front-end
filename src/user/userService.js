@@ -17,6 +17,11 @@ const createUser = async (data) => fetch('/api/users', {
     headers: headersData,
   });
 
+const deleteUser = async () => fetch('/api/users', {
+    method: 'Delete',
+    headers: headersData,
+  });
+
 const getUser = async (id) => fetch(`/api/users/${id}`, {
     method: 'Get',
     headers: headersData,
@@ -49,4 +54,4 @@ const unfollow = async (id) => fetch(`/api/userfollows/${id}`, {
   });
 
 export { validateLogin, login, createUser, getUser, updateUser,
-  getUserFollower, getUserFollowing, follow, unfollow };
+  getUserFollower, getUserFollowing, follow, unfollow, deleteUser };

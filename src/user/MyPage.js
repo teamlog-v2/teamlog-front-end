@@ -1,9 +1,14 @@
 import {
   Grid,
   Avatar,
-  ExpansionPanel,
-  ExpansionPanelSummary,
-  ExpansionPanelDetails,
+  Box,
+  List,
+  ListItem,
+  DialogContent,
+  Dialog,
+  DialogContentText,
+  Popover,
+  IconButton,
   Typography,
   Container,
   makeStyles,
@@ -12,15 +17,19 @@ import {
   AppBar,
   Tab,
 } from '@material-ui/core';
-import { TabContext, TabList, TabPanel } from '@material-ui/lab';
-import React, { useEffect, useState } from 'react';
+import { AlertTitle, TabContext, TabList, TabPanel } from '@material-ui/lab';
+import React, { useEffect, useState, useContext } from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import SettingsIcon from '@material-ui/icons/Settings';
+import AuthContext, { setAccessToken } from '../contexts/auth';
+import { unsubscribe } from '../pusherUtils';
+import BeamsClientContext from '../contexts/beamsClient';
 import ProjectListContainer from '../project/ProjectListContainer';
 import TeamList from '../team/TeamList';
 import UserList from './UserList';
 import {
   getUser,
+  deleteUser,
   getUserFollower,
   getUserFollowing,
   follow,
@@ -65,6 +74,11 @@ const MyPage = ({ match }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [value, setValue] = useState('1');
   const [isLogin, setIsLogin] = useState(true);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [id, setContextId, profileImgPath] = useContext(AuthContext);
+  const [client, setClient] = useContext(BeamsClientContext);
+
   const [user, setUser] = useState({
     isMe: false,
     isFollow: false,
@@ -94,6 +108,35 @@ const MyPage = ({ match }) => {
       setIsLoaded(true);
     })();
   }, [match.params.userId]);
+
+  const handleSubmit = async () => {
+    try {
+      const response = await deleteUser();
+      if (response.status === 200) {
+        localStorage.removeItem('access-token');
+        unsubscribe(client);
+        setAccessToken('');
+        setContextId(null);
+        history.push('/');
+      } else if (response.status === 400) {
+        const res = await response.json();
+        alert(res.message);
+      }
+    } catch (err) {
+      setAlertOpen(false);
+      alert(err);
+    }
+    setAlertOpen(false);
+  };
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+    console.log(anchorEl);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -129,14 +172,81 @@ const MyPage = ({ match }) => {
     return <div />;
   }
 
+  const open = Boolean(anchorEl);
+  const anchorId = open ? 'simple-popover' : undefined;
+
   return (
     <>
+      <Dialog
+        open={alertOpen}
+        onClose={() => {
+          setAlertOpen(false);
+        }}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogContent style={{ width: 230, textAlign: 'start' }}>
+          <DialogContentText id="alert-dialog-description">
+            모든 팀과 프로젝트를 탈퇴한 상태에서 가능합니다.
+            <br />
+            회원 탈퇴 하시겠습니까?
+          </DialogContentText>
+        </DialogContent>
+        <Grid container direction="row" justify="space-evenly">
+          <Button onClick={handleSubmit} color="primary" autoFocus>
+            확인
+          </Button>
+          <Button
+            onClick={() => {
+              setAlertOpen(false);
+            }}
+          >
+            취소
+          </Button>
+        </Grid>
+      </Dialog>
+      <Popover
+        id={anchorId}
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+      >
+        <List>
+          <ListItem button onClick={() => setAlertOpen(true)}>
+            회원삭제
+          </ListItem>
+        </List>
+      </Popover>
       <Container
         component="main"
         disableGutters
         maxWidth="md"
-        style={{ marginTop: '2rem' }}
+        style={{ marginTop: '0.5rem' }}
       >
+        <Box
+          zIndex={1}
+          align="right"
+          padding="0.8rem 0.8rem"
+          style={{ opacity: 0.9 }}
+        >
+          {user.isMe === null ? null : (
+            <>
+              {user.isMe ? (
+                <IconButton variant="contained" onClick={handleClick}>
+                  <SettingsIcon />
+                </IconButton>
+              ) : null}
+            </>
+          )}
+        </Box>
         <Grid container style={{ gap: 15 }}>
           <Grid item xs={12} align="center">
             <Avatar
