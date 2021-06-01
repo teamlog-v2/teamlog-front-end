@@ -75,6 +75,11 @@ import {
               updateOpen(false);
               window.location.replace(`/projects/${project.id}/projectmanagement`);
             });
+          } else if (res.status === 400) {
+            res.json().then((response) => {
+              setIsProcessing(false);
+              alert(response.message);
+            });
           }
         })
         .catch(() => {

@@ -67,6 +67,11 @@ export default function TeamForm({ updateOpen }) {
             updateOpen(false);
             history.push(`/teams/${team.id}/project`);
           });
+        } else if (res.status === 400) {
+          res.json().then((response) => {
+            setIsProcessing(false);
+            alert(response.message);
+          });
         }
       })
       .catch(() => {

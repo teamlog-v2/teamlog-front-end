@@ -129,6 +129,8 @@ const TaskCreateForm = ({
       } else if (status === 200) {
         updateTask(res);
         handleClose();
+      } else if(status === 400){
+        alert(res.message);
       } else {
         alert('실패');
       }

@@ -77,6 +77,11 @@ import {
               window.location.replace(`/teams/${team.id}/teammanagement`);
               // history.push(`/teams/${teamItem.id}`);
             });
+          } else if (res.status === 400) {
+            res.json().then((response) => {
+              setIsProcessing(false);
+              alert(response.message);
+            });
           }
         })
         .catch(() => {

@@ -72,6 +72,11 @@ export default function ProjectForm({ teamIdVal = null, updateOpen }) {
             updateOpen(false);
             history.push(`/projects/${project.id}`);
           });
+        } else if (res.status === 400) {
+          res.json().then((response) => {
+            setIsProcessing(false);
+            alert(response.message);
+          });
         }
       })
       .catch(() => {
