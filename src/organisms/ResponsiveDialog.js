@@ -12,9 +12,10 @@ const StyledDialog = styled(Dialog)`
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    overflow: 'auto',
     '& .MuiDialog-paper': {
       [theme.breakpoints.down('sm')]: {
-        display: 'flex',
+        display: 'flex-b',
         justifyContent: 'center',
       },
     },
@@ -29,7 +30,7 @@ export default function ResponsiveDialog({ open, updateOpen, children, bgColor, 
 
   return (
     <StyledDialog
-      className={classes.root}
+      className={max ? classes.root : ''}
       fullScreen={fullScreen}
       fullWidth={max}
       maxWidth={max || 'sm'}
