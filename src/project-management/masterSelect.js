@@ -137,7 +137,7 @@ import { convertResourceUrl } from '../utils';
                   <ListItemAvatar>
                     <Avatar alt={user.name} src={convertResourceUrl(user.profileImgPath)} />
                   </ListItemAvatar>
-                  <ListItemText primary={user.name} />
+                  <ListItemText primary={`${user.name} (${user.id})`} />
 
                 </ListItem>
               </>
@@ -176,7 +176,7 @@ import { convertResourceUrl } from '../utils';
                 <ListItemAvatar>
                   <Avatar alt={user.name} src={convertResourceUrl(user.profileImgPath)} />
                 </ListItemAvatar>
-                <ListItemText primary={user.name} />
+                <ListItemText primary={`${user.name} (${user.id})`} />
                 {selectedMaster.includes(user.id) ? (
                   <CheckBox color="primary" />
                 ) : (
