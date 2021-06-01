@@ -158,7 +158,7 @@ const TeamManagement = (props) => {
                 <DeleteButton
                   fullWidth
                   onClick={async () => {
-                    if (window.confirm('팀 내의 내용 및 내부 프로젝트가 모두 사라집니다. 정말 그래도 삭제하시겠습니까?')) {
+                    if (window.confirm('팀 내의 내용은 모두 사라집니다. 정말 그래도 삭제하시겠습니까?')) {
                         const { status } = await DeleteTeam(teamId);
                         console.log(status);
 
