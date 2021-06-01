@@ -152,6 +152,9 @@ const UserEditForm = ({ match }) => {
         let res = await validateLogin();
         res = await res.json();
         setContextProfileImgPath(res.profileImgPath);
+      } else if (response.status === 400) {
+        const res = await response.json();
+        alert(res.message);
       }
     } catch (err) {
       setIsLoading(false);

@@ -58,6 +58,9 @@ const SignUp = () => {
       if (response.status === 201) {
         setIsSuccess(true);
         alert('회원가입을 축하합니다 ^^');
+      } else if (response.status === 400) {
+        const res = await response.json();
+        alert(res.message);
       }
     } catch (err) {
       console.error('Error');
