@@ -12,10 +12,9 @@ const StyledDialog = styled(Dialog)`
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    overflow: 'auto',
     '& .MuiDialog-paper': {
       [theme.breakpoints.down('sm')]: {
-        display: 'flex-b',
+        display: 'flex',
         justifyContent: 'center',
       },
     },
