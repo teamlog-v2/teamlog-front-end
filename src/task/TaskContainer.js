@@ -142,6 +142,9 @@ const TaskContainer = (props) => {
   }, []);
 
   const onDragEnd = (result) => {
+    if (relation !== 'MEMBER' && relation !== 'MASTER') {
+      return;
+    }
     const { source, destination } = result;
     // dropped outside the list
     if (!destination) {
