@@ -56,7 +56,7 @@ export const requestNewPostNotification = async (userId, projectId) => {
 
 export const requestNewCommentNotification = async (writerId, postId, projectId) => {
   const target = await fetch(`/api/posts/${postId}`).then((res) => res.json()).then((res) => res.writer.id);
-  
+
   try {
     if (!target) throw `can't notify new comment`;
 

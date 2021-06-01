@@ -289,7 +289,7 @@ const CommentForm = (props) => {
                     );
 
                     if (status === 201) {
-                        if (id === userId) requestNewCommentNotification(userId, postId, projectId);
+                        if (!id) requestNewCommentNotification(userId, postId, projectId);
                         else requestNewReplyNotification(parentWriterId, userId, projectId);
                         renewCommentList(1);
                         setState({ ...state, userInput: '' });
