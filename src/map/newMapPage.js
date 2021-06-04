@@ -80,7 +80,7 @@ export default function MapPage() {
     points,
     bounds,
     zoom,
-    options: { radius: 75, maxZoom: 22 },
+    options: { radius: 95, maxZoom: 22 },
   });
 
   // render ========
