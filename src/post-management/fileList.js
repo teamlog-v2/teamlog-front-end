@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Attachment from '@material-ui/icons/Attachment';
 import { Badge, Chip, makeStyles, Tooltip } from '@material-ui/core';
+import { convertDownloadUrl } from '../utils';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -40,7 +41,7 @@ const FileList = ({ files }) => {
       files.map((file) => (
         <Grid className="file" container alignItems="center">
           <a
-            href={file.fileDownloadUri}
+            href={convertDownloadUrl(file.fileDownloadUri)}
             style={{ color: 'black', textDecoration: 'none' }}
           >
             {file.fileName}

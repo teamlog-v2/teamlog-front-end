@@ -123,6 +123,14 @@ const convertResourceUrl = (src) => {
   return src;
 };
 
+const convertDownloadUrl = (src) => {
+  if (src?.indexOf?.('http://3.15.16.150:8090/api/downloadFile') === 0) {
+    return src.slice(src.indexOf('/api/downloadFile'));
+  }
+
+  return src;
+};
+
 export {
   isDuplicateData,
   isValidSize,
@@ -131,4 +139,5 @@ export {
   resizeImage,
   detectSupportFormat,
   convertResourceUrl,
+  convertDownloadUrl,
 };
