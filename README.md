@@ -1,7 +1,7 @@
 # Teamlog-Client
 공통의 목표를 가진 구성원들이 모여 목표를 위한 과정들을 기록해나가는 그룹단위의 SNS
-[](teamlog-api-server)
-[https://github.com/Hyeondoonge/pusher-notification-server](push-notification-server)
+[teamlog-api-server]()
+[push-notification-server](https://github.com/Hyeondoonge/pusher-notification-server)
 
 ## Setup
 ```
