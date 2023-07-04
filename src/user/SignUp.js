@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 
 const SignUp = () => {
   const classes = useStyles();
-  const [id, setId] = useState('');
+  const [identification, setIdentification] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
@@ -34,7 +34,7 @@ const SignUp = () => {
   const [isLogin, setIsLogin] = useState(false);
 
   const handleIdChange = (event) => {
-    setId(event.target.value);
+    setIdentification(event.target.value);
   };
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
@@ -47,7 +47,7 @@ const SignUp = () => {
     event.preventDefault();
     setIsProcessing(true);
     const data = {
-      id,
+      identification,
       password,
       name,
     };

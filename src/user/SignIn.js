@@ -30,7 +30,7 @@ const SignIn = () => {
   const history = useHistory();
   const [contextId, setContextId, _, setContextProfileImgPath] = useContext(AuthContext);
 
-  const [id, setId] = useState('');
+  const [identification, setIdentification] = useState('');
   const [password, setPassword] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -42,7 +42,7 @@ const SignIn = () => {
   }, []);
 
   const handleIdChange = (event) => {
-    setId(event.target.value);
+    setIdentification(event.target.value);
   };
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
@@ -56,7 +56,7 @@ const SignIn = () => {
 
     setIsProcessing(true);
     const data = {
-      id,
+      identification,
       password,
     };
 
@@ -121,10 +121,10 @@ const SignIn = () => {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
-                  name="id"
+                  name="identification"
                   variant="outlined"
                   fullWidth
-                  id="id"
+                  id="identification"
                   label="아이디"
                   autoFocus
                   onChange={handleIdChange}

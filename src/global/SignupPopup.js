@@ -53,7 +53,7 @@ export default function SignupPopup({ handlePopup }) {
 }
 
 function SignupForm({ handlePopup }) {
-  const [id, setId] = useState('');
+  const [identification, setIdentification] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
@@ -61,7 +61,7 @@ function SignupForm({ handlePopup }) {
   async function signup() {
     setIsProcessing(true);
 
-    const res = await createUser({ id, password, name });
+    const res = await createUser({ identification, password, name });
     if (res.status >= 200 && res.status < 300) {
       alert('회원가입을 축하합니다 ^^');
       handlePopup('login');
@@ -89,9 +89,9 @@ function SignupForm({ handlePopup }) {
         autoFocus
         fullWidth
         required
-        value={id}
+        value={identification}
         onChange={(event) => {
-          setId(event.target.value);
+          setIdentification(event.target.value);
         }}
         disabled={isProcessing}
       />

@@ -56,7 +56,7 @@ export default function LoginPopup({ handlePopup }) {
 }
 
 function LoginForm() {
-  const [id, setId] = useState('');
+  const [identification, setIdentification] = useState('');
   const [password, setPassword] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [client] = useContext(BeamsClientContext);
@@ -66,7 +66,7 @@ function LoginForm() {
 
     try {
       let res;
-      res = await fetchLogin({ id, password });
+      res = await fetchLogin({ identification, password });
       res = await res.json();
       if (res.message) {
         setIsProcessing(false);
@@ -106,9 +106,9 @@ function LoginForm() {
         variant="outlined"
         autoFocus
         fullWidth
-        value={id}
+        value={identification}
         onChange={(event) => {
-          setId(event.target.value);
+          setIdentification(event.target.value);
         }}
         disabled={isProcessing}
       />

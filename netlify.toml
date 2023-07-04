@@ -1,11 +1,11 @@
 [[redirects]]
   from = "/api/*"
-  to = "http://3.15.16.150:8090/api/:splat"
+  to = "http://localhost:8090/api/:splat"
   status = 200
 
 [[redirects]]
   from = "/resources/*"
-  to = "http://3.15.16.150:8090/resources/:splat"
+  to = "http://localhost:8090/resources/:splat"
   status = 200
 
 
