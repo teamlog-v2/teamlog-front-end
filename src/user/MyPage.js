@@ -82,7 +82,7 @@ const MyPage = ({ match }) => {
   const [user, setUser] = useState({
     isMe: false,
     isFollow: false,
-    id: '',
+    identification: '',
     name: '',
     profileImgPath: '',
     introduction: '',
@@ -145,7 +145,7 @@ const MyPage = ({ match }) => {
   const followUser = () => {
     const newUser = { ...user, isFollow: true };
     try {
-      const response = follow(user.id);
+      const response = follow(user.identification);
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -156,7 +156,7 @@ const MyPage = ({ match }) => {
   const unfollowUser = () => {
     const newUser = { ...user, isFollow: false };
     try {
-      const response = unfollow(user.id);
+      const response = unfollow(user.identification);
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -323,7 +323,7 @@ const MyPage = ({ match }) => {
             </TabList>
           </AppBar>
           <TabPanel value="1" disableGutters className={classes.tab}>
-            <ProjectListContainer userId={user.id} />
+            <ProjectListContainer userId={user.identification} />
           </TabPanel>
           <TabPanel value="2" disableGutters>
             <TeamList />
@@ -331,14 +331,14 @@ const MyPage = ({ match }) => {
           <TabPanel disableGutters value="3">
             <UserList
               type="FOLLOWER"
-              userId={user.id}
+              userId={user.identification}
               fetchData={getUserFollower}
             />
           </TabPanel>
           <TabPanel disableGutters value="4">
             <UserList
               type="FOLLOWING"
-              userId={user.id}
+              userId={user.identification}
               fetchData={getUserFollowing}
             />
           </TabPanel>
