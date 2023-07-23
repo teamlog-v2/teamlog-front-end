@@ -87,7 +87,7 @@ export default function NewsPage() {
       });
 
     // 나의 팔로워의 게시물
-    fetch('/api/following-users/posts')
+    fetch('/api/posts/following-users')
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
