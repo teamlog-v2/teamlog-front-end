@@ -12,7 +12,7 @@ export const GetLiker = async (postId) => {
 
 export const CreateLiker = async (postId) => {
     const status = await fetch(
-        `/api/posts/${postId}/likers`, {
+        `/api/posts/${postId}/like`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -25,7 +25,7 @@ export const CreateLiker = async (postId) => {
 
 export const DeleteLiker = async (postId) => {
     const status = await fetch(
-        `/api/posts/${postId}/likers`, {
+        `/api/posts/${postId}/like`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
