@@ -31,7 +31,7 @@ const UserId = (props) => {
   return (
     <Box display="inline-block" fontSize={fontSize}>
       <Link
-        to={`/users/${userId}`}
+        to={`/accounts/${userId}`}
         style={{ textDecoration: 'none', color: 'black' }}
       >
         <strong style={{ marginRight: '0.25em' }}>{userId}</strong>

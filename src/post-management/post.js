@@ -423,7 +423,7 @@ export const Post = (props) => {
 
   return (
     <>
-      <Route exact path="/users/:userId" component={MyPage} />
+      <Route exact path="/accounts/:userId" component={MyPage} />
       <Container
         className={classes.root}
         component="main"

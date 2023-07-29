@@ -191,7 +191,7 @@ export default function AppBar() {
             <MenuItem
               onClick={() => {
                 handleClose();
-                history.push(`/users/${id}`);
+                history.push(`/accounts/${id}`);
               }}
             >
               마이페이지
@@ -217,7 +217,7 @@ export default function AppBar() {
             <MenuItem
               onClick={() => {
                 handleClose();
-                history.push(`/users/${id}/setting`);
+                history.push(`/accounts/${id}/setting`);
               }}
             >
               팀 / 프로젝트 관리

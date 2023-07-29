@@ -13,7 +13,7 @@ const Introduction = (props) => {
       <Typography>
         👑 마스터는
         <Link
-          to={`/users/${masterId}`}
+          to={`/accounts/${masterId}`}
           style={{ textDecoration: 'none', color: 'black' }}
         >
           &nbsp;<strong>{masterId}</strong>

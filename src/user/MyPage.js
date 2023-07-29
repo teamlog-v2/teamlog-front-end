@@ -281,7 +281,7 @@ const MyPage = ({ match }) => {
                 {user.isMe ? (
                   <Button
                     variant="outlined"
-                    onClick={() => history.push(`/users/${match.params.userId}/edit`)}
+                    onClick={() => history.push(`/accounts/${match.params.userId}/edit`)}
                   >
                     프로필 편집
                   </Button>

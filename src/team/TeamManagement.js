@@ -168,7 +168,7 @@ const TeamManagement = (props) => {
                         }
 
                         if (status === 200) {
-                          window.location.replace(`/users/${team.masterId}`);
+                          window.location.replace(`/accounts/${team.masterId}`);
                         }
                     }
                 }}

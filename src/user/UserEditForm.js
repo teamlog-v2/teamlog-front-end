@@ -148,7 +148,7 @@ const UserEditForm = ({ match }) => {
     try {
       const response = await updateUser(formData);
       if (response.status === 200) {
-        history.push(`/users/${match.params.userId}`);
+        history.push(`/accounts/${match.params.userId}`);
         let res = await validateLogin();
         res = await res.json();
         setContextProfileImgPath(res.profileImgPath);

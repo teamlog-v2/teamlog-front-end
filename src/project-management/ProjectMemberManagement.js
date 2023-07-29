@@ -197,7 +197,7 @@ const ProjectMemberManagement = (props) => {
                   <Box display="flex" flexDirection="row">
                     <Box flexGrow={1}>
                       <Link
-                        to={`/users/${applicant.user.id}`}
+                        to={`/accounts/${applicant.user.id}`}
                         style={{ textDecoration: 'none' }}
                       >
                         <Box display="flex" alignItems="center">
@@ -294,7 +294,7 @@ const ProjectMemberManagement = (props) => {
                   <Box display="flex" flexDirection="row">
                     <Box flexGrow={1}>
                       <Link
-                        to={`/users/${member.id}`}
+                        to={`/accounts/${member.id}`}
                         style={{ textDecoration: 'none' }}
                       >
                         <Box display="flex" alignItems="center">
@@ -376,7 +376,7 @@ const ProjectMemberManagement = (props) => {
                 <Box display="flex" flexDirection="row">
                   <Box flexGrow={1}>
                     <Link
-                      to={`/users/${master.id}`}
+                      to={`/accounts/${master.id}`}
                       style={{ textDecoration: 'none' }}
                     >
                       <Box display="flex" alignItems="center">

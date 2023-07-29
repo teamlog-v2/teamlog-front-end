@@ -36,7 +36,7 @@ const SettingPage = () => {
           <Container disableGutters maxWidth="md">
             <Grid container item spacing={2} style={{ margin: '0.5em' }}>
               <Grid item>
-                <Link to={`/users/${userId}/setting/teams`} style={{ textDecoration: 'none' }}>
+                <Link to={`/accounts/${userId}/setting/teams`} style={{ textDecoration: 'none' }}>
                   <RadioButton
                     highlight="TEAM"
                     value={type}
@@ -48,7 +48,7 @@ const SettingPage = () => {
                 </Link>
               </Grid>
               <Grid item>
-                <Link to={`/users/${userId}/setting/projects`} style={{ textDecoration: 'none' }}>
+                <Link to={`/accounts/${userId}/setting/projects`} style={{ textDecoration: 'none' }}>
                   <RadioButton
                     highlight="PROJECT"
                     value={type}
@@ -62,9 +62,9 @@ const SettingPage = () => {
             </Grid>
           </Container>
           <Switch>
-            <Redirect exact path="/users/:userId/setting" to="/users/:userId/setting/teams" />
-            <Route exact path="/users/:userId/setting/teams" component={TeamSetting} />
-            <Route exact path="/users/:userId/setting/projects" component={ProjectSetting} />
+            <Redirect exact path="/accounts/:userId/setting" to="/accounts/:userId/setting/teams" />
+            <Route exact path="/accounts/:userId/setting/teams" component={TeamSetting} />
+            <Route exact path="/accounts/:userId/setting/projects" component={ProjectSetting} />
           </Switch>
         </Grid>
       </Container>

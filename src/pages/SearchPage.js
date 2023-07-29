@@ -72,7 +72,7 @@ export default function SearchPage() {
 
     if (type === 'USER') {
       (async () => {
-        const promise = fetch(`/api/users?name=${query}`);
+        const promise = fetch(`/api/accounts?name=${query}`);
         lastPromise.current = promise;
         // 병렬처리도 가능하긴 함
         const res = await promise;
@@ -80,7 +80,7 @@ export default function SearchPage() {
         if (promise !== lastPromise.current) {
           return;
         }
-        const res2 = await fetch(`/api/users?id=${query}`);
+        const res2 = await fetch(`/api/accounts?id=${query}`);
         const users2 = await res2.json();
         if (promise !== lastPromise.current) {
           return;
@@ -258,7 +258,7 @@ function UserItem({ user }) {
   const classes = useStyles();
 
   return (
-    <Link to={`/users/${user.id}`} style={{ textDecoration: 'none' }}>
+    <Link to={`/accounts/${user.id}`} style={{ textDecoration: 'none' }}>
       <Card elevation={2}>
         <Box display="flex" alignItems="center">
           <Avatar className={classes.profileImg} src={convertResourceUrl(user.profileImgPath)} />

@@ -157,7 +157,7 @@ const TeamFollower = () => {
                   <Box display="flex" flexDirection="row">
                     <Box flexGrow={1}>
                       <Link
-                        to={`/users/${member.id}`}
+                        to={`/accounts/${member.id}`}
                         style={{ textDecoration: 'none' }}
                       >
                         <Box display="flex" alignItems="center">

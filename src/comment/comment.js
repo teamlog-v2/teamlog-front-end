@@ -84,7 +84,7 @@ const Content = (props) => {
             wordSplit.map((word) => 
               (word[0] === '@' && tagList.includes(word.split('@')[1])) ? 
                 <Link
-                to={`/users/${word.split('@')[1]}`}
+                to={`/accounts/${word.split('@')[1]}`}
                 style={{ textDecoration: 'none', cursor: 'pointer' }}
                 >
                   <span style={{ color: '#593875', fontWeight: 600 }}>{word.split('@')[1]}&nbsp;</span>

@@ -39,7 +39,7 @@ const LikerList = ({ likerList, updateOpen }) => {
                             <Box display="flex" flexDirection="row">
                               <Box flexGrow={1}>
                                 <Link
-                                  to={`/users/${liker.id}`}
+                                  to={`/accounts/${liker.id}`}
                                   style={{ textDecoration: 'none' }}
                                 >
                                   <Box display="flex" alignItems="center">
