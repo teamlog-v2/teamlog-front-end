@@ -1,44 +1,44 @@
 const headersData = { 'Content-Type': 'application/json' };
 
-const validateLogin = async () => fetch('/api/validate', {
+const validateLogin = async () => fetch('/api/accounts/validate', {
   method: 'Get',
   headers: headersData,
 });
 
-const login = async (data) => fetch('/api/sign-in', {
+const login = async (data) => fetch('/api/accounts/sign-in', {
   method: 'Post',
   body: JSON.stringify(data),
   headers: headersData,
 });
 
-const createUser = async (data) => fetch('/api/users', {
+const createUser = async (data) => fetch('/api/accounts', {
     method: 'Post',
     body: JSON.stringify(data),
     headers: headersData,
   });
 
-const deleteUser = async () => fetch('/api/users', {
+const deleteUser = async () => fetch('/api/accounts', {
     method: 'Delete',
     headers: headersData,
   });
 
-const getUser = async (id) => fetch(`/api/users/${id}`, {
+const getUser = async (id) => fetch(`/api/accounts/${id}`, {
     method: 'Get',
     headers: headersData,
   });
 
-const updateUser = async (formData) => fetch('/api/users', {
+const updateUser = async (formData) => fetch('/api/accounts', {
     method: 'Put',
     body: formData,
     headers: {},
   });
 
-const getUserFollower = async (id) => fetch(`/api/users/${id}/follower`, {
+const getUserFollower = async (id) => fetch(`/api/accounts/${id}/follower`, {
     method: 'Get',
     headers: headersData,
   });
 
-const getUserFollowing = async (id) => fetch(`/api/users/${id}/following`, {
+const getUserFollowing = async (id) => fetch(`/api/accounts/${id}/following`, {
     method: 'Get',
     headers: headersData,
   });

@@ -283,7 +283,7 @@ const ProjectManagement = (props) => {
                         }
 
                         if (status === 200) {
-                            window.location.replace(`/users/${project.masterId}`);
+                            window.location.replace(`/accounts/${project.masterId}`);
                         }
                     }
                 }}

@@ -84,7 +84,7 @@ const UserList = ({ type, userId, fetchData }) => {
                     <Box display="flex" flexDirection="row">
                       <Box flexGrow={1}>
                         <Link
-                          to={`/users/${user.id}`}
+                          to={`/accounts/${user.id}`}
                           style={{ textDecoration: 'none' }}
                         >
                           <Box display="flex" alignItems="center">

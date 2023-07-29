@@ -65,7 +65,7 @@ export const GetProjectFollowers = async (projectId) => {
 
 // 유저가 팔로우하는 프로젝트 목록 조회
 export const GetFollowProjects = async (userId) => {
-  const response = await fetch(`/api/users/${userId}/project-follow`, { // 아이디 변경 필요
+  const response = await fetch(`/api/accounts/${userId}/project-follow`, { // 아이디 변경 필요
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -235,7 +235,7 @@ export const GetUserProjects = async (userId) => {
 
 // 유저가 초대받은 프로젝트 조회
 export const GetInvitedProjects = async () => {
-  const response = await fetch('/api/users/project-invitation', {
+  const response = await fetch('/api/accounts/project-invitation', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -247,7 +247,7 @@ export const GetInvitedProjects = async () => {
 
 // 유저가 가입 신청한 프로젝트 조회
 export const GetAppliedProjects = async () => {
-  const response = await fetch('/api/users/project-apply', {
+  const response = await fetch('/api/accounts/project-apply', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

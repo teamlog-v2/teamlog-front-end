@@ -14,7 +14,7 @@ export const GetUserTeams = async (userId) => {
 
 // 팔로우한 팀 조회
 export const GetFollowTeams = async (userId) => {
-    const response = await fetch(`/api/users/${userId}/team-follow`, {
+    const response = await fetch(`/api/accounts/${userId}/team-follow`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -86,7 +86,7 @@ export const GetTeamApplcants = async (teamId) => {
 
 // 팀 신청 유저 조회
 export const GetAppliedTeams = async (teamId) => {
-  const response = await fetch('/api/users/team-apply', {
+  const response = await fetch('/api/accounts/team-apply', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -110,7 +110,7 @@ export const GetTeamInvitees = async (teamId) => {
 
 // 유저가 받은 팀 초대 조회
 export const GetInvitedTeams = async (teamId) => {
-  const response = await fetch('/api/users/team-invitation', {
+  const response = await fetch('/api/accounts/team-invitation', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

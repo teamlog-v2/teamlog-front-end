@@ -46,11 +46,11 @@ const App = () => {
 
             <Route path="/search" component={SearchPage} />
 
-            <Route exact path="/users/:userId" component={MyPage} />
-            <Route exact path="/users/:userId/edit" component={UserEditForm} />
+            <Route exact path="/accounts/:userId" component={MyPage} />
+            <Route exact path="/accounts/:userId/edit" component={UserEditForm} />
             <Route exact path="/signup" component={SignUp} />
             <Route exact path="/login" component={SignIn} />
-            <Route path="/users/:userId/setting" component={SettingPage} />
+            <Route path="/accounts/:userId/setting" component={SettingPage} />
 
             <Route component={NotFoundPage} />
           </Switch>
