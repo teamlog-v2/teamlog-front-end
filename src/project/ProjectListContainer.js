@@ -19,7 +19,7 @@ const ProjectListContainer = ({ userId }) => {
       let result;
       try {
         console.log(userId);
-        const response = await fetch(`/api/projects/user/${userId}`, {
+        const response = await fetch(`/api/projects/accounts/${userId}`, {
           method: 'Get',
           headers: { 'Content-Type': 'application/json' },
         });

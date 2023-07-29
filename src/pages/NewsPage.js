@@ -20,10 +20,10 @@ import { CompressedPost } from '../post-management/post';
 // 초대장, 팔로워
 
 // 내가 속한 프로젝트의 (최신 태스크) 가능 fetch(`api/projects/{projectid}/tasks`); - 완료🔥
-// (나에게로 온 초대장) 가능 fetch(`/api/accounts/project-invitation`); - 완료🔥
+// (나에게로 온 초대장) 가능 fetch(`/api/users/project-invitation`); - 완료🔥
 // (나의 새로운 팔로워) X: 팔로워리스트 받을때 팔로우한 시간도 받을수있어야함
 // 내가 속한 프로젝트의 (새로운 게시물) 가능 fetch(`/api/projects/user/${userId}`); - 완료🔥
-// 내가 팔로우하는 프로젝트의 (새로운 게시물) 가능 fetch(`/api/accounts/${userId}/following-projects`); - 완료🔥
+// 내가 팔로우하는 프로젝트의 (새로운 게시물) 가능 fetch(`/api/users/${userId}/following-projects`); - 완료🔥
 // 내가 팔로우하는 사람이 작성한 (새로운 게시물) X: userId로 포스트 받아오는것 있어야함
 
 //
@@ -71,7 +71,7 @@ export default function NewsPage() {
       });
 
     // 속한 프로젝트
-    fetch(`/api/projects/user/${userId}`)
+    fetch(`/api/projects/accounts/${userId}`)
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
