@@ -223,7 +223,7 @@ export const UnFollowProject = async (projectId) => {
 
 // 유저 프로젝트 리스트 조회
 export const GetUserProjects = async (userId) => {
-  const response = await fetch(`/api/projects/user/${userId}`, {
+  const response = await fetch(`/api/projects/accounts/${userId}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
