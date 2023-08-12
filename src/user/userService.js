@@ -11,7 +11,7 @@ const login = async (data) => fetch('/api/accounts/sign-in', {
   headers: headersData,
 });
 
-const createUser = async (data) => fetch('/api/accounts', {
+const createUser = async (data) => fetch('/api/accounts/sign-up', {
     method: 'Post',
     body: JSON.stringify(data),
     headers: headersData,
