@@ -44,6 +44,11 @@ const AuthProvider = ({ children }) => {
 
     (async () => {
       const response = await validateLogin();
+      if (response.status === 401) {
+        setIsLoaded(true);
+        return;
+      }
+
       const result = await response.json();
 
       if (!result.status) {
