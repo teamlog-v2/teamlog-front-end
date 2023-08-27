@@ -25,7 +25,6 @@ import AuthContext, { setAccessToken } from '../contexts/auth';
 import { unsubscribe } from '../pusherUtils';
 import BeamsClientContext from '../contexts/beamsClient';
 import ProjectListContainer from '../project/ProjectListContainer';
-import TeamList from '../team/TeamList';
 import UserList from './UserList';
 import {
   getUser,
@@ -187,8 +186,6 @@ const MyPage = ({ match }) => {
       >
         <DialogContent style={{ width: 230, textAlign: 'start' }}>
           <DialogContentText id="alert-dialog-description">
-            모든 팀과 프로젝트를 탈퇴한 상태에서 가능합니다.
-            <br />
             회원 탈퇴 하시겠습니까?
           </DialogContentText>
         </DialogContent>
@@ -317,16 +314,12 @@ const MyPage = ({ match }) => {
           <AppBar position="static" elevation={0} color="transparent">
             <TabList onChange={handleChange} centered>
               <Tab label="프로젝트" value="1" />
-              <Tab label="팀" value="2" />
               <Tab label="팔로워" value="3" />
               <Tab label="팔로잉" value="4" />
             </TabList>
           </AppBar>
           <TabPanel value="1" disableGutters className={classes.tab}>
             <ProjectListContainer userId={user.identification} />
-          </TabPanel>
-          <TabPanel value="2" disableGutters>
-            <TeamList />
           </TabPanel>
           <TabPanel disableGutters value="3">
             <UserList

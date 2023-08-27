@@ -5,9 +5,7 @@ import AuthContext from '../contexts/auth';
 import ResponsiveDialog from '../organisms/ResponsiveDialog';
 import ProjectUpdateForm from '../project/ProjectUpdateForm';
 import Introduction from './introduction';
-import TeamSelect from '../team/TeamSelect';
-import { DeleteProject, GetProject, SetProjectTeam } from './projectapi';
-import { GetTeam } from '../team/TeamApi';
+import { DeleteProject, GetProject } from './projectapi';
 import { convertResourceUrl, resizeImage } from '../utils';
 
 const useStyles = makeStyles((theme) => ({
@@ -195,73 +193,6 @@ const ProjectManagement = (props) => {
               followerCount={project.followerCount}
               memberCount={project.memberCount}
             />
-          </Grid>
-        </Grid>
-        <Grid container style={{ marginBottom: '4em' }}>
-          <Grid container>
-            <Grid item style={{ margin: '1em 0' }} xs={9} sm={10}>
-              <Typography variant="h6">프로젝트 관리팀 설정</Typography>
-            </Grid>
-            <Grid item style={{ margin: '1em 0' }} xs={3} sm={2}>
-              <Button
-                variant="contained"
-                color="primary"
-                fullWidth
-                onClick={() => { setIsTeamSelectOpened(true); }}
-              >설정
-              </Button>
-              <ResponsiveDialog
-                open={isTeamSelectOpened}
-                updateOpen={setIsTeamSelectOpened}
-              >
-                {console.log(team)}
-                <TeamSelect
-                  userId={userId}
-                  updateOpen={setIsProjectUpdatFormOpened}
-                  currentTeam={team}
-                  setCurrentTeam={setTeam}
-                  projectId={projectId}
-                  handleClose={handleUserSelectClose}
-                />
-              </ResponsiveDialog>
-            </Grid>
-          </Grid>
-          <Grid container spacing={2}>
-            {team === null ? (<Grid item>프로젝트 관리팀이 없습니다.</Grid>) : (
-              <Grid item sm={6} xs={12}>
-                <Card elevation={2}>
-                  <Box display="flex" flexDirection="row">
-                    <Grid item xs={8}>
-                      <Link to={`/teams/${team.id}/project`} style={{ textDecoration: 'none' }}>
-                        <Box display="flex" alignItems="center">
-                          <Typography variant="body1" noWrap color="textPrimary" style={{ margin: '0.8em' }}>
-                            {team.name}
-                          </Typography>
-                        </Box>
-                      </Link>
-                    </Grid>
-                    <Grid item xs={4} display="flex" alignItems="center" style={{ textAlign: 'right', margin: '0.5em' }}>
-                      <Button
-                        variant="outlined"
-                        color="primary"
-                        size="small"
-                        onClick={async () => {
-                          if (window.confirm('프로젝트 관리 팀을 삭제하시겠습니까?')) {
-                            const response = await SetProjectTeam(projectId, null);
-                            console.log(response);
-                            if (response.status === 200) {
-                              setTeam(null);
-                            }
-                          }
-                        }}
-                      >
-                        삭제
-                      </Button>
-                    </Grid>
-                  </Box>
-                </Card>
-              </Grid>
-      )}
           </Grid>
         </Grid>
         <Grid container>

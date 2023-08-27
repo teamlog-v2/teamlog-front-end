@@ -20,7 +20,6 @@ import LoginPopup from './global/LoginPopup';
 import SignupPopup from './global/SignupPopup';
 import ResponsiveDialog from './organisms/ResponsiveDialog';
 import ProjectForm from './project/ProjectForm';
-import TeamForm from './team/TeamForm';
 import { convertResourceUrl } from './utils';
 import { unsubscribe } from './pusherUtils';
 import BeamsClientContext from './contexts/beamsClient';
@@ -100,7 +99,6 @@ export default function AppBar() {
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [isProjectFormOpened, setIsProjectFormOpened] = useState(false);
-  const [isTeamFormOpened, setIsTeamFormOpened] = useState(false);
 
   const [popup, setPopup] = useState('login');
 
@@ -208,19 +206,10 @@ export default function AppBar() {
             <MenuItem
               onClick={() => {
                 handleClose();
-                setIsTeamFormOpened(true);
-                // history.push('/create-team');
-              }}
-            >
-              팀 생성
-            </MenuItem>
-            <MenuItem
-              onClick={() => {
-                handleClose();
                 history.push(`/accounts/${id}/setting`);
               }}
             >
-              팀 / 프로젝트 관리
+              프로젝트 관리
             </MenuItem>
             <MenuItem
               style={{ color: 'red' }}
@@ -238,12 +227,6 @@ export default function AppBar() {
           updateOpen={setIsProjectFormOpened}
         >
           <ProjectForm updateOpen={setIsProjectFormOpened} />
-        </ResponsiveDialog>
-        <ResponsiveDialog
-          open={isTeamFormOpened}
-          updateOpen={setIsTeamFormOpened}
-        >
-          <TeamForm updateOpen={setIsTeamFormOpened} />
         </ResponsiveDialog>
       </Wrapper>
     </Box>

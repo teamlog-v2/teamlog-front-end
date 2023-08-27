@@ -12,7 +12,6 @@ import { ArrowLeft, Lock, LockOpen } from '@material-ui/icons';
 import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router';
 import AuthContext from '../contexts/auth';
-import { CreateTeamProjectNotification } from '../team/TeamApi';
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -22,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ProjectForm({ teamIdVal = null, updateOpen }) {
-  console.log(teamIdVal);
   const classes = useStyles();
   const [userId] = useContext(AuthContext);
   const [name, setName] = useState('');
@@ -66,8 +64,6 @@ export default function ProjectForm({ teamIdVal = null, updateOpen }) {
       .then((res) => {
         if (res.status >= 200 && res.status < 300) {
           res.json().then((project) => {
-            console.log(project);
-            CreateTeamProjectNotification(userId, teamIdVal, project.id, project.name);
             setIsProcessing(false);
             updateOpen(false);
             history.push(`/projects/${project.id}`);
