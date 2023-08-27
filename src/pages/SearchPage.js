@@ -20,7 +20,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ProjectItem from '../project/ProjectItem';
 import { ManufactureDate } from '../post-management/datetime';
-import teamIcon from '../team/team.png';
+import teamIcon from '../teamlogIcon.png';
 import { convertResourceUrl } from '../utils';
 
 export default function SearchPage() {
@@ -130,18 +130,6 @@ export default function SearchPage() {
           <CollectionsBookmark />
           <Box minWidth="0.5rem" />
           프로젝트
-        </RadioButton>
-        <Box minWidth="1rem" />
-        <RadioButton
-          highlight="TEAM"
-          value={type}
-          onClick={() => {
-            setType('TEAM');
-            focusEl.current.focus();
-          }}
-        >
-          <Apartment />
-          <Box minWidth="0.5rem" />팀
         </RadioButton>
         <Box minWidth="1rem" />
         <RadioButton

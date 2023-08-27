@@ -13,14 +13,10 @@ import SignIn from './user/SignIn';
 import UserEditForm from './user/UserEditForm';
 import NotFoundPage from './pages/NotFoundPage';
 import AppBar from './AppBar';
-import TeamForm from './team/TeamForm';
 import ProjectForm from './project/ProjectForm';
-import TeamPage from './team/TeamPage';
 import SearchPage from './pages/SearchPage';
-import Team from './team/Team';
 import NewsPage from './pages/NewsPage';
 import SettingPage from './pages/SettingPage';
-import TeamSetting from './team/TeamSetting';
 // import MapPage from './map/MapPage';
 import MapPage from './map/newMapPage';
 
@@ -40,9 +36,7 @@ const App = () => {
             <Route path="/projects/:id/map" component={MapPage} />
             <Route path="/projects/:id" component={Project} />
 
-            <Route path="/create-team" component={TeamForm} />
             <Route path="/teams/:id/settings" />
-            <Route path="/teams/:id" component={Team} />
 
             <Route path="/search" component={SearchPage} />
 
