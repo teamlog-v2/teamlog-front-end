@@ -15,11 +15,6 @@ import { convertResourceUrl } from '../utils';
 const ProjectItem = ({ project }) => {
   const history = useHistory();
 
-  const goTeamPage = (event) => {
-    event.preventDefault();
-    history.push(`/teams/${project.team.id}/project`);
-  };
-
   return (
     <>
       <Link to={`/projects/${project.id}`} style={{ textDecoration: 'none' }}>
@@ -29,17 +24,7 @@ const ProjectItem = ({ project }) => {
             image={convertResourceUrl(project.thumbnail)}
           >
             {project.team === null ? null : (
-              <Box zIndex={1} padding="0.8rem 0.8rem" style={{ opacity: 0.9 }}>
-                <Button
-                  size="small"
-                  color="primary"
-                  variant="contained"
-                  onClick={(event) => goTeamPage(event)}
-                >
-                  <GroupIcon />
-                  &nbsp;{project.team.name}
-                </Button>
-              </Box>
+              <Box zIndex={1} padding="0.8rem 0.8rem" style={{ opacity: 0.9 }} />
             )}
           </CardMedia>
           <CardContent>

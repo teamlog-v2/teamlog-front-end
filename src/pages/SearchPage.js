@@ -20,7 +20,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ProjectItem from '../project/ProjectItem';
 import { ManufactureDate } from '../post-management/datetime';
-import teamIcon from '../team/team.png';
+import teamIcon from '../teamlogIcon.png';
 import { convertResourceUrl } from '../utils';
 
 export default function SearchPage() {
@@ -133,18 +133,6 @@ export default function SearchPage() {
         </RadioButton>
         <Box minWidth="1rem" />
         <RadioButton
-          highlight="TEAM"
-          value={type}
-          onClick={() => {
-            setType('TEAM');
-            focusEl.current.focus();
-          }}
-        >
-          <Apartment />
-          <Box minWidth="0.5rem" />팀
-        </RadioButton>
-        <Box minWidth="1rem" />
-        <RadioButton
           highlight="USER"
           value={type}
           onClick={() => {
@@ -201,15 +189,6 @@ export default function SearchPage() {
             ));
           }
 
-          if (type === 'TEAM') {
-            return result.map((team) => (
-              <>
-                <TeamItem key={team.id} team={team} />
-                <Box marginBottom="1rem" />
-              </>
-            ));
-          }
-
           if (type === 'USER') {
             return result.map((user) => (
               <>
@@ -232,27 +211,6 @@ const useStyles = makeStyles(() => ({
     height: '60px',
   },
 }));
-
-function TeamItem({ team }) {
-  return (
-    <Link to={`/teams/${team.id}/project`} style={{ textDecoration: 'none' }}>
-      <Card elevation={2}>
-        <Box display="flex">
-          <Box padding="1rem">
-            <img src={teamIcon} alt="teamIcon" width="40px" />
-          </Box>
-          <Box margin="1rem">
-            <Typography color="textPrimary" align="left">{team.name}</Typography>
-            <Typography variant="body2" color="textSecondary">
-              마지막 업데이트&nbsp;·&nbsp;
-              {ManufactureDate(team.updateTime)}
-            </Typography>
-          </Box>
-        </Box>
-      </Card>
-    </Link>
-  );
-}
 
 function UserItem({ user }) {
   const classes = useStyles();
