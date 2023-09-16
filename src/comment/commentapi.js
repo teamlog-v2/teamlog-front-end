@@ -12,7 +12,7 @@ export const CreateComment = async (
     commentMentions: commentMentionsVal,
   };
 
-  const status = await fetch('/api/comments/', {
+  const status = await fetch('/api/comments', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
