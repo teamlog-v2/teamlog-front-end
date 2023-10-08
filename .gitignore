@@ -58,3 +58,6 @@ yarn-error.log*
 
 # test
 /src/Test.js
+
+# storage
+/public/storage
