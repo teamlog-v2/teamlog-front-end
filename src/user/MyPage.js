@@ -34,7 +34,6 @@ import {
   follow,
   unfollow,
 } from './userService';
-import { convertResourceUrl } from '../utils';
 
 const useStyles = makeStyles((theme) => ({
   multiLineEllipsis: {
@@ -102,8 +101,8 @@ const MyPage = ({ match }) => {
         alert(err);
         setIsLoaded(false);
       }
+
       setUser(userInfo);
-      console.log(userInfo);
       setIsLoaded(true);
     })();
   }, [match.params.userId]);
@@ -250,8 +249,6 @@ const MyPage = ({ match }) => {
               className={classes.large}
               src={
                 user.profileImgPath
-                  ? convertResourceUrl(user.profileImgPath)
-                  : ''
               }
             />
           </Grid>
