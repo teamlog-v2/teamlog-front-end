@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { validateLogin } from '../user/userService';
@@ -22,9 +20,9 @@ fetch = ((origin) => {
     if (!config.headers) {
       config.headers = {};
     }
-    config.headers['Authorization'] = getAccessToken();
+    config.headers.Authorization = getAccessToken();
     return origin(url, config);
-  }
+  };
 })(fetch);
 
 const AuthProvider = ({ children }) => {

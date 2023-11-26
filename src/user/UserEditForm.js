@@ -215,9 +215,6 @@ const UserEditForm = ({ match }) => {
             id="file"
             onChange={handleUpload}
           />
-          <>
-            {/* eslint-disable jsx-a11y/label-has-associated-control */}
-          </>
           <label htmlFor="file">
             <ListItem button>프로필 사진 변경</ListItem>
           </label>

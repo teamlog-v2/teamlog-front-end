@@ -1,5 +1,3 @@
-/* eslint-disable no-param-reassign */
-
 import { Box, Grid } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
 import React, { useEffect, useState } from 'react';
@@ -38,39 +36,39 @@ const ProjectListContainer = ({ userId }) => {
   return (
     <>
       <Grid container spacing={2}>
-        { isLoaded ?
-        (
-          <>
-            {projects.length > 0 ?
-              projects.map((project) => (
-                <Grid item md={4} sm={6} xs={12}>
-                  <ProjectItem project={project} />
-                </Grid>
-              ))
-              :
-              (
-                <Grid
-                  container
-                  justify="center"
-                  alignItems="center"
-                  style={{ height: '50vh' }}
-                >
-                  아직 참여 중인 프로젝트가 없어요. 😢
-                </Grid>
-              )}
-          </>
-        )
-        :
-        Array.from(new Array(8)).map(() => (
-          <Grid item md={4} sm={6} xs={12}>
-            <Box>
-              <Skeleton variant="rect" height="150px" />
+        {isLoaded ?
+          (
+            <>
+              {projects.length > 0 ?
+                projects.map((project) => (
+                  <Grid item md={4} sm={6} xs={12}>
+                    <ProjectItem project={project} />
+                  </Grid>
+                ))
+                :
+                (
+                  <Grid
+                    container
+                    justify="center"
+                    alignItems="center"
+                    style={{ height: '50vh' }}
+                  >
+                    아직 참여 중인 프로젝트가 없어요. 😢
+                  </Grid>
+                )}
+            </>
+          )
+          :
+          Array.from(new Array(8)).map(() => (
+            <Grid item md={4} sm={6} xs={12}>
               <Box>
-                <Skeleton />
-                <Skeleton width="60%" />
+                <Skeleton variant="rect" height="150px" />
+                <Box>
+                  <Skeleton />
+                  <Skeleton width="60%" />
+                </Box>
               </Box>
-            </Box>
-          </Grid>
+            </Grid>
           ))}
       </Grid>
     </>
