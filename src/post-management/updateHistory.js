@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import { Close } from '@material-ui/icons';
 import { Divider } from '@material-ui/core';
-import { Skeleton } from '@material-ui/lab';
+import { Skeleton } from '@mui/lab';
 import { UserImage, UserId } from './user';
 import { DateInfo } from './datetime';
 
@@ -29,7 +29,7 @@ const UpdateHistory = (props) => {
         <Close onClick={() => { updateOpen(false); }} />
       </Grid>
       <div style={{ width: 500, minHeight: 200, maxHeight: 300 }}>
-        { (() => {
+        {(() => {
           if (history) {
             if (history.length) {
               return history.map((inform, index) => (
@@ -41,8 +41,8 @@ const UpdateHistory = (props) => {
                   </Grid>
                   {
                     index !== history.length - 1
-                    ? <Divider />
-                    : null
+                      ? <Divider />
+                      : null
                   }
                 </>
               ));
@@ -52,17 +52,17 @@ const UpdateHistory = (props) => {
               </Grid>
             );
           } return (
-              new Array(5).fill(1).map((e, index) => (
-                <>
-                  <Skeleton variant="rect" animation="wave" height={30} style={{ margin: '1% 0' }} />
-                  {
-                    index !== 4
+            new Array(5).fill(1).map((e, index) => (
+              <>
+                <Skeleton variant="rect" animation="wave" height={30} style={{ margin: '1% 0' }} />
+                {
+                  index !== 4
                     ? <Divider />
                     : null
-                  }
-                </>
+                }
+              </>
             ))
-            );
+          );
         })()}
       </div>
     </>

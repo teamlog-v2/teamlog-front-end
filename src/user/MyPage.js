@@ -17,7 +17,7 @@ import {
   AppBar,
   Tab,
 } from '@material-ui/core';
-import { AlertTitle, TabContext, TabList, TabPanel } from '@material-ui/lab';
+import { AlertTitle, TabContext, TabList, TabPanel } from '@mui/lab';
 import React, { useEffect, useState, useContext } from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
 import SettingsIcon from '@material-ui/icons/Settings';
