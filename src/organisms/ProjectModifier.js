@@ -1,6 +1,6 @@
+import { Lock, LockOpen } from '@mui/icons-material';
+import { Button } from '@mui/material';
 import React from 'react';
-import { Button } from '@material-ui/core';
-import { Lock, LockOpen } from '@material-ui/icons';
 
 const AccessModifier = ({ isPostPublic, updateIsPostPublic }) => (
   <Button

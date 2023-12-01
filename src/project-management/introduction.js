@@ -1,4 +1,4 @@
-import { Box, Typography } from '@material-ui/core';
+import { Box, Typography } from '@mui/material';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ManufactureDate } from '../post-management/datetime'; // 디렉토리 변경 필요할 듯

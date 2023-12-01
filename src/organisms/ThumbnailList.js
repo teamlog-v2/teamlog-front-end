@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
-import { Card, CardMedia, Grid, Typography } from '@material-ui/core';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { VideoCallRounded } from '@material-ui/icons';
+import { VideoCallRounded } from '@mui/icons-material';
+import { Card, CardMedia, Grid } from '@mui/material';
+import React from 'react';
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { convertResourceUrl } from '../utils';
 
 const grid = 8;
@@ -45,6 +45,14 @@ const ThumbnailList = ({ files, updateFiles, handleDeleteList }) => {
       return;
     }
 
+    const reorder = (list, startIndex, endIndex) => {
+      const resultList = [...list];
+      const [removed] = resultList.splice(startIndex, 1); // 제거된 객체 반환
+      resultList.splice(endIndex, 0, removed); // endIndex에 제거된 객체 추가
+  
+      return resultList;
+    };
+
     const newItems = reorder(
       // 배열에서 삭제 후 다시 끼워넣기
       files,
@@ -66,14 +74,6 @@ const ThumbnailList = ({ files, updateFiles, handleDeleteList }) => {
     } else current.style.border = 'none';
   };
 
-  const reorder = (list, startIndex, endIndex) => {
-    const result = [...list];
-    const [removed] = result.splice(startIndex, 1); // 제거된 객체 반환
-    result.splice(endIndex, 0, removed); // endIndex에 제거된 객체 추가
-
-    return result;
-  };
-
   return (
     <DragDropContext onDragEnd={handleDragEnd} onDragUpdate={handleDragupdate}>
       <Droppable droppableId="droppable" direction="horizontal">
@@ -90,16 +90,16 @@ const ThumbnailList = ({ files, updateFiles, handleDeleteList }) => {
                 index={index}
               >
                 {(
-                  provided,
-                  snapshot, // provided: 제공되는 props 및 style,snapshot: 추적정보
+                  providedProps,
+                  snapshotProps, // provided: 제공되는 props 및 style,snapshot: 추적정보
                 ) => (
                   <div
-                    ref={provided.innerRef} // DOM 객체 획득
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
+                    ref={providedProps.innerRef} // DOM 객체 획득
+                    {...providedProps.draggableProps}
+                    {...providedProps.dragHandleProps}
                     style={getItemStyle(
-                      snapshot.isDragging,
-                      provided.draggableProps.style,
+                      snapshotProps.isDragging,
+                      providedProps.draggableProps.style,
                     )}
                   >
                     <Card className="media">

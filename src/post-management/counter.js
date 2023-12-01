@@ -1,15 +1,14 @@
-import { Box, makeStyles, Tooltip } from '@material-ui/core';
-import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
-import { React, useState, useEffect, useContext, useRef } from 'react';
-import styled from 'styled-components';
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { Box, Tooltip } from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import { React, useContext, useEffect, useState } from 'react';
 import AuthContext from '../contexts/auth';
 import ResponsiveDialog from '../organisms/ResponsiveDialog';
 import LikerList from '../pages/likerListPage';
-import { CreateLiker, DeleteLiker, GetLiker } from './postlikeapi';
 import './heart.css';
-import { requestNewPostLikeNotification } from '../pusherUtils';
+import { CreateLiker, DeleteLiker, GetLiker } from './postlikeapi';
 
 const useStyles = makeStyles(() => ({
   likerCursor: {
@@ -50,7 +49,6 @@ export const LikerCounter = (props) => {
     let status;
     if (!like) {
       status = await CreateLiker(postId);
-      requestNewPostLikeNotification(postId, userId);
       setLikerCounter(1);
     } else {
       status = await DeleteLiker(postId);

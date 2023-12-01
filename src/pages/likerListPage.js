@@ -1,5 +1,6 @@
-import { Avatar, Box, Card, Container, Divider, Grid, makeStyles, Typography } from '@material-ui/core';
-import { Close } from '@material-ui/icons';
+import { Close } from '@mui/icons-material';
+import { Avatar, Box, Card, Container, Divider, Grid, Typography } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { convertResourceUrl } from '../utils';
@@ -31,8 +32,7 @@ const LikerList = ({ likerList, updateOpen }) => {
                   <Divider />
                 </Grid>
                 <Grid item>
-                  {likerList ? likerList.map((liker) => {
-                    return (
+                  {likerList ? likerList.map((liker) => (
                       <Grid item spacing={3} style={{ margin: '0.25em 0' }}>
                         <Grid item xs={12}>
                           <Card elevation={2}>
@@ -57,8 +57,7 @@ const LikerList = ({ likerList, updateOpen }) => {
                           </Card>
                         </Grid>
                       </Grid>
-                    );
-                }) : null}
+                    )) : null}
                 </Grid>
               </Grid>
             </Grid>

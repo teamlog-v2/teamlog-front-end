@@ -12,8 +12,8 @@ function setAccessToken(token) {
   tokens.accessToken = token;
 }
 
-fetch = ((origin) => {
-  return (url, config) => {
+// eslint-disable-next-line no-global-assign
+fetch = ((origin) => (url, config) => {
     if (!config) {
       config = {};
     }
@@ -22,8 +22,7 @@ fetch = ((origin) => {
     }
     config.headers.Authorization = getAccessToken();
     return origin(url, config);
-  };
-})(fetch);
+  })(fetch);
 
 const AuthProvider = ({ children }) => {
   const [id, setId] = useState(null);

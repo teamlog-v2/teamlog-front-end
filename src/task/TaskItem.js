@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { Draggable } from 'react-beautiful-dnd';
-import { Close, Delete, Update } from '@material-ui/icons';
+import { Delete, Update } from '@mui/icons-material';
 import {
   Grid,
   Paper,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
+import React from 'react';
+import { Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 
 const StyledIcon = styled(Typography)`

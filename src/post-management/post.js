@@ -1,71 +1,62 @@
-import { useMediaQuery } from 'react-responsive';
+import {
+    Delete,
+    Edit,
+    History,
+    MoreVert
+} from '@mui/icons-material';
+import RoomIcon from '@mui/icons-material/Room';
+import {
+    Button,
+    Card,
+    Chip,
+    Dialog,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    Divider,
+    Grid,
+    IconButton
+} from '@mui/material';
+import Box from '@mui/material/Box';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Container from '@mui/material/Container';
+import Grow from '@mui/material/Grow';
+import MenuItem from '@mui/material/MenuItem';
+import MenuList from '@mui/material/MenuList';
+import Paper from '@mui/material/Paper';
+import Popper from '@mui/material/Popper';
+import { makeStyles } from '@mui/styles';
+import React, {
+    useCallback,
+    useEffect,
+    useRef,
+    useState
+} from 'react';
 import Carousel from 'react-material-ui-carousel';
+import { useMediaQuery } from 'react-responsive';
 import './carousel-theme.css';
 import './carousel.css';
-import RoomIcon from '@material-ui/icons/Room';
-import Grow from '@material-ui/core/Grow';
-import Popper from '@material-ui/core/Popper';
-import Paper from '@material-ui/core/Paper';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useCallback,
-  useContext,
-} from 'react';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import {
-  Menu,
-  History,
-  Delete,
-  Edit,
-  Close,
-  MoreVert,
-} from '@material-ui/icons';
-import {
-  Avatar,
-  Button,
-  Card,
-  Chip,
-  Grid,
-  Dialog,
-  DialogContentText,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Tooltip,
-  Divider,
-  IconButton,
-} from '@material-ui/core';
 
 import { Route } from 'react-router';
-import FileList from './fileList';
 import CommentList from '../comment/commentlist';
-import { UserImage, UserId } from './user';
-import { LikerCounter, CommentCounter } from './counter';
-import { Media, Video } from './media';
-import { DateInfo } from './datetime';
-import MyPage from '../user/MyPage';
-import { DeletePost } from './postapi';
 import ResponsiveDialog from '../organisms/ResponsiveDialog';
 import PostFormPage from '../pages/PostFormPage';
-import UpdateHistory from './updateHistory';
+import MyPage from '../user/MyPage';
 import { convertResourceUrl } from '../utils';
+import { CommentCounter, LikerCounter } from './counter';
+import { DateInfo } from './datetime';
+import FileList from './fileList';
+import { Media, Video } from './media';
+import { DeletePost } from './postapi';
+import UpdateHistory from './updateHistory';
+import { UserId, UserImage } from './user';
 
 /** 관계와 접근제어자를 입력받아서
  * visible 한지 반환
  */
-const canAccess = (relation, modifier) => {
-  return (
+const canAccess = (relation, modifier) => (
     modifier === 'PUBLIC' || relation === 'MEMBER' || relation === 'MASTER'
   );
-};
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -491,8 +482,7 @@ export const Post = (props) => {
               {content?.hashtags.length > 0 ? (
                 <Grid className={classes.children}>
                   <Grid container direction="row" spacing={1}>
-                    {content.hashtags.map((item, index) => {
-                      return (
+                    {content.hashtags.map((item, index) => (
                         <Grid item>
                           <Chip
                             className="tags"
@@ -507,8 +497,7 @@ export const Post = (props) => {
                             color="primary"
                           />
                         </Grid>
-                      );
-                    })}
+                      ))}
                   </Grid>
                 </Grid>
               ) : null}
@@ -730,8 +719,7 @@ export const CompressedPost = (props) => {
             {post?.hashtags.length > 0 ? (
               <Grid className={classes.children}>
                 <Grid container direction="row" spacing={1}>
-                  {post.hashtags.map((item, index) => {
-                    return (
+                  {post.hashtags.map((item, index) => (
                       <Grid item>
                         <Chip
                           className="tags"
@@ -746,8 +734,7 @@ export const CompressedPost = (props) => {
                           color="primary"
                         />
                       </Grid>
-                    );
-                  })}
+                    ))}
                 </Grid>
               </Grid>
             ) : null}

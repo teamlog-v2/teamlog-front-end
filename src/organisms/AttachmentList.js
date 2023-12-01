@@ -1,6 +1,6 @@
+import Close from '@mui/icons-material/Delete';
+import { Grid } from '@mui/material';
 import React from 'react';
-import { Grid } from '@material-ui/core';
-import Close from '@material-ui/icons/Delete';
 
 const AttachmentList = ({ files, updateFiles, handleDeleteList }) => (
   <Grid container direction="column" spacing={2}>

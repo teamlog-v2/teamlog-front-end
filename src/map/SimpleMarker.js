@@ -1,4 +1,3 @@
-import React from 'react';
 // import { Motion, spring } from 'react-motion';
 
 const SimpleMarker = (props) => {
@@ -29,7 +28,7 @@ const SimpleMarker = (props) => {
 
   return (
     <>
-      {!$hover ? (
+      {/* {!$hover ? (
         <Motion
           defaultStyle={{ scale: 1 }}
           style={{
@@ -73,7 +72,7 @@ const SimpleMarker = (props) => {
             />
           )}
         </Motion>
-      )}
+      )} */}
     </>
   );
 };

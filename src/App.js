@@ -20,8 +20,7 @@ import SettingPage from './pages/SettingPage';
 // import MapPage from './map/MapPage';
 import MapPage from './map/newMapPage';
 
-const App = () => {
-  return (
+const App = () => (
     <ErrorProvider>
       <AuthProvider>
         <BeamsClientProvider>
@@ -52,6 +51,5 @@ const App = () => {
       </AuthProvider>
     </ErrorProvider>
   );
-};
 
 export default App;

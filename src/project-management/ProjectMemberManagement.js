@@ -1,14 +1,13 @@
-import { Avatar, Box, Button, Card, CircularProgress, Container, Divider, Grid, makeStyles, Typography, withStyles } from '@material-ui/core';
+import { Avatar, Box, Button, Card, CircularProgress, Container, Divider, Grid, Typography } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import React, { useContext, useEffect, useState } from 'react';
-import { Switch, Link, Redirect, useParams } from 'react-router-dom';
+import { Link, Redirect, useParams } from 'react-router-dom';
 import AuthContext from '../contexts/auth';
 import ResponsiveDialog from '../organisms/ResponsiveDialog';
-import ProjectUpdateForm from '../project/ProjectUpdateForm';
-import Introduction from './introduction';
+import { convertResourceUrl } from '../utils';
 import InviteesSelect from './inviteesSelect';
 import MasterSelect from './masterSelect';
-import { AcceptProject, DeleteProject, GetProject, GetProjectApplcants, GetProjectInvitees, GetProjectMembers, KickOutProjectMember, RefuseProject } from './projectapi';
-import { convertResourceUrl } from '../utils';
+import { AcceptProject, GetProject, GetProjectApplcants, GetProjectInvitees, GetProjectMembers, KickOutProjectMember, RefuseProject } from './projectapi';
 
 const useStyles = makeStyles(() => ({
     profileImg: {

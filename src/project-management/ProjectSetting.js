@@ -6,19 +6,19 @@ import {
   CircularProgress,
   Container,
   Grid,
-  Typography,
-  withStyles,
-} from '@material-ui/core';
+  Typography
+} from '@mui/material';
+import { withStyles } from '@mui/styles';
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { convertResourceUrl } from '../utils';
 import {
-  InvitationAccept,
-  RefuseProject,
-  LeaveProject,
-  GetUserProjects,
-  GetInvitedProjects,
   GetAppliedProjects,
+  GetInvitedProjects,
+  GetUserProjects,
+  InvitationAccept,
+  LeaveProject,
+  RefuseProject,
 } from './projectapi';
 
 const DeleteButton = withStyles({
@@ -147,8 +147,7 @@ const ParticipatingTeams = ({ userId, projects, setProjects }) => {
   );
 };
 
-const AppliedProjects = ({ userId, projects, setProjects }) => {
-  return (
+const AppliedProjects = ({ userId, projects, setProjects }) => (
     <Grid container xs={12} spacing={2}>
       {projects.length > 0 ? (
         projects.map((project) => (
@@ -217,7 +216,6 @@ const AppliedProjects = ({ userId, projects, setProjects }) => {
       )}
     </Grid>
   );
-};
 
 const InvitedProjects = ({
   userId,

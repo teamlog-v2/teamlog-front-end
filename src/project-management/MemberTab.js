@@ -1,4 +1,5 @@
-import { Avatar, Box, Card, CircularProgress, Container, Grid, makeStyles, Typography } from '@material-ui/core';
+import { Avatar, Box, Card, CircularProgress, Container, Grid, Typography } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import React, { useContext } from 'react';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';

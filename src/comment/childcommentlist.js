@@ -1,6 +1,6 @@
-import { Box, Button, Divider } from '@material-ui/core';
+import { Box } from '@mui/material';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Comment } from './comment';
+import Comment from './comment';
 import { GetChildComment } from './commentapi';
 
 const ChildCommentList = (props) => {
@@ -42,8 +42,7 @@ const ChildCommentList = (props) => {
     return (
       <>
         {childCommentList.content
-        ? childCommentList.content.map((item) => {
-            return (
+        ? childCommentList.content.map((item) => (
               <>
                 <Comment
                   id={item.id}
@@ -58,8 +57,7 @@ const ChildCommentList = (props) => {
                   type="child"
                 />
               </>
-            );
-          })
+            ))
         : []}
         <Box display={moreVisibility} style={{ padding: '15px 25px' }}>
           <span

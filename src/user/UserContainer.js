@@ -1,9 +1,9 @@
+import CloseIcon from '@mui/icons-material/Close';
+import { Box, Button, Dialog, Grid, IconButton } from '@mui/material';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Grid, Box, Button, Dialog, IconButton } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
-import SignUp from './SignUp';
 import SignIn from './SignIn';
+import SignUp from './SignUp';
 
 const UserContainer = () => {
   const [open, setOpen] = useState(false);

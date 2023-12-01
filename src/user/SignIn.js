@@ -1,21 +1,19 @@
 import {
-  Container,
-  Button,
-  Box,
-  Grid,
-  Avatar,
   Backdrop,
+  Box,
+  Button,
   CircularProgress,
-  TextField,
-  makeStyles,
+  Container,
   Divider,
-  Typography,
-} from '@material-ui/core';
+  Grid,
+  TextField,
+  Typography
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import FaceIcon from '@material-ui/icons/Face';
-import { login, validateLogin } from './userService';
 import AuthContext, { setAccessToken } from '../contexts/auth';
+import { login, validateLogin } from './userService';
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -35,11 +33,9 @@ const SignIn = () => {
   const [isProcessing, setIsProcessing] = useState(false);
 
   const isMounted = useRef(true);
-  useEffect(() => {
-    return () => {
+  useEffect(() => () => {
       isMounted.current = false;
-    };
-  }, []);
+    }, []);
 
   const handleIdChange = (event) => {
     setIdentification(event.target.value);

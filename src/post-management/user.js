@@ -1,6 +1,6 @@
+import { Avatar, Box } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import React from 'react';
-import { Avatar, Box } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import { convertResourceUrl } from '../utils';
 
@@ -51,4 +51,5 @@ const UserId = (props) => {
 //   );
 // };
 
-export { UserImage, UserId };
+export { UserId, UserImage };
+

@@ -1,27 +1,27 @@
 import {
-    Avatar,
-    Box,
-    Button,
-    CircularProgress,
-    Container,
-    Grid,
-    InputAdornment,
-    List,
-    ListItem,
-    ListItemAvatar,
-    ListItemText,
-    TextField,
-    Typography,
-    withStyles,
-  } from '@material-ui/core';
-  import {
-    CheckBox,
-    CheckBoxOutlineBlank,
-    Search,
-  } from '@material-ui/icons';
-  import React, { useEffect, useState } from 'react';
-import { DelegateProjectMaster, DelegateProjectMasterNotification } from './projectapi';
+  CheckBox,
+  CheckBoxOutlineBlank,
+  Search,
+} from '@mui/icons-material';
+import {
+  Avatar,
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  Grid,
+  InputAdornment,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  TextField,
+  Typography
+} from '@mui/material';
+import { withStyles } from '@mui/styles';
+import React, { useEffect, useState } from 'react';
 import { convertResourceUrl } from '../utils';
+import { DelegateProjectMaster, DelegateProjectMasterNotification } from './projectapi';
 
   const StyledList = withStyles({
     root: {

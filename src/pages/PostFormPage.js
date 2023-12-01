@@ -1,20 +1,21 @@
-import React, { useState, useRef, useEffect, useContext } from 'react';
-import { Grid, TextField, Paper, makeStyles, InputAdornment, Divider, Tooltip, Button, Card, ClickAwayListener, CardMedia, CircularProgress, Typography } from '@material-ui/core';
-import { Backspace, Close, LocationOn } from '@material-ui/icons';
-import { useParams } from 'react-router';
+import { Backspace, Close, LocationOn } from '@mui/icons-material';
 import { Skeleton } from '@mui/lab';
-import PlacesSearchApi from '../organisms/PlacesSearchApi';
-import ThumbnailList from '../organisms/ThumbnailList';
+import { Divider, Grid, InputAdornment, Paper, TextField, Tooltip } from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import React, { useContext, useEffect, useState } from 'react';
+import { useParams } from 'react-router';
+import AuthContext from '../contexts/auth';
 import AccessModifier from '../organisms/AccessModifier';
-import HashtagInput from '../organisms/HashtagInput';
-import HashtagRecommender from '../organisms/HashtagRecommender';
-import PostCreator from '../organisms/PostCreator';
-import Uploader from '../organisms/Uploader';
 import AttachmentList from '../organisms/AttachmentList';
 import CommentModifier from '../organisms/CommentModifier';
-import { detectSupportFormat, getTypeofFile, resizeImage } from '../utils';
+import HashtagInput from '../organisms/HashtagInput';
+import HashtagRecommender from '../organisms/HashtagRecommender';
+import PlacesSearchApi from '../organisms/PlacesSearchApi';
+import PostCreator from '../organisms/PostCreator';
+import ThumbnailList from '../organisms/ThumbnailList';
+import Uploader from '../organisms/Uploader';
 import { UpdatePostNotification } from '../post-management/postapi';
-import AuthContext from '../contexts/auth';
+import { detectSupportFormat, getTypeofFile, resizeImage } from '../utils';
 
 const useDeleteData = () => {
   const [deletedList, setDeletedList] = useState([]);

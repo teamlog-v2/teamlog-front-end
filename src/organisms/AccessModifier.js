@@ -1,6 +1,6 @@
+import { PeopleAlt, Public } from '@mui/icons-material';
+import { Button } from '@mui/material';
 import React from 'react';
-import { Button } from '@material-ui/core';
-import { PeopleAlt, Public } from '@material-ui/icons';
 
 const AccessModifier = ({ postData, updatePostData }) => {
   const { accessModifier } = postData;

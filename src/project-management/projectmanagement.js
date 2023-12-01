@@ -1,12 +1,13 @@
-import { Avatar, Box, Button, Card, CardMedia, CircularProgress, Container, Grid, makeStyles, Typography, withStyles } from '@material-ui/core';
+import { Box, Button, Card, CardMedia, CircularProgress, Container, Grid, Typography } from '@mui/material';
+import { withStyles, makeStyles } from '@mui/styles';
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import AuthContext from '../contexts/auth';
 import ResponsiveDialog from '../organisms/ResponsiveDialog';
 import ProjectUpdateForm from '../project/ProjectUpdateForm';
+import { resizeImage } from '../utils';
 import Introduction from './introduction';
 import { DeleteProject, GetProject } from './projectapi';
-import { convertResourceUrl, resizeImage } from '../utils';
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {

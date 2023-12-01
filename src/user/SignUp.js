@@ -1,19 +1,17 @@
-import React, { useState, useEffect } from 'react';
 import {
-  Button,
-  Container,
   Backdrop,
+  Box,
+  Button,
   CircularProgress,
+  Container,
+  Divider,
   Grid,
   TextField,
-  Typography,
-  Avatar,
-  Box,
-  makeStyles,
-  Divider,
-} from '@material-ui/core';
+  Typography
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import React, { useEffect, useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import FaceIcon from '@material-ui/icons/Face';
 import { createUser, validateLogin } from './userService';
 
 const useStyles = makeStyles((theme) => ({

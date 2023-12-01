@@ -1,6 +1,6 @@
-import { Box, Button, Container, Typography } from '@material-ui/core';
+import { Box, Button } from '@mui/material';
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import icon from '../teamlogIcon.png';
 
 const ErrorPage = ({ error }) => {

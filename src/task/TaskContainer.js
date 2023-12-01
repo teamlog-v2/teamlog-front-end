@@ -1,23 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import CloseIcon from '@mui/icons-material/Close';
 import {
-  Grid,
-  Chip,
-  Typography,
-  Button,
-  Dialog,
   Box,
+  Button,
   CircularProgress,
-  IconButton,
   Container,
+  Grid,
+  IconButton,
   Paper,
-} from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
+  Typography
+} from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { useParams } from 'react-router';
-import TaskItem from './TaskItem';
-import TaskCreateForm from './TaskCreateForm';
-import { getTasksByProject, updateTaskStatus, deleteTask } from './taskService';
 import ResponsiveDialog from '../organisms/ResponsiveDialog';
+import TaskCreateForm from './TaskCreateForm';
+import TaskItem from './TaskItem';
+import { deleteTask, getTasksByProject, updateTaskStatus } from './taskService';
 
 const reorder = (list, droppableSource, droppableDestination) => {
   const result = Array.from(list);
@@ -61,16 +59,16 @@ const TaskContainer = (props) => {
 
     let originIndex = -1;
 
-    state.some((taskList, taskStatus) => { // 전체 태스크 중 기존 태스크 상태 및 위치 탐색
-      return taskList.some((item, index) => {
+    state.some((taskList, taskStatus) =>  // 전체 태스크 중 기존 태스크 상태 및 위치 탐색
+       taskList.some((item, index) => {
         if (item.id === task.id) {
           from = taskStatus;
           originIndex = index;
           return true;
         }
         return false;
-      });
-    });
+      })
+    );
 
     const updatedState = [...state];
 

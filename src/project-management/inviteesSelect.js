@@ -1,30 +1,29 @@
 import {
-    Avatar,
-    Box,
-    Button,
-    Chip,
-    CircularProgress,
-    Container,
-    Grid,
-    InputAdornment,
-    List,
-    ListItem,
-    ListItemAvatar,
-    ListItemText,
-    makeStyles,
-    TextField,
-    Typography,
-    withStyles,
-  } from '@material-ui/core';
-  import {
-    CheckBox,
-    CheckBoxOutlineBlank,
-    Search,
-  } from '@material-ui/icons';
-  import React, { useContext, useEffect, useState } from 'react';
-import { GetProjectInvitees, JoinProject, InviteProjectNotification } from './projectapi';
-import { convertResourceUrl } from '../utils';
+  CheckBox,
+  CheckBoxOutlineBlank,
+  Search,
+} from '@mui/icons-material';
+import {
+  Avatar,
+  Box,
+  Button,
+  Chip,
+  CircularProgress,
+  Container,
+  Grid,
+  InputAdornment,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  TextField,
+  Typography
+} from '@mui/material';
+import { makeStyles, withStyles } from '@mui/styles';
+import React, { useContext, useEffect, useState } from 'react';
 import AuthContext from '../contexts/auth';
+import { convertResourceUrl } from '../utils';
+import { GetProjectInvitees, InviteProjectNotification, JoinProject } from './projectapi';
 
   const StyledList = withStyles({
     root: {
@@ -115,7 +114,7 @@ import AuthContext from '../contexts/auth';
     const saveSelectedUsers = async () => {
       const selectedInvitees = [];
       const invitedUserIds = [];
-      selectedUserIds.map((selectedUserId) => {
+      selectedUserIds.foreach((selectedUserId) => {
         const temp = users.find((user) => user.id === selectedUserId);
         selectedInvitees.push(temp);
       });

@@ -1,15 +1,13 @@
-import { Box, Button, Grid, LinearProgress } from '@material-ui/core';
 import { Skeleton } from '@mui/lab';
+import { Box, Grid, LinearProgress } from '@mui/material';
 import {
   React,
-  useEffect,
-  useState,
-  Fragment,
   useCallback,
-  // useRef,
+  useEffect,
+  useState
 } from 'react';
 import ChildCommentList from './childcommentlist';
-import { Comment } from './comment';
+import Comment from './comment';
 import { GetComment } from './commentapi';
 import CommentForm from './commentform';
 
@@ -49,8 +47,7 @@ const CommentList = ({ setCommentCounter, projectId, postId, type }) => {
         {isRenewed ? (<></>) : (<LinearProgress />)}
         {
           commentList.content
-            ? commentList.content.map((item) => {
-              return (
+            ? commentList.content.map((item) => (
                 <Box key={item.id}>
                   <Comment
                     id={item.id}
@@ -71,8 +68,7 @@ const CommentList = ({ setCommentCounter, projectId, postId, type }) => {
                     commentList={commentList}
                   />
                 </Box>
-              );
-            })
+              ))
             : []
         }
         <Box display={moreVisibility} style={{ padding: '15px 15px' }}>

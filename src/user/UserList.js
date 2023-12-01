@@ -1,18 +1,18 @@
+import { Skeleton } from '@mui/lab';
 import {
   Avatar,
-  Grid,
   Box,
-  Typography,
-  Card,
-  makeStyles,
-  Container,
   Button,
-} from '@material-ui/core';
-import { Skeleton } from '@mui/lab';
-import React, { useState, useEffect } from 'react';
+  Card,
+  Container,
+  Grid,
+  Typography,
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { follow, unfollow } from './userService';
 import { convertResourceUrl } from '../utils';
+import { follow, unfollow } from './userService';
 
 const useStyles = makeStyles(() => ({
   profileImg: {

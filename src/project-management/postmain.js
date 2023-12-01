@@ -1,32 +1,28 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { Edit, Map } from '@mui/icons-material';
+import Search from '@mui/icons-material/Search';
 import {
-  Typography,
-  Grid,
-  makeStyles,
-  CircularProgress,
-  FormControl,
-  NativeSelect,
-  Fab,
-  Card,
-  Tooltip,
-  Select,
-  InputBase,
-  fade,
   Box,
   Button,
-} from '@material-ui/core';
-import Container from '@material-ui/core/Container';
-import Search from '@material-ui/icons/Search';
-import { Edit, Map } from '@material-ui/icons';
+  Card,
+  CircularProgress,
+  Fab,
+  FormControl,
+  Grid,
+  InputBase,
+  Select,
+  Typography
+} from '@mui/material';
+import Container from '@mui/material/Container';
+import { makeStyles } from '@mui/styles';
+import React, { useContext, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import Postlist from '../post-management/postlist';
-import HashtagChooser from '../organisms/HashtagChooser';
-import useFetchPosts from '../hooks/useFetchPosts';
-import { useFetchData } from '../hooks/hooks';
-import PostFormPage from '../pages/PostFormPage';
-import ResponsiveDialog from '../organisms/ResponsiveDialog';
 import AuthContext from '../contexts/auth';
-import { requestNewPostNotification } from '../pusherUtils';
+import { useFetchData } from '../hooks/hooks';
+import useFetchPosts from '../hooks/useFetchPosts';
+import HashtagChooser from '../organisms/HashtagChooser';
+import ResponsiveDialog from '../organisms/ResponsiveDialog';
+import PostFormPage from '../pages/PostFormPage';
+import Postlist from '../post-management/postlist';
 
 const useStyles = makeStyles((theme) => ({
   /* 반응형 스타일 */
@@ -159,7 +155,6 @@ const PostMain = (props) => {
 
       if (res.status === 201) {
         console.log('성공적으로 등록');
-        requestNewPostNotification(userId, projectId);
         setIsPostLoading(false);
         setFormData(null);
         initPosts();

@@ -1,11 +1,13 @@
-import { Box, Grid } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import ResponsiveDialog from '../organisms/ResponsiveDialog';
+import { VideoCallRounded } from '@mui/icons-material';
+import { Box, Grid } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import jQuery from 'jquery';
-import { CancelRounded, Close, VideoCallRounded } from '@material-ui/icons';
+import React, { useEffect, useState } from 'react';
+import ResponsiveDialog from '../organisms/ResponsiveDialog';
 import { convertResourceUrl, detectSupportFormat } from '../utils';
-window.$ = window.jQuery = jQuery;
+
+window.jQuery = jQuery;
+window.$ = window.jQuery;
 
 const useStyles = makeStyles(() => ({
   align: {
@@ -39,9 +41,11 @@ const Media = ({ file }) => {
   // 확장자 판별
   if (contentType.includes('video')) {
     return <Video file={file} width="100%" />; //
-  } else if (contentType.includes('image')) {
+  } if (contentType.includes('image')) {
     return <ImageContent file={file} />;
   }
+
+  return <></>
 };
 
 const ImageContent = ({ file }) => {

@@ -1,7 +1,8 @@
+import Attachment from '@mui/icons-material/Attachment';
+import { Chip, Tooltip } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import { makeStyles } from '@mui/styles';
 import React, { useState } from 'react';
-import Grid from '@material-ui/core/Grid';
-import Attachment from '@material-ui/icons/Attachment';
-import { Badge, Chip, makeStyles, Tooltip } from '@material-ui/core';
 import { convertDownloadUrl } from '../utils';
 
 const useStyles = makeStyles(() => ({

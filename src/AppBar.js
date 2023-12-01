@@ -1,28 +1,27 @@
+import { ArrowDropDown, Notifications, Search } from '@mui/icons-material';
+import GetAppIcon from '@mui/icons-material/GetApp';
 import {
   Avatar,
   Backdrop,
   Box,
   Button,
   IconButton,
-  makeStyles,
   Menu,
   MenuItem,
   Slide,
-  useScrollTrigger,
-} from '@material-ui/core';
-import { ArrowDropDown, Notifications, Search } from '@material-ui/icons';
-import GetAppIcon from '@material-ui/icons/GetApp';
+  useScrollTrigger
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import React, { useContext, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import icon from './teamlogIcon_white.png';
 import AuthContext, { setAccessToken } from './contexts/auth';
+import BeamsClientContext from './contexts/beamsClient';
 import LoginPopup from './global/LoginPopup';
 import SignupPopup from './global/SignupPopup';
 import ResponsiveDialog from './organisms/ResponsiveDialog';
 import ProjectForm from './project/ProjectForm';
+import icon from './teamlogIcon_white.png';
 import { convertResourceUrl } from './utils';
-import { unsubscribe } from './pusherUtils';
-import BeamsClientContext from './contexts/beamsClient';
 
 function HideOnScroll({ children }) {
   const trigger = useScrollTrigger({
@@ -112,7 +111,6 @@ export default function AppBar() {
 
   const handleLogout = async () => {
     localStorage.removeItem('access-token');
-    unsubscribe(client);
     setAccessToken('');
     setContextId(null);
     history.push('/');

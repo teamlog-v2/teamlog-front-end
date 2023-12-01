@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import Grid from '@material-ui/core/Grid';
-import { Close } from '@material-ui/icons';
-import { Divider } from '@material-ui/core';
+import { Close } from '@mui/icons-material';
 import { Skeleton } from '@mui/lab';
-import { UserImage, UserId } from './user';
+import { Divider } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import React, { useEffect, useState } from 'react';
 import { DateInfo } from './datetime';
+import { UserId, UserImage } from './user';
 
 const UpdateHistory = (props) => {
   const { id, updateOpen } = props;

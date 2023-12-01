@@ -1,14 +1,13 @@
+import { Reply } from '@mui/icons-material';
 import {
-  Box,
-  Button,
-  Card,
-  Chip,
-  CircularProgress,
-  Divider,
-  IconButton,
-  Typography,
-} from '@material-ui/core';
-import { Reply } from '@material-ui/icons';
+    Box,
+    Button,
+    Card,
+    CircularProgress,
+    Divider,
+    IconButton,
+    Typography
+} from '@mui/material';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import AuthContext from '../contexts/auth';
@@ -107,9 +106,7 @@ export default function NewsPage() {
           });
 
           if (filteredTasks.length > 0) {
-            filteredTasks.sort((a, b) => {
-              return cmpTimeStr(a.updateTimeStr, b.updateTimeStr);
-            });
+            filteredTasks.sort((a, b) => cmpTimeStr(a.updateTimeStr, b.updateTimeStr));
             const taskWrapper = {
               type: 'TASKS',
               tasks: filteredTasks,

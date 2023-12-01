@@ -1,5 +1,5 @@
+import Tooltip from '@mui/material/Tooltip';
 import React from 'react';
-import Tooltip from '@material-ui/core/Tooltip';
 import styled from 'styled-components';
 
 const getPassedTime = (date) => {

@@ -1,9 +1,9 @@
-import React, { useRef } from 'react';
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import {
-  Grid,
-  Button,
-} from '@material-ui/core';
-import PhotoCamera from '@material-ui/icons/PhotoCamera';
+    Button,
+    Grid,
+} from '@mui/material';
+import React, { useRef } from 'react';
 import { getTypeofFile, isValidSize } from '../utils';
 
 const MediaUploader = ({ files, updateFiles }) => {

@@ -13,6 +13,7 @@
     "@mui/lab": "^5.0.0-alpha.154",
     "@mui/material": "^5.14.18",
     "@mui/styles": "^5.14.18",
+    "@mui/system": "^5.14.19",
     "@testing-library/jest-dom": "^5.11.10",
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
@@ -46,7 +47,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint src --fix"
   },
   "browserslist": {
     "production": [
@@ -60,5 +62,15 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:8090"
+  "proxy": "http://localhost:8090",
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-import": "^2.29.0",
+    "eslint-plugin-jsx-a11y": "^6.8.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "prettier": "^3.1.0"
+  }
 }

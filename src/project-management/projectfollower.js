@@ -1,10 +1,11 @@
-import { Avatar, Box, Button, Card, CircularProgress, Container, Grid, makeStyles, Typography } from '@material-ui/core';
+import { Avatar, Box, Button, Card, CircularProgress, Container, Grid, Typography } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import React, { useContext, useEffect, useState } from 'react';
 import { Redirect, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import AuthContext from '../contexts/auth';
-import { GetFollowProjects, GetProjectFollowers, UnFollowProject, FollowProject, FollowProjectNotification } from './projectapi';
-import { resizeImage, convertResourceUrl } from '../utils';
+import { convertResourceUrl } from '../utils';
+import { FollowProject, FollowProjectNotification, GetFollowProjects, GetProjectFollowers, UnFollowProject } from './projectapi';
 
 const useStyles = makeStyles(() => ({
   profileImg: {

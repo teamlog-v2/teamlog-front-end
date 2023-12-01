@@ -1,11 +1,9 @@
-import { Box, Button, TextField, Link as Anchor } from '@material-ui/core';
+import { Link as Anchor, Box, Button, TextField } from '@mui/material';
 import React, { useContext, useState } from 'react';
-import { useLocation } from 'react-router';
-import AuthContext, { setAccessToken } from '../contexts/auth';
+import { setAccessToken } from '../contexts/auth';
+import BeamsClientContext from '../contexts/beamsClient';
 import withGap from '../higherOrderComponents/withGap';
 import { login as fetchLogin, validateLogin } from '../user/userService';
-import { subscribe } from '../pusherUtils';
-import BeamsClientContext from '../contexts/beamsClient';
 
 const GapBox = withGap(Box);
 
@@ -80,7 +78,6 @@ function LoginForm() {
         setIsProcessing(false);
         return;
       }
-      await subscribe(client, res.id);
       window.location.reload(false);
     } catch (err) {
       console.error(err);

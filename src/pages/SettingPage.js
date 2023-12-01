@@ -1,12 +1,11 @@
-import { Button, Container, Divider, Grid, Typography } from '@material-ui/core';
+import { Button, Container, Divider, Grid, Typography } from '@mui/material';
 import React, { useContext, useState } from 'react';
-import { Redirect, Route, Switch, useHistory } from 'react-router';
-import { BrowserRouter, Link } from 'react-router-dom';
-import ProjectSetting from '../project-management/ProjectSetting';
+import { Redirect, Route, Switch } from 'react-router';
+import { Link } from 'react-router-dom';
 import AuthContext from '../contexts/auth';
+import ProjectSetting from '../project-management/ProjectSetting';
 
-const RadioButton = ({ children, onClick, highlight, value, ...props }) => {
-    return (
+const RadioButton = ({ children, onClick, highlight, value, ...props }) => (
       <Button
         fullWidth
         variant={highlight === value ? 'contained' : 'outlined'}
@@ -17,7 +16,6 @@ const RadioButton = ({ children, onClick, highlight, value, ...props }) => {
         {children}
       </Button>
     );
-};
 
 const SettingPage = () => {
     const [type, setType] = useState('TEAM'); // TEAM or PROJECT

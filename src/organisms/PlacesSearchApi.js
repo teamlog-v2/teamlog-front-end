@@ -1,13 +1,13 @@
+import Close from '@mui/icons-material/Close';
+import LocationOn from '@mui/icons-material/LocationOn';
+import { Grid, TextField, Tooltip, Typography } from '@mui/material';
+import Card from '@mui/material/Card';
+import InputAdornment from '@mui/material/InputAdornment';
 import React from 'react';
-import { TextField, Grid, Typography, Tooltip } from '@material-ui/core';
-import LocationOn from '@material-ui/icons/LocationOn';
-import Close from '@material-ui/icons/Close';
 import PlacesAutocomplete, {
-  geocodeByAddress,
-  getLatLng,
+    geocodeByAddress,
+    getLatLng,
 } from 'react-places-autocomplete';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import Card from '@material-ui/core/Card';
 
 class PlaceSearchApi extends React.Component {
   constructor(props) {

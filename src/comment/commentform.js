@@ -1,26 +1,24 @@
-import { Button, ListItemIcon, ListItemText, Container, MenuItem, MenuList, Box, Avatar, Divider } from '@material-ui/core';
-import InputBase from '@material-ui/core/InputBase';
-import Paper from '@material-ui/core/Paper';
-import Popper from '@material-ui/core/Popper';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Grow from '@material-ui/core/Grow';
+import {
+  Avatar, Box, Button, Container, ListItemIcon, ListItemText, MenuItem, MenuList,
+  createMuiTheme,
+} from '@mui/material';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Grow from '@mui/material/Grow';
+import InputBase from '@mui/material/InputBase';
+import Paper from '@mui/material/Paper';
+import Popper from '@mui/material/Popper';
+import { makeStyles } from '@mui/styles';
 import {
   React,
-  useEffect,
-  useState,
-  useRef,
   useContext,
+  useEffect,
+  useRef,
+  useState,
 } from 'react';
-import {
-  createMuiTheme,
-    makeStyles,
-  ThemeProvider,
-} from '@material-ui/core/styles';
-import { GetProjectMembers } from '../project-management/projectapi';
-import { CreateComment, /* GetComment, */ UpdateComment } from './commentapi';
 import AuthContext from '../contexts/auth';
+import { GetProjectMembers } from '../project-management/projectapi';
 import { convertResourceUrl } from '../utils';
-import { requestNewCommentNotification, requestNewReplyNotification } from '../pusherUtils';
+import { CreateComment, /* GetComment, */ UpdateComment } from './commentapi';
 
 const useStyles = makeStyles(() => ({
     more: {
@@ -289,8 +287,6 @@ const CommentForm = (props) => {
                     );
 
                     if (status === 201) {
-                        if (!id) requestNewCommentNotification(userId, postId, projectId);
-                        else requestNewReplyNotification(parentWriterId, userId, projectId);
                         renewCommentList(1);
                         setState({ ...state, userInput: '' });
                     }

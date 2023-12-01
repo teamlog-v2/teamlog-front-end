@@ -1,20 +1,17 @@
-import React, { useCallback, useContext, useState } from 'react';
 import {
   Box,
-  Chip,
-  Grid,
-  IconButton,
-  Typography,
-} from '@material-ui/core';
+  Grid
+} from '@mui/material';
 import {
   makeStyles,
-} from '@material-ui/core/styles';
+} from '@mui/styles';
+import React, { useCallback, useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { UserImage, UserId } from '../post-management/user';
-import { DateInfo } from '../post-management/datetime';
-import CommentForm from './commentform';
-import { DeleteComment } from './commentapi';
 import AuthContext from '../contexts/auth';
+import { DateInfo } from '../post-management/datetime';
+import { UserId, UserImage } from '../post-management/user';
+import { DeleteComment } from './commentapi';
+import CommentForm from './commentform';
 
 const useStyles = makeStyles((theme) => ({
   more: {
@@ -79,7 +76,7 @@ const Content = (props) => {
         ? stringSplit.map((string, index) => {
           const wordSplit = string.split(' ');
           return <Grid container item alignItems="center">
-            {index == 0 ? (writer) : <></>}
+            {index === 0 ? (writer) : <></>}
           {
             wordSplit.map((word) => 
               (word[0] === '@' && tagList.includes(word.split('@')[1])) ? 
@@ -120,7 +117,7 @@ const CheckRoot = (type) => {
   };
 };
 
-export const Comment = (props) => {
+const Comment = (props) => {
   const {
     id: commentId,
     projectId,
@@ -251,3 +248,5 @@ export const Comment = (props) => {
     </Box>
   );
 };
+
+export default Comment;
