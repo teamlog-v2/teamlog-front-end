@@ -48,39 +48,35 @@ const CommentList = ({ setCommentCounter, projectId, postId, type }) => {
         {
           commentList.content
             ? commentList.content.map((item) => (
-                <Box key={item.id}>
-                  <Comment
-                    id={item.id}
-                    projectId={projectId}
-                    contents={item.contents}
-                    writer={item.writer}
-                    commentMentions={item.commentMentions}
-                    postId={postId}
-                    writeTime={item.writeTime}
-                    renewCommentList={RenewCommentList}
-                    commentList={commentList}
-                    type="parent"
-                  />
-                  <ChildCommentList
-                    projectId={projectId}
-                    postId={postId}
-                    commentId={item.id}
-                    commentList={commentList}
-                  />
-                </Box>
-              ))
+              <Box key={item.id}>
+                <Comment
+                  id={item.id}
+                  projectId={projectId}
+                  contents={item.contents}
+                  writer={item.writer}
+                  commentMentions={item.commentMentions}
+                  postId={postId}
+                  writeTime={item.writeTime}
+                  renewCommentList={RenewCommentList}
+                  commentList={commentList}
+                  type="parent"
+                />
+                <ChildCommentList
+                  projectId={projectId}
+                  postId={postId}
+                  commentId={item.id}
+                  commentList={commentList}
+                />
+              </Box>
+            ))
             : []
         }
         <Box display={moreVisibility} style={{ padding: '15px 15px' }}>
           <span
             role="button"
             size="small"
-            variant="text"
             tabIndex={0}
             style={{ fontSize: 13, cursor: 'pointer' }}
-            onKeyPress={() => {
-              console.log('헷^^');
-            }}
             onClick={async () => {
               setCommentSize(commentSize + 5);
             }}

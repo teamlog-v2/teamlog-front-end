@@ -1,4 +1,5 @@
 // import { Motion, spring } from 'react-motion';
+import React from 'react';
 
 const SimpleMarker = (props) => {
   const { $hover } = props;

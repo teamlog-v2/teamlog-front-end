@@ -11,7 +11,6 @@ import {
   Slide,
   useScrollTrigger
 } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import React, { useContext, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import AuthContext, { setAccessToken } from './contexts/auth';
@@ -59,13 +58,6 @@ function Wrapper({ children, ...props }) {
   );
 }
 
-const useStyles = makeStyles((theme) => ({
-  small: {
-    width: theme.spacing(3),
-    height: theme.spacing(3),
-  },
-}));
-
 let deferredInstallPrompt = null;
 
 window.addEventListener('beforeinstallprompt', (e) => {
@@ -90,7 +82,6 @@ function userClickedAddToHome() {
 }
 
 export default function AppBar() {
-  const classes = useStyles();
   const history = useHistory();
 
   const [id, setContextId, profileImgPath] = useContext(AuthContext);
@@ -175,7 +166,12 @@ export default function AppBar() {
             <Notifications style={{ fontSize: '1.125rem', color: 'white' }} />
           </IconButton>
           <Button onClick={handleClick}>
-            <Avatar className={classes.small} src={convertResourceUrl(profileImgPath)} />
+            <Avatar sx={{
+              width: (theme) => theme.spacing(3),
+              height: (theme) => theme.spacing(3)
+            }}
+              src={convertResourceUrl(profileImgPath)}
+            />
             <ArrowDropDown style={{ fontSize: '1rem', color: 'white' }} />
           </Button>
           <Menu
@@ -231,7 +227,6 @@ export default function AppBar() {
   );
 }
 
-// ////////
 function Title() {
   return (
     <Link to="/main" style={{ color: 'white', marginLeft: '1rem', fontWeight: '300', textDecoration: 'none' }}>

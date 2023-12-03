@@ -18,7 +18,7 @@ import {
   Typography
 } from '@mui/material';
 import { withStyles } from '@mui/styles';
-import { useEffect, useState } from 'react';
+import { React, useEffect, useState } from 'react';
 import { convertResourceUrl } from '../utils';
 
 const StyledList = withStyles({

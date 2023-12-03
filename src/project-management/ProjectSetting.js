@@ -148,74 +148,74 @@ const ParticipatingTeams = ({ userId, projects, setProjects }) => {
 };
 
 const AppliedProjects = ({ userId, projects, setProjects }) => (
-    <Grid container xs={12} spacing={2}>
-      {projects.length > 0 ? (
-        projects.map((project) => (
-          <Grid item md={4} sm={6} xs={12}>
-            <Card elevation={2}>
-              <Link
-                to={`/projects/${project.projectId}`}
-                style={{ textDecoration: 'none' }}
-              >
-                <CardMedia
-                  style={{ height: 180 }}
-                  image={convertResourceUrl(project.thumbnail)}
-                />
-              </Link>
-              <CardContent>
-                <Grid container xs={12} direction="column">
-                  <Link
-                    to={`/projects/${project.projectId}`}
-                    style={{ textDecoration: 'none', color: 'black' }}
-                  >
-                    <Grid item xs={6}>
-                      <Typography gutterBottom variant="h6" noWrap>
-                        {project.projectName}
-                      </Typography>
-                    </Grid>
-                  </Link>
-                  <Grid contianer item xs={12} style={{ textAlign: 'right' }}>
-                    <Grid item>
-                      <Button
-                        color="primary"
-                        variant="outlined"
-                        onClick={async () => {
-                          if (
-                            window.confirm(
-                              '프로젝트 가입 신청을 취소하시겠습니까?',
-                            )
-                          ) {
-                            const { status } = await RefuseProject(project.id);
-                            if (status === 200) {
-                              const userTeamsResponse = await GetUserProjects(
-                                userId,
-                              );
-                              setProjects(await userTeamsResponse.json());
-                            }
+  <Grid container xs={12} spacing={2}>
+    {projects.length > 0 ? (
+      projects.map((project) => (
+        <Grid item md={4} sm={6} xs={12}>
+          <Card elevation={2}>
+            <Link
+              to={`/projects/${project.projectId}`}
+              style={{ textDecoration: 'none' }}
+            >
+              <CardMedia
+                style={{ height: 180 }}
+                image={convertResourceUrl(project.thumbnail)}
+              />
+            </Link>
+            <CardContent>
+              <Grid container xs={12} direction="column">
+                <Link
+                  to={`/projects/${project.projectId}`}
+                  style={{ textDecoration: 'none', color: 'black' }}
+                >
+                  <Grid item xs={6}>
+                    <Typography gutterBottom variant="h6" noWrap>
+                      {project.projectName}
+                    </Typography>
+                  </Grid>
+                </Link>
+                <Grid contianer item xs={12} style={{ textAlign: 'right' }}>
+                  <Grid item>
+                    <Button
+                      color="primary"
+                      variant="outlined"
+                      onClick={async () => {
+                        if (
+                          window.confirm(
+                            '프로젝트 가입 신청을 취소하시겠습니까?',
+                          )
+                        ) {
+                          const { status } = await RefuseProject(project.id);
+                          if (status === 200) {
+                            const userTeamsResponse = await GetUserProjects(
+                              userId,
+                            );
+                            setProjects(await userTeamsResponse.json());
                           }
-                        }}
-                      >
-                        취소
-                      </Button>
-                    </Grid>
+                        }
+                      }}
+                    >
+                      취소
+                    </Button>
                   </Grid>
                 </Grid>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))
-      ) : (
-        <Grid
-          container
-          justify="center"
-          alignItems="center"
-          style={{ height: '50vh' }}
-        >
-          아직 가입 신청하신 프로젝트가 없어요. 😢
+              </Grid>
+            </CardContent>
+          </Card>
         </Grid>
-      )}
-    </Grid>
-  );
+      ))
+    ) : (
+      <Grid
+        container
+        justify="center"
+        alignItems="center"
+        style={{ height: '50vh' }}
+      >
+        아직 가입 신청하신 프로젝트가 없어요. 😢
+      </Grid>
+    )}
+  </Grid>
+);
 
 const InvitedProjects = ({
   userId,

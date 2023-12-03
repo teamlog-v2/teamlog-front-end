@@ -5,8 +5,8 @@ import Card from '@mui/material/Card';
 import InputAdornment from '@mui/material/InputAdornment';
 import React from 'react';
 import PlacesAutocomplete, {
-    geocodeByAddress,
-    getLatLng,
+  geocodeByAddress,
+  getLatLng,
 } from 'react-places-autocomplete';
 
 class PlaceSearchApi extends React.Component {
@@ -18,7 +18,7 @@ class PlaceSearchApi extends React.Component {
 
   handleChange = (address) => {
     this.setState({ address });
-  };
+  }
 
   handleSelect = (address, t, detail) => {
     geocodeByAddress(address)
@@ -85,39 +85,39 @@ class PlaceSearchApi extends React.Component {
                 {loading && <Typography style={{ color: 'gray' }}>장소를 찾는 중입니다 -</Typography>}
                 {
                   suggestions.length >= 1 ?
-                  (
-                    <Card md={5} xs={12}>
-                    {suggestions.map((suggestion) => {
-                      const className = suggestion.active
-                        ? 'suggestion-item--active'
-                        : 'suggestion-item';
-                      // inline style for demonstration purpose
-                      const style = suggestion.active
-                        ? { cursor: 'pointer', color: '#593875' }
-                        : { cursor: 'pointer' };
-                      return (
-                        <Grid
-                          container
-                          direction="row"
-                          {...getSuggestionItemProps(suggestion, {
-                            className,
-                            style,
-                          })}
-                        >
-                          <LocationOn />
-                          <Grid item xs={11}>
-                            <Typography gutterBottom style={{ fontSize: 15 }}>
-                              {suggestion.description}</Typography>
-                          </Grid>
-                        </Grid>
-                      );
-                    })}
-                    </Card>
-                  )
-                  :
-                  (
-                    null
-                  )
+                    (
+                      <Card md={5} xs={12}>
+                        {suggestions.map((suggestion) => {
+                          const className = suggestion.active
+                            ? 'suggestion-item--active'
+                            : 'suggestion-item';
+                          // inline style for demonstration purpose
+                          const style = suggestion.active
+                            ? { cursor: 'pointer', color: '#593875' }
+                            : { cursor: 'pointer' };
+                          return (
+                            <Grid
+                              container
+                              direction="row"
+                              {...getSuggestionItemProps(suggestion, {
+                                className,
+                                style,
+                              })}
+                            >
+                              <LocationOn />
+                              <Grid item xs={11}>
+                                <Typography gutterBottom style={{ fontSize: 15 }}>
+                                  {suggestion.description}</Typography>
+                              </Grid>
+                            </Grid>
+                          );
+                        })}
+                      </Card>
+                    )
+                    :
+                    (
+                      null
+                    )
                 }
               </Grid>
             </Grid>

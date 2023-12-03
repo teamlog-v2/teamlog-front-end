@@ -22,7 +22,6 @@ import { makeStyles } from '@mui/styles';
 import React, { useContext, useEffect, useState } from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
 import AuthContext, { setAccessToken } from '../contexts/auth';
-import BeamsClientContext from '../contexts/beamsClient';
 import ProjectListContainer from '../project/ProjectListContainer';
 import UserList from './UserList';
 import {
@@ -73,8 +72,7 @@ const MyPage = ({ match }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [anchorEl, setAnchorEl] = useState(null);
   const [alertOpen, setAlertOpen] = useState(false);
-  const [id, setContextId, profileImgPath] = useContext(AuthContext);
-  const [client, setClient] = useContext(BeamsClientContext);
+  const [setContextId] = useContext(AuthContext);
 
   const [user, setUser] = useState({
     isMe: false,
@@ -245,6 +243,10 @@ const MyPage = ({ match }) => {
           <Grid item xs={12} align="center">
             <Avatar
               className={classes.large}
+              sx={{
+                width: (theme) => theme.spacing(15),
+                height: (theme) => theme.spacing(15),
+              }}
               src={
                 user.profileImgPath
               }

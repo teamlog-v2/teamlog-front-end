@@ -6,10 +6,9 @@ import {
   Card,
   CircularProgress,
   Fab,
-  FormControl,
   Grid,
   InputBase,
-  Select,
+  NativeSelect,
   Typography
 } from '@mui/material';
 import Container from '@mui/material/Container';
@@ -228,22 +227,17 @@ const PostMain = (props) => {
                 justify="flex-end"
                 xs={12}
               >
-                <FormControl
-                  variant="outlined"
-                  style={{ height: 30, width: 120 }}
+                <NativeSelect
+                  native
+                  onChange={(event) => {
+                    setOrder(event.target.value);
+                  }}
+                  name="filter"
+                  style={{ height: 30, width: 120 }} s
                 >
-                  <Select
-                    native
-                    onChange={(event) => {
-                      setOrder(event.target.value);
-                    }}
-                    name="filter"
-                    style={{ height: 30, width: 120 }}
-                  >
-                    <option value="1">최신 순</option>
-                    <option value="-1">오래된 순</option>
-                  </Select>
-                </FormControl>
+                  <option value="1">최신 순</option>
+                  <option value="-1">오래된 순</option>
+                </NativeSelect>
               </Grid>
               <Grid className={classes.children} item>
                 <Typography>

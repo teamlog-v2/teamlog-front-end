@@ -146,7 +146,6 @@ const PostForm = (props) => {
           UpdatePostNotification(userId, id, postId);
           updatePost(postId, result);
           updateOpen(false);
-          return;
         }
       } catch (error) {
         console.log(error);

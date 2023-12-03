@@ -63,7 +63,7 @@ const ImageContent = ({ file }) => {
         <img src={convertResourceUrl(fileDownloadUri)} width="100%" />
       </div>
     </ResponsiveDialog>
-    </>
+  </>
   );
 };
 
@@ -83,10 +83,10 @@ const Video = ({ file, compressed }) => {
   return notSupportedFormat ? (
     <Box>
       <Grid className={!compressed ? classes.align : classes.compressed}
-      container xs={12}
-      alignItems="center"
-      justify="center" 
-      direction="column">
+        container xs={12}
+        alignItems="center"
+        justify="center"
+        direction="column">
         <VideoCallRounded fontSize="large" />
         {fileName}
         <span style={{ opacity: 0.6, margin: '1%' }}>(브라우저에서 지원하지않는 형식입니다)</span>
@@ -107,7 +107,7 @@ const Video = ({ file, compressed }) => {
           <source src={convertResourceUrl(url)}></source>
         </video>
       </div>
-  </ResponsiveDialog>
+    </ResponsiveDialog>
   </>
   )
 };

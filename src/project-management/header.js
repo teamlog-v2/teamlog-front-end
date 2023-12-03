@@ -1,16 +1,16 @@
 import SettingsIcon from '@mui/icons-material/Settings';
 import {
+  Box,
   Button, Grid,
+  Paper,
+  Tab,
+  Tabs,
   ThemeProvider,
+  Toolbar,
+  Typography,
   alpha,
 } from '@mui/material';
 
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Tab from '@mui/material/Tab';
-import Tabs from '@mui/material/Tabs';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import { createTheme } from '@mui/material/styles'; // Import from '@mui/material/styles'
 import { makeStyles } from '@mui/styles';
 import PropTypes from 'prop-types';
@@ -233,7 +233,7 @@ const Header = ({ sections, updateRelation }) => {
           <Grid container item xs={2} sm={1} justify="center" alignItems="center">
             {userId === null ?
               (<></>) :
-        (<TopButton projectId={projectId} isProjectLoaded={isProjectLoaded} relation={relation} />)}
+              (<TopButton projectId={projectId} isProjectLoaded={isProjectLoaded} relation={relation} />)}
           </Grid>
         </Grid>
       </Toolbar>
