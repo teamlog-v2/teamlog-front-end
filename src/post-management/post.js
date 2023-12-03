@@ -1,21 +1,21 @@
 import {
-    Delete,
-    Edit,
-    History,
-    MoreVert
+  Delete,
+  Edit,
+  History,
+  MoreVert
 } from '@mui/icons-material';
 import RoomIcon from '@mui/icons-material/Room';
 import {
-    Button,
-    Card,
-    Chip,
-    Dialog,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-    Divider,
-    Grid,
-    IconButton
+  Button,
+  Card,
+  Chip,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Divider,
+  Grid,
+  IconButton
 } from '@mui/material';
 import Box from '@mui/material/Box';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
@@ -27,10 +27,10 @@ import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 import { makeStyles } from '@mui/styles';
 import React, {
-    useCallback,
-    useEffect,
-    useRef,
-    useState
+  useCallback,
+  useEffect,
+  useRef,
+  useState
 } from 'react';
 import Carousel from 'react-material-ui-carousel';
 import { useMediaQuery } from 'react-responsive';
@@ -38,7 +38,7 @@ import './carousel-theme.css';
 import './carousel.css';
 
 import { Route } from 'react-router';
-import CommentList from '../comment/commentlist';
+import CommentList from '../comment/CommentList';
 import ResponsiveDialog from '../organisms/ResponsiveDialog';
 import PostFormPage from '../pages/PostFormPage';
 import MyPage from '../user/MyPage';
@@ -55,8 +55,8 @@ import { UserId, UserImage } from './user';
  * visible 한지 반환
  */
 const canAccess = (relation, modifier) => (
-    modifier === 'PUBLIC' || relation === 'MEMBER' || relation === 'MASTER'
-  );
+  modifier === 'PUBLIC' || relation === 'MEMBER' || relation === 'MASTER'
+);
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -483,21 +483,21 @@ export const Post = (props) => {
                 <Grid className={classes.children}>
                   <Grid container direction="row" spacing={1}>
                     {content.hashtags.map((item, index) => (
-                        <Grid item>
-                          <Chip
-                            className="tags"
-                            key={index}
-                            label={`#${item}`}
-                            variant="outlined"
-                            size="small"
-                            onClick={() => {
-                              // handleChipClick(index);
-                              // handleToggle(index);
-                            }}
-                            color="primary"
-                          />
-                        </Grid>
-                      ))}
+                      <Grid item>
+                        <Chip
+                          className="tags"
+                          key={index}
+                          label={`#${item}`}
+                          variant="outlined"
+                          size="small"
+                          onClick={() => {
+                            // handleChipClick(index);
+                            // handleToggle(index);
+                          }}
+                          color="primary"
+                        />
+                      </Grid>
+                    ))}
                   </Grid>
                 </Grid>
               ) : null}
@@ -720,21 +720,21 @@ export const CompressedPost = (props) => {
               <Grid className={classes.children}>
                 <Grid container direction="row" spacing={1}>
                   {post.hashtags.map((item, index) => (
-                      <Grid item>
-                        <Chip
-                          className="tags"
-                          key={index}
-                          label={`#${item}`}
-                          variant="outlined"
-                          size="small"
-                          onClick={() => {
-                            // handleChipClick(index);
-                            // handleToggle(index);
-                          }}
-                          color="primary"
-                        />
-                      </Grid>
-                    ))}
+                    <Grid item>
+                      <Chip
+                        className="tags"
+                        key={index}
+                        label={`#${item}`}
+                        variant="outlined"
+                        size="small"
+                        onClick={() => {
+                          // handleChipClick(index);
+                          // handleToggle(index);
+                        }}
+                        color="primary"
+                      />
+                    </Grid>
+                  ))}
                 </Grid>
               </Grid>
             ) : null}

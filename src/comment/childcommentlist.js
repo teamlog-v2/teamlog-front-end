@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import React, { useCallback, useEffect, useState } from 'react';
-import Comment from './comment';
-import { GetChildComment } from './commentapi';
+import Comment from './Comment';
+import { GetChildComment } from './commentApi';
 
 const ChildCommentList = (props) => {
   const { projectId, postId, commentId, commentList } = props;

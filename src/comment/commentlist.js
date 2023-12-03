@@ -6,10 +6,10 @@ import {
   useEffect,
   useState
 } from 'react';
-import ChildCommentList from './childcommentlist';
-import Comment from './comment';
-import { GetComment } from './commentapi';
-import CommentForm from './commentform';
+import Comment from './Comment';
+import CommentForm from './CommentForm';
+import { GetComment } from './commentApi';
+import ChildCommentList from './ChildCommentList';
 
 const CommentList = ({ setCommentCounter, projectId, postId, type }) => {
   const [commentList, setCommentList] = useState([]);

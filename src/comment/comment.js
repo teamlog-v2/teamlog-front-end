@@ -10,8 +10,8 @@ import { Link } from 'react-router-dom';
 import AuthContext from '../contexts/auth';
 import { DateInfo } from '../post-management/datetime';
 import { UserId, UserImage } from '../post-management/user';
-import { DeleteComment } from './commentapi';
-import CommentForm from './commentform';
+import CommentForm from './CommentForm';
+import { DeleteComment } from './commentApi';
 
 const useStyles = makeStyles((theme) => ({
   more: {
@@ -68,38 +68,38 @@ const Content = (props) => {
   const stringSplit = contents.split(`\n`);
 
   return (
-   // <Box display={visibility}>
-   <>
-      <Grid className={classes.commentGrid} item container direction="column" style={{ wordBreak: 'break-all'}}>
-      {/* {writer}&nbsp; */}
+    // <Box display={visibility}>
+    <>
+      <Grid className={classes.commentGrid} item container direction="column" style={{ wordBreak: 'break-all' }}>
+        {/* {writer}&nbsp; */}
         {stringSplit
-        ? stringSplit.map((string, index) => {
-          const wordSplit = string.split(' ');
-          return <Grid container item alignItems="center">
-            {index === 0 ? (writer) : <></>}
-          {
-            wordSplit.map((word) => 
-              (word[0] === '@' && tagList.includes(word.split('@')[1])) ? 
-                <Link
-                to={`/accounts/${word.split('@')[1]}`}
-                style={{ textDecoration: 'none', cursor: 'pointer' }}
-                >
-                  <span style={{ color: '#593875', fontWeight: 600 }}>{word.split('@')[1]}&nbsp;</span>
-                </Link> 
-              : (<span>{word}&nbsp;</span>)
-            )
+          ? stringSplit.map((string, index) => {
+            const wordSplit = string.split(' ');
+            return <Grid container item alignItems="center">
+              {index === 0 ? (writer) : <></>}
+              {
+                wordSplit.map((word) =>
+                  (word[0] === '@' && tagList.includes(word.split('@')[1])) ?
+                    <Link
+                      to={`/accounts/${word.split('@')[1]}`}
+                      style={{ textDecoration: 'none', cursor: 'pointer' }}
+                    >
+                      <span style={{ color: '#593875', fontWeight: 600 }}>{word.split('@')[1]}&nbsp;</span>
+                    </Link>
+                    : (<span>{word}&nbsp;</span>)
+                )
+              }
+            </Grid>
           }
-          </Grid>
-        }
           )
-        : []}
+          : []}
         <Grid container item direction="row" style={{ fontSize: 13, display: 'flex', gap: '1%' }} alignItems="center">
           {writeTime}
           {funcs}
         </Grid>
       </Grid>
     </>
-  // </Box>
+    // </Box>
   );
 };
 
@@ -159,72 +159,72 @@ const Comment = (props) => {
                 <UserImage imgPath={writer.profileImgPath} />
               </Grid>
               <Content
-                  writer={(<UserId userId={writer.id} />)}
-                  writeTime={<DateInfo dateTime={writeTime} />}
-                  funcs={(<>
-                    {type === "parent" && id && (<span
-                          style={{ cursor: 'pointer' }}
-                          onClick={() => {
-                            setForUpdate(false);
-                            if (visibility.form === 'none') {
-                              setVisibility({
-                                form: 'block',
-                                content: 'block', // 대댓글 -> 수정 전환 대비
-                              });
-                            } else if (visibility.form === 'block' && visibility.content === 'none') {
-                              setVisibility({
-                                form: 'block',
-                                content: 'block',
-                              });
-                            } else {
-                              setVisibility({
-                                form: 'none',
-                                content: 'block',
-                              });
-                            }
-                          }}
-                        >
-                          답글달기&nbsp;
-                        </span>)}
-                        {
-                          writer.id === id && (<>
-                        <span
-                          style={{ cursor: 'pointer' }}
-                          onClick={async () => {
-                            if (visibility.content === 'block') {
-                              setForUpdate(true);
-                              setVisibility({
-                                form: 'block',
-                                content: 'none',
-                              });
-                            } else {
-                              setForUpdate(false);
-                              setVisibility({
-                                form: 'none',
-                                content: 'block',
-                              });
-                            }
-                          }}
-                        >
-                          수정하기&nbsp;
-                        </span>
-                        <span
-                          style={{ cursor: 'pointer' }}
-                          onClick={async () => {
-                            if (window.confirm('정말로 삭제하시겠습니까?')) {
-                              const status = await DeleteComment(commentId);
-                              if (status === 200) {
-                                  renewCommentList(-1);
-                              }
-                            }
-                          }}
-                        >
-                          삭제하기&nbsp;
-                        </span>
-                        </>)
+                writer={(<UserId userId={writer.id} />)}
+                writeTime={<DateInfo dateTime={writeTime} />}
+                funcs={(<>
+                  {type === "parent" && id && (<span
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => {
+                      setForUpdate(false);
+                      if (visibility.form === 'none') {
+                        setVisibility({
+                          form: 'block',
+                          content: 'block', // 대댓글 -> 수정 전환 대비
+                        });
+                      } else if (visibility.form === 'block' && visibility.content === 'none') {
+                        setVisibility({
+                          form: 'block',
+                          content: 'block',
+                        });
+                      } else {
+                        setVisibility({
+                          form: 'none',
+                          content: 'block',
+                        });
                       }
-                  </>)
+                    }}
+                  >
+                    답글달기&nbsp;
+                  </span>)}
+                  {
+                    writer.id === id && (<>
+                      <span
+                        style={{ cursor: 'pointer' }}
+                        onClick={async () => {
+                          if (visibility.content === 'block') {
+                            setForUpdate(true);
+                            setVisibility({
+                              form: 'block',
+                              content: 'none',
+                            });
+                          } else {
+                            setForUpdate(false);
+                            setVisibility({
+                              form: 'none',
+                              content: 'block',
+                            });
+                          }
+                        }}
+                      >
+                        수정하기&nbsp;
+                      </span>
+                      <span
+                        style={{ cursor: 'pointer' }}
+                        onClick={async () => {
+                          if (window.confirm('정말로 삭제하시겠습니까?')) {
+                            const status = await DeleteComment(commentId);
+                            if (status === 200) {
+                              renewCommentList(-1);
+                            }
+                          }
+                        }}
+                      >
+                        삭제하기&nbsp;
+                      </span>
+                    </>)
                   }
+                </>)
+                }
                 visibility={visibility.content}
                 contents={contents}
                 tagList={commentMentions}
@@ -242,7 +242,7 @@ const Comment = (props) => {
           contents={contents}
           forUpdate={forUpdate}
           setForUpdate={setForUpdate}
-          parentWriterId={writer.id} 
+          parentWriterId={writer.id}
         />
       </Box>
     </Box>

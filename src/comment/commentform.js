@@ -18,7 +18,7 @@ import {
 import AuthContext from '../contexts/auth';
 import { GetProjectMembers } from '../project-management/projectapi';
 import { convertResourceUrl } from '../utils';
-import { CreateComment, /* GetComment, */ UpdateComment } from './commentapi';
+import { CreateComment, /* GetComment, */ UpdateComment } from './commentApi';
 
 const useStyles = makeStyles(() => ({
   more: {
