@@ -1,11 +1,11 @@
 import { React, useState } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Header from './header';
-import ProjectMain from './projectmain';
+import ProjectMain from './ProjectMain';
 import PostMain from './postmain';
 import MemberTab from './MemberTab';
 import TaskContainer from '../task/TaskContainer';
-import ProjectFollower from './projectfollower';
+import ProjectFollower from './ProjectFollower';
 import ProjectManagementPage from '../pages/ProjectManagementPage';
 
 export default function Project() {

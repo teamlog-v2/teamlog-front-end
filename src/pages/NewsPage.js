@@ -1,18 +1,18 @@
 import { Reply } from '@mui/icons-material';
 import {
-    Box,
-    Button,
-    Card,
-    CircularProgress,
-    Divider,
-    IconButton,
-    Typography
+  Box,
+  Button,
+  Card,
+  CircularProgress,
+  Divider,
+  IconButton,
+  Typography
 } from '@mui/material';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import AuthContext from '../contexts/auth';
-import { DateInfo } from '../post-management/datetime';
-import { CompressedPost } from '../post-management/post';
+import { DateInfo } from '../global/datetime';
+import { CompressedPost } from '../post/Post';
 
 // 1. 프로젝트 2. 게시물 (3. 댓글)
 // 태스크
@@ -247,8 +247,8 @@ export default function NewsPage() {
   return (
     <Template bgcolor="#F8F8F8">
       {invitations.length === 0 &&
-      invitations.length === 0 &&
-      units.length === 0 ? (
+        invitations.length === 0 &&
+        units.length === 0 ? (
         <>
           <Typography variant="h3" color="primary">
             😅 최근 소식이 없네요...

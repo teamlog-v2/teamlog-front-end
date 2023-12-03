@@ -5,9 +5,8 @@ import {
   CardMedia,
   Typography
 } from '@mui/material';
-import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { ManufactureDate } from '../post-management/datetime';
+import { ManufactureDate } from '../global/datetime';
 import { convertResourceUrl } from '../utils';
 
 const ProjectItem = ({ project }) => {

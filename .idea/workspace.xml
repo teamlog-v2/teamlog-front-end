@@ -40,16 +40,16 @@
       <change beforePath="$PROJECT_DIR$/src/pages/SearchPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/SearchPage.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/SettingPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/SettingPage.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/likerListPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/likerListPage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/post-management/counter.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/post-management/counter.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/post-management/datetime.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/post-management/datetime.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/post-management/fileList.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/post-management/fileList.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/post-management/friendlist.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/post-management/friendlist.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/post-management/media.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/post-management/media.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/post-management/post.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/post-management/post.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/post-management/postlist.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/post-management/postlist.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/post-management/tag.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/post-management/tag.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/post-management/updateHistory.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/post-management/updateHistory.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/post-management/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/post-management/user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/post/counter.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/post/counter.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/post/datetime.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/post/datetime.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/post/fileList.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/post/fileList.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/post/friendlist.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/post/friendlist.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/post/media.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/post/media.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/post/post.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/post/post.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/post/postlist.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/post/postlist.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/post/tag.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/post/tag.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/post/updateHistory.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/post/updateHistory.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/post/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/post/user.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/project-management/MemberTab.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project-management/MemberTab.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/project-management/ProjectMemberManagement.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project-management/ProjectMemberManagement.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/project-management/ProjectSetting.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project-management/ProjectSetting.js" afterDir="false" />

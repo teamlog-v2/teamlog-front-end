@@ -9,14 +9,13 @@ import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 import { makeStyles } from '@mui/styles';
 import {
-  React,
   useContext,
   useEffect,
   useRef,
-  useState,
+  useState
 } from 'react';
 import AuthContext from '../contexts/auth';
-import { GetProjectMembers } from '../project-management/projectapi';
+import { GetProjectMembers } from '../project-management/projectApi';
 import { convertResourceUrl } from '../utils';
 import { CreateComment, /* GetComment, */ UpdateComment } from './commentApi';
 

@@ -2,7 +2,7 @@ import { Backspace, Close, LocationOn } from '@mui/icons-material';
 import { Skeleton } from '@mui/lab';
 import { Divider, Grid, InputAdornment, Paper, TextField, Tooltip } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import AuthContext from '../contexts/auth';
 import AccessModifier from '../organisms/AccessModifier';
@@ -14,8 +14,8 @@ import PlacesSearchApi from '../organisms/PlacesSearchApi';
 import PostCreator from '../organisms/PostCreator';
 import ThumbnailList from '../organisms/ThumbnailList';
 import Uploader from '../organisms/Uploader';
-import { UpdatePostNotification } from '../post-management/postapi';
 import { detectSupportFormat, getTypeofFile, resizeImage } from '../utils';
+import { UpdatePostNotification } from './postApi';
 
 const useDeleteData = () => {
   const [deletedList, setDeletedList] = useState([]);

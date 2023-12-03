@@ -9,7 +9,7 @@ import {
   Typography
 } from '@mui/material';
 import { withStyles } from '@mui/styles';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { convertResourceUrl } from '../utils';
 import {
@@ -19,7 +19,7 @@ import {
   InvitationAccept,
   LeaveProject,
   RefuseProject,
-} from './projectapi';
+} from './projectApi';
 
 const DeleteButton = withStyles({
   root: {

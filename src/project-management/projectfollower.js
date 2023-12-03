@@ -1,11 +1,11 @@
 import { Avatar, Box, Button, Card, CircularProgress, Container, Grid, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Redirect, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import AuthContext from '../contexts/auth';
 import { convertResourceUrl } from '../utils';
-import { FollowProject, FollowProjectNotification, GetFollowProjects, GetProjectFollowers, UnFollowProject } from './projectapi';
+import { FollowProject, FollowProjectNotification, GetFollowProjects, GetProjectFollowers, UnFollowProject } from './projectApi';
 
 const useStyles = makeStyles(() => ({
   profileImg: {
@@ -121,23 +121,23 @@ const ProjectFollower = () => {
     );
   }
 
-    return (
-      <Container maxWidth="md" style={{ marginTop: '2em', marginBottom: '2em' }}>
-        <Container>
-          <Grid container>
-            <Grid item style={{ margin: '1em 0' }} xs={9} sm={10}>
-              <Typography variant="h6">⭐ 팔로워</Typography>
-            </Grid>
-            {userId === null ? (<></>) : (
-              <Grid item style={{ margin: '1em 0' }} xs={3} sm={2}>
-                {isFollowing ? (
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    fullWidth
-                    onClick={Unfollow}
-                  >팔로잉
-                  </Button>
+  return (
+    <Container maxWidth="md" style={{ marginTop: '2em', marginBottom: '2em' }}>
+      <Container>
+        <Grid container>
+          <Grid item style={{ margin: '1em 0' }} xs={9} sm={10}>
+            <Typography variant="h6">⭐ 팔로워</Typography>
+          </Grid>
+          {userId === null ? (<></>) : (
+            <Grid item style={{ margin: '1em 0' }} xs={3} sm={2}>
+              {isFollowing ? (
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  fullWidth
+                  onClick={Unfollow}
+                >팔로잉
+                </Button>
               ) : (
                 <Button
                   variant="contained"
@@ -147,41 +147,41 @@ const ProjectFollower = () => {
                 >팔로우
                 </Button>
               )}
-              </Grid>
-)}
-          </Grid>
-          <Grid container spacing={2}>
-            { followers.length > 0 ? (followers.map((member) => (
-              <Grid key={member.id} item sm={6} xs={12}>
-                <Card elevation={2}>
-                  <Box display="flex" flexDirection="row">
-                    <Box flexGrow={1}>
-                      <Link
-                        to={`/accounts/${member.id}`}
-                        style={{ textDecoration: 'none' }}
-                      >
-                        <Box display="flex" alignItems="center">
-                          <Avatar
-                            className={classes.profileImg}
-                            src={convertResourceUrl(member.profileImgPath)}
-                          />
-                          <Typography variant="body1" color="textPrimary">
-                            {member.name}
-                          </Typography>
-                          <Typography variant="body1" color="textPrimary">
-                            ({member.id})
-                          </Typography>
-                        </Box>
-                      </Link>
-                    </Box>
+            </Grid>
+          )}
+        </Grid>
+        <Grid container spacing={2}>
+          {followers.length > 0 ? (followers.map((member) => (
+            <Grid key={member.id} item sm={6} xs={12}>
+              <Card elevation={2}>
+                <Box display="flex" flexDirection="row">
+                  <Box flexGrow={1}>
+                    <Link
+                      to={`/accounts/${member.id}`}
+                      style={{ textDecoration: 'none' }}
+                    >
+                      <Box display="flex" alignItems="center">
+                        <Avatar
+                          className={classes.profileImg}
+                          src={convertResourceUrl(member.profileImgPath)}
+                        />
+                        <Typography variant="body1" color="textPrimary">
+                          {member.name}
+                        </Typography>
+                        <Typography variant="body1" color="textPrimary">
+                          ({member.id})
+                        </Typography>
+                      </Box>
+                    </Link>
                   </Box>
-                </Card>
-              </Grid>
+                </Box>
+              </Card>
+            </Grid>
           ))) : (<Grid item>프로젝트의 첫 번째 팔로워가 되어보세요!</Grid>)}
-          </Grid>
-        </Container>
+        </Grid>
       </Container>
-);
+    </Container>
+  );
 };
 
 export default ProjectFollower;

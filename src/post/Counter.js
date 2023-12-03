@@ -3,12 +3,12 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { Box, Tooltip } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { React, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import AuthContext from '../contexts/auth';
 import ResponsiveDialog from '../organisms/ResponsiveDialog';
 import LikerList from '../pages/likerListPage';
-import './heart.css';
-import { CreateLiker, DeleteLiker, GetLiker } from './postlikeapi';
+import './css/heart.css';
+import { CreateLiker, DeleteLiker, GetLiker } from './postLikeApi';
 
 const useStyles = makeStyles(() => ({
   likerCursor: {
@@ -84,7 +84,7 @@ export const LikerCounter = (props) => {
   };
 
   const TooltipTitle = () => {
-    if (likers.length === 0) {
+  if (likers.length === 0) {
       return '가장 먼저 좋아요를 눌러보세요!';
     }
     if (likers.length === 1) {

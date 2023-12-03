@@ -1,15 +1,15 @@
 import { Close, Fullscreen, FullscreenExit } from '@mui/icons-material';
 import {
-    Box,
-    Card,
-    Fab,
-    Typography
+  Box,
+  Card,
+  Fab,
+  Typography
 } from '@mui/material';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { Link, useParams } from 'react-router-dom';
-import { DateInfo } from '../post-management/datetime';
-import { CompressedPost } from '../post-management/post';
+import { DateInfo } from '../global/datetime';
+import { CompressedPost } from '../post/Post';
 
 function cmpTimeStr(a, b) {
   return new Date(b) - new Date(a);

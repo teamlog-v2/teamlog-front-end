@@ -14,12 +14,12 @@ import {
 import { createTheme } from '@mui/material/styles'; // Import from '@mui/material/styles'
 import { makeStyles } from '@mui/styles';
 import PropTypes from 'prop-types';
-import { React, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link, Redirect, useLocation, useParams } from 'react-router-dom';
 import AuthContext from '../contexts/auth';
 import ErrorContext from '../contexts/error';
 import { useFetchData } from '../hooks/hooks';
-import { ApplyProject, InvitationAccept } from './projectapi';
+import { ApplyProject, InvitationAccept } from './projectApi';
 
 const useStyles = makeStyles((theme) => ({
   root: {

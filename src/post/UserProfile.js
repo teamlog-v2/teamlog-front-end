@@ -40,16 +40,5 @@ const UserId = (props) => {
   );
 };
 
-// const UserInfo = (props) => {
-//   const classes = useStyles();
-//   const { userId, imgWidth, imgHeight, imgPath, fontSize } = props;
-//   return (
-//     <Grid container className={classes.user} alignItems="center">
-//       <UserImage imgWidth={imgWidth} imgHeight={imgHeight} imgPath={imgPath} />
-//       <UserId userId={userId} fontSize={fontSize} />
-//     </Grid>
-//   );
-// };
-
 export { UserId, UserImage };
 

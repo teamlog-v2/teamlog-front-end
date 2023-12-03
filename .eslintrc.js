@@ -4,6 +4,10 @@ module.exports = {
     es2021: true,
   },
   extends: ['airbnb-base', 'prettier', 'plugin:react/recommended'],
+  settings:
+  {
+    'import/extensions': ['.js', '.jsx', '.ts', '.tsx', '.mjs']
+  },
   plugins: ['react'],
   parser: 'babel-eslint',
   parserOptions: {
@@ -33,6 +37,7 @@ module.exports = {
     'react/jsx-one-expression-per-line': 0,
     'react/jsx-props-no-spreading': 0,
     'jsx-a11y/anchor-is-valid': 0,
+    'react/react-in-jsx-scope': 'off',
     'no-param-reassign': 'off', // 매개변수 재할당
     'no-global-assign': 'off', // 전역 변수 재할당
     'no-unused-vars': 'off', // 정의 후 사용하지 않은 변수

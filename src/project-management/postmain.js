@@ -13,15 +13,15 @@ import {
 } from '@mui/material';
 import Container from '@mui/material/Container';
 import { makeStyles } from '@mui/styles';
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import AuthContext from '../contexts/auth';
 import { useFetchData } from '../hooks/hooks';
 import useFetchPosts from '../hooks/useFetchPosts';
 import HashtagChooser from '../organisms/HashtagChooser';
 import ResponsiveDialog from '../organisms/ResponsiveDialog';
-import PostFormPage from '../pages/PostFormPage';
-import Postlist from '../post-management/postlist';
+import PostFormPage from '../post/PostFormPage';
+import Postlist from '../post/PostList';
 
 const useStyles = makeStyles((theme) => ({
   /* 반응형 스타일 */

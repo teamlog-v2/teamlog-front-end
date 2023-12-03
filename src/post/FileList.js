@@ -53,27 +53,4 @@ const FileList = ({ files }) => {
     );
 };
 
-// const FileList = ({ files }) => {
-//   const classes = useStyles();
-//   return (
-//     <Grid className={classes.root}>
-//       {
-//       files.map((file) => (
-//         <Grid container alignItems="center">
-//           <div>
-//             <Attachment style={{ height: '15px' }} />
-//             <a
-//               href={file.fileDownloadUri}
-//               style={{ color: 'black', textDecoration: 'none' }}
-//             >
-//               {file.fileName}
-//             </a>
-//           </div>
-//         </Grid>
-//       ))
-//       }
-//     </Grid>
-//     );
-// };
-
 export default FileList;

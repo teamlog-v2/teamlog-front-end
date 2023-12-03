@@ -5,15 +5,15 @@ import {
   Typography
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 // import Fab from '@mui/material/Fab';
 // import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import Container from '@mui/material/Container';
 import { useParams } from 'react-router';
 import { useFetchData } from '../hooks/hooks';
 import useFetchPosts from '../hooks/useFetchPosts';
-import { CompressedPost } from '../post-management/post';
-import Postlist from '../post-management/postlist';
+import { CompressedPost } from '../post/Post';
+import Postlist from '../post/PostList';
 import Introduction from './introduction';
 
 const useStyles = makeStyles((theme) => ({
@@ -124,25 +124,25 @@ const ProjectMain = (props) => {
           <Container disableGutters>
             {posts.length === 0 ? (
               <Grid
-              container
-              justify="center"
-              alignItems="center"
-              style={{ height: '50vh', fontWeight: 600 }}
-            >
-              아직 등록된 글이 없어요. 😢
-            </Grid>
-            ) : (
-              <Postlist posts={posts} Component={CompressedPost} relation={relation} />
-              )}
-              <Grid
                 container
                 justify="center"
                 alignItems="center"
-                style={{ height: '20vh' }}
+                style={{ height: '50vh', fontWeight: 600 }}
               >
-                {isPostsLoading && <CircularProgress />}
+                아직 등록된 글이 없어요. 😢
               </Grid>
-            </Container>
+            ) : (
+              <Postlist posts={posts} Component={CompressedPost} relation={relation} />
+            )}
+            <Grid
+              container
+              justify="center"
+              alignItems="center"
+              style={{ height: '20vh' }}
+            >
+              {isPostsLoading && <CircularProgress />}
+            </Grid>
+          </Container>
         </Grid>
       </Container>
     </>

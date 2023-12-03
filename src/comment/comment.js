@@ -5,11 +5,11 @@ import {
 import {
   makeStyles,
 } from '@mui/styles';
-import React, { useCallback, useContext, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import AuthContext from '../contexts/auth';
-import { DateInfo } from '../post-management/datetime';
-import { UserId, UserImage } from '../post-management/user';
+import { DateInfo } from '../global/datetime';
+import { UserId, UserImage } from '../post/UserProfile';
 import CommentForm from './CommentForm';
 import { DeleteComment } from './commentApi';
 

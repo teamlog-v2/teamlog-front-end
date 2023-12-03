@@ -26,7 +26,7 @@ import MenuList from '@mui/material/MenuList';
 import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 import { makeStyles } from '@mui/styles';
-import React, {
+import {
   useCallback,
   useEffect,
   useRef,
@@ -34,22 +34,22 @@ import React, {
 } from 'react';
 import Carousel from 'react-material-ui-carousel';
 import { useMediaQuery } from 'react-responsive';
-import './carousel-theme.css';
-import './carousel.css';
+import './css/carousel-theme.css';
+import './css/carousel.css';
 
 import { Route } from 'react-router';
 import CommentList from '../comment/CommentList';
+import { DateInfo } from '../global/datetime';
 import ResponsiveDialog from '../organisms/ResponsiveDialog';
-import PostFormPage from '../pages/PostFormPage';
 import MyPage from '../user/MyPage';
 import { convertResourceUrl } from '../utils';
-import { CommentCounter, LikerCounter } from './counter';
-import { DateInfo } from './datetime';
-import FileList from './fileList';
-import { Media, Video } from './media';
-import { DeletePost } from './postapi';
-import UpdateHistory from './updateHistory';
-import { UserId, UserImage } from './user';
+import { CommentCounter, LikerCounter } from './Counter';
+import FileList from './FileList';
+import PostFormPage from './PostFormPage';
+import { Media, Video } from './PostMedia';
+import UpdateHistory from './PostUpdateHistory';
+import { UserId, UserImage } from './UserProfile';
+import { DeletePost } from './postApi';
 
 /** 관계와 접근제어자를 입력받아서
  * visible 한지 반환
