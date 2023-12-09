@@ -1,12 +1,12 @@
-import { React, useState } from 'react';
-import { Switch, Route } from 'react-router-dom';
-import Header from './header';
-import ProjectMain from './ProjectMain';
-import PostMain from './postmain';
-import MemberTab from './MemberTab';
-import TaskContainer from '../task/TaskContainer';
-import ProjectFollower from './ProjectFollower';
+import { useState } from 'react';
+import { Route, Switch } from 'react-router-dom';
 import ProjectManagementPage from '../pages/ProjectManagementPage';
+import TaskContainer from '../task/TaskContainer';
+import MemberTab from './MemberTab';
+import Header from './header';
+import PostMain from './postmain';
+import ProjectFollower from './projectfollower';
+import ProjectMain from './projectmain';
 
 export default function Project() {
   const sections = [

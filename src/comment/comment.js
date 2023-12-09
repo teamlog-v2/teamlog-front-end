@@ -10,8 +10,8 @@ import { Link } from 'react-router-dom';
 import AuthContext from '../contexts/auth';
 import { DateInfo } from '../global/datetime';
 import { UserId, UserImage } from '../post/UserProfile';
-import CommentForm from './CommentForm';
-import { DeleteComment } from './commentApi';
+import CommentForm from './commentform';
+import { DeleteComment } from './commentapi';
 
 const useStyles = makeStyles((theme) => ({
   more: {

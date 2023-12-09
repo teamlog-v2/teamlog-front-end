@@ -38,7 +38,7 @@ import './css/carousel-theme.css';
 import './css/carousel.css';
 
 import { Route } from 'react-router';
-import CommentList from '../comment/CommentList';
+import CommentList from '../comment/commentlist';
 import { DateInfo } from '../global/datetime';
 import ResponsiveDialog from '../organisms/ResponsiveDialog';
 import MyPage from '../user/MyPage';
