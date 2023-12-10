@@ -17,7 +17,7 @@ import {
 import AuthContext from '../contexts/auth';
 import { GetProjectMembers } from '../project-management/projectApi';
 import { convertResourceUrl } from '../utils';
-import { CreateComment,  UpdateComment } from './commentapi';
+import { CreateComment, UpdateComment } from './commentapi';
 
 const useStyles = makeStyles(() => ({
   more: {
@@ -46,7 +46,7 @@ const useStyles = makeStyles(() => ({
 const CommentForm = (props) => {
   const classes = useStyles();
   const {
-    id,
+    commentId,
     postId,
     projectId,
     renewCommentList,
@@ -72,7 +72,6 @@ const CommentForm = (props) => {
 
   useEffect(async () => {
     if (forUpdate) {
-      console.log(contents);
       setState({ ...state, userInput: contents });
     } else {
       setState({ ...state, userInput: '' });
@@ -252,7 +251,7 @@ const CommentForm = (props) => {
               if (forUpdate) {
                 // 댓글 수정
                 const status = await UpdateComment(
-                  id,
+                  commentId,
                   postId,
                   inputRef.current.value,
                   setSelectedUser(inputRef.current.value),
@@ -265,12 +264,8 @@ const CommentForm = (props) => {
                 }
               } else {
                 // 댓글 등록
-
-                /*
-                 * post writer id / comment writer id
-                 */
                 const status = await CreateComment(
-                  id, // parent
+                  commentId,
                   postId,
                   inputRef.current.value,
                   setSelectedUser(inputRef.current.value),
@@ -285,7 +280,6 @@ const CommentForm = (props) => {
           >
             작성
           </Button>
-          {/* </ThemeProvider> */}
         </Box>
       </Box>
       <Popper

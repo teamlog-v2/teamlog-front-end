@@ -11,16 +11,18 @@ import CommentForm from './commentform';
 // import ChildCommentList from './childcommentlist';
 
 const CommentList = ({ setCommentCounter, projectId, postId, type }) => {
+  const chunkSize = 5;
+
   const [commentList, setCommentList] = useState([]);
   const [moreVisibility, setMoreVisibility] = useState([]);
-  const [commentSize, setCommentSize] = useState(5); // 5의 배수
+  const [page, setPage] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isRenewed, setIsRenewed] = useState(true);
+  const [isRefreshed, setIsRefreshed] = useState(true);
 
-  const RenewCommentList = useCallback(async (counterEvent) => {
-    setIsRenewed(false);
-    const response = await GetComment(postId, commentSize);
-    setCommentList(response);
+  const refreshCommentList = useCallback(async (counterEvent) => {
+    setIsRefreshed(false);
+    const response = await GetComment(postId, page, chunkSize);
+    setCommentList([...commentList, ...response.content]);
     setCommentCounter(counterEvent);
 
     if (response.last) {
@@ -28,25 +30,26 @@ const CommentList = ({ setCommentCounter, projectId, postId, type }) => {
     } else {
       setMoreVisibility('block');
     }
-    setIsRenewed(true);
+    setIsRefreshed(true);
   });
 
   useEffect(async () => {
-    const response = await GetComment(postId, commentSize);
-    setCommentList(response);
+    const response = await GetComment(postId, page, chunkSize);
+
+    setCommentList([...commentList, ...response.content]);
     setIsLoaded(true);
     if (response.last) {
       setMoreVisibility('none');
     }
-  }, [postId, commentSize]);
+  }, [page]);
 
   return isLoaded ?
     (
       <>
-        {isRenewed ? (<></>) : (<LinearProgress />)}
+        {isRefreshed ? (<></>) : (<LinearProgress />)}
         {
-          commentList.content
-            ? commentList.content.map((item) => (
+          commentList
+            ? commentList.map((item) => (
               <Box key={item.id} padding='0 1.5%'>
                 <Comment
                   id={item.id}
@@ -56,7 +59,7 @@ const CommentList = ({ setCommentCounter, projectId, postId, type }) => {
                   commentMentions={item.commentMentions}
                   postId={postId}
                   writeTime={item.writeTime}
-                  renewCommentList={RenewCommentList}
+                  renewCommentList={refreshCommentList}
                   commentList={commentList}
                   childCommentCount={item.childCommentCount}
                   type="parent"
@@ -72,7 +75,7 @@ const CommentList = ({ setCommentCounter, projectId, postId, type }) => {
             tabIndex={0}
             style={{ fontSize: 13, cursor: 'pointer' }}
             onClick={async () => {
-              setCommentSize(commentSize + 5);
+              setPage(page + 1);
             }}
           >
             댓글 더 보기...
@@ -83,7 +86,7 @@ const CommentList = ({ setCommentCounter, projectId, postId, type }) => {
             parentCommentId={null}
             projectId={projectId}
             postId={postId}
-            renewCommentList={RenewCommentList}
+            renewCommentList={refreshCommentList}
           />
         )}
       </>

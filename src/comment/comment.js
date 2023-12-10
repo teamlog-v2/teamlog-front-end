@@ -125,10 +125,8 @@ const Comment = (props) => {
 
   const classes = useStyles();
 
-  const [visibility, setVisibility] = useState({
-    form: 'none',
-    content: 'block',
-  });
+  const [isFormVisible, setIsFormVisible] = useState(false);
+
   const [forUpdate, setForUpdate] = useState(false);
 
   const loadMoreCommentList = async () => {
@@ -147,10 +145,7 @@ const Comment = (props) => {
 
   const RenewCommentList = useCallback(async (counterEvent) => {
     renewCommentList(counterEvent);
-    setVisibility({
-      form: 'none',
-      content: 'block',
-    });
+    setIsFormVisible(false);
   });
 
   return (
@@ -169,22 +164,7 @@ const Comment = (props) => {
                   style={{ cursor: 'pointer' }}
                   onClick={() => {
                     setForUpdate(false);
-                    if (visibility.form === 'none') {
-                      setVisibility({
-                        form: 'block',
-                        content: 'block',
-                      });
-                    } else if (visibility.form === 'block' && visibility.content === 'none') {
-                      setVisibility({
-                        form: 'block',
-                        content: 'block',
-                      });
-                    } else {
-                      setVisibility({
-                        form: 'none',
-                        content: 'block',
-                      });
-                    }
+                    setIsFormVisible(!isFormVisible);
                   }}
                 >
                   답글달기&nbsp;
@@ -194,18 +174,12 @@ const Comment = (props) => {
                     <span
                       style={{ cursor: 'pointer' }}
                       onClick={async () => {
-                        if (visibility.content === 'block') {
-                          setForUpdate(true);
-                          setVisibility({
-                            form: 'block',
-                            content: 'none',
-                          });
-                        } else {
+                        if (isFormVisible) {
+                          setIsFormVisible(false);
                           setForUpdate(false);
-                          setVisibility({
-                            form: 'none',
-                            content: 'block',
-                          });
+                        } else {
+                          setIsFormVisible(true);
+                          setForUpdate(true);
                         }
                       }}
                     >
@@ -228,7 +202,6 @@ const Comment = (props) => {
                 }
               </>)
               }
-              visibility={visibility.content}
               contents={contents}
               tagList={commentMentions}
             />
@@ -261,7 +234,7 @@ const Comment = (props) => {
           </Grid>
         </Grid>
       </Box >
-      <Box display={visibility.form}>
+      <Box display={isFormVisible ? 'block' : 'none'}>
         <CommentForm
           id={id}
           projectId={projectId}
