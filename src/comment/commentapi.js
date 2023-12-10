@@ -62,9 +62,9 @@ export const GetComment = async (postId, size) => {
   return response;
 };
 
-export const GetChildComment = async (commentId, size) => {
+export const GetChildComment = async (commentId, page, size) => {
   const response = await fetch(
-    `/api/comments/${commentId}/child-comments?page=0&size=${size}`, {
+    `/api/comments/${commentId}/child-comments?page=${page}&size=${size}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Comment from './comment';
 import { GetChildComment } from './commentapi';
 
@@ -14,7 +14,7 @@ const ChildCommentList = (props) => {
   const [moreVisibility, setMoreVisibility] = useState('none');
 
   useEffect(async () => {
-    const response = await GetChildComment(commentId, commentState.size);
+    const response = await GetChildComment(commentId, 0, commentState.size);
 
     setChildCommentList(response);
     setCommentState(
@@ -32,7 +32,7 @@ const ChildCommentList = (props) => {
   }, [commentList, commentState.size]); // 부모 댓글 변경 및 개수 변화에 대한 useEffect
 
   const RenewCommentList = useCallback(async () => {
-    const response = await GetChildComment(commentId, commentState.size);
+    const response = await GetChildComment(commentId, 0, commentState.size);
 
     setChildCommentList(response);
     if (response.last && response.totalElements - commentState.size <= 0) {
@@ -66,9 +66,6 @@ const ChildCommentList = (props) => {
           size="small"
           tabIndex={0}
           style={{ fontSize: 13, cursor: 'pointer' }}
-          onKeyPress={() => {
-            console.log('헷^^');
-          }}
           onClick={async () => {
             setCommentState(
               {

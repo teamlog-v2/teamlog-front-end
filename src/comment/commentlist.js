@@ -1,15 +1,14 @@
 import { Skeleton } from '@mui/lab';
 import { Box, Grid, LinearProgress } from '@mui/material';
 import {
-  React,
   useCallback,
   useEffect,
   useState
 } from 'react';
 import Comment from './comment';
-import CommentForm from './commentform';
 import { GetComment } from './commentapi';
-import ChildCommentList from './childcommentlist';
+import CommentForm from './commentform';
+// import ChildCommentList from './childcommentlist';
 
 const CommentList = ({ setCommentCounter, projectId, postId, type }) => {
   const [commentList, setCommentList] = useState([]);
@@ -48,7 +47,7 @@ const CommentList = ({ setCommentCounter, projectId, postId, type }) => {
         {
           commentList.content
             ? commentList.content.map((item) => (
-              <Box key={item.id}>
+              <Box key={item.id} padding='0 1.5%'>
                 <Comment
                   id={item.id}
                   projectId={projectId}
@@ -59,13 +58,8 @@ const CommentList = ({ setCommentCounter, projectId, postId, type }) => {
                   writeTime={item.writeTime}
                   renewCommentList={RenewCommentList}
                   commentList={commentList}
+                  childCommentCount={item.childCommentCount}
                   type="parent"
-                />
-                <ChildCommentList
-                  projectId={projectId}
-                  postId={postId}
-                  commentId={item.id}
-                  commentList={commentList}
                 />
               </Box>
             ))
