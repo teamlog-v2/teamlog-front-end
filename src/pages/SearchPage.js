@@ -237,7 +237,7 @@ function RadioButton({ children, onClick, highlight, value, ...props }) {
       fullWidth
       variant="outlined"
       onClick={onClick}
-      color={highlight === value ? 'primary' : 'default'}
+      color={highlight === value ? 'primary' : 'inherit'}
       {...props}
     >
       {children}

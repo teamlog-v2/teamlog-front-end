@@ -148,7 +148,7 @@ import AuthContext from '../contexts/auth';
         <div style={{ display: 'flex' }}>
           <Button
             size="small"
-            color={isPrivate ? 'default' : 'primary'}
+            color={isPrivate ? 'inherit' : 'primary'}
             variant="outlined"
             // variant={isPrivate ? 'outlined' : 'contained'}
             disableElevation
@@ -162,7 +162,7 @@ import AuthContext from '../contexts/auth';
           </Button>
           <Button
             size="small"
-            color={!isPrivate ? 'default' : 'primary'}
+            color={!isPrivate ? 'inherit' : 'primary'}
             variant="outlined"
             // variant={!isPrivate ? 'outlined' : 'contained'}
             disableElevation

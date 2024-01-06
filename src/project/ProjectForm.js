@@ -8,7 +8,7 @@ import {
   Typography
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { useHistory } from 'react-router';
 import AuthContext from '../contexts/auth';
 
@@ -86,7 +86,6 @@ export default function ProjectForm({ teamIdVal = null, updateOpen }) {
         minWidth: '20em',
         maxWidth: '480px',
         padding: '1rem',
-        // textAlign: 'center',
       }}
     >
       <Backdrop open={isProcessing} className={classes.backdrop}>
@@ -141,9 +140,8 @@ export default function ProjectForm({ teamIdVal = null, updateOpen }) {
       <div style={{ display: 'flex' }}>
         <Button
           size="small"
-          color={isPrivate ? 'default' : 'primary'}
+          color={isPrivate ? 'inherit' : 'primary'}
           variant="outlined"
-          // variant={isPrivate ? 'outlined' : 'contained'}
           disableElevation
           startIcon={<LockOpen />}
           onClick={() => {
@@ -155,9 +153,8 @@ export default function ProjectForm({ teamIdVal = null, updateOpen }) {
         </Button>
         <Button
           size="small"
-          color={!isPrivate ? 'default' : 'primary'}
+          color={!isPrivate ? 'inherit' : 'primary'}
           variant="outlined"
-          // variant={!isPrivate ? 'outlined' : 'contained'}
           disableElevation
           startIcon={<Lock />}
           onClick={() => {

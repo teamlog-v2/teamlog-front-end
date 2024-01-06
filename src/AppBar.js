@@ -11,7 +11,7 @@ import {
   Slide,
   useScrollTrigger
 } from '@mui/material';
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import AuthContext, { setAccessToken } from './contexts/auth';
 import BeamsClientContext from './contexts/beamsClient';
