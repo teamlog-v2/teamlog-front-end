@@ -1,37 +1,35 @@
+import SettingsIcon from '@mui/icons-material/Settings';
+import { TabContext, TabList, TabPanel } from '@mui/lab';
 import {
-  Grid,
+  AppBar,
   Avatar,
   Box,
+  Button,
+  Container,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  Divider,
+  Grid,
+  IconButton,
   List,
   ListItem,
-  DialogContent,
-  Dialog,
-  DialogContentText,
   Popover,
-  IconButton,
-  Typography,
-  Container,
-  makeStyles,
-  Button,
-  Divider,
-  AppBar,
   Tab,
-} from '@material-ui/core';
-import { AlertTitle, TabContext, TabList, TabPanel } from '@material-ui/lab';
-import React, { useEffect, useState, useContext } from 'react';
+  Typography
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import React, { useContext, useEffect, useState } from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
-import SettingsIcon from '@material-ui/icons/Settings';
 import AuthContext, { setAccessToken } from '../contexts/auth';
-import { unsubscribe } from '../pusherUtils';
-import BeamsClientContext from '../contexts/beamsClient';
 import ProjectListContainer from '../project/ProjectListContainer';
 import UserList from './UserList';
 import {
-  getUser,
   deleteUser,
+  follow,
+  getUser,
   getUserFollower,
   getUserFollowing,
-  follow,
   unfollow,
 } from './userService';
 
@@ -74,8 +72,7 @@ const MyPage = ({ match }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [anchorEl, setAnchorEl] = useState(null);
   const [alertOpen, setAlertOpen] = useState(false);
-  const [id, setContextId, profileImgPath] = useContext(AuthContext);
-  const [client, setClient] = useContext(BeamsClientContext);
+  const [setContextId] = useContext(AuthContext);
 
   const [user, setUser] = useState({
     isMe: false,
@@ -112,7 +109,6 @@ const MyPage = ({ match }) => {
       const response = await deleteUser();
       if (response.status === 200) {
         localStorage.removeItem('access-token');
-        unsubscribe(client);
         setAccessToken('');
         setContextId(null);
         history.push('/');
@@ -247,6 +243,10 @@ const MyPage = ({ match }) => {
           <Grid item xs={12} align="center">
             <Avatar
               className={classes.large}
+              sx={{
+                width: (theme) => theme.spacing(15),
+                height: (theme) => theme.spacing(15),
+              }}
               src={
                 user.profileImgPath
               }

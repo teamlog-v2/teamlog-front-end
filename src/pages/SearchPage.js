@@ -1,4 +1,9 @@
 import {
+  CollectionsBookmark,
+  Group,
+  Search
+} from '@mui/icons-material';
+import {
   Avatar,
   Box,
   Button,
@@ -6,21 +11,13 @@ import {
   CircularProgress,
   Divider,
   InputAdornment,
-  makeStyles,
   TextField,
-  Typography,
-} from '@material-ui/core';
-import {
-  Apartment,
-  CollectionsBookmark,
-  Group,
-  Search,
-} from '@material-ui/icons';
+  Typography
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ProjectItem from '../project/ProjectItem';
-import { ManufactureDate } from '../post-management/datetime';
-import teamIcon from '../teamlogIcon.png';
 import { convertResourceUrl } from '../utils';
 
 export default function SearchPage() {
@@ -197,6 +194,8 @@ export default function SearchPage() {
               </>
             ));
           }
+
+          return <></>
         })()}
       </Box>
     </Template>

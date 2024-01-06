@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="8dc937e4-e480-4538-a748-0e23656f5dbf" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.eslintrc.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.prettierrc.js" beforeDir="false" afterPath="$PROJECT_DIR$/.prettierrc.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AppBar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppBar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comment/childcommentlist.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/comment/childcommentlist.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comment/comment.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/comment/comment.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comment/commentform.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/comment/commentform.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comment/commentlist.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/comment/commentlist.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/contexts/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/contexts/auth.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/global/LoginPopup.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/global/LoginPopup.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/global/SignupPopup.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/global/SignupPopup.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hooks/useFetchPosts.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/useFetchPosts.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/map/NewPostExplorer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/map/NewPostExplorer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/map/PostExplorer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/map/PostExplorer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/map/newMapPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/map/newMapPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/organisms/AccessModifier.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/organisms/AccessModifier.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/organisms/AttachmentList.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/organisms/AttachmentList.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/organisms/CommentModifier.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/organisms/CommentModifier.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/organisms/HashtagChooser.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/organisms/HashtagChooser.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/organisms/HashtagInput.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/organisms/HashtagInput.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/organisms/HashtagRecommender.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/organisms/HashtagRecommender.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/organisms/MediaUploader.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/organisms/MediaUploader.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/organisms/PlacesSearchApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/organisms/PlacesSearchApi.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/organisms/PostCreator.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/organisms/PostCreator.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/organisms/ProjectModifier.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/organisms/ProjectModifier.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/organisms/ResponsiveDialog.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/organisms/ResponsiveDialog.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/organisms/ThumbnailList.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/organisms/ThumbnailList.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/organisms/Uploader.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/organisms/Uploader.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/ErrorPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/ErrorPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/NewsPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/NewsPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/PostFormPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/PostFormPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/ProjectManagementPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/ProjectManagementPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/SearchPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/SearchPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/SettingPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/SettingPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/likerListPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/likerListPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/post/counter.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/post/counter.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/post/datetime.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/post/datetime.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/post/fileList.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/post/fileList.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/post/friendlist.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/post/friendlist.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/post/media.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/post/media.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/post/post.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/post/post.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/post/postlist.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/post/postlist.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/post/tag.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/post/tag.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/post/updateHistory.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/post/updateHistory.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/post/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/post/user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project-management/MemberTab.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project-management/MemberTab.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project-management/ProjectMemberManagement.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project-management/ProjectMemberManagement.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project-management/ProjectSetting.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project-management/ProjectSetting.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project-management/header.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project-management/header.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project-management/introduction.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project-management/introduction.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project-management/inviteesSelect.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project-management/inviteesSelect.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project-management/masterSelect.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project-management/masterSelect.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project-management/postmain.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project-management/postmain.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project-management/projectfollower.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project-management/projectfollower.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project-management/projectmain.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project-management/projectmain.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project-management/projectmanagement.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project-management/projectmanagement.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/ProjectForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/ProjectForm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/ProjectItem.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/ProjectItem.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/ProjectListContainer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/ProjectListContainer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/ProjectUpdateForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/ProjectUpdateForm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/task/TaskContainer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/task/TaskContainer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/task/TaskCreateForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/task/TaskCreateForm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/task/TaskItem.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/task/TaskItem.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/user/MyPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/user/MyPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/user/SignIn.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/user/SignIn.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/user/SignUp.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/user/SignUp.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/user/UserContainer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/user/UserContainer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/user/UserEditForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/user/UserEditForm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/user/UserList.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/user/UserList.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/user/UserSelect.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/user/UserSelect.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2YwZ9xROO8q8j3XgZKeaqSjx3f2" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/Users/jduckling_1024/project/teamlog-v2/teamlog-front-end",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "nodejs_package_manager_path": "yarn",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8dc937e4-e480-4538-a748-0e23656f5dbf" name="Changes" comment="" />
+      <created>1701438454591</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1701438454591</updated>
+      <workItem from="1701438457383" duration="868000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

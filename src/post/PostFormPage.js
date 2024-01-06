@@ -1,20 +1,21 @@
-import React, { useState, useRef, useEffect, useContext } from 'react';
-import { Grid, TextField, Paper, makeStyles, InputAdornment, Divider, Tooltip, Button, Card, ClickAwayListener, CardMedia, CircularProgress, Typography } from '@material-ui/core';
-import { Backspace, Close, LocationOn } from '@material-ui/icons';
+import { Backspace, Close, LocationOn } from '@mui/icons-material';
+import { Skeleton } from '@mui/lab';
+import { Divider, Grid, InputAdornment, Paper, TextField, Tooltip } from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { Skeleton } from '@material-ui/lab';
-import PlacesSearchApi from '../organisms/PlacesSearchApi';
-import ThumbnailList from '../organisms/ThumbnailList';
+import AuthContext from '../contexts/auth';
 import AccessModifier from '../organisms/AccessModifier';
-import HashtagInput from '../organisms/HashtagInput';
-import HashtagRecommender from '../organisms/HashtagRecommender';
-import PostCreator from '../organisms/PostCreator';
-import Uploader from '../organisms/Uploader';
 import AttachmentList from '../organisms/AttachmentList';
 import CommentModifier from '../organisms/CommentModifier';
+import HashtagInput from '../organisms/HashtagInput';
+import HashtagRecommender from '../organisms/HashtagRecommender';
+import PlacesSearchApi from '../organisms/PlacesSearchApi';
+import PostCreator from '../organisms/PostCreator';
+import ThumbnailList from '../organisms/ThumbnailList';
+import Uploader from '../organisms/Uploader';
 import { detectSupportFormat, getTypeofFile, resizeImage } from '../utils';
-import { UpdatePostNotification } from '../post-management/postapi';
-import AuthContext from '../contexts/auth';
+import { UpdatePostNotification } from './postApi';
 
 const useDeleteData = () => {
   const [deletedList, setDeletedList] = useState([]);
@@ -115,7 +116,7 @@ const PostForm = (props) => {
       const newMedia = mediaFiles.filter((file) => !file.id);
 
       const blobs = await Promise.all(newMedia.map(async ({ file, type, url }) => (
-      type === 'VIDEO' ? new Blob([file]) : resizeImage(file, url))));
+        type === 'VIDEO' ? new Blob([file]) : resizeImage(file, url))));
 
       newMedia.forEach(({ file }, index) => {
         const blobToFile = new File([blobs[index]], file.name, { type: file.type });
@@ -137,18 +138,17 @@ const PostForm = (props) => {
           body: formData,
           headers: {},
         });
-      if (res.status === 200) {
-        const result = await res.json();
-        console.log('성공적으로 수정');
-        console.log(id);
-        console.log('----------------');
-        UpdatePostNotification(userId, id, postId);
-        updatePost(postId, result);
-        updateOpen(false);
-        return;
-      }
-    } catch (error) {
-      console.log(error);
+        if (res.status === 200) {
+          const result = await res.json();
+          console.log('성공적으로 수정');
+          console.log(id);
+          console.log('----------------');
+          UpdatePostNotification(userId, id, postId);
+          updatePost(postId, result);
+          updateOpen(false);
+        }
+      } catch (error) {
+        console.log(error);
       }
     } else { // 등록로직 -> 부모 컴포넌트에 요청
       updateFormData(formData);
@@ -353,7 +353,7 @@ const PostForm = (props) => {
                 </Paper>
               </Grid>
             </Grid>
-            ) : null}
+          ) : null}
           <Grid container item xs={12}>
             {
               isLoaded ? (
@@ -393,7 +393,7 @@ const PostForm = (props) => {
         </Grid>
       </Grid>
     </>
-    );
+  );
 };
 
 export default PostForm;

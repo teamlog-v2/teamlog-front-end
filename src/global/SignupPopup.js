@@ -1,6 +1,5 @@
-import { Box, Button, TextField, Link as Anchor } from '@material-ui/core';
-import React, { useContext, useState } from 'react';
-import AuthContext from '../contexts/auth';
+import { Link as Anchor, Box, Button, TextField } from '@mui/material';
+import React, { useState } from 'react';
 import withGap from '../higherOrderComponents/withGap';
 import { createUser } from '../user/userService';
 

@@ -1,7 +1,8 @@
+import Attachment from '@mui/icons-material/Attachment';
+import { Chip, Tooltip } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import { makeStyles } from '@mui/styles';
 import React, { useState } from 'react';
-import Grid from '@material-ui/core/Grid';
-import Attachment from '@material-ui/icons/Attachment';
-import { Badge, Chip, makeStyles, Tooltip } from '@material-ui/core';
 import { convertDownloadUrl } from '../utils';
 
 const useStyles = makeStyles(() => ({
@@ -51,28 +52,5 @@ const FileList = ({ files }) => {
     </Grid>
     );
 };
-
-// const FileList = ({ files }) => {
-//   const classes = useStyles();
-//   return (
-//     <Grid className={classes.root}>
-//       {
-//       files.map((file) => (
-//         <Grid container alignItems="center">
-//           <div>
-//             <Attachment style={{ height: '15px' }} />
-//             <a
-//               href={file.fileDownloadUri}
-//               style={{ color: 'black', textDecoration: 'none' }}
-//             >
-//               {file.fileName}
-//             </a>
-//           </div>
-//         </Grid>
-//       ))
-//       }
-//     </Grid>
-//     );
-// };
 
 export default FileList;

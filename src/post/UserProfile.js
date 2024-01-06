@@ -1,6 +1,6 @@
+import { Avatar, Box } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import React from 'react';
-import { Avatar, Box } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import { convertResourceUrl } from '../utils';
 
@@ -40,15 +40,5 @@ const UserId = (props) => {
   );
 };
 
-// const UserInfo = (props) => {
-//   const classes = useStyles();
-//   const { userId, imgWidth, imgHeight, imgPath, fontSize } = props;
-//   return (
-//     <Grid container className={classes.user} alignItems="center">
-//       <UserImage imgWidth={imgWidth} imgHeight={imgHeight} imgPath={imgPath} />
-//       <UserId userId={userId} fontSize={fontSize} />
-//     </Grid>
-//   );
-// };
+export { UserId, UserImage };
 
-export { UserImage, UserId };

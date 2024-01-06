@@ -1,28 +1,26 @@
+import { ArrowDropDown, Notifications, Search } from '@mui/icons-material';
+import GetAppIcon from '@mui/icons-material/GetApp';
 import {
   Avatar,
   Backdrop,
   Box,
   Button,
   IconButton,
-  makeStyles,
   Menu,
   MenuItem,
   Slide,
-  useScrollTrigger,
-} from '@material-ui/core';
-import { ArrowDropDown, Notifications, Search } from '@material-ui/icons';
-import GetAppIcon from '@material-ui/icons/GetApp';
+  useScrollTrigger
+} from '@mui/material';
 import React, { useContext, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import icon from './teamlogIcon_white.png';
 import AuthContext, { setAccessToken } from './contexts/auth';
+import BeamsClientContext from './contexts/beamsClient';
 import LoginPopup from './global/LoginPopup';
 import SignupPopup from './global/SignupPopup';
 import ResponsiveDialog from './organisms/ResponsiveDialog';
 import ProjectForm from './project/ProjectForm';
+import icon from './teamlogIcon_white.png';
 import { convertResourceUrl } from './utils';
-import { unsubscribe } from './pusherUtils';
-import BeamsClientContext from './contexts/beamsClient';
 
 function HideOnScroll({ children }) {
   const trigger = useScrollTrigger({
@@ -60,13 +58,6 @@ function Wrapper({ children, ...props }) {
   );
 }
 
-const useStyles = makeStyles((theme) => ({
-  small: {
-    width: theme.spacing(3),
-    height: theme.spacing(3),
-  },
-}));
-
 let deferredInstallPrompt = null;
 
 window.addEventListener('beforeinstallprompt', (e) => {
@@ -91,7 +82,6 @@ function userClickedAddToHome() {
 }
 
 export default function AppBar() {
-  const classes = useStyles();
   const history = useHistory();
 
   const [id, setContextId, profileImgPath] = useContext(AuthContext);
@@ -112,7 +102,6 @@ export default function AppBar() {
 
   const handleLogout = async () => {
     localStorage.removeItem('access-token');
-    unsubscribe(client);
     setAccessToken('');
     setContextId(null);
     history.push('/');
@@ -177,7 +166,12 @@ export default function AppBar() {
             <Notifications style={{ fontSize: '1.125rem', color: 'white' }} />
           </IconButton>
           <Button onClick={handleClick}>
-            <Avatar className={classes.small} src={convertResourceUrl(profileImgPath)} />
+            <Avatar sx={{
+              width: (theme) => theme.spacing(3),
+              height: (theme) => theme.spacing(3)
+            }}
+              src={convertResourceUrl(profileImgPath)}
+            />
             <ArrowDropDown style={{ fontSize: '1rem', color: 'white' }} />
           </Button>
           <Menu
@@ -233,7 +227,6 @@ export default function AppBar() {
   );
 }
 
-// ////////
 function Title() {
   return (
     <Link to="/main" style={{ color: 'white', marginLeft: '1rem', fontWeight: '300', textDecoration: 'none' }}>

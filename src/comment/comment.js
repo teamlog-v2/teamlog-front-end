@@ -1,22 +1,27 @@
-import React, { useCallback, useContext, useState } from 'react';
 import {
   Box,
-  Chip,
-  Grid,
-  IconButton,
-  Typography,
-} from '@material-ui/core';
+  Grid
+} from '@mui/material';
 import {
   makeStyles,
-} from '@material-ui/core/styles';
+} from '@mui/styles';
+import { useCallback, useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { UserImage, UserId } from '../post-management/user';
-import { DateInfo } from '../post-management/datetime';
-import CommentForm from './commentform';
-import { DeleteComment } from './commentapi';
 import AuthContext from '../contexts/auth';
+import { DateInfo } from '../global/datetime';
+import { UserId, UserImage } from '../post/UserProfile';
+import { DeleteComment, GetChildComment } from './commentapi';
+import CommentForm from './commentform';
 
 const useStyles = makeStyles((theme) => ({
+  children: {
+    [theme.breakpoints.down('sm')]: {
+      padding: '2.5%',
+    },
+    [theme.breakpoints.up('md')]: {
+      padding: '2.5% 0 0 0',
+    },
+  },
   more: {
     marginLeft: '0.25em',
     color: 'rgb(180, 180, 180)',
@@ -28,7 +33,6 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'left',
   },
   reply: {
-    // display='inline-block' right='0px' width='10%' textAlign='right'
     display: 'inline-block',
     right: '0px',
     width: '40%',
@@ -64,190 +68,186 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Content = (props) => {
-  const { writer, writeTime, funcs, visibility, contents, tagList } = props;
+  const { writer, writeTime, funcs, contents, tagList } = props;
 
   const classes = useStyles();
-
   const stringSplit = contents.split(`\n`);
 
   return (
-   // <Box display={visibility}>
-   <>
-      <Grid className={classes.commentGrid} item container direction="column" style={{ wordBreak: 'break-all'}}>
-      {/* {writer}&nbsp; */}
-        {stringSplit
+    <Grid item container direction="column" style={{ wordBreak: 'break-all' }}>
+      {stringSplit
         ? stringSplit.map((string, index) => {
           const wordSplit = string.split(' ');
           return <Grid container item alignItems="center">
-            {index == 0 ? (writer) : <></>}
-          {
-            wordSplit.map((word) => 
-              (word[0] === '@' && tagList.includes(word.split('@')[1])) ? 
-                <Link
-                to={`/accounts/${word.split('@')[1]}`}
-                style={{ textDecoration: 'none', cursor: 'pointer' }}
-                >
-                  <span style={{ color: '#593875', fontWeight: 600 }}>{word.split('@')[1]}&nbsp;</span>
-                </Link> 
-              : (<span>{word}&nbsp;</span>)
-            )
-          }
+            {index === 0 ? (writer) : <></>}
+            {
+              wordSplit.map((word) =>
+                (word[0] === '@' && tagList.includes(word.split('@')[1])) ?
+                  <Link
+                    to={`/accounts/${word.split('@')[1]}`}
+                    style={{ textDecoration: 'none', cursor: 'pointer' }}
+                  >
+                    <span style={{ color: '#593875', fontWeight: 600 }}>{word.split('@')[1]}&nbsp;</span>
+                  </Link>
+                  : (<span>{word}&nbsp;</span>)
+              )
+            }
           </Grid>
-        }
-          )
-        : []}
-        <Grid container item direction="row" style={{ fontSize: 13, display: 'flex', gap: '1%' }} alignItems="center">
-          {writeTime}
-          {funcs}
-        </Grid>
+        }) :
+        []}
+      <Grid container item direction="row" style={{ fontSize: 13, display: 'flex', gap: '1%' }} alignItems="center">
+        {writeTime}
+        {funcs}
       </Grid>
-    </>
-  // </Box>
+    </Grid>
   );
 };
 
-const CheckRoot = (type) => {
-  if (type === 'child') {
-    return {
-      marginLeft: '1.5em',
-      buttonDisplay: 'hidden',
-    };
-  }
-
-  return {
-    marginLeft: '0.5em',
-    buttonDisplay: 'block',
-  };
-};
-
-export const Comment = (props) => {
+const Comment = (props) => {
   const {
-    id: commentId,
+    id,
     projectId,
     postId,
-    type,
     writeTime,
     writer,
     commentMentions,
     renewCommentList,
     contents,
+    childCommentCount
   } = props;
 
-  const [id] = useContext(AuthContext);
+  const [userId] = useContext(AuthContext);
+  const [remainCount, setRemainCount] = useState(childCommentCount);
+
+  const chunkSize = 5;
+  const [page, setPage] = useState(0);
+  const [commentList, setCommentList] = useState([]);
+
   const classes = useStyles();
 
-  const [visibility, setVisibility] = useState({
-    form: 'none',
-    content: 'block',
-  });
+  const [isFormVisible, setIsFormVisible] = useState(false);
+
   const [forUpdate, setForUpdate] = useState(false);
 
-  const commentStyle = CheckRoot(type);
+  const loadMoreCommentList = async () => {
+    if (remainCount === 0) return;
+
+    const response = await GetChildComment(id, page, chunkSize);
+    setCommentList([...commentList, ...response.content])
+
+    if (response.last) {
+      setRemainCount(0);
+    } else {
+      setRemainCount(remainCount - chunkSize);
+      setPage(page + 1);
+    }
+  }
 
   const RenewCommentList = useCallback(async (counterEvent) => {
     renewCommentList(counterEvent);
-    setVisibility({
-      form: 'none',
-      content: 'block',
-    });
+    setIsFormVisible(false);
   });
 
   return (
-    <Box className={classes.comment}>
-      <Box marginLeft={commentStyle.marginLeft}>
-        <Box>
-          <Grid container direction="row" xs={12} justify="space-between" style={{ margin: '1% 0' }}>
-            <Grid item container direction="row" xs={12} alignItems="flex-start">
-              <Grid item style={{ width: 35 }}>
-                <UserImage imgPath={writer.profileImgPath} />
-              </Grid>
-              <Content
-                  writer={(<UserId userId={writer.id} />)}
-                  writeTime={<DateInfo dateTime={writeTime} />}
-                  funcs={(<>
-                    {type === "parent" && id && (<span
-                          style={{ cursor: 'pointer' }}
-                          onClick={() => {
-                            setForUpdate(false);
-                            if (visibility.form === 'none') {
-                              setVisibility({
-                                form: 'block',
-                                content: 'block', // 대댓글 -> 수정 전환 대비
-                              });
-                            } else if (visibility.form === 'block' && visibility.content === 'none') {
-                              setVisibility({
-                                form: 'block',
-                                content: 'block',
-                              });
-                            } else {
-                              setVisibility({
-                                form: 'none',
-                                content: 'block',
-                              });
-                            }
-                          }}
-                        >
-                          답글달기&nbsp;
-                        </span>)}
-                        {
-                          writer.id === id && (<>
-                        <span
-                          style={{ cursor: 'pointer' }}
-                          onClick={async () => {
-                            if (visibility.content === 'block') {
-                              setForUpdate(true);
-                              setVisibility({
-                                form: 'block',
-                                content: 'none',
-                              });
-                            } else {
-                              setForUpdate(false);
-                              setVisibility({
-                                form: 'none',
-                                content: 'block',
-                              });
-                            }
-                          }}
-                        >
-                          수정하기&nbsp;
-                        </span>
-                        <span
-                          style={{ cursor: 'pointer' }}
-                          onClick={async () => {
-                            if (window.confirm('정말로 삭제하시겠습니까?')) {
-                              const status = await DeleteComment(commentId);
-                              if (status === 200) {
-                                  renewCommentList(-1);
-                              }
-                            }
-                          }}
-                        >
-                          삭제하기&nbsp;
-                        </span>
-                        </>)
-                      }
+    <>
+      <Box>
+        <Grid container xs={12} className={classes.children}>
+          <Grid item>
+            <UserImage imgPath={writer.profileImgPath} />
+          </Grid>
+          <Grid className={classes.commentGrid}>
+            <Content
+              writer={(<UserId userId={writer.id} />)}
+              writeTime={<DateInfo dateTime={writeTime} />}
+              funcs={(<>
+                {userId && (<span
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => {
+                    setForUpdate(false);
+                    setIsFormVisible(!isFormVisible);
+                  }}
+                >
+                  답글달기&nbsp;
+                </span>)}
+                {
+                  writer.id === userId && (<>
+                    <span
+                      style={{ cursor: 'pointer' }}
+                      onClick={async () => {
+                        if (isFormVisible) {
+                          setIsFormVisible(false);
+                          setForUpdate(false);
+                        } else {
+                          setIsFormVisible(true);
+                          setForUpdate(true);
+                        }
+                      }}
+                    >
+                      수정하기&nbsp;
+                    </span>
+                    <span
+                      style={{ cursor: 'pointer' }}
+                      onClick={async () => {
+                        if (window.confirm('정말로 삭제하시겠습니까?')) {
+                          const status = await DeleteComment(id);
+                          if (status === 200) {
+                            renewCommentList(-1);
+                          }
+                        }
+                      }}
+                    >
+                      삭제하기&nbsp;
+                    </span>
                   </>)
-                  }
-                visibility={visibility.content}
-                contents={contents}
-                tagList={commentMentions}
-              />
+                }
+              </>)
+              }
+              contents={contents}
+              tagList={commentMentions}
+            />
+            {commentList ?
+              commentList.map((item) => (
+                <Comment id={item.id}
+                  projectId={projectId}
+                  contents={item.contents}
+                  writer={item.writer}
+                  commentMentions={item.commentMentions}
+                  postId={postId}
+                  writeTime={item.writeTime}
+                  renewCommentList={RenewCommentList}
+                  commentList={commentList}
+                  childCommentCount={item.childCommentCount}
+                  type="child"
+                />)) :
+              <></>}
+            <Grid display={remainCount !== 0 ? 'block' : 'none'} className={classes.children}>
+              <span
+                display={remainCount !== 0 ? 'block' : 'none'}
+                role="button"
+                size="small"
+                style={{ fontSize: 13, cursor: 'pointer' }}
+                onClick={loadMoreCommentList}
+              >
+                ━━ 답글 {remainCount}개 보기
+              </span>
             </Grid>
           </Grid>
-        </Box>
-      </Box>
-      <Box display={visibility.form}>
+        </Grid>
+      </Box >
+      <Box display={isFormVisible ? 'block' : 'none'}>
         <CommentForm
-          id={commentId}
+          id={id}
           projectId={projectId}
           postId={postId}
           renewCommentList={RenewCommentList}
           contents={contents}
           forUpdate={forUpdate}
           setForUpdate={setForUpdate}
-          parentWriterId={writer.id} 
+          parentWriterId={writer.id}
         />
       </Box>
-    </Box>
+    </>
   );
 };
+
+export default Comment;

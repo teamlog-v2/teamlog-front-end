@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { validateLogin } from '../user/userService';
@@ -14,18 +12,17 @@ function setAccessToken(token) {
   tokens.accessToken = token;
 }
 
-fetch = ((origin) => {
-  return (url, config) => {
+// eslint-disable-next-line no-global-assign
+fetch = ((origin) => (url, config) => {
     if (!config) {
       config = {};
     }
     if (!config.headers) {
       config.headers = {};
     }
-    config.headers['Authorization'] = getAccessToken();
+    config.headers.Authorization = getAccessToken();
     return origin(url, config);
-  }
-})(fetch);
+  })(fetch);
 
 const AuthProvider = ({ children }) => {
   const [id, setId] = useState(null);

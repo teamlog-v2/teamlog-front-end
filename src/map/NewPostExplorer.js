@@ -1,17 +1,15 @@
+import { Close, Fullscreen, FullscreenExit } from '@mui/icons-material';
 import {
   Box,
-  Button,
   Card,
   Fab,
-  IconButton,
-  Typography,
-} from '@material-ui/core';
-import { Close, Fullscreen, FullscreenExit } from '@material-ui/icons';
-import React, { useMemo } from 'react';
+  Typography
+} from '@mui/material';
+import { useMemo } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { Link, useParams } from 'react-router-dom';
-import { DateInfo } from '../post-management/datetime';
-import { CompressedPost } from '../post-management/post';
+import { DateInfo } from '../global/datetime';
+import { CompressedPost } from '../post/Post';
 
 function cmpTimeStr(a, b) {
   return new Date(b) - new Date(a);
@@ -28,11 +26,7 @@ export default function NewPostExplorer({
     query: '(max-width:767px)',
   });
 
-  const sortedPosts = useMemo(() => {
-    return posts?.sort((a, b) => {
-      return cmpTimeStr(a.writeTimeStr, b.writeTimeStr);
-    });
-  }, [posts]);
+  const sortedPosts = useMemo(() => posts?.sort((a, b) => cmpTimeStr(a.writeTimeStr, b.writeTimeStr)), [posts]);
 
   if (!posts) return null;
 

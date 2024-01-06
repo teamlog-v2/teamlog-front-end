@@ -1,5 +1,5 @@
 import React from 'react';
-import { Motion, spring } from 'react-motion';
+// import { Motion, spring } from 'react-motion';
 
 const Cluster = (props) => {
   const { pointCount, $hover } = props;
@@ -33,7 +33,7 @@ const Cluster = (props) => {
 
   return (
     <>
-      {!$hover ? (
+      {/* {!$hover ? (
         <Motion
           defaultStyle={{ scale: 1 }}
           style={{
@@ -81,7 +81,7 @@ const Cluster = (props) => {
             </div>
           )}
         </Motion>
-      )}
+      )} */}
     </>
   );
 };

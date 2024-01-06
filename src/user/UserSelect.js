@@ -1,29 +1,24 @@
 import {
+  CheckBox,
+  CheckBoxOutlineBlank,
+  Search
+} from '@mui/icons-material';
+import {
   Avatar,
   Box,
   Button,
-  Checkbox,
   Chip,
   Container,
-  Grid,
   InputAdornment,
   List,
   ListItem,
   ListItemAvatar,
-  ListItemSecondaryAction,
   ListItemText,
-  styled,
   TextField,
-  Typography,
-  withStyles,
-} from '@material-ui/core';
-import {
-  CheckBox,
-  CheckBoxOutlineBlank,
-  LocalConvenienceStoreOutlined,
-  Search,
-} from '@material-ui/icons';
-import { useEffect, useState } from 'react';
+  Typography
+} from '@mui/material';
+import { withStyles } from '@mui/styles';
+import { React, useEffect, useState } from 'react';
 import { convertResourceUrl } from '../utils';
 
 const StyledList = withStyles({
@@ -56,7 +51,7 @@ const UserSelect = ({
           headers: { 'Content-Type': 'application/json' },
         });
         result = await response.json();
-      } catch (error) {
+      } catch (e) {
         setIsLoaded(false);
         return;
       }
@@ -85,12 +80,12 @@ const UserSelect = ({
   };
 
   const saveSelectedUsers = () => {
-    let selectedUsers = [];
-    selectedUserIds.map((selectedUserId) => {
+    const selectedUsersToSave = [];
+    selectedUserIds.foreach((selectedUserId) => {
       const temp = users.find((user) => user.id === selectedUserId);
-      selectedUsers.push(temp);
+      selectedUsersToSave.push(temp);
     });
-    setSelectedUsers(selectedUsers);
+    setSelectedUsers(selectedUsersToSave);
     handleClose();
   };
 
@@ -115,7 +110,7 @@ const UserSelect = ({
           <Typography color="primary">{'-'}</Typography>
         )}
         {selectedUserIds.map((selectedUserId) => {
-          const user = users.find((user) => user.id === selectedUserId);
+          const user = users.find((u) => u.id === selectedUserId);
           return (
             <Chip
               key={user.id}

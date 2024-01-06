@@ -1,24 +1,25 @@
-import { React, useContext, useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import { Link, useParams, useLocation, Redirect } from 'react-router-dom';
+import SettingsIcon from '@mui/icons-material/Settings';
 import {
-  fade,
-  makeStyles,
-  createMuiTheme,
+  Box,
+  Button, Grid,
+  Paper,
+  Tab,
+  Tabs,
   ThemeProvider,
-} from '@material-ui/core/styles';
-import SettingsIcon from '@material-ui/icons/Settings';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-import Paper from '@material-ui/core/Paper';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import { Button, Grid } from '@material-ui/core';
-import { useFetchData } from '../hooks/hooks';
-import ErrorContext from '../contexts/error';
-import { AcceptProject, ApplyProject, InvitationAccept } from './projectapi';
+  Toolbar,
+  Typography,
+  alpha,
+} from '@mui/material';
+
+import { createTheme } from '@mui/material/styles'; // Import from '@mui/material/styles'
+import { makeStyles } from '@mui/styles';
+import PropTypes from 'prop-types';
+import { useContext, useEffect, useState } from 'react';
+import { Link, Redirect, useLocation, useParams } from 'react-router-dom';
 import AuthContext from '../contexts/auth';
+import ErrorContext from '../contexts/error';
+import { useFetchData } from '../hooks/hooks';
+import { ApplyProject, InvitationAccept } from './projectApi';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,9 +28,9 @@ const useStyles = makeStyles((theme) => ({
   search: {
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
+    backgroundColor: alpha(theme.palette.common.white, 0.15),
     '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
+      backgroundColor: alpha(theme.palette.common.white, 0.25),
     },
     marginLeft: 0,
     width: '100%',
@@ -214,7 +215,7 @@ const Header = ({ sections, updateRelation }) => {
 
   const classes = useStyles();
 
-  const theme = createMuiTheme({
+  const theme = createTheme({
     palette: {
       primary: {
         main: '#593875',
@@ -232,7 +233,7 @@ const Header = ({ sections, updateRelation }) => {
           <Grid container item xs={2} sm={1} justify="center" alignItems="center">
             {userId === null ?
               (<></>) :
-        (<TopButton projectId={projectId} isProjectLoaded={isProjectLoaded} relation={relation} />)}
+              (<TopButton projectId={projectId} isProjectLoaded={isProjectLoaded} relation={relation} />)}
           </Grid>
         </Grid>
       </Toolbar>

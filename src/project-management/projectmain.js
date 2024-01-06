@@ -1,29 +1,20 @@
-import React, { useEffect, useState } from 'react';
 import {
-  Typography,
   Box,
-  Divider,
-  Grid,
-  FormControl,
-  NativeSelect,
-  makeStyles,
   CircularProgress,
-} from '@material-ui/core';
-// import Fab from '@material-ui/core/Fab';
-// import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
-import Container from '@material-ui/core/Container';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import TextField from '@material-ui/core/TextField';
-import Search from '@material-ui/icons/Search';
-import Header from './header';
-import Introduction from './introduction';
-import Postlist from '../post-management/postlist';
-import HashtagChooser from '../organisms/HashtagChooser';
-import { Route, useParams } from 'react-router';
-import MyPage from '../user/MyPage';
-import useFetchPosts from '../hooks/useFetchPosts';
+  Grid,
+  Typography
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import { useEffect } from 'react';
+// import Fab from '@mui/material/Fab';
+// import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import Container from '@mui/material/Container';
+import { useParams } from 'react-router';
 import { useFetchData } from '../hooks/hooks';
-import { CompressedPost } from '../post-management/post';
+import useFetchPosts from '../hooks/useFetchPosts';
+import { CompressedPost } from '../post/Post';
+import Postlist from '../post/PostList';
+import Introduction from './introduction';
 
 const useStyles = makeStyles((theme) => ({
   /* 반응형 스타일 */
@@ -133,25 +124,25 @@ const ProjectMain = (props) => {
           <Container disableGutters>
             {posts.length === 0 ? (
               <Grid
-              container
-              justify="center"
-              alignItems="center"
-              style={{ height: '50vh', fontWeight: 600 }}
-            >
-              아직 등록된 글이 없어요. 😢
-            </Grid>
-            ) : (
-              <Postlist posts={posts} Component={CompressedPost} relation={relation} />
-              )}
-              <Grid
                 container
                 justify="center"
                 alignItems="center"
-                style={{ height: '20vh' }}
+                style={{ height: '50vh', fontWeight: 600 }}
               >
-                {isPostsLoading && <CircularProgress />}
+                아직 등록된 글이 없어요. 😢
               </Grid>
-            </Container>
+            ) : (
+              <Postlist posts={posts} Component={CompressedPost} relation={relation} />
+            )}
+            <Grid
+              container
+              justify="center"
+              alignItems="center"
+              style={{ height: '20vh' }}
+            >
+              {isPostsLoading && <CircularProgress />}
+            </Grid>
+          </Container>
         </Grid>
       </Container>
     </>

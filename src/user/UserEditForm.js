@@ -1,33 +1,30 @@
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import {
-  Grid,
+  Avatar,
+  Backdrop,
   Badge,
-  Popover,
-  IconButton,
-  DialogTitle,
+  Box,
+  Button,
+  CircularProgress,
+  Container,
   Dialog,
   DialogContent,
   DialogContentText,
-  Avatar,
-  Backdrop,
-  CircularProgress,
+  Divider,
+  Grid,
+  IconButton,
   List,
   ListItem,
-  Divider,
-  Container,
-  makeStyles,
-  Button,
+  Popover,
   TextField,
-  withStyles,
-  Box,
-  Typography,
-} from '@material-ui/core';
+  Typography
+} from '@mui/material';
+import { makeStyles, withStyles } from '@mui/styles';
 import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import ImageResize from 'image-resize';
-import PhotoCamera from '@material-ui/icons/PhotoCamera';
-import { updateUser, getUser, validateLogin } from './userService';
 import AuthContext from '../contexts/auth';
-import { resizeImage, convertResourceUrl } from '../utils';
+import { convertResourceUrl, resizeImage } from '../utils';
+import { getUser, updateUser, validateLogin } from './userService';
 
 const useStyles = makeStyles((theme) => ({
   large: {
@@ -215,9 +212,6 @@ const UserEditForm = ({ match }) => {
             id="file"
             onChange={handleUpload}
           />
-          <>
-            {/* eslint-disable jsx-a11y/label-has-associated-control */}
-          </>
           <label htmlFor="file">
             <ListItem button>프로필 사진 변경</ListItem>
           </label>

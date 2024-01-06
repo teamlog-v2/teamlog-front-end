@@ -1,7 +1,6 @@
-import { Box, Typography } from '@material-ui/core';
-import React from 'react';
+import { Box, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { ManufactureDate } from '../post-management/datetime'; // 디렉토리 변경 필요할 듯
+import { ManufactureDate } from '../global/datetime'; // 디렉토리 변경 필요할 듯
 
 const Introduction = (props) => {
   const { masterId, createTime, followerCount, memberCount } = props;

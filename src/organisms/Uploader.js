@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Grid, Button, Tooltip } from '@material-ui/core';
-import PhotoCamera from '@material-ui/icons/PhotoCamera';
-import Attachment from '@material-ui/icons/Attachment';
+import Attachment from '@mui/icons-material/Attachment';
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import { Button, Grid, Tooltip } from '@mui/material';
+import React, { useRef, useState } from 'react';
 import { detectSupportFormat, isValidSize } from '../utils';
 
 const Uploader = ({ attachedFiles, updateAttachedFiles,

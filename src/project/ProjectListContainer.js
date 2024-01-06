@@ -1,7 +1,5 @@
-/* eslint-disable no-param-reassign */
-
-import { Box, Grid } from '@material-ui/core';
-import { Skeleton } from '@material-ui/lab';
+import { Skeleton } from '@mui/lab';
+import { Box, Grid } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import ProjectItem from './ProjectItem';
 // thumbnail: 'https://images.unsplash.com/photo-1617892459113-0ef697cafa05?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max',
@@ -38,39 +36,39 @@ const ProjectListContainer = ({ userId }) => {
   return (
     <>
       <Grid container spacing={2}>
-        { isLoaded ?
-        (
-          <>
-            {projects.length > 0 ?
-              projects.map((project) => (
-                <Grid item md={4} sm={6} xs={12}>
-                  <ProjectItem project={project} />
-                </Grid>
-              ))
-              :
-              (
-                <Grid
-                  container
-                  justify="center"
-                  alignItems="center"
-                  style={{ height: '50vh' }}
-                >
-                  아직 참여 중인 프로젝트가 없어요. 😢
-                </Grid>
-              )}
-          </>
-        )
-        :
-        Array.from(new Array(8)).map(() => (
-          <Grid item md={4} sm={6} xs={12}>
-            <Box>
-              <Skeleton variant="rect" height="150px" />
+        {isLoaded ?
+          (
+            <>
+              {projects.length > 0 ?
+                projects.map((project) => (
+                  <Grid item md={4} sm={6} xs={12}>
+                    <ProjectItem project={project} />
+                  </Grid>
+                ))
+                :
+                (
+                  <Grid
+                    container
+                    justify="center"
+                    alignItems="center"
+                    style={{ height: '50vh' }}
+                  >
+                    아직 참여 중인 프로젝트가 없어요. 😢
+                  </Grid>
+                )}
+            </>
+          )
+          :
+          Array.from(new Array(8)).map(() => (
+            <Grid item md={4} sm={6} xs={12}>
               <Box>
-                <Skeleton />
-                <Skeleton width="60%" />
+                <Skeleton variant="rect" height="150px" />
+                <Box>
+                  <Skeleton />
+                  <Skeleton width="60%" />
+                </Box>
               </Box>
-            </Box>
-          </Grid>
+            </Grid>
           ))}
       </Grid>
     </>

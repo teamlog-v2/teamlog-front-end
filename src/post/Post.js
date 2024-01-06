@@ -1,71 +1,62 @@
-import { useMediaQuery } from 'react-responsive';
-import Carousel from 'react-material-ui-carousel';
-import './carousel-theme.css';
-import './carousel.css';
-import RoomIcon from '@material-ui/icons/Room';
-import Grow from '@material-ui/core/Grow';
-import Popper from '@material-ui/core/Popper';
-import Paper from '@material-ui/core/Paper';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useCallback,
-  useContext,
-} from 'react';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
 import {
-  Menu,
-  History,
   Delete,
   Edit,
-  Close,
-  MoreVert,
-} from '@material-ui/icons';
+  History,
+  MoreVert
+} from '@mui/icons-material';
+import RoomIcon from '@mui/icons-material/Room';
 import {
-  Avatar,
   Button,
   Card,
   Chip,
-  Grid,
   Dialog,
+  DialogContent,
   DialogContentText,
   DialogTitle,
-  DialogContent,
-  DialogActions,
-  Tooltip,
   Divider,
-  IconButton,
-} from '@material-ui/core';
+  Grid,
+  IconButton
+} from '@mui/material';
+import Box from '@mui/material/Box';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Container from '@mui/material/Container';
+import Grow from '@mui/material/Grow';
+import MenuItem from '@mui/material/MenuItem';
+import MenuList from '@mui/material/MenuList';
+import Paper from '@mui/material/Paper';
+import Popper from '@mui/material/Popper';
+import { makeStyles } from '@mui/styles';
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState
+} from 'react';
+import Carousel from 'react-material-ui-carousel';
+import { useMediaQuery } from 'react-responsive';
+import './css/carousel-theme.css';
+import './css/carousel.css';
 
 import { Route } from 'react-router';
-import FileList from './fileList';
 import CommentList from '../comment/commentlist';
-import { UserImage, UserId } from './user';
-import { LikerCounter, CommentCounter } from './counter';
-import { Media, Video } from './media';
-import { DateInfo } from './datetime';
-import MyPage from '../user/MyPage';
-import { DeletePost } from './postapi';
+import { DateInfo } from '../global/datetime';
 import ResponsiveDialog from '../organisms/ResponsiveDialog';
-import PostFormPage from '../pages/PostFormPage';
-import UpdateHistory from './updateHistory';
+import MyPage from '../user/MyPage';
 import { convertResourceUrl } from '../utils';
+import { CommentCounter, LikerCounter } from './Counter';
+import FileList from './FileList';
+import PostFormPage from './PostFormPage';
+import { Media, Video } from './PostMedia';
+import UpdateHistory from './PostUpdateHistory';
+import { UserId, UserImage } from './UserProfile';
+import { DeletePost } from './postApi';
 
 /** 관계와 접근제어자를 입력받아서
  * visible 한지 반환
  */
-const canAccess = (relation, modifier) => {
-  return (
-    modifier === 'PUBLIC' || relation === 'MEMBER' || relation === 'MASTER'
-  );
-};
+const canAccess = (relation, modifier) => (
+  modifier === 'PUBLIC' || relation === 'MEMBER' || relation === 'MASTER'
+);
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -491,24 +482,22 @@ export const Post = (props) => {
               {content?.hashtags.length > 0 ? (
                 <Grid className={classes.children}>
                   <Grid container direction="row" spacing={1}>
-                    {content.hashtags.map((item, index) => {
-                      return (
-                        <Grid item>
-                          <Chip
-                            className="tags"
-                            key={index}
-                            label={`#${item}`}
-                            variant="outlined"
-                            size="small"
-                            onClick={() => {
-                              // handleChipClick(index);
-                              // handleToggle(index);
-                            }}
-                            color="primary"
-                          />
-                        </Grid>
-                      );
-                    })}
+                    {content.hashtags.map((item, index) => (
+                      <Grid item>
+                        <Chip
+                          className="tags"
+                          key={index}
+                          label={`#${item}`}
+                          variant="outlined"
+                          size="small"
+                          onClick={() => {
+                            // handleChipClick(index);
+                            // handleToggle(index);
+                          }}
+                          color="primary"
+                        />
+                      </Grid>
+                    ))}
                   </Grid>
                 </Grid>
               ) : null}
@@ -730,24 +719,22 @@ export const CompressedPost = (props) => {
             {post?.hashtags.length > 0 ? (
               <Grid className={classes.children}>
                 <Grid container direction="row" spacing={1}>
-                  {post.hashtags.map((item, index) => {
-                    return (
-                      <Grid item>
-                        <Chip
-                          className="tags"
-                          key={index}
-                          label={`#${item}`}
-                          variant="outlined"
-                          size="small"
-                          onClick={() => {
-                            // handleChipClick(index);
-                            // handleToggle(index);
-                          }}
-                          color="primary"
-                        />
-                      </Grid>
-                    );
-                  })}
+                  {post.hashtags.map((item, index) => (
+                    <Grid item>
+                      <Chip
+                        className="tags"
+                        key={index}
+                        label={`#${item}`}
+                        variant="outlined"
+                        size="small"
+                        onClick={() => {
+                          // handleChipClick(index);
+                          // handleToggle(index);
+                        }}
+                        color="primary"
+                      />
+                    </Grid>
+                  ))}
                 </Grid>
               </Grid>
             ) : null}
@@ -806,74 +793,3 @@ export const CompressedPost = (props) => {
     </>
   );
 };
-
-// export const CompressedPost = (props) => {
-//   const { post } = props;
-//   const classes = useStyles();
-
-//   return (
-//     <>
-//       {/* 사용자 정보 */}
-//       <div
-//         style={{
-//           display: 'flex',
-//           alignItems: 'center',
-//           gap: '8px',
-//           margin: '16px',
-//         }}
-//       >
-//         <Avatar src={post.writer.profileImgPath} />
-//         <Typography>{post.writer.name}</Typography>
-//       </div>
-
-//       <div
-//         style={{
-//           display: 'flex',
-//           flexDirection: 'column',
-//           gap: '8px',
-//           margin: '16px',
-//         }}
-//       >
-//         <Carousel useKeyboardArrows autoPlay={false} showStatus={false} showThumbs={false}>
-//           {post.media.map((file) => (
-//             <Box key={file.fileDownloadUri} className={classes.media} height="30em">
-//               <Media file={file} />
-//             </Box>
-//         ))}
-//         </Carousel>
-
-//         {/* 날짜 */}
-//         <DateInfo dateTime={post.writeTime} fs="12px" />
-
-//         {/* 해쉬태그들 */}
-//         <div style={{ display: 'flex', gap: '8px' }}>
-//           {post.hashtags.map((item) => {
-//           return (
-//             <Chip
-//               className="tags"
-//               key={item}
-//               label={`#${item}`}
-//               variant="outlined"
-//               size="small"
-//               color="primary"
-//             />
-//           );
-//         })}
-//         </div>
-
-//         {/* 본문 */}
-//         <Typography>{post.contents}</Typography>
-
-//         {/* 첨부 파일 및 좋아요 댓글 개수 */}
-//         {/* <div style={{ display: 'flex', gap: '8px' }}>
-//           <FileList className={classes.file} files={post.files} />
-//           <LikerCounter count={post.likeCount} />
-//           <CommentCounter count={post.commentCount} />
-//         </div> */}
-
-//         {/* 댓글 */}
-//         {/* <CommentList projectId={post.project.id} postId={post.id} /> */}
-//       </div>
-//     </>
-//   );
-// };

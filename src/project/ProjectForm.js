@@ -1,14 +1,13 @@
+import { ArrowLeft, Lock, LockOpen } from '@mui/icons-material';
 import {
   Backdrop,
-  Box,
   Button,
   CircularProgress,
   Divider,
-  makeStyles,
   TextField,
-  Typography,
-} from '@material-ui/core';
-import { ArrowLeft, Lock, LockOpen } from '@material-ui/icons';
+  Typography
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router';
 import AuthContext from '../contexts/auth';

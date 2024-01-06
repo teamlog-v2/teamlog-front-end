@@ -1,19 +1,11 @@
-import { Avatar, Box, Button, Card, CircularProgress, Container, Divider, Grid, makeStyles, Typography, withStyles } from '@material-ui/core';
-import React, { useContext, useEffect, useState } from 'react';
+import { Button, Container, Grid } from '@mui/material';
+import React, { useState } from 'react';
 import { Redirect, Route, useParams } from 'react-router';
-import { Switch, Link } from 'react-router-dom';
-import { GetProject, GetProjectMembers, GetProjectApplcants, GetProjectInvitees, AcceptProject, RefuseProject, DeleteProject, KickOutProjectMember } from '../project-management/projectapi';
-import Introduction from '../project-management/introduction';
-import MasterSelect from '../project-management/masterSelect';
-import InviteesSelect from '../project-management/inviteesSelect';
-import ResponsiveDialog from '../organisms/ResponsiveDialog';
-import AuthContext from '../contexts/auth';
-import ProjectUpdateForm from '../project/ProjectUpdateForm';
-import ProjectMemberManagement from '../project-management/ProjectMemberManagement';
+import { Link, Switch } from 'react-router-dom';
 import ProjectManagement from '../project-management/projectmanagement';
+import ProjectMemberManagement from '../project-management/ProjectMemberManagement';
 
-const RadioButton = ({ children, onClick, highlight, value, ...props }) => {
-  return (
+const RadioButton = ({ children, onClick, highlight, value, ...props }) => (
     <Button
       fullWidth
       variant={highlight === value ? 'contained' : 'outlined'}
@@ -24,7 +16,6 @@ const RadioButton = ({ children, onClick, highlight, value, ...props }) => {
       {children}
     </Button>
   );
-};
 
 const ProjectManagementPage = () => {
     const [type, setType] = useState();

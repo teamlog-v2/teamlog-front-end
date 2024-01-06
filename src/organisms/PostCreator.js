@@ -1,7 +1,5 @@
+import { Button, Grid } from '@mui/material';
 import React from 'react';
-import { Button, Grid } from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
-import Create from '@material-ui/icons/Create';
 
 const PostCreator = ({ handleSubmit }) => (
   <Grid container item>

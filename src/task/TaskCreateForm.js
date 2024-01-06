@@ -1,30 +1,30 @@
-import React, { useContext, useState } from 'react';
+import AddIcon from '@mui/icons-material/Add';
+import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
+import RemoveIcon from '@mui/icons-material/Remove';
 import {
-  Container,
+  Avatar,
   Backdrop,
-  CircularProgress,
-  Button,
-  TextField,
-  Radio,
-  RadioGroup,
-  Grid,
-  Typography,
   Box,
+  Button,
+  CircularProgress,
+  Container,
+  Dialog,
   FormControlLabel,
   FormLabel,
-  Dialog,
-  Avatar,
-  makeStyles,
+  Grid,
   IconButton,
-} from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import RemoveIcon from '@material-ui/icons/Remove';
-import EditTwoToneIcon from '@material-ui/icons/EditTwoTone';
-import MultiTimePicker from './MultiTimePicker';
-import { createTask, putTask, CreateTaskNotification } from './taskService';
-import UserSelect from '../user/UserSelect';
+  Radio,
+  RadioGroup,
+  TextField,
+  Typography
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import React, { useContext, useState } from 'react';
 import AuthContext from '../contexts/auth';
+import UserSelect from '../user/UserSelect';
 import { convertResourceUrl } from '../utils';
+import MultiTimePicker from './MultiTimePicker';
+import { CreateTaskNotification, createTask, putTask } from './taskService';
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -56,7 +56,7 @@ const TaskCreateForm = ({
 }) => {
   const classes = useStyles();
   const [taskName, setTaskName] = useState(task?.taskName ?? '');
-  const [status, setStatus] = useState(task?.status ?? 0);
+  const [taskStatus, setTaskStatus] = useState(task?.status ?? 0);
   const [deadline, setDeadline] = useState(getDate(task?.deadline));
   const [selectedUsers, setSelectedUsers] = useState(task?.performers ?? []);
   const [openUserSelect, setopenUserSelect] = useState(false);
@@ -76,7 +76,7 @@ const TaskCreateForm = ({
   };
 
   const handleStatusChange = (event) => {
-    setStatus(event.target.value * 1);
+    setTaskStatus(event.target.value * 1);
   };
   const handleTaskNameChange = (event) => {
     setTaskName(event.target.value);
@@ -86,7 +86,7 @@ const TaskCreateForm = ({
     // task 기존에 있었다면 update request
     setIsProcessing(true);
     event.preventDefault();
-    let performersId = selectedUsers.map(({ id }) => id);
+    const performersId = selectedUsers.map(({ id }) => id);
 
     console.log(deadline);
     if(taskName.length === 0) {
@@ -99,7 +99,7 @@ const TaskCreateForm = ({
       taskName,
       performersId,
       deadline,
-      status,
+      status: taskStatus,
     };
 
     console.log('updated data');
@@ -193,7 +193,7 @@ const TaskCreateForm = ({
               </Grid>
               <Grid item xs={12}>
                 <FormLabel component="legend">진행 상태</FormLabel>
-                <RadioGroup value={status} onChange={handleStatusChange} row>
+                <RadioGroup value={taskStatus} onChange={handleStatusChange} row>
                   <FormControlLabel
                     value={0}
                     control={<Radio color="primary" />}

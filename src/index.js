@@ -1,10 +1,12 @@
+// import { ThemeProvider } from '@material-ui/core/styles';
+import { ThemeProvider, createTheme } from '@mui/material';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import App from './App';
 
-const theme = createMuiTheme({
+
+const theme = createTheme({
   palette: {
     primary: {
       main: '#593875',

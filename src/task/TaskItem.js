@@ -1,13 +1,11 @@
-/* eslint-disable react/jsx-props-no-spreading */
-/* eslint-disable react/jsx-props-no-spreading */
-import React, { useState } from 'react';
-import { Draggable } from 'react-beautiful-dnd';
-import { Close, Delete, Update } from '@material-ui/icons';
+import { Delete, Update } from '@mui/icons-material';
 import {
   Grid,
   Paper,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
+import React from 'react';
+import { Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 
 const StyledIcon = styled(Typography)`
@@ -32,28 +30,28 @@ const getItemStyle = (isDragging, draggableStyle) => ({
 
 const TaskItem = ({ item, index, isFocused, updateFocusedTask,
   updateFormOpen, handleDeleteTask }) => (
-    <>
-      <Draggable
-        key={`${item.id}-${item.taskName}`}
-        draggableId={`${item.id}-${item.taskName}`}
-        index={index}
-      >
-        {(provided, snapshot) => (
-          <>
-            <Paper
-              elevation={0}
-              ref={provided.innerRef}
-              {...provided.draggableProps}
-              {...provided.dragHandleProps}
-              style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
-              onClick={() => {
-                  updateFocusedTask(item);
-              }}
-            >
-              <Typography variant="body1">{item.taskName}</Typography>
-            </Paper>
-            {
-              isFocused && (
+  <>
+    <Draggable
+      key={`${item.id}-${item.taskName}`}
+      draggableId={`${item.id}-${item.taskName}`}
+      index={index}
+    >
+      {(provided, snapshot) => (
+        <>
+          <Paper
+            elevation={0}
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
+            onClick={() => {
+              updateFocusedTask(item);
+            }}
+          >
+            <Typography variant="body1">{item.taskName}</Typography>
+          </Paper>
+          {
+            isFocused && (
               <Grid container justify="flex-end">
                 <StyledIcon onClick={updateFormOpen}>
                   <Update />
@@ -63,12 +61,12 @@ const TaskItem = ({ item, index, isFocused, updateFocusedTask,
                   <Delete />
                 </StyledIcon>
               </Grid>
-              )
-            }
-          </>
-        )}
-      </Draggable>
-    </>
+            )
+          }
+        </>
+      )}
+    </Draggable>
+  </>
 );
 
 export default TaskItem;

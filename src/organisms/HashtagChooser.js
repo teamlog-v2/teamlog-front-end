@@ -1,5 +1,5 @@
+import { Chip, Grid } from '@mui/material';
 import React, { useEffect } from 'react';
-import { Grid, Chip } from '@material-ui/core';
 
 const HashtagChooser = ({ hashtags, selectedTags, updateSelectedTags }) => {
   const handleChipClick = (index) => {

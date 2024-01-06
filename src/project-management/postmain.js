@@ -1,32 +1,27 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { Edit, Map } from '@mui/icons-material';
+import Search from '@mui/icons-material/Search';
 import {
-  Typography,
-  Grid,
-  makeStyles,
-  CircularProgress,
-  FormControl,
-  NativeSelect,
-  Fab,
-  Card,
-  Tooltip,
-  Select,
-  InputBase,
-  fade,
   Box,
   Button,
-} from '@material-ui/core';
-import Container from '@material-ui/core/Container';
-import Search from '@material-ui/icons/Search';
-import { Edit, Map } from '@material-ui/icons';
+  Card,
+  CircularProgress,
+  Fab,
+  Grid,
+  InputBase,
+  NativeSelect,
+  Typography
+} from '@mui/material';
+import Container from '@mui/material/Container';
+import { makeStyles } from '@mui/styles';
+import { useContext, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import Postlist from '../post-management/postlist';
-import HashtagChooser from '../organisms/HashtagChooser';
-import useFetchPosts from '../hooks/useFetchPosts';
-import { useFetchData } from '../hooks/hooks';
-import PostFormPage from '../pages/PostFormPage';
-import ResponsiveDialog from '../organisms/ResponsiveDialog';
 import AuthContext from '../contexts/auth';
-import { requestNewPostNotification } from '../pusherUtils';
+import { useFetchData } from '../hooks/hooks';
+import useFetchPosts from '../hooks/useFetchPosts';
+import HashtagChooser from '../organisms/HashtagChooser';
+import ResponsiveDialog from '../organisms/ResponsiveDialog';
+import PostFormPage from '../post/PostFormPage';
+import Postlist from '../post/PostList';
 
 const useStyles = makeStyles((theme) => ({
   /* 반응형 스타일 */
@@ -159,7 +154,6 @@ const PostMain = (props) => {
 
       if (res.status === 201) {
         console.log('성공적으로 등록');
-        requestNewPostNotification(userId, projectId);
         setIsPostLoading(false);
         setFormData(null);
         initPosts();
@@ -233,22 +227,17 @@ const PostMain = (props) => {
                 justify="flex-end"
                 xs={12}
               >
-                <FormControl
-                  variant="outlined"
-                  style={{ height: 30, width: 120 }}
+                <NativeSelect
+                  native
+                  onChange={(event) => {
+                    setOrder(event.target.value);
+                  }}
+                  name="filter"
+                  style={{ height: 30, width: 120 }} s
                 >
-                  <Select
-                    native
-                    onChange={(event) => {
-                      setOrder(event.target.value);
-                    }}
-                    name="filter"
-                    style={{ height: 30, width: 120 }}
-                  >
-                    <option value="1">최신 순</option>
-                    <option value="-1">오래된 순</option>
-                  </Select>
-                </FormControl>
+                  <option value="1">최신 순</option>
+                  <option value="-1">오래된 순</option>
+                </NativeSelect>
               </Grid>
               <Grid className={classes.children} item>
                 <Typography>

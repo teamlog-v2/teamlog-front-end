@@ -1,5 +1,5 @@
-import { Box, Button, Link as Anchor } from '@material-ui/core';
-import { Map } from '@material-ui/icons';
+import { Map } from '@mui/icons-material';
+import { Box, Button } from '@mui/material';
 import GoogleMapReact from 'google-map-react';
 import React, { useMemo, useRef, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
@@ -62,16 +62,14 @@ export default function MapPage() {
     setOpen(false);
   }
 
-  const points = useMemo(() => {
-    return (posts || []).map((post, index) => ({
+  const points = useMemo(() => (posts || []).map((post, index) => ({
       type: 'Feature',
       properties: { cluster: false, postIndex: index },
       geometry: {
         type: 'Point',
         coordinates: [post.longitude, post.latitude],
       },
-    }));
-  }, [posts]);
+    })), [posts]);
 
   const [bounds, setBounds] = useState(null);
   const [zoom, setZoom] = useState(3);
