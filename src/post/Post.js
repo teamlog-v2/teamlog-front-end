@@ -399,7 +399,7 @@ export const Post = (props) => {
   const [likerCounter, setLikerCounter] = useState(content.likeCount);
   const [commentCounter, setCommentCounter] = useState(content.commentCount);
 
-  const SetCommentCounter = useCallback((counterEvent) => {
+  const updateCommentCount = useCallback((counterEvent) => {
     setCommentCounter(commentCounter + counterEvent);
   }); // 댓글 개수 조정
 
@@ -542,7 +542,7 @@ export const Post = (props) => {
                   <CommentList
                     projectId={content.project.id}
                     postId={content.id}
-                    setCommentCounter={SetCommentCounter}
+                    updateCommentCount={updateCommentCount}
                   />
                 </Container>
               ) : (
@@ -659,7 +659,7 @@ export const CompressedPost = (props) => {
   const [likerCounter, setLikerCounter] = useState(post.likeCount);
   const [commentCounter, setCommentCounter] = useState(post.commentCount);
 
-  const SetCommentCounter = useCallback((counterEvent) => {
+  const updateCommentCount = useCallback((counterEvent) => {
     setCommentCounter(commentCounter + counterEvent);
   }); // 댓글 개수 조정
 
@@ -772,7 +772,7 @@ export const CompressedPost = (props) => {
               <CommentList
                 projectId={post.project.id}
                 postId={post.id}
-                setCommentCounter={SetCommentCounter}
+                updateCommentCount={updateCommentCount}
                 type="compressed"
               />
             </Container>

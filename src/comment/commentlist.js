@@ -1,16 +1,16 @@
 import { Skeleton } from '@mui/lab';
 import { Box, Grid, LinearProgress } from '@mui/material';
+import { uniqBy } from 'lodash';
 import {
   useCallback,
   useEffect,
   useState
 } from 'react';
 import Comment from './comment';
-import { GetComment } from './commentapi';
+import { ReadCommentList } from './commentapi';
 import CommentForm from './commentform';
-// import ChildCommentList from './childcommentlist';
 
-const CommentList = ({ setCommentCounter, projectId, postId, type }) => {
+const CommentList = ({ updateCommentCount, projectId, postId, type }) => {
   const chunkSize = 5;
 
   const [commentList, setCommentList] = useState([]);
@@ -19,24 +19,19 @@ const CommentList = ({ setCommentCounter, projectId, postId, type }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isRefreshed, setIsRefreshed] = useState(true);
 
-  const refreshCommentList = useCallback(async (counterEvent) => {
-    setIsRefreshed(false);
-    const response = await GetComment(postId, page, chunkSize);
-    setCommentList([...commentList, ...response.content]);
-    setCommentCounter(counterEvent);
-
-    if (response.last) {
-      setMoreVisibility('none');
-    } else {
-      setMoreVisibility('block');
-    }
-    setIsRefreshed(true);
+  // FIXME: 중복 제거 필요
+  const addLatestComment = useCallback(async (comment) => {
+    setCommentList([comment, ...commentList]);
   });
 
-  useEffect(async () => {
-    const response = await GetComment(postId, page, chunkSize);
+  const newRemoveSelectedComment = useCallback(async (removedCommentId) => {
+    setCommentList(commentList.filter((comment) => comment.id !== removedCommentId));
+  })
 
-    setCommentList([...commentList, ...response.content]);
+  useEffect(async () => {
+    const response = await ReadCommentList(postId, page, chunkSize);
+
+    setCommentList(uniqBy([...commentList, ...response.content], 'id'));
     setIsLoaded(true);
     if (response.last) {
       setMoreVisibility('none');
@@ -46,7 +41,7 @@ const CommentList = ({ setCommentCounter, projectId, postId, type }) => {
   return isLoaded ?
     (
       <>
-        {isRefreshed ? (<></>) : (<LinearProgress />)}
+        {<LinearProgress variant={isRefreshed ? 'determinate' : 'indeterminate'} value={isRefreshed ? 0 : undefined} />}
         {
           commentList
             ? commentList.map((item) => (
@@ -59,10 +54,11 @@ const CommentList = ({ setCommentCounter, projectId, postId, type }) => {
                   commentMentions={item.commentMentions}
                   postId={postId}
                   writeTime={item.writeTime}
-                  renewCommentList={refreshCommentList}
                   commentList={commentList}
                   childCommentCount={item.childCommentCount}
-                  type="parent"
+                  removeSelectedComment={newRemoveSelectedComment}
+                  updateCommentCount={updateCommentCount}
+                  setIsRefreshed={setIsRefreshed}
                 />
               </Box>
             ))
@@ -75,6 +71,7 @@ const CommentList = ({ setCommentCounter, projectId, postId, type }) => {
             tabIndex={0}
             style={{ fontSize: 13, cursor: 'pointer' }}
             onClick={async () => {
+              setPage(commentList.size / chunkSize);
               setPage(page + 1);
             }}
           >
@@ -86,7 +83,9 @@ const CommentList = ({ setCommentCounter, projectId, postId, type }) => {
             parentCommentId={null}
             projectId={projectId}
             postId={postId}
-            renewCommentList={refreshCommentList}
+            addLatestComment={addLatestComment}
+            updateCommentCount={updateCommentCount}
+            setIsRefreshed={setIsRefreshed}
           />
         )}
       </>
