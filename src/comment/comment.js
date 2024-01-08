@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 import AuthContext from '../contexts/auth';
 import { DateInfo } from '../global/datetime';
 import { UserId, UserImage } from '../post/UserProfile';
-import { DeleteComment, GetChildComment } from './commentapi';
+import { DeleteComment, ReadChildCommentList } from './commentapi';
 import CommentForm from './commentform';
 
 const useStyles = makeStyles((theme) => ({
@@ -70,7 +70,6 @@ const useStyles = makeStyles((theme) => ({
 const Content = (props) => {
   const { writer, writeTime, funcs, contents, tagList } = props;
 
-  const classes = useStyles();
   const stringSplit = contents.split(`\n`);
 
   return (
@@ -111,28 +110,41 @@ const Comment = (props) => {
     writeTime,
     writer,
     commentMentions,
-    renewCommentList,
     contents,
-    childCommentCount
+    childCommentCount,
+    removeSelectedComment,
+    updateCommentCount,
+    setIsRefreshed
   } = props;
 
   const [userId] = useContext(AuthContext);
-  const [remainCount, setRemainCount] = useState(childCommentCount);
 
+  // 댓글 관련 필드
   const chunkSize = 5;
   const [page, setPage] = useState(0);
   const [commentList, setCommentList] = useState([]);
+  const [remainCount, setRemainCount] = useState(childCommentCount);
 
   const classes = useStyles();
 
   const [isFormVisible, setIsFormVisible] = useState(false);
 
-  const [forUpdate, setForUpdate] = useState(false);
+  const addLatestComment = useCallback(async (comment) => {
+    setCommentList([comment, ...commentList]);
+  });
+
+  const newRemoveSelectedComment = useCallback(async (removedCommentId) => {
+    setCommentList(commentList.filter((comment) => comment.id !== removedCommentId));
+  })
 
   const loadMoreCommentList = async () => {
-    if (remainCount === 0) return;
+    setIsRefreshed(false);
+    if (remainCount === 0) {
+      setIsRefreshed(true);
+      return;
+    }
 
-    const response = await GetChildComment(id, page, chunkSize);
+    const response = await ReadChildCommentList(id, page, chunkSize);
     setCommentList([...commentList, ...response.content])
 
     if (response.last) {
@@ -141,12 +153,9 @@ const Comment = (props) => {
       setRemainCount(remainCount - chunkSize);
       setPage(page + 1);
     }
-  }
 
-  const RenewCommentList = useCallback(async (counterEvent) => {
-    renewCommentList(counterEvent);
-    setIsFormVisible(false);
-  });
+    setIsRefreshed(true);
+  }
 
   return (
     <>
@@ -163,7 +172,6 @@ const Comment = (props) => {
                 {userId && (<span
                   style={{ cursor: 'pointer' }}
                   onClick={() => {
-                    setForUpdate(false);
                     setIsFormVisible(!isFormVisible);
                   }}
                 >
@@ -174,25 +182,14 @@ const Comment = (props) => {
                     <span
                       style={{ cursor: 'pointer' }}
                       onClick={async () => {
-                        if (isFormVisible) {
-                          setIsFormVisible(false);
-                          setForUpdate(false);
-                        } else {
-                          setIsFormVisible(true);
-                          setForUpdate(true);
-                        }
-                      }}
-                    >
-                      수정하기&nbsp;
-                    </span>
-                    <span
-                      style={{ cursor: 'pointer' }}
-                      onClick={async () => {
                         if (window.confirm('정말로 삭제하시겠습니까?')) {
+                          setIsRefreshed(false);
                           const status = await DeleteComment(id);
                           if (status === 200) {
-                            renewCommentList(-1);
+                            removeSelectedComment(id);
+                            updateCommentCount(-1);
                           }
+                          setIsRefreshed(true);
                         }
                       }}
                     >
@@ -214,10 +211,8 @@ const Comment = (props) => {
                   commentMentions={item.commentMentions}
                   postId={postId}
                   writeTime={item.writeTime}
-                  renewCommentList={RenewCommentList}
-                  commentList={commentList}
                   childCommentCount={item.childCommentCount}
-                  type="child"
+                  removeSelectedComment={newRemoveSelectedComment}
                 />)) :
               <></>}
             <Grid display={remainCount !== 0 ? 'block' : 'none'} className={classes.children}>
@@ -236,14 +231,14 @@ const Comment = (props) => {
       </Box >
       <Box display={isFormVisible ? 'block' : 'none'}>
         <CommentForm
-          id={id}
+          parentCommentId={id}
           projectId={projectId}
           postId={postId}
-          renewCommentList={RenewCommentList}
           contents={contents}
-          forUpdate={forUpdate}
-          setForUpdate={setForUpdate}
           parentWriterId={writer.id}
+          addLatestComment={addLatestComment}
+          updateCommentCount={updateCommentCount}
+          setIsRefreshed={setIsRefreshed}
         />
       </Box>
     </>

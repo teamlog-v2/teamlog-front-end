@@ -17,7 +17,7 @@ import {
 import AuthContext from '../contexts/auth';
 import { GetProjectMembers } from '../project-management/projectApi';
 import { convertResourceUrl } from '../utils';
-import { CreateComment, UpdateComment } from './commentapi';
+import { CreateComment } from './commentapi';
 
 const useStyles = makeStyles(() => ({
   more: {
@@ -46,14 +46,12 @@ const useStyles = makeStyles(() => ({
 const CommentForm = (props) => {
   const classes = useStyles();
   const {
-    commentId,
+    parentCommentId,
     postId,
     projectId,
-    renewCommentList,
-    forUpdate,
-    setForUpdate,
-    contents,
-    parentWriterId,
+    addLatestComment,
+    setIsRefreshed,
+    updateCommentCount,
   } = props;
   const [options, setOptions] = useState([]);
   const inputRef = useRef();
@@ -71,15 +69,11 @@ const CommentForm = (props) => {
   const [userId] = useContext(AuthContext);
 
   useEffect(async () => {
-    if (forUpdate) {
-      setState({ ...state, userInput: contents });
-    } else {
-      setState({ ...state, userInput: '' });
-    }
+    setState({ ...state, userInput: '' });
 
     const membersResponse = await GetProjectMembers(projectId);
     setOptions(await membersResponse.json());
-  }, [forUpdate]);
+  }, []);
 
   const onKeyDown = (e) => {
     // 위 화살표 or 아래 화살표
@@ -241,41 +235,29 @@ const CommentForm = (props) => {
           </>
         </Box>
         <Box width="20%" display="inline-block">
-          {/* <ThemeProvider theme={theme}> */}
           <Button
             variant="outlined"
             fullWidth
             color="primary"
             disabled={isEmpty}
             onClick={async () => {
-              if (forUpdate) {
-                // 댓글 수정
-                const status = await UpdateComment(
-                  commentId,
-                  postId,
-                  inputRef.current.value,
-                  setSelectedUser(inputRef.current.value),
-                );
+              // 댓글 등록
+              setIsRefreshed(false);
+              const response = await CreateComment(
+                parentCommentId,
+                postId,
+                inputRef.current.value,
+                setSelectedUser(inputRef.current.value),
+              );
 
-                if (status === 200) {
-                  setState({ ...state, userInput: '' });
-                  setForUpdate(false);
-                  renewCommentList(0);
-                }
-              } else {
-                // 댓글 등록
-                const status = await CreateComment(
-                  commentId,
-                  postId,
-                  inputRef.current.value,
-                  setSelectedUser(inputRef.current.value),
-                );
-
-                if (status === 201) {
-                  renewCommentList(1);
-                  setState({ ...state, userInput: '' });
-                }
+              if (response.status === 201) {
+                const createdComment = await response.json();
+                addLatestComment(createdComment);
+                setState({ ...state, userInput: '' });
+                updateCommentCount(1);
               }
+
+              setIsRefreshed(true);
             }}
           >
             작성
