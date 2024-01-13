@@ -30,7 +30,7 @@
     "react-beautiful-dnd": "^13.1.0",
     "react-dom": "^17.0.2",
     "react-geocode": "^0.2.3",
-    "react-material-ui-carousel": "^2.2.4",
+    "react-material-ui-carousel": "^2.3.5-mui5",
     "react-places-autocomplete": "^7.3.0",
     "react-responsive": "^8.2.0",
     "react-responsive-carousel": "^3.2.18",

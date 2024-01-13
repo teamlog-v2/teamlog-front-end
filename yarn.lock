@@ -1868,7 +1868,7 @@
   resolved "https://registry.npmjs.org/@mapbox/point-geometry/-/point-geometry-0.1.0.tgz"
   integrity sha512-6j56HdLTwWGO0fJPlrZtdU/B13q8Uwmo18Ck2GnGgN9PCFyKTZ3UbXeEdRFh18i9XQ92eH2VdtpJHpBD3aripQ==
 
-"@material-ui/core@^4.0.0", "@material-ui/core@^4.11.3":
+"@material-ui/core@^4.0.0":
   version "4.12.4"
   resolved "https://registry.npmjs.org/@material-ui/core/-/core-4.12.4.tgz"
   integrity sha512-tr7xekNlM9LjA6pagJmL8QCgZXaubWUwkJnoYcMKd4gw/t4XiyvnTkjdGrUVicyB2BsdaAv1tvow45bPM4sSwQ==
@@ -1885,13 +1885,6 @@
     prop-types "^15.7.2"
     react-is "^16.8.0 || ^17.0.0"
     react-transition-group "^4.4.0"
-
-"@material-ui/icons@^4.11.2":
-  version "4.11.3"
-  resolved "https://registry.npmjs.org/@material-ui/icons/-/icons-4.11.3.tgz"
-  integrity sha512-IKHlyx6LDh8n19vzwH5RtHIOHl9Tu90aAAxcbWME6kp4dmvODM3UvOHJeMIDzUbd4muuJKHmlNoBN+mDY4XkBA==
-  dependencies:
-    "@babel/runtime" "^7.4.4"
 
 "@material-ui/pickers@^3.3.10":
   version "3.3.11"
@@ -1969,7 +1962,7 @@
   resolved "https://registry.npmjs.org/@mui/core-downloads-tracker/-/core-downloads-tracker-5.14.19.tgz"
   integrity sha512-y4JseIen5pmZs1n9hHy95HKKioKco8f6N2lford2AmjJigVJOv0KsU0qryiCpyuEUZmi/xCduVilHsK9DSkPcA==
 
-"@mui/icons-material@^5.14.19":
+"@mui/icons-material@^5.0.0", "@mui/icons-material@^5.14.19":
   version "5.14.19"
   resolved "https://registry.npmjs.org/@mui/icons-material/-/icons-material-5.14.19.tgz"
   integrity sha512-yjP8nluXxZGe3Y7pS+yxBV+hWZSsSBampCxkZwaw+1l+feL+rfP74vbEFbMrX/Kil9I/Y1tWfy5bs/eNvwNpWw==
@@ -2026,7 +2019,7 @@
     csstype "^3.1.2"
     prop-types "^15.8.1"
 
-"@mui/styles@^5.14.18":
+"@mui/styles@^5.0.0", "@mui/styles@^5.14.18":
   version "5.14.19"
   resolved "https://registry.npmjs.org/@mui/styles/-/styles-5.14.19.tgz"
   integrity sha512-5yARLEJ8zPzY6zpebupK3PqDo6jQBz1s78qXnBju10toP9HT4WEydpYdm+orDAlUUxP8eVlcpK0fVwza9NwbjA==
@@ -8863,7 +8856,7 @@ react-dev-utils@^12.0.1:
     strip-ansi "^6.0.1"
     text-table "^0.2.0"
 
-react-dom@*, "react-dom@^16.0.0 || ^17.0.0 || ^18.0.0", "react-dom@^16.13.1 || ^17.0.1", "react-dom@^16.8.0 || ^17.0.0", "react-dom@^16.8.5 || ^17.0.0 || ^18.0.0", "react-dom@^17.0.0 || ^18.0.0", react-dom@^17.0.2, "react-dom@>= 16.8.0", react-dom@>=16.6.0, react-dom@>=16.8.0:
+react-dom@*, "react-dom@^16.0.0 || ^17.0.0 || ^18.0.0", "react-dom@^16.8.0 || ^17.0.0", "react-dom@^16.8.5 || ^17.0.0 || ^18.0.0", "react-dom@^17.0.0 || ^18.0.0", react-dom@^17.0.1, react-dom@^17.0.2, "react-dom@>= 16.8.0", react-dom@>=16.6.0, react-dom@>=16.8.0:
   version "17.0.2"
   resolved "https://registry.npmjs.org/react-dom/-/react-dom-17.0.2.tgz"
   integrity sha512-s4h96KtLDUQlsENhMn1ar8t2bEa+q/YAtj8pPPdIjPDGBDIVNsrD9aXNWqspUe6AzKCIG0C1HZZLqLV7qpOBGA==
@@ -8931,10 +8924,10 @@ react-is@^18.0.0, react-is@^18.2.0, "react-is@>= 16.8.0":
   resolved "https://registry.npmjs.org/react-is/-/react-is-18.2.0.tgz"
   integrity sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==
 
-react-material-ui-carousel@^2.2.4:
-  version "2.3.11"
-  resolved "https://registry.npmjs.org/react-material-ui-carousel/-/react-material-ui-carousel-2.3.11.tgz"
-  integrity sha512-rsD9D2JLDBTfinaPy1+hcb7gunfdX7jmga7xESfRCCtLXzokOrkhmx4qMd8dZmYY42zc/HbYqLqg9E/d187lbw==
+react-material-ui-carousel@^2.3.5-mui5:
+  version "2.3.5-mui5"
+  resolved "https://registry.npmjs.org/react-material-ui-carousel/-/react-material-ui-carousel-2.3.5-mui5.tgz"
+  integrity sha512-5dboQ9SohTtGclHNzv4FnWq2RKupANACETzZu82+8DXUOr8EMqnU2ZogAichiVZH8NwYa3Yn/9aC03dnOkeEiA==
   dependencies:
     auto-bind "^2.1.1"
     react-swipeable "^6.1.0"
@@ -9081,7 +9074,7 @@ react-transition-group@^4.0.0, react-transition-group@^4.4.0, react-transition-g
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
-react@*, "react@^16.0.0 || ^17.0.0 || ^18.0.0", "react@^16.13.1 || ^17.0.1", "react@^16.3.0 || ^17.0.0 || ^18.0.0", "react@^16.8.0 || ^17.0.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^16.8.3 || ^17 || ^18", "react@^16.8.5 || ^17.0.0 || ^18.0.0", react@^17.0.0, "react@^17.0.0 || ^18.0.0", react@^17.0.2, "react@>= 16", "react@>= 16.8.0", react@>=0.14.7, react@>=15, react@>=16, react@>=16.13, react@>=16.6.0, react@>=16.8, react@>=16.8.0, react@17.0.2:
+react@*, "react@^16.0.0 || ^17.0.0 || ^18.0.0", "react@^16.3.0 || ^17.0.0 || ^18.0.0", "react@^16.8.0 || ^17.0.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^16.8.3 || ^17 || ^18", "react@^16.8.5 || ^17.0.0 || ^18.0.0", react@^17.0.0, "react@^17.0.0 || ^18.0.0", react@^17.0.1, react@^17.0.2, "react@>= 16", "react@>= 16.8.0", react@>=0.14.7, react@>=15, react@>=16, react@>=16.13, react@>=16.6.0, react@>=16.8, react@>=16.8.0, react@17.0.2:
   version "17.0.2"
   resolved "https://registry.npmjs.org/react/-/react-17.0.2.tgz"
   integrity sha512-gnhPt75i/dq/z3/6q/0asP78D0u592D5L1pd7M8P+dck6Fu/jJeL6iVVK23fptSUZj8Vjf++7wXA8UNclGQcbA==
