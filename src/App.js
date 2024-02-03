@@ -17,7 +17,6 @@ import ProjectForm from './project/ProjectForm';
 import SearchPage from './pages/SearchPage';
 import NewsPage from './pages/NewsPage';
 import SettingPage from './pages/SettingPage';
-// import MapPage from './map/MapPage';
 import MapPage from './map/newMapPage';
 
 const App = () => (

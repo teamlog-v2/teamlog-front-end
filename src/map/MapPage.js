@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
 import GoogleMapReact from 'google-map-react';
+import React, { useState } from 'react';
 import useSupercluster from 'use-supercluster';
-import { useSubscribeData } from '../hooks/hooks';
-import SimpleMarker from './SimpleMarker';
 import Cluster from './Cluster';
 import PostExplorer from './PostExplorer';
+import SimpleMarker from './SimpleMarker';
 
 const MapPage = () => {
-  const [posts] = useSubscribeData('api/posts/with-location');
+  // const [posts] = useSubscribeData('api/posts/with-location');
+  const posts = [];
 
   const [bounds, setBounds] = useState(null);
   const [zoom, setZoom] = useState(3);

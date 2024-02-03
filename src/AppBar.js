@@ -119,7 +119,6 @@ export default function AppBar() {
               <IconButton onClick={userClickedAddToHome}>
                 <GetAppIcon style={{ fontSize: '1.125rem', color: 'white' }} />
               </IconButton>
-              {/* <Button className="add-button" onClick={userClickedAddToHome}>앱</Button> */}
               <IconButton
                 onClick={() => {
                   history.push('/search');

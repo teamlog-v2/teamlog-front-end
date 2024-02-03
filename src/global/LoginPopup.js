@@ -1,7 +1,7 @@
-import { Link as Anchor, Box, Button, TextField } from '@mui/material';
-import React, { useContext, useState } from 'react';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import { Link as Anchor, Box, Button, Divider, TextField } from '@mui/material';
+import { useState } from 'react';
 import { setAccessToken } from '../contexts/auth';
-import BeamsClientContext from '../contexts/beamsClient';
 import withGap from '../higherOrderComponents/withGap';
 import { login as fetchLogin, validateLogin } from '../user/userService';
 
@@ -57,7 +57,6 @@ function LoginForm() {
   const [identification, setIdentification] = useState('');
   const [password, setPassword] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
-  const [client] = useContext(BeamsClientContext);
 
   async function login() {
     setIsProcessing(true);
@@ -131,7 +130,21 @@ function LoginForm() {
       >
         로그인
       </Button>
-    </GapBox>
+      <Divider sx={{ fontSize: '12px', color: 'grey' }}>간편 로그인</Divider>
+      <Button
+        startIcon={<GitHubIcon />}
+        style={{
+          backgroundColor: 'black',
+          color: 'white',
+        }}
+        variant="contained"
+        href='http://localhost:8090/login/github'
+        fullWidth
+        disabled={isProcessing}
+      >
+        GitHub로 로그인하기
+      </Button>
+    </GapBox >
   );
 }
 
