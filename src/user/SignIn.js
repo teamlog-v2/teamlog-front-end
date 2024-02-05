@@ -5,16 +5,16 @@ import { setAccessToken } from "../contexts/auth";
 const SignIn = () => {
   const history = useHistory();
 
-  useEffect(() => {
+  useEffect(async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('AccessToken');
 
     if (token) {
       localStorage.setItem('access-token', token);
       setAccessToken(token);
-    }
 
-    history.push('/');
+      window.location.href = '/main';
+    }
   }, []);
 
   return <div />
