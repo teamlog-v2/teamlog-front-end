@@ -12,9 +12,9 @@ import {
   useScrollTrigger
 } from '@mui/material';
 import { useContext, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import AuthContext, { setAccessToken } from './contexts/auth';
-import BeamsClientContext from './contexts/beamsClient';
 import LoginPopup from './global/LoginPopup';
 import SignupPopup from './global/SignupPopup';
 import ResponsiveDialog from './organisms/ResponsiveDialog';
@@ -82,15 +82,16 @@ function userClickedAddToHome() {
 }
 
 export default function AppBar() {
+  const popup = useSelector((state) => state);
+
+  const dispatch = useDispatch();
+
   const history = useHistory();
 
   const [id, setContextId, profileImgPath] = useContext(AuthContext);
-  const [client, setClient] = useContext(BeamsClientContext);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [isProjectFormOpened, setIsProjectFormOpened] = useState(false);
-
-  const [popup, setPopup] = useState('login');
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -110,8 +111,8 @@ export default function AppBar() {
   if (!id) {
     return (
       <>
-        {popup === 'login' && <LoginPopup handlePopup={setPopup} />}
-        {popup === 'signup' && <SignupPopup handlePopup={setPopup} />}
+        {popup === 'login' && <LoginPopup />}
+        {popup === 'signup' && <SignupPopup />}
         <Box display="flex" alignItems="center">
           <Wrapper>
             <Title />
@@ -119,7 +120,6 @@ export default function AppBar() {
               <IconButton onClick={userClickedAddToHome}>
                 <GetAppIcon style={{ fontSize: '1.125rem', color: 'white' }} />
               </IconButton>
-              {/* <Button className="add-button" onClick={userClickedAddToHome}>앱</Button> */}
               <IconButton
                 onClick={() => {
                   history.push('/search');
@@ -130,7 +130,7 @@ export default function AppBar() {
               <Button
                 style={{ color: 'white' }}
                 onClick={() => {
-                  setPopup('login');
+                  dispatch({ type: 'login' });
                 }}
               >
                 로그인

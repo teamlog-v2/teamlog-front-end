@@ -1,13 +1,17 @@
-import { Link as Anchor, Box, Button, TextField } from '@mui/material';
-import React, { useContext, useState } from 'react';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import { Link as Anchor, Box, Button, Divider, TextField } from '@mui/material';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { setAccessToken } from '../contexts/auth';
-import BeamsClientContext from '../contexts/beamsClient';
 import withGap from '../higherOrderComponents/withGap';
 import { login as fetchLogin, validateLogin } from '../user/userService';
 
 const GapBox = withGap(Box);
 
-export default function LoginPopup({ handlePopup }) {
+
+export default function LoginPopup() {
+  const dispatch = useDispatch();
+
   return (
     <WrapperBox>
       <GapBox
@@ -32,7 +36,7 @@ export default function LoginPopup({ handlePopup }) {
           <Anchor
             style={{ cursor: 'pointer' }}
             onClick={() => {
-              handlePopup?.('signup');
+              dispatch({ type: 'signup' });
             }}
           >
             회원가입
@@ -42,7 +46,7 @@ export default function LoginPopup({ handlePopup }) {
           <Anchor
             style={{ cursor: 'pointer' }}
             onClick={() => {
-              handlePopup?.(null);
+              dispatch({ type: null });
             }}
           >
             로그인하지 않고 이용하기
@@ -57,7 +61,6 @@ function LoginForm() {
   const [identification, setIdentification] = useState('');
   const [password, setPassword] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
-  const [client] = useContext(BeamsClientContext);
 
   async function login() {
     setIsProcessing(true);
@@ -75,9 +78,9 @@ function LoginForm() {
       res = await validateLogin();
       res = await res.json();
       if (res.status) {
-        setIsProcessing(false);
         return;
       }
+      setIsProcessing(false);
       window.location.reload(false);
     } catch (err) {
       console.error(err);
@@ -131,7 +134,21 @@ function LoginForm() {
       >
         로그인
       </Button>
-    </GapBox>
+      <Divider sx={{ fontSize: '12px', color: 'grey' }}>간편 로그인</Divider>
+      <Button
+        startIcon={<GitHubIcon />}
+        style={{
+          backgroundColor: 'black',
+          color: 'white',
+        }}
+        variant="contained"
+        href='http://localhost:8090/login/github'
+        fullWidth
+        disabled={isProcessing}
+      >
+        GitHub로 로그인하기
+      </Button>
+    </GapBox >
   );
 }
 

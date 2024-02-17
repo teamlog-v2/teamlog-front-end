@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router';
 import { validateLogin } from '../user/userService';
 
 const AuthContext = React.createContext(null);
@@ -14,22 +13,20 @@ function setAccessToken(token) {
 
 // eslint-disable-next-line no-global-assign
 fetch = ((origin) => (url, config) => {
-    if (!config) {
-      config = {};
-    }
-    if (!config.headers) {
-      config.headers = {};
-    }
-    config.headers.Authorization = getAccessToken();
-    return origin(url, config);
-  })(fetch);
+  if (!config) {
+    config = {};
+  }
+  if (!config.headers) {
+    config.headers = {};
+  }
+  config.headers.Authorization = getAccessToken();
+  return origin(url, config);
+})(fetch);
 
 const AuthProvider = ({ children }) => {
   const [id, setId] = useState(null);
   const [profileImgPath, setProfileImgPath] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
-
-  const history = useHistory();
 
   useEffect(() => {
     const storedAccessToken = localStorage.getItem('access-token');

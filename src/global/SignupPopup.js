@@ -1,11 +1,14 @@
 import { Link as Anchor, Box, Button, TextField } from '@mui/material';
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import withGap from '../higherOrderComponents/withGap';
 import { createUser } from '../user/userService';
 
 const GapBox = withGap(Box);
 
-export default function SignupPopup({ handlePopup }) {
+export default function SignupPopup() {
+  const dispatch = useDispatch();
+
   return (
     <WrapperBox>
       <GapBox
@@ -19,7 +22,7 @@ export default function SignupPopup({ handlePopup }) {
         <Box display="flex" justifyContent="center">
           <Intro />
         </Box>
-        <SignupForm handlePopup={handlePopup} />
+        <SignupForm />
         <Box
           padding="0.5rem"
           borderRadius="0.25rem"
@@ -30,7 +33,7 @@ export default function SignupPopup({ handlePopup }) {
           <Anchor
             style={{ cursor: 'pointer' }}
             onClick={() => {
-              handlePopup?.('login');
+              dispatch({ type: 'login' });
             }}
           >
             로그인
@@ -40,7 +43,7 @@ export default function SignupPopup({ handlePopup }) {
           <Anchor
             style={{ cursor: 'pointer' }}
             onClick={() => {
-              handlePopup?.(null);
+              dispatch({ type: null });
             }}
           >
             나가기
@@ -51,7 +54,7 @@ export default function SignupPopup({ handlePopup }) {
   );
 }
 
-function SignupForm({ handlePopup }) {
+function SignupForm() {
   const [identification, setIdentification] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -63,7 +66,9 @@ function SignupForm({ handlePopup }) {
     const res = await createUser({ identification, password, name });
     if (res.status >= 200 && res.status < 300) {
       alert('회원가입을 축하합니다 ^^');
-      handlePopup('login');
+
+      const dispatch = useDispatch();
+      dispatch({ type: 'login' });
     } else {
       setIsProcessing(false);
     }
