@@ -14,33 +14,17 @@ import AuthContext from '../contexts/auth';
 import { DateInfo } from '../global/datetime';
 import { CompressedPost } from '../post/Post';
 
-// 1. 프로젝트 2. 게시물 (3. 댓글)
-// 태스크
-// 초대장, 팔로워
-
-// 내가 속한 프로젝트의 (최신 태스크) 가능 fetch(`api/projects/{projectid}/tasks`); - 완료🔥
-// (나에게로 온 초대장) 가능 fetch(`/api/users/project-invitation`); - 완료🔥
-// (나의 새로운 팔로워) X: 팔로워리스트 받을때 팔로우한 시간도 받을수있어야함
-// 내가 속한 프로젝트의 (새로운 게시물) 가능 fetch(`/api/projects/user/${userId}`); - 완료🔥
-// 내가 팔로우하는 프로젝트의 (새로운 게시물) 가능 fetch(`/api/users/${userId}/following-projects`); - 완료🔥
-// 내가 팔로우하는 사람이 작성한 (새로운 게시물) X: userId로 포스트 받아오는것 있어야함
-
-//
-// 지도로 탐험하기 버튼 -> MapPage로 이동
-
 function cmpTimeStr(a, b) {
   return new Date(b) - new Date(a);
 }
 
-//
-// 최신, 인기?
 export default function NewsPage() {
-  const [userId] = useContext(AuthContext);
+  const [accountId] = useContext(AuthContext);
   const [isLoaded, setIsLoaded] = useState(false);
   const [invitations, setInvitations] = useState(null);
   const [belongingProjects, setBelongingProjects] = useState(null);
   const [followingProjects, setFollowingProjects] = useState(null);
-  const [followingUsersPosts, setFollowingUsersPosts] = useState(null);
+  const [followingAccountsPosts, setFollowingAccountsPosts] = useState(null);
   const [taskWrappers, setTaskWrappers] = useState([]);
   const tasksCounter = useRef(0);
   const [belongingPosts, setBelongingPosts] = useState([]);
@@ -61,7 +45,7 @@ export default function NewsPage() {
       });
 
     // 속한 프로젝트
-    fetch(`/api/projects/accounts/${userId}`)
+    fetch(`/api/projects/accounts/${accountId}`)
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
@@ -69,7 +53,7 @@ export default function NewsPage() {
       });
 
     // 팔로우 프로젝트
-    fetch(`/api/accounts/${userId}/following-projects`)
+    fetch(`/api/accounts/${accountId}/following-projects`)
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
@@ -77,11 +61,11 @@ export default function NewsPage() {
       });
 
     // 나의 팔로워의 게시물
-    fetch('/api/posts/following-users')
+    fetch('/api/posts/following-accounts')
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
-        setFollowingUsersPosts(res);
+        setFollowingAccountsPosts(res);
       });
   }, []);
 
@@ -178,7 +162,7 @@ export default function NewsPage() {
     console.log(belongingPostsCounter.current !== belongingProjects?.length);
     console.log(followingProjects === null);
     console.log(followingPostsCounter.current !== followingProjects?.length);
-    console.log(followingUsersPosts === null);
+    console.log(followingAccountsPosts === null);
     if (
       invitations === null ||
       belongingProjects === null ||
@@ -186,7 +170,7 @@ export default function NewsPage() {
       belongingPostsCounter.current !== belongingProjects.length ||
       followingProjects === null ||
       followingPostsCounter.current !== followingProjects.length ||
-      followingUsersPosts === null
+      followingAccountsPosts === null
     ) {
       return;
     }
@@ -194,7 +178,7 @@ export default function NewsPage() {
     // 중복 포스트를 날리고, Wrapping 하기
     const postWrappers = [];
     const checker = {};
-    [...belongingPosts, ...followingPosts, ...followingUsersPosts].forEach(
+    [...belongingPosts, ...followingPosts, ...followingAccountsPosts].forEach(
       (post) => {
         if (checker[post.id]) {
           return;
@@ -228,7 +212,7 @@ export default function NewsPage() {
     taskWrappers,
     belongingPosts,
     followingPosts,
-    followingUsersPosts,
+    followingAccountsPosts,
   ]);
 
   // == render ========

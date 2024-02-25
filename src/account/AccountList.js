@@ -9,10 +9,10 @@ import {
   Typography,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { convertResourceUrl } from '../utils';
-import { follow, unfollow } from './userService';
+import { follow, unfollow } from './AccountService';
 
 const useStyles = makeStyles(() => ({
   profileImg: {
@@ -22,53 +22,53 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const UserList = ({ type, userId, fetchData }) => {
+const AccountList = ({ type, accountId, fetchData }) => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [users, setUsers] = useState([]);
+  const [accounts, setAccounts] = useState([]);
   const classes = useStyles();
 
   useEffect(() => {
     (async () => {
       let result;
       try {
-        const response = await fetchData(userId);
+        const response = await fetchData(accountId);
         result = await response.json();
         console.log(result);
       } catch (error) {
         setIsLoaded(false);
         return;
       }
-      setUsers(result);
+      setAccounts(result);
       setIsLoaded(true);
     })();
   }, []);
 
-  const followUser = (target) => {
-    const newUsers = users.map((user) => (user.id === target.id ? { ...user, isFollow: true }
-      : user));
+  const followAccount = (target) => {
+    const newAccounts = accounts.map((account) => (account.identification === target.identification ? { ...account, isFollow: true }
+      : account));
     let result = null;
     try {
-      const response = follow(target.id);
+      const response = follow(target.identification);
       result = response.json();
       console.log(result);
     } catch (error) {
       console.log(error);
     }
-    setUsers(newUsers);
+    setAccounts(newAccounts);
   };
 
-  const unfollowUser = (target) => {
-    const newUsers = users.map((user) => (user.id === target.id ? { ...user, isFollow: false }
-      : user));
+  const unfollowAccount = (target) => {
+    const newAccounts = accounts.map((account) => (account.identification === target.identification ? { ...account, isFollow: false }
+      : account));
     let result = null;
     try {
-      const response = unfollow(target.id);
+      const response = unfollow(target.identification);
       result = response.json();
       console.log(result);
     } catch (error) {
       console.log(error);
     }
-    setUsers(newUsers);
+    setAccounts(newAccounts);
   };
 
   return (
@@ -77,36 +77,36 @@ const UserList = ({ type, userId, fetchData }) => {
         {isLoaded ?
           (
             <>
-              {users.length > 0 ?
-                users.map(((user) => (
+              {accounts.length > 0 ?
+                accounts.map(((account) => (
                   <Grid item sm={6} xs={12}>
                     <Card elevation={2}>
                       <Box display="flex" flexDirection="row">
                         <Box flexGrow={1}>
                           <Link
-                            to={`/accounts/${user.id}`}
+                            to={`/accounts/${account.identification}`}
                             style={{ textDecoration: 'none' }}
                           >
                             <Box display="flex" alignItems="center">
                               <Avatar
                                 className={classes.profileImg}
-                                src={convertResourceUrl(user.profileImgPath)}
+                                src={convertResourceUrl(account.profileImgPath)}
                               />
                               <Typography variant="body1" color="textPrimary">
-                                {user.name}
+                                {account.name}
                               </Typography>
                             </Box>
                           </Link>
                         </Box>
                         <Box margin="10px" display="flex" alignItems="center">
-                          {user.isFollow === null ? null : (
+                          {account.isFollow === null ? null : (
                             <>
-                              {user.isFollow === true ? (
+                              {account.isFollow === true ? (
                                 <Button
                                   size="small"
                                   variant="outlined"
                                   color="primary"
-                                  onClick={() => unfollowUser(user)}
+                                  onClick={() => unfollowAccount(account)}
                                 >
                                   팔로잉
                                 </Button>
@@ -115,7 +115,7 @@ const UserList = ({ type, userId, fetchData }) => {
                                   size="small"
                                   variant="contained"
                                   color="primary"
-                                  onClick={() => followUser(user)}
+                                  onClick={() => followAccount(account)}
                                 >
                                   팔로우
                                 </Button>
@@ -154,4 +154,4 @@ const UserList = ({ type, userId, fetchData }) => {
   );
 };
 
-export default UserList;
+export default AccountList;

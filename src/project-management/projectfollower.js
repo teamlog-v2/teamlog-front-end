@@ -18,7 +18,7 @@ const useStyles = makeStyles(() => ({
 const ProjectFollower = () => {
   const classes = useStyles();
   const { id: projectId } = useParams();
-  const [userId] = useContext(AuthContext);
+  const [accountId] = useContext(AuthContext);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
   const [followers, setFollowers] = useState([]);
@@ -35,12 +35,12 @@ const ProjectFollower = () => {
     if (followersResponse.status === 200) {
       setFollowers(await followersResponse.json());
 
-      if (userId == null) {
+      if (accountId == null) {
         setIsLoaded(true);
         return;
       }
 
-      const followProjects = await GetFollowProjects(userId); // 유저가 팔로우한 프로젝트 조회
+      const followProjects = await GetFollowProjects(accountId); // 유저가 팔로우한 프로젝트 조회
 
       if (followProjects.status === 401) {
         setIsLogin(false);
@@ -80,7 +80,7 @@ const ProjectFollower = () => {
       const followersResponse = await GetProjectFollowers(projectId);
       if (followersResponse.status === 200) {
         setFollowers(await followersResponse.json());
-        FollowProjectNotification(projectId, userId);
+        FollowProjectNotification(projectId, accountId);
       }
     }
   };
@@ -128,7 +128,7 @@ const ProjectFollower = () => {
           <Grid item style={{ margin: '1em 0' }} xs={9} sm={10}>
             <Typography variant="h6">⭐ 팔로워</Typography>
           </Grid>
-          {userId === null ? (<></>) : (
+          {accountId === null ? (<></>) : (
             <Grid item style={{ margin: '1em 0' }} xs={3} sm={2}>
               {isFollowing ? (
                 <Button

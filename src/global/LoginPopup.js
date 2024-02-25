@@ -2,9 +2,9 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import { Link as Anchor, Box, Button, Divider, TextField } from '@mui/material';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { login as fetchLogin, validateLogin } from '../account/AccountService';
 import { setAccessToken } from '../contexts/auth';
 import withGap from '../higherOrderComponents/withGap';
-import { login as fetchLogin, validateLogin } from '../user/userService';
 
 const GapBox = withGap(Box);
 

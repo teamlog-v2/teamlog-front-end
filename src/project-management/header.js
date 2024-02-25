@@ -205,7 +205,7 @@ const Header = ({ sections, updateRelation }) => {
 
   updateRelation(project?.relation ?? 'NONE');
 
-  const [userId] = useContext(AuthContext);
+  const [accountId] = useContext(AuthContext);
   const { useHandleError } = useContext(ErrorContext);
   useHandleError(projectLoadError);
 
@@ -231,7 +231,7 @@ const Header = ({ sections, updateRelation }) => {
             <ProjectTitle title={title} introduction={introduction} />
           </Grid>
           <Grid container item xs={2} sm={1} justify="center" alignItems="center">
-            {userId === null ?
+            {accountId === null ?
               (<></>) :
               (<TopButton projectId={projectId} isProjectLoaded={isProjectLoaded} relation={relation} />)}
           </Grid>

@@ -20,7 +20,7 @@ const StyledIcon = styled(Typography)`
 `;
 
 const getItemStyle = (isDragging, draggableStyle) => ({
-  userSelect: 'none',
+  accountSelect: 'none',
   padding: 10,
   margin: '10px 0 5px 0',
   backgroundColor: isDragging ? '#C09FCB' : 'white',

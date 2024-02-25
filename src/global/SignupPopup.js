@@ -1,8 +1,8 @@
 import { Link as Anchor, Box, Button, TextField } from '@mui/material';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { createAccount } from '../account/AccountService';
 import withGap from '../higherOrderComponents/withGap';
-import { createUser } from '../user/userService';
 
 const GapBox = withGap(Box);
 
@@ -63,7 +63,7 @@ function SignupForm() {
   async function signup() {
     setIsProcessing(true);
 
-    const res = await createUser({ identification, password, name });
+    const res = await createAccount({ identification, password, name });
     if (res.status >= 200 && res.status < 300) {
       alert('회원가입을 축하합니다 ^^');
 

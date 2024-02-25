@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { convertResourceUrl } from '../utils';
 
 const useStyles = makeStyles(() => ({
-  user: {
+  account: {
     cursor: 'pointer',
   },
   image: {
@@ -17,7 +17,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const UserImage = (props) => {
+const AccountImage = (props) => {
   const classes = useStyles();
 
   const { imgPath = '' } = props;
@@ -25,20 +25,20 @@ const UserImage = (props) => {
   return <Avatar className={classes.small} src={imgPath ? convertResourceUrl(imgPath) : ''} />;
 };
 
-const UserId = (props) => {
-  const { userId, fontSize } = props;
+const AccountId = (props) => {
+  const { accountId, fontSize } = props;
 
   return (
     <Box display="inline-block" fontSize={fontSize}>
       <Link
-        to={`/accounts/${userId}`}
+        to={`/accounts/${accountId}`}
         style={{ textDecoration: 'none', color: 'black' }}
       >
-        <strong style={{ marginRight: '0.25em' }}>{userId}</strong>
+        <strong style={{ marginRight: '0.25em' }}>{accountId}</strong>
       </Link>
     </Box>
   );
 };
 
-export { UserId, UserImage };
+export { AccountId, AccountImage };
 

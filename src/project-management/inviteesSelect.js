@@ -33,7 +33,7 @@ const StyledList = withStyles({
 })(List);
 
 const useStyles = makeStyles((theme) => ({
-  usersContainer: {
+  accountsContainer: {
     [theme.breakpoints.up('md')]: {
       width: '20em',
       height: '32em',
@@ -52,8 +52,8 @@ const InviteesSelect = ({
   const [masterId] = useContext(AuthContext);
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [users, setUsers] = useState([]);
-  const [selectedUserIds, setSelectedUserIds] = useState([]);
+  const [accounts, setAccounts] = useState([]);
+  const [selectedAccountIds, setSelectedAccountIds] = useState([]);
   const [searchString, setSearchString] = useState('');
   console.log(setError);
   console.log('hello');
@@ -71,7 +71,7 @@ const InviteesSelect = ({
         setIsLoaded(false);
         return;
       }
-      setUsers(result);
+      setAccounts(result);
       setIsLoaded(true);
     })();
   }, []);
@@ -101,25 +101,25 @@ const InviteesSelect = ({
     );
   }
 
-  const toggleSelectedUserId = (userId) => {
-    if (selectedUserIds.includes(userId)) {
-      const temp = selectedUserIds.slice();
-      temp.splice(selectedUserIds.indexOf(userId), 1);
-      setSelectedUserIds(temp);
+  const toggleSelectedAccountId = (accountId) => {
+    if (selectedAccountIds.includes(accountId)) {
+      const temp = selectedAccountIds.slice();
+      temp.splice(selectedAccountIds.indexOf(accountId), 1);
+      setSelectedAccountIds(temp);
     } else {
-      setSelectedUserIds([...selectedUserIds, userId]);
+      setSelectedAccountIds([...selectedAccountIds, accountId]);
     }
   };
 
-  const saveSelectedUsers = async () => {
+  const saveSelectedAccounts = async () => {
     const selectedInvitees = [];
-    const invitedUserIds = [];
-    selectedUserIds.foreach((selectedUserId) => {
-      const temp = users.find((user) => user.id === selectedUserId);
+    const invitedAccountIds = [];
+    selectedAccountIds.foreach((selectedAccountId) => {
+      const temp = accounts.find((account) => account.id === selectedAccountId);
       selectedInvitees.push(temp);
     });
     selectedInvitees.map(async (invitee) => {
-      invitedUserIds.push(invitee.id);
+      invitedAccountIds.push(invitee.id);
       const response = await JoinProject(projectId, invitee.id);
       if (response.status !== 201) {
         window.alert('error');
@@ -127,7 +127,7 @@ const InviteesSelect = ({
     });
 
     console.log('okay');
-    InviteProjectNotification(projectId, masterId, invitedUserIds);
+    InviteProjectNotification(projectId, masterId, invitedAccountIds);
 
     const inviteesResponse = await GetProjectInvitees(projectId);
     if (inviteesResponse.status === 200) {
@@ -138,9 +138,9 @@ const InviteesSelect = ({
   };
 
   return (
-    <Container className={classes.usersContainer}>
+    <Container className={classes.accountsContainer}>
       <Box display="flex" justifyContent="center">
-        <Typography>{`${selectedUserIds.length}명 선택됨`}</Typography>
+        <Typography>{`${selectedAccountIds.length}명 선택됨`}</Typography>
       </Box>
 
       <Box
@@ -154,17 +154,17 @@ const InviteesSelect = ({
         overflow="auto"
         bgcolor="#F8F8F8"
       >
-        {selectedUserIds.length === 0 && (
+        {selectedAccountIds.length === 0 && (
           <Typography color="primary">-</Typography>
         )}
-        {selectedUserIds.map((selectedUserId) => {
-          const user = users.find((userItem) => userItem.id === selectedUserId);
+        {selectedAccountIds.map((selectedAccountId) => {
+          const account = accounts.find((accountItem) => accountItem.id === selectedAccountId);
           return (
             <Chip
-              key={user.id}
-              label={user.name}
+              key={account.id}
+              label={account.name}
               onDelete={() => {
-                toggleSelectedUserId(user.id);
+                toggleSelectedAccountId(account.id);
               }}
               color="primary"
             />
@@ -190,21 +190,21 @@ const InviteesSelect = ({
       />
 
       <StyledList dense>
-        {users
-          .filter((user) => user.name.includes(searchString))
-          .map((user) => (
+        {accounts
+          .filter((account) => account.name.includes(searchString))
+          .map((account) => (
             <ListItem
-              key={user.id}
+              key={account.id}
               button
               onClick={() => {
-                toggleSelectedUserId(user.id);
+                toggleSelectedAccountId(account.id);
               }}
             >
               <ListItemAvatar>
-                <Avatar alt={user.name} src={convertResourceUrl(user.profileImgPath)} />
+                <Avatar alt={account.name} src={convertResourceUrl(account.profileImgPath)} />
               </ListItemAvatar>
-              <ListItemText primary={`${user.name} (${user.id})`} />
-              {selectedUserIds.includes(user.id) ? (
+              <ListItemText primary={`${account.name} (${account.id})`} />
+              {selectedAccountIds.includes(account.id) ? (
                 <CheckBox color="primary" />
               ) : (
                 <CheckBoxOutlineBlank color="primary" />
@@ -222,7 +222,7 @@ const InviteesSelect = ({
         padding="8px"
         bgcolor="#F8F8F8"
       >
-        <Button variant="contained" color="primary" onClick={saveSelectedUsers}>
+        <Button variant="contained" color="primary" onClick={saveSelectedAccounts}>
           완료
         </Button>
         <Button onClick={handleClose} variant="contained">

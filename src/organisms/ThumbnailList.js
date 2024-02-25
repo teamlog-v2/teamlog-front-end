@@ -7,7 +7,7 @@ import { convertResourceUrl } from '../utils';
 const grid = 8;
 
 const getItemStyle = (isDragging, draggableStyle) => ({
-  userSelect: 'none',
+  accountSelect: 'none',
   padding: grid * 2,
   margin: `0 ${grid}px 0 0`,
   ...draggableStyle,

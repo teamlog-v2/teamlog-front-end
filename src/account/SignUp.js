@@ -10,9 +10,9 @@ import {
   Typography
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { createUser, validateLogin } from './userService';
+import { createAccount, validateLogin } from './AccountService';
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -51,7 +51,7 @@ const SignUp = () => {
     };
     try {
       console.log(data);
-      const response = await createUser(data);
+      const response = await createAccount(data);
       setIsProcessing(false);
       if (response.status === 201) {
         setIsSuccess(true);

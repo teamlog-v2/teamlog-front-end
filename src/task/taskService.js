@@ -31,7 +31,7 @@ const deleteTask = (taskId) => fetch(`/api/tasks/${taskId}`, {
 });
 
 // 태스크 생성 알림
-const CreateTaskNotification = async (userId, projectId) => {
+const CreateTaskNotification = async (accountId, projectId) => {
   const objective = await GetProject(projectId).then((res) => res.json()).then((res) => res.name);
   const target = await GetProjectMembers(projectId).then((res) => res.json());
 
@@ -44,7 +44,7 @@ const CreateTaskNotification = async (userId, projectId) => {
       projectId,
       target,
       objective,
-      source: userId,
+      source: accountId,
       type: 'create_task',
     }),
   });

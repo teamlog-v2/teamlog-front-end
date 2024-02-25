@@ -38,7 +38,7 @@ const MasterSelect = ({
 }) => {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [users, setUsers] = useState([]);
+  const [accounts, setAccounts] = useState([]);
   const [selectedMaster, setSelectedMaster] = useState([]);
   const [searchString, setSearchString] = useState('');
   console.log(setError);
@@ -56,7 +56,7 @@ const MasterSelect = ({
         setIsLoaded(false);
         return;
       }
-      setUsers(result);
+      setAccounts(result);
       setSelectedMaster(currentMaster);
       setIsLoaded(true);
     })();
@@ -87,19 +87,19 @@ const MasterSelect = ({
     );
   }
 
-  const toggleSelectedUserId = (userId) => {
-    if (selectedMaster.includes(userId)) {
+  const toggleSelectedAccountId = (accountId) => {
+    if (selectedMaster.includes(accountId)) {
       setSelectedMaster(currentMaster);
     } else {
-      setSelectedMaster([userId]);
+      setSelectedMaster([accountId]);
     }
   };
 
-  const saveSelectedUsers = async () => {
+  const saveSelectedAccounts = async () => {
     if (window.confirm('정말로 마스터를 위임하시겠습니까?')) {
       const selectedMasterId = selectedMaster[0];
       const currentMasterId = currentMaster[0];
-      const newMaster = users.find((user) => user.id === selectedMasterId);
+      const newMaster = accounts.find((account) => account.id === selectedMasterId);
 
       const response = await DelegateProjectMaster(projectId, newMaster.id);
       if (response.status === 200) {
@@ -129,15 +129,15 @@ const MasterSelect = ({
         {selectedMaster.length === 0 && (
           <Typography color="primary">-</Typography>
         )}
-        {selectedMaster.map((selectedUserId) => {
-          const user = users.find((master) => master.id === selectedUserId);
+        {selectedMaster.map((selectedAccountId) => {
+          const account = accounts.find((master) => master.id === selectedAccountId);
           return (
             <>
               <ListItem>
                 <ListItemAvatar>
-                  <Avatar alt={user.name} src={convertResourceUrl(user.profileImgPath)} />
+                  <Avatar alt={account.name} src={convertResourceUrl(account.profileImgPath)} />
                 </ListItemAvatar>
-                <ListItemText primary={`${user.name} (${user.id})`} />
+                <ListItemText primary={`${account.name} (${account.id})`} />
 
               </ListItem>
             </>
@@ -163,21 +163,21 @@ const MasterSelect = ({
       />
 
       <StyledList dense>
-        {users
-          .filter((user) => user.name.includes(searchString))
-          .map((user) => (
+        {accounts
+          .filter((account) => account.name.includes(searchString))
+          .map((account) => (
             <ListItem
-              key={user.id}
+              key={account.id}
               button
               onClick={() => {
-                toggleSelectedUserId(user.id);
+                toggleSelectedAccountId(account.id);
               }}
             >
               <ListItemAvatar>
-                <Avatar alt={user.name} src={convertResourceUrl(user.profileImgPath)} />
+                <Avatar alt={account.name} src={convertResourceUrl(account.profileImgPath)} />
               </ListItemAvatar>
-              <ListItemText primary={`${user.name} (${user.id})`} />
-              {selectedMaster.includes(user.id) ? (
+              <ListItemText primary={`${account.name} (${account.id})`} />
+              {selectedMaster.includes(account.id) ? (
                 <CheckBox color="primary" />
               ) : (
                 <CheckBoxOutlineBlank color="primary" />
@@ -195,7 +195,7 @@ const MasterSelect = ({
         padding="8px"
         bgcolor="white"
       >
-        <Button variant="contained" color="primary" onClick={saveSelectedUsers}>
+        <Button variant="contained" color="primary" onClick={saveSelectedAccounts}>
           확인
         </Button>
         <Button onClick={handleClose} variant="contained">

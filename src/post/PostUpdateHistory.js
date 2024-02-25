@@ -4,7 +4,7 @@ import { Divider } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { useEffect, useState } from 'react';
 import { DateInfo } from '../global/datetime';
-import { UserId, UserImage } from './UserProfile';
+import { AccountId, AccountImage } from './AccountProfile';
 
 const UpdateHistory = (props) => {
   const { id, updateOpen } = props;
@@ -35,8 +35,8 @@ const UpdateHistory = (props) => {
               return history.map((inform, index) => (
                 <>
                   <Grid container direction="row" alignItems="center" style={{ padding: '1%' }}>
-                    <UserImage imgPath={inform.writer.profileImgPath} />
-                    <UserId userId={inform.writer.id} />님이&nbsp;
+                    <AccountImage imgPath={inform.writer.profileImgPath} />
+                    <AccountId accountId={inform.writer.id} />님이&nbsp;
                     <DateInfo dateTime={inform.writeTime} />&nbsp;글을 수정했습니다.
                   </Grid>
                   {

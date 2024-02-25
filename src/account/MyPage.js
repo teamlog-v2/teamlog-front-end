@@ -19,19 +19,19 @@ import {
   Typography
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
 import AuthContext, { setAccessToken } from '../contexts/auth';
 import ProjectListContainer from '../project/ProjectListContainer';
-import UserList from './UserList';
+import AccountList from './AccountList';
 import {
-  deleteUser,
+  deleteAccount,
   follow,
-  getUser,
-  getUserFollower,
-  getUserFollowing,
+  getAccount,
+  getAccountFollower,
+  getAccountFollowing,
   unfollow,
-} from './userService';
+} from './AccountService';
 
 const useStyles = makeStyles((theme) => ({
   multiLineEllipsis: {
@@ -65,6 +65,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const MyPage = ({ match }) => {
+  console.log(match)
+
   const history = useHistory();
   const classes = useStyles();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -74,7 +76,7 @@ const MyPage = ({ match }) => {
   const [alertOpen, setAlertOpen] = useState(false);
   const [setContextId] = useContext(AuthContext);
 
-  const [user, setUser] = useState({
+  const [account, setAccount] = useState({
     isMe: false,
     isFollow: false,
     identification: '',
@@ -87,26 +89,26 @@ const MyPage = ({ match }) => {
     (async () => {
       setIsLoaded(false);
       setValue('1');
-      let userInfo;
+      let accountInfo;
       try {
-        const response = await getUser(match.params.userId);
+        const response = await getAccount(match.params.accountId);
         if (response.status === 401) {
           setIsLogin(false);
         }
-        userInfo = await response.json();
+        accountInfo = await response.json();
       } catch (err) {
         alert(err);
         setIsLoaded(false);
       }
 
-      setUser(userInfo);
+      setAccount(accountInfo);
       setIsLoaded(true);
     })();
-  }, [match.params.userId]);
+  }, [match.params.accountId]);
 
   const handleSubmit = async () => {
     try {
-      const response = await deleteUser();
+      const response = await deleteAccount();
       if (response.status === 200) {
         localStorage.removeItem('access-token');
         setAccessToken('');
@@ -136,26 +138,26 @@ const MyPage = ({ match }) => {
     setValue(newValue);
   };
 
-  const followUser = () => {
-    const newUser = { ...user, isFollow: true };
+  const followAccount = () => {
+    const newAccount = { ...account, isFollow: true };
     try {
-      const response = follow(user.identification);
+      const response = follow(account.identification);
       console.log(response);
     } catch (error) {
       console.log(error);
     }
-    setUser(newUser);
+    setAccount(newAccount);
   };
 
-  const unfollowUser = () => {
-    const newUser = { ...user, isFollow: false };
+  const unfollowAccount = () => {
+    const newAccount = { ...account, isFollow: false };
     try {
-      const response = unfollow(user.identification);
+      const response = unfollow(account.identification);
       console.log(response);
     } catch (error) {
       console.log(error);
     }
-    setUser(newUser);
+    setAccount(newAccount);
   };
 
   if (!isLogin) {
@@ -229,9 +231,9 @@ const MyPage = ({ match }) => {
           padding="0.8rem 0.8rem"
           style={{ opacity: 0.9 }}
         >
-          {user.isMe === null ? null : (
+          {account.isMe === null ? null : (
             <>
-              {user.isMe ? (
+              {account.isMe ? (
                 <IconButton variant="contained" onClick={handleClick}>
                   <SettingsIcon />
                 </IconButton>
@@ -248,13 +250,13 @@ const MyPage = ({ match }) => {
                 height: (theme) => theme.spacing(15),
               }}
               src={
-                user.profileImgPath
+                account.profileImgPath
               }
             />
           </Grid>
           <Grid item xs={12} align="center">
             <Typography component="h1" variant="h5">
-              {user.name}
+              {account.name}
             </Typography>
           </Grid>
           <Grid item xs={12} align="center">
@@ -266,26 +268,26 @@ const MyPage = ({ match }) => {
                 textOverflow: 'ellipsis',
               }}
             >
-              {user.introduction}
+              {account.introduction}
             </Typography>
           </Grid>
           <Grid item xs={12} align="center">
-            {user.isMe === null ? null : (
+            {account.isMe === null ? null : (
               <>
-                {user.isMe ? (
+                {account.isMe ? (
                   <Button
                     variant="outlined"
-                    onClick={() => history.push(`/accounts/${match.params.userId}/edit`)}
+                    onClick={() => history.push(`/accounts/${match.params.accountId}/edit`)}
                   >
                     프로필 편집
                   </Button>
                 ) : (
                   <>
-                    {user.isFollow === true ? (
+                    {account.isFollow === true ? (
                       <Button
                         variant="outlined"
                         color="primary"
-                        onClick={unfollowUser}
+                        onClick={unfollowAccount}
                       >
                         팔로잉
                       </Button>
@@ -293,7 +295,7 @@ const MyPage = ({ match }) => {
                       <Button
                         variant="contained"
                         color="primary"
-                        onClick={followUser}
+                        onClick={followAccount}
                       >
                         팔로우
                       </Button>
@@ -316,20 +318,20 @@ const MyPage = ({ match }) => {
             </TabList>
           </AppBar>
           <TabPanel value="1" disableGutters className={classes.tab}>
-            <ProjectListContainer userId={user.identification} />
+            <ProjectListContainer accountId={account.identification} />
           </TabPanel>
           <TabPanel disableGutters value="3">
-            <UserList
+            <AccountList
               type="FOLLOWER"
-              userId={user.identification}
-              fetchData={getUserFollower}
+              accountId={account.identification}
+              fetchData={getAccountFollower}
             />
           </TabPanel>
           <TabPanel disableGutters value="4">
-            <UserList
+            <AccountList
               type="FOLLOWING"
-              userId={user.identification}
-              fetchData={getUserFollowing}
+              accountId={account.identification}
+              fetchData={getAccountFollowing}
             />
           </TabPanel>
         </TabContext>

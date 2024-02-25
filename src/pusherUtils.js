@@ -24,14 +24,14 @@
 //     .catch(e => console.error('Could not clear device interests', e));
 // };
 
-// export const requestNewPostNotification = async (userId, projectId) => {
+// export const requestNewPostNotification = async (accountId, projectId) => {
 //   const targets = await fetch(`/api/projects/${projectId}/members`)
 //   .then((res) => res.json()).then((res) => res.map((member) => member.id));
 
 //   const projectName = await fetch(`/api/projects/${projectId}`)
 //   .then((res) => res.json()).then((res) => res.name);
 
-//   console.log(userId, projectId, targets, projectName);
+//   console.log(accountId, projectId, targets, projectName);
 
 //   try {
 //       if (!targets || !projectName) throw `can't notify new post`;
@@ -42,7 +42,7 @@
 //           'Content-Type': 'application/json',
 //         },
 //         body: JSON.stringify({
-//           source: userId, // user id
+//           source: accountId, // account id
 //           targets,
 //           projectId,
 //           projectName,

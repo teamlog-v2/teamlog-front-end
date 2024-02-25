@@ -48,8 +48,8 @@ export const GetProjectFollowers = async (projectId) => {
 };
 
 // 유저가 팔로우하는 프로젝트 목록 조회
-export const GetFollowProjects = async (userId) => {
-  const response = await fetch(`/api/accounts/${userId}/project-follow`, { // 아이디 변경 필요
+export const GetFollowProjects = async (accountId) => {
+  const response = await fetch(`/api/accounts/${accountId}/project-follow`, { // 아이디 변경 필요
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -98,8 +98,8 @@ export const GetProjectInvitees = async (projectId) => {
 };
 
 // 프로젝트 초대
-export const JoinProject = async (projectId, userId) => {
-  const response = await fetch(`/api/projects/${projectId}/joins?userId=${userId}`, {
+export const JoinProject = async (projectId, accountId) => {
+  const response = await fetch(`/api/projects/${projectId}/joins?accountId=${accountId}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -159,7 +159,7 @@ export const RefuseProject = async (joinId) => {
 
 // 프로젝트 멤버 추방
 export const KickOutProjectMember = async (projectId, memberId) => {
-  const response = await fetch(`/api/projects/${projectId}/members?userId=${memberId}`, {
+  const response = await fetch(`/api/projects/${projectId}/members?accountId=${memberId}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
@@ -206,8 +206,8 @@ export const UnFollowProject = async (projectId) => {
 };
 
 // 유저 프로젝트 리스트 조회
-export const GetUserProjects = async (userId) => {
-  const response = await fetch(`/api/projects/accounts/${userId}`, {
+export const GetAccountProjects = async (accountId) => {
+  const response = await fetch(`/api/projects/accounts/${accountId}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -242,7 +242,7 @@ export const GetAppliedProjects = async () => {
 };
 
 // 프로젝트 팔로우 알림
-export const FollowProjectNotification = async (projectId, userId) => {
+export const FollowProjectNotification = async (projectId, accountId) => {
   const objective = await GetProject(projectId).then((res) => res.json()).then((res) => res.name);
   const target = await GetProjectMembers(projectId).then((res) => res.json());
 
@@ -255,7 +255,7 @@ export const FollowProjectNotification = async (projectId, userId) => {
       projectId,
       target,
       objective,
-      source: userId,
+      source: accountId,
       type: 'follow_project',
     }),
 });
@@ -264,7 +264,7 @@ console.log(res);
 };
 
 // 프로젝트 초대 알림
-export const InviteProjectNotification = async (projectId, userId, invitees) => {
+export const InviteProjectNotification = async (projectId, accountId, invitees) => {
   console.log(invitees);
   const res = await fetch('/pusher/push-notification', {
     method: 'POST',
@@ -274,7 +274,7 @@ export const InviteProjectNotification = async (projectId, userId, invitees) => 
     body: JSON.stringify({
       projectId,
       targets: invitees,
-      source: userId,
+      source: accountId,
       type: 'invite_project',
     }),
 });

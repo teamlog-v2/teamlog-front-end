@@ -38,17 +38,17 @@ import './css/carousel-theme.css';
 import './css/carousel.css';
 
 import { Route } from 'react-router';
+import MyPage from '../account/MyPage';
 import CommentList from '../comment/commentlist';
 import { DateInfo } from '../global/datetime';
 import ResponsiveDialog from '../organisms/ResponsiveDialog';
-import MyPage from '../user/MyPage';
 import { convertResourceUrl } from '../utils';
+import { AccountId, AccountImage } from './AccountProfile';
 import { CommentCounter, LikerCounter } from './Counter';
 import FileList from './FileList';
 import PostFormPage from './PostFormPage';
 import { Media, Video } from './PostMedia';
 import UpdateHistory from './PostUpdateHistory';
-import { UserId, UserImage } from './UserProfile';
 import { DeletePost } from './postApi';
 
 /** 관계와 접근제어자를 입력받아서
@@ -414,7 +414,7 @@ export const Post = (props) => {
 
   return (
     <>
-      <Route exact path="/accounts/:userId" component={MyPage} />
+      <Route exact path="/accounts/:accountId" component={MyPage} />
       <Container
         className={classes.root}
         component="main"
@@ -432,9 +432,9 @@ export const Post = (props) => {
                 alignItems="center"
               >
                 <Grid item xs={10}>
-                  <Grid container className={classes.user} alignItems="center">
+                  <Grid container className={classes.account} alignItems="center">
                     <Grid item>
-                      <UserImage imgPath={content.writer.profileImgPath} />
+                      <AccountImage imgPath={content.writer.profileImgPath} />
                     </Grid>
                     <Grid
                       item
@@ -443,7 +443,7 @@ export const Post = (props) => {
                       xs={2}
                       style={{ padding: '0 1%' }}
                     >
-                      <UserId userId={content.writer.id} />
+                      <AccountId accountId={content.writer.id} />
                       <DateInfo dateTime={content.writeTime} />
                     </Grid>
                   </Grid>
@@ -686,9 +686,9 @@ export const CompressedPost = (props) => {
                 alignItems="center"
               >
                 <Grid item xs={10}>
-                  <Grid container className={classes.user} alignItems="center">
+                  <Grid container className={classes.account} alignItems="center">
                     <Grid item>
-                      <UserImage imgPath={post.writer.profileImgPath} />
+                      <AccountImage imgPath={post.writer.profileImgPath} />
                     </Grid>
                     <Grid
                       item
@@ -697,7 +697,7 @@ export const CompressedPost = (props) => {
                       xs={2}
                       style={{ padding: '0 1%' }}
                     >
-                      <UserId userId={post.writer.id} />
+                      <AccountId accountId={post.writer.id} />
                       {!noTime && <DateInfo dateTime={post.writeTime} />}
                     </Grid>
                   </Grid>

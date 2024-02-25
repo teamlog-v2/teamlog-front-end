@@ -75,7 +75,7 @@ const PostMain = (props) => {
   const [isPostLoading, setIsPostLoading] = useState(false);
   const [formData, setFormData] = useState(null);
 
-  const [userId] = useContext(AuthContext);
+  const [accountId] = useContext(AuthContext);
 
   const { relation } = props;
 

@@ -20,11 +20,11 @@ import {
   Typography
 } from '@mui/material';
 import { makeStyles, withStyles } from '@mui/styles';
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import AuthContext from '../contexts/auth';
 import { convertResourceUrl, resizeImage } from '../utils';
-import { getUser, updateUser, validateLogin } from './userService';
+import { getAccount, updateAccount, validateLogin } from './AccountService';
 
 const useStyles = makeStyles((theme) => ({
   large: {
@@ -51,12 +51,12 @@ const SmallAvatar = withStyles((theme) => ({
   },
 }))(Avatar);
 
-const UserEditForm = ({ match }) => {
+const AccountEditForm = ({ match }) => {
   const [___, __, _, setContextProfileImgPath] = useContext(AuthContext);
   const history = useHistory();
   const classes = useStyles();
   const [isLoaded, setIsLoaded] = useState(false);
-  const [user, setUser] = useState({
+  const [account, setAccount] = useState({
     id: '',
     name: '',
     profileImgPath: '',
@@ -143,9 +143,9 @@ const UserEditForm = ({ match }) => {
     }
 
     try {
-      const response = await updateUser(formData);
+      const response = await updateAccount(formData);
       if (response.status === 200) {
-        history.push(`/accounts/${match.params.userId}`);
+        history.push(`/accounts/${match.params.accountId}`);
         let res = await validateLogin();
         res = await res.json();
         setContextProfileImgPath(res.profileImgPath);
@@ -162,18 +162,18 @@ const UserEditForm = ({ match }) => {
 
   useEffect(() => {
     (async () => {
-      let userInfo;
+      let accountInfo;
       try {
-        const response = await getUser(match.params.userId);
-        userInfo = await response.json();
+        const response = await getAccount(match.params.accountId);
+        accountInfo = await response.json();
       } catch (err) {
         alert(err);
         setIsLoaded(false);
       }
-      setUser(userInfo);
-      setName(userInfo.name);
-      setIntroduction(userInfo.introduction);
-      if (userInfo.profileImgPath === null) setDefaultImage(true);
+      setAccount(accountInfo);
+      setName(accountInfo.name);
+      setIntroduction(accountInfo.introduction);
+      if (accountInfo.profileImgPath === null) setDefaultImage(true);
       setIsLoaded(true);
     })();
   }, []);
@@ -216,7 +216,7 @@ const UserEditForm = ({ match }) => {
             <ListItem button>프로필 사진 변경</ListItem>
           </label>
           <Divider />
-          {(profileImg || defaultImage) && user.profileImgPath !== null ? (
+          {(profileImg || defaultImage) && account.profileImgPath !== null ? (
             <>
               <ListItem button onClick={rollbackImage}>
                 원래 이미지로 변경
@@ -261,7 +261,7 @@ const UserEditForm = ({ match }) => {
                     ) : (
                       <Avatar
                         className={classes.large}
-                        src={convertResourceUrl(user.profileImgPath)}
+                        src={convertResourceUrl(account.profileImgPath)}
                       />
                     )}
                   </>
@@ -365,4 +365,4 @@ const UserEditForm = ({ match }) => {
   );
 };
 
-export default UserEditForm;
+export default AccountEditForm;

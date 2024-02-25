@@ -19,9 +19,9 @@ import {
   Typography
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
+import AccountSelect from '../account/AccountSelect';
 import AuthContext from '../contexts/auth';
-import UserSelect from '../user/UserSelect';
 import { convertResourceUrl } from '../utils';
 import MultiTimePicker from './MultiTimePicker';
 import { CreateTaskNotification, createTask, putTask } from './taskService';
@@ -58,17 +58,17 @@ const TaskCreateForm = ({
   const [taskName, setTaskName] = useState(task?.taskName ?? '');
   const [taskStatus, setTaskStatus] = useState(task?.status ?? 0);
   const [deadline, setDeadline] = useState(getDate(task?.deadline));
-  const [selectedUsers, setSelectedUsers] = useState(task?.performers ?? []);
-  const [openUserSelect, setopenUserSelect] = useState(false);
+  const [selectedAccounts, setSelectedAccounts] = useState(task?.performers ?? []);
+  const [openAccountSelect, setopenAccountSelect] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const [userId] = useContext(AuthContext);
+  const [accountId] = useContext(AuthContext);
 
   const handleClickOpen = () => {
-    setopenUserSelect(true);
+    setopenAccountSelect(true);
   };
-  const handleUserSelectClose = () => {
-    setopenUserSelect(false);
+  const handleAccountSelectClose = () => {
+    setopenAccountSelect(false);
   };
 
   const getDeadlineValue = (value) => {
@@ -86,10 +86,10 @@ const TaskCreateForm = ({
     // task 기존에 있었다면 update request
     setIsProcessing(true);
     event.preventDefault();
-    const performersId = selectedUsers.map(({ id }) => id);
+    const performersId = selectedAccounts.map(({ id }) => id);
 
     console.log(deadline);
-    if(taskName.length === 0) {
+    if (taskName.length === 0) {
       alert("태스크 이름을 1자 이상 입력해주세요.")
       setIsProcessing(false);
       return;
@@ -124,12 +124,12 @@ const TaskCreateForm = ({
       if (status === 201) {
         addTaskInContainer(res);
         handleClose();
-        CreateTaskNotification(userId, projectId);
+        CreateTaskNotification(accountId, projectId);
         console.log('ok');
       } else if (status === 200) {
         updateTask(res);
         handleClose();
-      } else if(status === 400){
+      } else if (status === 400) {
         alert(res.message);
       } else {
         alert('실패');
@@ -171,12 +171,12 @@ const TaskCreateForm = ({
       <Container component="main" maxWidth="xs" style={{ margin: '3% 0' }}>
         <div>
           <form onSubmit={handleSubmit} noValidate>
-            <Dialog open={openUserSelect}>
-              <UserSelect
+            <Dialog open={openAccountSelect}>
+              <AccountSelect
                 projectId={projectId}
-                selectedUsers={selectedUsers.map(({ id }) => id)}
-                setSelectedUsers={setSelectedUsers}
-                handleClose={handleUserSelectClose}
+                selectedAccounts={selectedAccounts.map(({ id }) => id)}
+                setSelectedAccounts={setSelectedAccounts}
+                handleClose={handleAccountSelectClose}
               />
             </Dialog>
             <Grid container style={{ gap: 20 }}>
@@ -235,7 +235,7 @@ const TaskCreateForm = ({
                     </Typography>
                   </Grid>
                   <Grid item>
-                    {selectedUsers.length === 0 ? (
+                    {selectedAccounts.length === 0 ? (
                       <AddButton label="추가" action={handleClickOpen} />
                     ) : (
                       <>
@@ -262,48 +262,48 @@ const TaskCreateForm = ({
                 </Grid>
                 <Grid item xs={12}>
                   <Button onClick={handleClickOpen}>
-                  <Box display="flex" flexDirection="row">
-                    {selectedUsers.length === 0 ? (
-                      <>
-                        <Typography>😱없음😱</Typography>
-                      </>
-                    ) : (
-                      <>
-                        {selectedUsers.length > 5 ? (
-                          <>
-                            {selectedUsers.slice(0, 5).map((user) => (
+                    <Box display="flex" flexDirection="row">
+                      {selectedAccounts.length === 0 ? (
+                        <>
+                          <Typography>😱없음😱</Typography>
+                        </>
+                      ) : (
+                        <>
+                          {selectedAccounts.length > 5 ? (
+                            <>
+                              {selectedAccounts.slice(0, 5).map((account) => (
+                                <Box paddingLeft="5px" paddingRight="5px">
+                                  <Avatar
+                                    alt={account.name}
+                                    src={convertResourceUrl(account.profileImgPath)}
+                                  />
+                                  <Typography variant="caption">
+                                    {account.name}
+                                  </Typography>
+                                </Box>
+                              ))}
                               <Box paddingLeft="5px" paddingRight="5px">
-                                <Avatar
-                                  alt={user.name}
-                                  src={convertResourceUrl(user.profileImgPath)}
-                                />
-                                <Typography variant="caption">
-                                  {user.name}
-                                </Typography>
+                                <Avatar>+{selectedAccounts.length - 5}</Avatar>
                               </Box>
-                            ))}
-                            <Box paddingLeft="5px" paddingRight="5px">
-                              <Avatar>+{selectedUsers.length - 5}</Avatar>
-                            </Box>
-                          </>
-                        ) : (
-                          <>
-                            {selectedUsers.map((user) => (
-                              <Box paddingLeft="5px" paddingRight="5px">
-                                <Avatar
-                                  alt={user.name}
-                                  src={convertResourceUrl(user.profileImgPath)}
-                                />
-                                <Typography variant="caption">
-                                  {user.name}
-                                </Typography>
-                              </Box>
-                            ))}
-                          </>
-                        )}
-                      </>
-                    )}
-                  </Box>
+                            </>
+                          ) : (
+                            <>
+                              {selectedAccounts.map((account) => (
+                                <Box paddingLeft="5px" paddingRight="5px">
+                                  <Avatar
+                                    alt={account.name}
+                                    src={convertResourceUrl(account.profileImgPath)}
+                                  />
+                                  <Typography variant="caption">
+                                    {account.name}
+                                  </Typography>
+                                </Box>
+                              ))}
+                            </>
+                          )}
+                        </>
+                      )}
+                    </Box>
                   </Button>
                 </Grid>
               </Grid>
