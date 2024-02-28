@@ -19,7 +19,7 @@ const RadioButton = ({ children, onClick, highlight, value, ...props }) => (
 
 const SettingPage = () => {
     const [type, setType] = useState('TEAM'); // TEAM or PROJECT
-    const [userId] = useContext(AuthContext);
+    const [accountId] = useContext(AuthContext);
 
     return (
       <Container disableGutters maxWidth="md">
@@ -33,7 +33,7 @@ const SettingPage = () => {
           <Container disableGutters maxWidth="md">
             <Grid container item spacing={2} style={{ margin: '0.5em' }}>
               <Grid item>
-                <Link to={`/accounts/${userId}/setting/projects`} style={{ textDecoration: 'none' }}>
+                <Link to={`/accounts/${accountId}/setting/projects`} style={{ textDecoration: 'none' }}>
                   <RadioButton
                     highlight="PROJECT"
                     value={type}
@@ -47,8 +47,8 @@ const SettingPage = () => {
             </Grid>
           </Container>
           <Switch>
-            <Redirect exact path="/accounts/:userId/setting" to="/accounts/:userId/setting/teams" />
-            <Route exact path="/accounts/:userId/setting/projects" component={ProjectSetting} />
+            <Redirect exact path="/accounts/:accountId/setting" to="/accounts/:accountId/setting/teams" />
+            <Route exact path="/accounts/:accountId/setting/projects" component={ProjectSetting} />
           </Switch>
         </Grid>
       </Container>

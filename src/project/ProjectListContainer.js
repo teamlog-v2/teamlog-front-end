@@ -8,7 +8,7 @@ import ProjectItem from './ProjectItem';
 // thumbnail: 'https://images.unsplash.com/photo-1616160973030-bb351a6a021e?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max',
 // thumbnail: 'https://source.unsplash.com/random',
 
-const ProjectListContainer = ({ userId }) => {
+const ProjectListContainer = ({ accountId }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [projects, setProjects] = useState([]);
 
@@ -16,8 +16,8 @@ const ProjectListContainer = ({ userId }) => {
     (async () => {
       let result;
       try {
-        console.log(userId);
-        const response = await fetch(`/api/projects/accounts/${userId}`, {
+        console.log(accountId);
+        const response = await fetch(`/api/projects/accounts/${accountId}`, {
           method: 'Get',
           headers: { 'Content-Type': 'application/json' },
         });

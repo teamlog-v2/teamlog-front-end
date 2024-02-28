@@ -73,29 +73,29 @@ export default function SearchPage() {
         lastPromise.current = promise;
         // 병렬처리도 가능하긴 함
         const res = await promise;
-        const users1 = await res.json();
+        const accounts1 = await res.json();
         if (promise !== lastPromise.current) {
           return;
         }
         const res2 = await fetch(`/api/accounts?id=${query}`);
-        const users2 = await res2.json();
+        const accounts2 = await res2.json();
         if (promise !== lastPromise.current) {
           return;
         }
 
         // 중복 제거
-        const users = [...users1, ...users2];
+        const accounts = [...accounts1, ...accounts2];
         const ids = {};
-        const filterdUsers = [];
-        users.forEach((user) => {
-          if (ids[user.id]) {
+        const filterdAccounts = [];
+        accounts.forEach((account) => {
+          if (ids[account.id]) {
             return;
           }
-          ids[user.id] = true;
-          filterdUsers.push(user);
+          ids[account.id] = true;
+          filterdAccounts.push(account);
         });
 
-        setResult(filterdUsers);
+        setResult(filterdAccounts);
         setIsProcessing(false);
       })();
     }
@@ -187,9 +187,9 @@ export default function SearchPage() {
           }
 
           if (type === 'USER') {
-            return result.map((user) => (
+            return result.map((account) => (
               <>
-                <UserItem key={user.id} user={user} />
+                <AccountItem key={account.id} account={account} />
                 <Box marginBottom="1rem" />
               </>
             ));
@@ -211,19 +211,19 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function UserItem({ user }) {
+function AccountItem({ account }) {
   const classes = useStyles();
 
   return (
-    <Link to={`/accounts/${user.id}`} style={{ textDecoration: 'none' }}>
+    <Link to={`/accounts/${account.id}`} style={{ textDecoration: 'none' }}>
       <Card elevation={2}>
         <Box display="flex" alignItems="center">
-          <Avatar className={classes.profileImg} src={convertResourceUrl(user.profileImgPath)} />
+          <Avatar className={classes.profileImg} src={convertResourceUrl(account.profileImgPath)} />
           <Typography variant="body1" color="textPrimary">
-            {user.name}
+            {account.name}
           </Typography>
           <Typography variant="body2" color="textPrimary">
-            ({user.id})
+            ({account.id})
           </Typography>
         </Box>
       </Card>

@@ -12,7 +12,7 @@ export const DeletePost = async (id) => {
 };
 
 // 게시물 수정 알림
-export const UpdatePostNotification = async (userId, projectId, postId) => {
+export const UpdatePostNotification = async (accountId, projectId, postId) => {
   const project = await fetch(`/api/projects/${projectId}`)
     .then((res) => res.json());
 
@@ -26,7 +26,7 @@ export const UpdatePostNotification = async (userId, projectId, postId) => {
     body: JSON.stringify({
       project,
       postId,
-      source: userId,
+      source: accountId,
       type: 'update_post',
     }),
   });

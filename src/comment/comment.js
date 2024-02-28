@@ -9,7 +9,7 @@ import { useCallback, useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import AuthContext from '../contexts/auth';
 import { DateInfo } from '../global/datetime';
-import { UserId, UserImage } from '../post/UserProfile';
+import { AccountId, AccountImage } from '../post/AccountProfile';
 import { DeleteComment, ReadChildCommentList } from './commentapi';
 import CommentForm from './commentform';
 
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     width: '40%',
     textAlign: 'right',
   },
-  userInfo: {
+  accountInfo: {
     width: '60%',
     display: 'inline-block',
     backgroundColor: 'rgb(245, 245, 245)',
@@ -117,7 +117,7 @@ const Comment = (props) => {
     setIsRefreshed
   } = props;
 
-  const [userId] = useContext(AuthContext);
+  const [accountId] = useContext(AuthContext);
 
   // 댓글 관련 필드
   const chunkSize = 5;
@@ -162,14 +162,14 @@ const Comment = (props) => {
       <Box>
         <Grid container xs={12} className={classes.children}>
           <Grid item>
-            <UserImage imgPath={writer.profileImgPath} />
+            <AccountImage imgPath={writer.profileImgPath} />
           </Grid>
           <Grid className={classes.commentGrid}>
             <Content
-              writer={(<UserId userId={writer.id} />)}
+              writer={(<AccountId accountId={writer.id} />)}
               writeTime={<DateInfo dateTime={writeTime} />}
               funcs={(<>
-                {userId && (<span
+                {accountId && (<span
                   style={{ cursor: 'pointer' }}
                   onClick={() => {
                     setIsFormVisible(!isFormVisible);
@@ -178,7 +178,7 @@ const Comment = (props) => {
                   답글달기&nbsp;
                 </span>)}
                 {
-                  writer.id === userId && (<>
+                  writer.id === accountId && (<>
                     <span
                       style={{ cursor: 'pointer' }}
                       onClick={async () => {

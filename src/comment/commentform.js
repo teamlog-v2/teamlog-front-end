@@ -63,13 +63,13 @@ const CommentForm = (props) => {
     activeOption: 0,
     filteredOptions: [],
     showOptions: false,
-    userInput: '',
+    accountInput: '',
     tagStartIndex: -1,
   });
-  const [userId] = useContext(AuthContext);
+  const [accountId] = useContext(AuthContext);
 
   useEffect(async () => {
-    setState({ ...state, userInput: '' });
+    setState({ ...state, accountInput: '' });
 
     const membersResponse = await GetProjectMembers(projectId);
     setOptions(await membersResponse.json());
@@ -88,7 +88,7 @@ const CommentForm = (props) => {
 
     setMenuFocus(false);
 
-    if (state.userInput.charAt(index - 2) === '@') {
+    if (state.accountInput.charAt(index - 2) === '@') {
       setState({
         ...state,
         tagStartIndex: index - 2,
@@ -98,14 +98,14 @@ const CommentForm = (props) => {
 
   // 입력할 때
   const onChange = (e) => {
-    const userCurrentInput = e.currentTarget.value;
+    const accountCurrentInput = e.currentTarget.value;
 
     setState({
       ...state,
-      userInput: e.currentTarget.value,
+      accountInput: e.currentTarget.value,
     });
 
-    if (userCurrentInput === '') {
+    if (accountCurrentInput === '') {
       setIsEmpty(true);
     } else {
       setIsEmpty(false);
@@ -113,9 +113,9 @@ const CommentForm = (props) => {
 
     if (
       state.tagStartIndex > -1
-      && userCurrentInput.charAt(state.tagStartIndex) === '@'
+      && accountCurrentInput.charAt(state.tagStartIndex) === '@'
     ) {
-      const splitName = userCurrentInput.substring(
+      const splitName = accountCurrentInput.substring(
         state.tagStartIndex + 1,
         inputRef.current.selectionStart,
       );
@@ -132,7 +132,7 @@ const CommentForm = (props) => {
         activeOption: 0,
         filteredOptions,
         showOptions: true,
-        userInput: e.currentTarget.value,
+        accountInput: e.currentTarget.value,
       });
 
       if (filteredOptions.length > 0) {
@@ -151,7 +151,7 @@ const CommentForm = (props) => {
         activeOption: 0,
         filteredOptions: [],
         showOptions: false,
-        userInput: e.currentTarget.value,
+        accountInput: e.currentTarget.value,
       });
     }
   };
@@ -163,18 +163,18 @@ const CommentForm = (props) => {
 
     const target = e.currentTarget.dataset.myValue;
 
-    const startStr = state.userInput.substring(0, state.tagStartIndex);
+    const startStr = state.accountInput.substring(0, state.tagStartIndex);
     const midStr = `@${target} `;
-    const lastStr = state.userInput.substring(
+    const lastStr = state.accountInput.substring(
       inputRef.current.selectionStart,
-      state.userInput.length,
+      state.accountInput.length,
     );
 
     setState({
       activeOption: 0,
       filteredOptions: [],
       showOptions: false,
-      userInput: startStr + midStr + lastStr,
+      accountInput: startStr + midStr + lastStr,
       tagStartIndex: -1,
     });
 
@@ -184,26 +184,26 @@ const CommentForm = (props) => {
   };
 
   // 댓글 등록 시 언급된 사용자 골라내기
-  const setSelectedUser = (commentContent) => {
+  const setSelectedAccount = (commentContent) => {
     const mentionSplitList = commentContent.split('@');
-    const selectedUserList = [];
+    const selectedAccountList = [];
 
     for (let i = 0; i < mentionSplitList.length; i += 1) {
-      const userSplit = mentionSplitList[i].split(' ')[0];
+      const accountSplit = mentionSplitList[i].split(' ')[0];
 
-      const filteredUser = options.filter(
-        (option) => option.id.toLowerCase() === userSplit.toLowerCase(),
+      const filteredAccount = options.filter(
+        (option) => option.id.toLowerCase() === accountSplit.toLowerCase(),
       );
 
       if (
-        filteredUser.length === 1
-        && !selectedUserList.includes(filteredUser[0].id)
+        filteredAccount.length === 1
+        && !selectedAccountList.includes(filteredAccount[0].id)
       ) {
-        selectedUserList.push(filteredUser[0].id);;
+        selectedAccountList.push(filteredAccount[0].id);;
       }
     }
 
-    return selectedUserList;;
+    return selectedAccountList;;
   };
 
   const handleClose = () => {
@@ -227,10 +227,10 @@ const CommentForm = (props) => {
               fullWidth
               inputRef={inputRef}
               onChange={onChange}
-              value={state.userInput}
+              value={state.accountInput}
               onSelect={onSelect}
               onKeyDown={onKeyDown}
-              disabled={!userId}
+              disabled={!accountId}
             />
           </>
         </Box>
@@ -247,13 +247,13 @@ const CommentForm = (props) => {
                 parentCommentId,
                 postId,
                 inputRef.current.value,
-                setSelectedUser(inputRef.current.value),
+                setSelectedAccount(inputRef.current.value),
               );
 
               if (response.status === 201) {
                 const createdComment = await response.json();
                 addLatestComment(createdComment);
-                setState({ ...state, userInput: '' });
+                setState({ ...state, accountInput: '' });
                 updateCommentCount(1);
               }
 

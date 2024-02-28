@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ProjectForm({ teamIdVal = null, updateOpen }) {
   const classes = useStyles();
-  const [userId] = useContext(AuthContext);
+  const [accountId] = useContext(AuthContext);
   const [name, setName] = useState('');
   const [introduction, setIntroduction] = useState('');
   const [isPrivate, setIsPrivate] = useState(false);

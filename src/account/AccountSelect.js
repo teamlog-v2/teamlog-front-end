@@ -28,22 +28,20 @@ const StyledList = withStyles({
   },
 })(List);
 
-const UserSelect = ({
+const AccountSelect = ({
   projectId,
-  selectedUsers,
-  setSelectedUsers,
+  selectedAccounts,
+  setSelectedAccounts,
   handleClose,
 }) => {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [users, setUsers] = useState([]);
-  const [selectedUserIds, setSelectedUserIds] = useState([]);
+  const [accounts, setAccounts] = useState([]);
+  const [selectedAccountIds, setSelectedAccountIds] = useState([]);
   const [searchString, setSearchString] = useState('');
 
   useEffect(() => {
     (async () => {
-      console.log('너니?');
-      console.log(selectedUsers);
       let result;
       try {
         const response = await fetch(`/api/projects/${projectId}/members`, {
@@ -55,8 +53,8 @@ const UserSelect = ({
         setIsLoaded(false);
         return;
       }
-      setUsers(result);
-      setSelectedUserIds(selectedUsers);
+      setAccounts(result);
+      setSelectedAccountIds(selectedAccounts);
       setIsLoaded(true);
     })();
   }, []);
@@ -69,30 +67,30 @@ const UserSelect = ({
     return 'Loading...';
   }
 
-  const toggleSelectedUserId = (userId) => {
-    if (selectedUserIds.includes(userId)) {
-      const temp = selectedUserIds.slice();
-      temp.splice(selectedUserIds.indexOf(userId), 1);
-      setSelectedUserIds(temp);
+  const toggleSelectedAccountId = (accountId) => {
+    if (selectedAccountIds.includes(accountId)) {
+      const temp = selectedAccountIds.slice();
+      temp.splice(selectedAccountIds.indexOf(accountId), 1);
+      setSelectedAccountIds(temp);
     } else {
-      setSelectedUserIds([...selectedUserIds, userId]);
+      setSelectedAccountIds([...selectedAccountIds, accountId]);
     }
   };
 
-  const saveSelectedUsers = () => {
-    const selectedUsersToSave = [];
-    selectedUserIds.foreach((selectedUserId) => {
-      const temp = users.find((user) => user.id === selectedUserId);
-      selectedUsersToSave.push(temp);
+  const saveSelectedAccounts = () => {
+    const selectedAccountsToSave = [];
+    selectedAccountIds.foreach((selectedAccountId) => {
+      const temp = accounts.find((account) => account.id === selectedAccountId);
+      selectedAccountsToSave.push(temp);
     });
-    setSelectedUsers(selectedUsersToSave);
+    setSelectedAccounts(selectedAccountsToSave);
     handleClose();
   };
 
   return (
     <Container minWidth="sm">
       <Box display="flex" justifyContent="center">
-        <Typography>{`${selectedUserIds.length}명 선택됨`}</Typography>
+        <Typography>{`${selectedAccountIds.length}명 선택됨`}</Typography>
       </Box>
 
       <Box
@@ -106,17 +104,17 @@ const UserSelect = ({
         overflow="auto"
         bgcolor="#F8F8F8"
       >
-        {selectedUserIds.length === 0 && (
+        {selectedAccountIds.length === 0 && (
           <Typography color="primary">{'-'}</Typography>
         )}
-        {selectedUserIds.map((selectedUserId) => {
-          const user = users.find((u) => u.id === selectedUserId);
+        {selectedAccountIds.map((selectedAccountId) => {
+          const account = accounts.find((u) => u.id === selectedAccountId);
           return (
             <Chip
-              key={user.id}
-              label={`${user.name} (${user.id})`}
+              key={account.id}
+              label={`${account.name} (${account.id})`}
               onDelete={() => {
-                toggleSelectedUserId(user.id);
+                toggleSelectedAccountId(account.id);
               }}
               color="primary"
             />
@@ -142,21 +140,21 @@ const UserSelect = ({
       />
 
       <StyledList dense>
-        {users
-          .filter((user) => user.name.includes(searchString))
-          .map((user) => (
+        {accounts
+          .filter((account) => account.name.includes(searchString))
+          .map((account) => (
             <ListItem
-              key={user.id}
+              key={account.id}
               button
               onClick={() => {
-                toggleSelectedUserId(user.id);
+                toggleSelectedAccountId(account.id);
               }}
             >
               <ListItemAvatar>
-                <Avatar alt={user.name} src={convertResourceUrl(user.profileImgPath)} />
+                <Avatar alt={account.name} src={convertResourceUrl(account.profileImgPath)} />
               </ListItemAvatar>
-              <ListItemText primary={`${user.name} (${user.id})`} />
-              {selectedUserIds.includes(user.id) ? (
+              <ListItemText primary={`${account.name} (${account.id})`} />
+              {selectedAccountIds.includes(account.id) ? (
                 <CheckBox color="primary" />
               ) : (
                 <CheckBoxOutlineBlank color="primary" />
@@ -174,7 +172,7 @@ const UserSelect = ({
         padding="8px"
         bgcolor="#F8F8F8"
       >
-        <Button variant="outlined" onClick={saveSelectedUsers}>
+        <Button variant="outlined" onClick={saveSelectedAccounts}>
           완료
         </Button>
         <Button onClick={handleClose} variant="outlined">
@@ -185,4 +183,4 @@ const UserSelect = ({
   );
 };
 
-export default UserSelect;
+export default AccountSelect;

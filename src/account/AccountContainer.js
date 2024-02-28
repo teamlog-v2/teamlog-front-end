@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
 
-const UserContainer = () => {
+const AccountContainer = () => {
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -59,4 +59,4 @@ const UserContainer = () => {
   );
 };
 
-export default UserContainer;
+export default AccountContainer;

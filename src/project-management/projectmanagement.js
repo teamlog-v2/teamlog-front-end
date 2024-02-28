@@ -55,7 +55,7 @@ const DeleteButton = withStyles({
 const ProjectManagement = (props) => {
   const classes = useStyles();
   const { projectId } = useParams();
-  const [userId] = useContext(AuthContext);
+  const [accountId] = useContext(AuthContext);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
   const [isProjectUpdatFormOpened, setIsProjectUpdatFormOpened] = useState(false);
@@ -65,7 +65,7 @@ const ProjectManagement = (props) => {
 
   const { setType } = props;
   setType('PROJECT');
-  const handleUserSelectClose = () => {
+  const handleAccountSelectClose = () => {
     setIsTeamSelectOpened(false);
   };
 

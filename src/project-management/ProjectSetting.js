@@ -13,9 +13,9 @@ import { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { convertResourceUrl } from '../utils';
 import {
+  GetAccountProjects,
   GetAppliedProjects,
   GetInvitedProjects,
-  GetUserProjects,
   InvitationAccept,
   LeaveProject,
   RefuseProject,
@@ -57,7 +57,7 @@ const DeleteButton = withStyles({
   },
 })(Button);
 
-const ParticipatingTeams = ({ userId, projects, setProjects }) => {
+const ParticipatingTeams = ({ accountId, projects, setProjects }) => {
   const history = useHistory();
 
   return (
@@ -89,7 +89,7 @@ const ParticipatingTeams = ({ userId, projects, setProjects }) => {
                   </Link>
                   <Grid contianer item xs={12} style={{ textAlign: 'right' }}>
                     <Grid item>
-                      {project.masterId === userId ? (
+                      {project.masterId === accountId ? (
                         <Button
                           color="primary"
                           variant="contained"
@@ -115,10 +115,10 @@ const ParticipatingTeams = ({ userId, projects, setProjects }) => {
                             ) {
                               const { status } = await LeaveProject(project.id);
                               if (status === 200) {
-                                const userTeamsResponse = await GetUserProjects(
-                                  userId,
+                                const accountTeamsResponse = await GetAccountProjects(
+                                  accountId,
                                 );
-                                setProjects(await userTeamsResponse.json());
+                                setProjects(await accountTeamsResponse.json());
                               }
                             }
                           }}
@@ -147,7 +147,7 @@ const ParticipatingTeams = ({ userId, projects, setProjects }) => {
   );
 };
 
-const AppliedProjects = ({ userId, projects, setProjects }) => (
+const AppliedProjects = ({ accountId, projects, setProjects }) => (
   <Grid container xs={12} spacing={2}>
     {projects.length > 0 ? (
       projects.map((project) => (
@@ -187,10 +187,10 @@ const AppliedProjects = ({ userId, projects, setProjects }) => (
                         ) {
                           const { status } = await RefuseProject(project.id);
                           if (status === 200) {
-                            const userTeamsResponse = await GetUserProjects(
-                              userId,
+                            const accountTeamsResponse = await GetAccountProjects(
+                              accountId,
                             );
-                            setProjects(await userTeamsResponse.json());
+                            setProjects(await accountTeamsResponse.json());
                           }
                         }
                       }}
@@ -218,9 +218,9 @@ const AppliedProjects = ({ userId, projects, setProjects }) => (
 );
 
 const InvitedProjects = ({
-  userId,
+  accountId,
   projects,
-  setUserProjects,
+  setAccountProjects,
   setInvitedProjects,
 }) => {
   console.log(projects);
@@ -264,11 +264,11 @@ const InvitedProjects = ({
                             project.projectId,
                           );
                           if (status === 201) {
-                            const userProjectsResponse = await GetUserProjects(
-                              userId,
+                            const accountProjectsResponse = await GetAccountProjects(
+                              accountId,
                             );
                             const invitedProjectResponse = await GetInvitedProjects();
-                            setUserProjects(await userProjectsResponse.json());
+                            setAccountProjects(await accountProjectsResponse.json());
                             setInvitedProjects(
                               await invitedProjectResponse.json(),
                             );
@@ -320,23 +320,23 @@ const InvitedProjects = ({
 };
 
 const ProjectSetting = ({ match }) => {
-  const { userId } = match.params;
+  const { accountId } = match.params;
   const [isLoaded, setIsLoaded] = useState(false);
-  const [userProjects, setUserProjects] = useState([]);
+  const [accountProjects, setAccountProjects] = useState([]);
   const [appliedProjects, setAppliedProjects] = useState([]);
   const [invitedProjects, setInvitedProjects] = useState([]);
 
   useEffect(async () => {
-    const userProjectsResponse = await GetUserProjects(userId);
+    const accountProjectsResponse = await GetAccountProjects(accountId);
     const invitedProjectResponse = await GetInvitedProjects();
     const appliedProjectsResponse = await GetAppliedProjects();
 
     if (
-      userProjectsResponse.status === 200 &&
+      accountProjectsResponse.status === 200 &&
       invitedProjectResponse.status === 200 &&
       appliedProjectsResponse.status === 200
     ) {
-      setUserProjects(await userProjectsResponse.json());
+      setAccountProjects(await accountProjectsResponse.json());
       setInvitedProjects(await invitedProjectResponse.json());
       setAppliedProjects(await appliedProjectsResponse.json());
       setIsLoaded(true);
@@ -368,9 +368,9 @@ const ProjectSetting = ({ match }) => {
         <Grid xs={12} item style={{ margin: '1em' }}>
           <Typography variant="h6">참여 중</Typography>
           <ParticipatingTeams
-            userId={userId}
-            projects={userProjects}
-            setProjects={setUserProjects}
+            accountId={accountId}
+            projects={accountProjects}
+            setProjects={setAccountProjects}
           />
         </Grid>
         <Grid
@@ -391,9 +391,9 @@ const ProjectSetting = ({ match }) => {
         >
           <Typography variant="h6">초대</Typography>
           <InvitedProjects
-            userId={userId}
+            accountId={accountId}
             projects={invitedProjects}
-            setUserProjects={setUserProjects}
+            setAccountProjects={setAccountProjects}
             setInvitedProjects={setInvitedProjects}
           />
         </Grid>

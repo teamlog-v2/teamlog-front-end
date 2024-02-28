@@ -79,7 +79,7 @@ const PostForm = (props) => {
     latitude: 0,
     longitude: 0,
   });
-  const [userId] = useContext(AuthContext);
+  const [accountId] = useContext(AuthContext);
   const [mediaFiles, setMediaFiles] = useState([]);
   const [attachedFiles, setAttachedFiles] = useState([]);
   const [recommendedHashtags, setRecommendedHashtags] = useState([]);
@@ -143,7 +143,7 @@ const PostForm = (props) => {
           console.log('성공적으로 수정');
           console.log(id);
           console.log('----------------');
-          UpdatePostNotification(userId, id, postId);
+          UpdatePostNotification(accountId, id, postId);
           updatePost(postId, result);
           updateOpen(false);
         }

@@ -21,13 +21,13 @@ const ProjectMemberManagement = (props) => {
   const { projectId } = useParams();
   const { setType } = props;
   setType('MEMBER');
-  const [userId] = useContext(AuthContext); // 유저 정보
+  const [accountId] = useContext(AuthContext); // 유저 정보
 
   const classes = useStyles();
   const [isLogin, setIsLogin] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const [openUserSelect, setOpenUserSelect] = useState(false); // 마스터 선택 폼 띄울지 여부
+  const [openAccountSelect, setOpenAccountSelect] = useState(false); // 마스터 선택 폼 띄울지 여부
   const [openInviteeSelect, setOpenInviteeSelect] = useState(false);
 
   const [master, setMaster] = useState([]); // 마스터
@@ -54,7 +54,7 @@ const ProjectMemberManagement = (props) => {
     const tempApplicants = await applicantsResponse.json();
     const tempInvitees = await inviteesResponse.json();
 
-    if (userId !== tempProject.masterId) {
+    if (accountId !== tempProject.masterId) {
       window.alert('접근 권한이 없습니다.');
       window.location.replace(`/projects/${projectId}`);
       return;
@@ -65,17 +65,17 @@ const ProjectMemberManagement = (props) => {
     setApplicants(tempApplicants);
     setInvitees(tempInvitees);
 
-    const tempMaster = tempMembers.filter((user) => user.id === tempProject.masterId);
+    const tempMaster = tempMembers.filter((account) => account.id === tempProject.masterId);
     setMaster(tempMaster[0]);
     setIsLoaded(true);
   }, []);
 
-  const handleUserSelectOpen = () => {
-    setOpenUserSelect(true);
+  const handleAccountSelectOpen = () => {
+    setOpenAccountSelect(true);
   };
 
-  const handleUserSelectClose = () => {
-    setOpenUserSelect(false);
+  const handleAccountSelectClose = () => {
+    setOpenAccountSelect(false);
   };
 
   const handleInviteeSelectOpen = () => {
@@ -141,13 +141,13 @@ const ProjectMemberManagement = (props) => {
                     <Box display="flex" alignItems="center">
                       <Avatar
                         className={classes.profileImg}
-                        src={convertResourceUrl(invitee.user.profileImgPath)}
+                        src={convertResourceUrl(invitee.account.profileImgPath)}
                       />
                       <Typography variant="body1" color="textPrimary">
-                        {invitee.user.name}&nbsp;
+                        {invitee.account.name}&nbsp;
                       </Typography>
                       <Typography variant="body1" color="textPrimary">
-                        ({invitee.user.id})
+                        ({invitee.account.id})
                       </Typography>
                     </Box>
                   </Box>
@@ -196,19 +196,19 @@ const ProjectMemberManagement = (props) => {
                 <Box display="flex" flexDirection="row">
                   <Box flexGrow={1}>
                     <Link
-                      to={`/accounts/${applicant.user.id}`}
+                      to={`/accounts/${applicant.account.id}`}
                       style={{ textDecoration: 'none' }}
                     >
                       <Box display="flex" alignItems="center">
                         <Avatar
                           className={classes.profileImg}
-                          src={convertResourceUrl(applicant.user.profileImgPath)}
+                          src={convertResourceUrl(applicant.account.profileImgPath)}
                         />
                         <Typography variant="body1" color="textPrimary">
-                          {applicant.user.name}&nbsp;
+                          {applicant.account.name}&nbsp;
                         </Typography>
                         <Typography variant="body1" color="textPrimary">
-                          ({applicant.user.id})
+                          ({applicant.account.id})
                         </Typography>
                       </Box>
                     </Link>
@@ -357,15 +357,15 @@ const ProjectMemberManagement = (props) => {
             variant="contained"
             color="primary"
             fullWidth
-            onClick={handleUserSelectOpen}
+            onClick={handleAccountSelectOpen}
           >위임
           </Button>
-          <ResponsiveDialog open={openUserSelect} updateOpen={setOpenUserSelect}>
+          <ResponsiveDialog open={openAccountSelect} updateOpen={setOpenAccountSelect}>
             <MasterSelect
               projectId={project.id}
               currentMaster={[master.id]}
               setCurrentMaster={setMaster}
-              handleClose={handleUserSelectClose}
+              handleClose={handleAccountSelectClose}
             />
           </ResponsiveDialog>
         </Grid>

@@ -22,7 +22,7 @@ const useStyles = makeStyles(() => ({
 
 export const LikerCounter = (props) => {
   const classes = useStyles();
-  const [userId] = useContext(AuthContext);
+  const [accountId] = useContext(AuthContext);
   const [like, setLike] = useState(false); // 본인 좋아요 여부
   const [likers, setLikers] = useState([]); // 좋아하는 유저 목록
   const [isLoaded, setIsLoaded] = useState(false);
@@ -34,7 +34,7 @@ export const LikerCounter = (props) => {
     const response = await GetLiker(postId);
     setLikers(response);
     const contains = (val) => response.some(({ id }) => id.includes(val));
-    if (contains(userId)) {
+    if (contains(accountId)) {
       // 아이디 변경 필요
       setLike(1);
     } else {
@@ -96,9 +96,9 @@ export const LikerCounter = (props) => {
   return isLoaded ? (
     <>
       <Box
-        className={userId ? classes.likerCursor : null}
+        className={accountId ? classes.likerCursor : null}
         display="inline-block"
-        onClick={userId ? () => LikeIt() : null}
+        onClick={accountId ? () => LikeIt() : null}
       >
         <Icon />
       </Box>

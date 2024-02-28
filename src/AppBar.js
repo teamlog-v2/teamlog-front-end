@@ -68,7 +68,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
   console.log("'beforeinstallprompt' event was fired.");
 });
 
-function userClickedAddToHome() {
+function accountClickedAddToHome() {
   deferredInstallPrompt?.prompt?.();
 
   deferredInstallPrompt?.userChoice?.then((choiceResult) => {
@@ -117,7 +117,7 @@ export default function AppBar() {
           <Wrapper>
             <Title />
             <Box display="flex">
-              <IconButton onClick={userClickedAddToHome}>
+              <IconButton onClick={accountClickedAddToHome}>
                 <GetAppIcon style={{ fontSize: '1.125rem', color: 'white' }} />
               </IconButton>
               <IconButton
@@ -148,7 +148,7 @@ export default function AppBar() {
       <Wrapper>
         <Title />
         <Box display="flex">
-          <IconButton onClick={userClickedAddToHome}>
+          <IconButton onClick={accountClickedAddToHome}>
             <GetAppIcon style={{ fontSize: '1.125rem', color: 'white' }} />
           </IconButton>
           <IconButton
