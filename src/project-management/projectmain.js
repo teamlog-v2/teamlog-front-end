@@ -12,7 +12,6 @@ import Container from '@mui/material/Container';
 import { useParams } from 'react-router';
 import { useFetchData } from '../hooks/hooks';
 import useFetchPosts from '../hooks/useFetchPosts';
-import { CompressedPost } from '../post/Post';
 import Postlist from '../post/PostList';
 import Introduction from './introduction';
 
@@ -132,7 +131,7 @@ const ProjectMain = (props) => {
                 아직 등록된 글이 없어요. 😢
               </Grid>
             ) : (
-              <Postlist posts={posts} Component={CompressedPost} relation={relation} />
+              <Postlist posts={posts} relation={relation} />
             )}
             <Grid
               container

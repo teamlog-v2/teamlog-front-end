@@ -1,32 +1,35 @@
 import {
   Delete,
   Edit,
+  ExpandMore,
   History,
   MoreVert
 } from '@mui/icons-material';
-import RoomIcon from '@mui/icons-material/Room';
 import {
+  Avatar,
   Button,
   Card,
-  Chip,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Collapse,
   Dialog,
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Divider,
   Grid,
-  IconButton
+  IconButton,
+  Typography
 } from '@mui/material';
 import Box from '@mui/material/Box';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
-import Container from '@mui/material/Container';
 import Grow from '@mui/material/Grow';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 import { makeStyles } from '@mui/styles';
-import {
+import React, {
   useCallback,
   useEffect,
   useRef,
@@ -37,17 +40,12 @@ import { useMediaQuery } from 'react-responsive';
 import './css/carousel-theme.css';
 import './css/carousel.css';
 
-import { Route } from 'react-router';
-import MyPage from '../account/MyPage';
 import CommentList from '../comment/commentlist';
 import { DateInfo } from '../global/datetime';
 import ResponsiveDialog from '../organisms/ResponsiveDialog';
-import { convertResourceUrl } from '../utils';
-import { AccountId, AccountImage } from './AccountProfile';
 import { CommentCounter, LikerCounter } from './Counter';
-import FileList from './FileList';
-import PostFormPage from './PostFormPage';
-import { Media, Video } from './PostMedia';
+import PostForm from './PostFormPage';
+import { Media } from './PostMedia';
 import UpdateHistory from './PostUpdateHistory';
 import { DeletePost } from './postApi';
 
@@ -412,168 +410,68 @@ export const Post = (props) => {
     setLikerCounter(content.likeCount);
   }, [content.id]);
 
+  const [expanded, setExpanded] = React.useState(false);
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+
   return (
-    <>
-      <Route exact path="/accounts/:accountId" component={MyPage} />
-      <Container
-        className={classes.root}
-        component="main"
-        disableGutters
-        maxWidth={maxWidth}
-      >
-        <Card className={classes.paper} elevation={0}>
-          <Container disableGutters>
-            <Box className={classes.children}>
-              <Grid
-                container
-                className={classes.header}
-                xs={12}
-                direction="row"
-                alignItems="center"
-              >
-                <Grid item xs={10}>
-                  <Grid container className={classes.account} alignItems="center">
-                    <Grid item>
-                      <AccountImage imgPath={content.writer.profileImgPath} />
-                    </Grid>
-                    <Grid
-                      item
-                      container
-                      direction="column"
-                      xs={2}
-                      style={{ padding: '0 1%' }}
-                    >
-                      <AccountId accountId={content.writer.id} />
-                      <DateInfo dateTime={content.writeTime} />
-                    </Grid>
-                  </Grid>
-                </Grid>
-                {relation === 'MEMBER' || relation === 'MASTER' ? (
-                  <Grid item className={classes.menu}>
-                    <PostMenu
-                      content={content}
-                      setIsPostLoading={setIsPostLoading}
-                      setFormData={setFormData}
-                      initPosts={initPosts}
-                      updateOpen={setOpen}
-                      updateHistoryOpen={setHistoryOpen}
-                    />
-                  </Grid>
-                ) : null}
-              </Grid>
-            </Box>
-          </Container>
-          {canAccess(relation, content.accessModifier) ? (
-            <>
-              {content.address ? (
-                <Grid
-                  className={classes.children}
-                  container
-                  alignItems="center"
-                >
-                  <Grid container alignItems="center">
-                    <RoomIcon color="primary" />
-                    <span style={{ fontWeight: 600 }}>
-                      {content.address.split('#')[0]}
-                    </span>
-                  </Grid>
-                </Grid>
-              ) : null}
-              {content?.hashtags.length > 0 ? (
-                <Grid className={classes.children}>
-                  <Grid container direction="row" spacing={1}>
-                    {content.hashtags.map((item, index) => (
-                      <Grid item>
-                        <Chip
-                          className="tags"
-                          key={index}
-                          label={`#${item}`}
-                          variant="outlined"
-                          size="small"
-                          onClick={() => {
-                            // handleChipClick(index);
-                            // handleToggle(index);
-                          }}
-                          color="primary"
-                        />
-                      </Grid>
-                    ))}
-                  </Grid>
-                </Grid>
-              ) : null}
-              {content.files.length !== 0 && (
-                <Grid className={classes.children}>
-                  <FileList files={content.files} />
-                </Grid>
-              )}
-              {content.media.length !== 0 && (
-                <MediaList media={content.media} />
-              )}
-              <Box className={classes.children}>
-                <p
-                  style={{
-                    wordBreak: 'break-all',
-                    margin: '0 0',
-                    whiteSpace: 'pre-wrap',
-                  }}
-                >
-                  {content.contents}
-                  {/* {
-                    (content.contents.indexOf('https://') !== -1) && (
-                    <a href={content.contents.substring(content.contents.indexOf('http://'))}>
-                      {content.contents.substring(content.contents.indexOf('http://'))}
-                    </a>
-                    )
-                  } */}
-                </p>
-              </Box>
-              <Divider style={{ margin: '0.5% 1%' }} />
-              <Box className={classes.children}>
-                <LikerCounter
-                  count={likerCounter}
-                  setLikerCounter={SetLikerCounter}
-                  postId={content.id}
-                />
-                &nbsp;
-                <CommentCounter count={commentCounter} />
-              </Box>
-              {canAccess(relation, content.commentModifier) ? (
-                <Container disableGutters>
-                  <CommentList
-                    projectId={content.project.id}
-                    postId={content.id}
-                    updateCommentCount={updateCommentCount}
-                  />
-                </Container>
-              ) : (
-                <span
-                  style={{
-                    backgroundColor: '#F8F8F8',
-                    textAlign: 'center',
-                    padding: '1% 0',
-                    fontSize: 'smaller',
-                  }}
-                >
-                  댓글을 볼 수 있는 권한이 없습니다
-                </span>
-              )}
-            </>
-          ) : (
-            <Grid
-              style={{
-                backgroundColor: '#F8F8F8',
-                textAlign: 'center',
-                padding: '10% 0',
-              }}
-            >
-              포스트를 볼 수 있는 권한이 없습니다
-            </Grid>
-          )}
-          <Container disableGutters />
-        </Card>
-      </Container>
+    <Card>
+      <CardHeader
+        avatar={
+          <Avatar aria-label="recipe" src={content.writer.profileImgPath} />
+        }
+        action={
+          <IconButton aria-label="settings">
+            <PostMenu
+              content={content}
+              setIsPostLoading={setIsPostLoading}
+              setFormData={setFormData}
+              initPosts={initPosts}
+              updateOpen={setOpen}
+              updateHistoryOpen={setHistoryOpen}
+            />
+          </IconButton>
+        }
+        title={content.writer.id}
+        subheader={<DateInfo dateTime={content.writeTime} />}
+      />
+      {content.media.length !== 0 && (
+        <MediaList media={content.media} />
+      )}
+      <CardContent>
+        <Typography variant="body2" color="text.secondary">
+          {content.contents}
+        </Typography>
+      </CardContent>
+      <CardActions disableSpacing>
+        <LikerCounter
+          count={likerCounter}
+          setLikerCounter={SetLikerCounter}
+          postId={content.id}
+        />
+      </CardActions>
+      <CardActions disableSpacing>
+        <CommentCounter count={commentCounter} />
+        <Typography variant="body2" color="text.secondary" style={{ marginLeft: '0.25em' }}> {expanded ? '댓글 접기' : '댓글 펼쳐보기'}</Typography>
+        <ExpandMore
+          style={{ cursor: 'pointer' }}
+          expand={expanded}
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+          aria-label="show more"
+        />
+      </CardActions>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <CommentList
+          projectId={content.project.id}
+          postId={content.id}
+          updateCommentCount={updateCommentCount}
+        />
+      </Collapse>
       <ResponsiveDialog open={open} updateOpen={setOpen}>
-        <PostFormPage
+        <PostForm
           content={content}
           hashtags={projectHashtags} // 임시 빈값
           updateOpen={setOpen}
@@ -589,207 +487,185 @@ export const Post = (props) => {
       >
         <UpdateHistory id={content.id} updateOpen={setHistoryOpen} />
       </Dialog>
-    </>
+    </Card>
+    // <>
+    //   <Route exact path="/accounts/:accountId" component={MyPage} />
+    //   <Container
+    //     className={classes.root}
+    //     component="main"
+    //     disableGutters
+    //     maxWidth={maxWidth}
+    //   >
+    //     <Card className={classes.paper} elevation={0}>
+    //       <Container disableGutters>
+    //         <Box className={classes.children}>
+    //           <Grid
+    //             container
+    //             className={classes.header}
+    //             xs={12}
+    //             direction="row"
+    //             alignItems="center"
+    //           >
+    //             <Grid item xs={10}>
+    //               <Grid container className={classes.account} alignItems="center">
+    //                 <Grid item>
+    //                   <AccountImage imgPath={content.writer.profileImgPath} />
+    //                 </Grid>
+    //                 <Grid
+    //                   item
+    //                   container
+    //                   direction="column"
+    //                   xs={2}
+    //                   style={{ padding: '0 1%' }}
+    //                 >
+    //                   <AccountId accountId={content.writer.id} />
+    //                   <DateInfo dateTime={content.writeTime} />
+    //                 </Grid>
+    //               </Grid>
+    //             </Grid>
+    //             {relation === 'MEMBER' || relation === 'MASTER' ? (
+    //               <Grid item className={classes.menu}>
+    //                 <PostMenu
+    //                   content={content}
+    //                   setIsPostLoading={setIsPostLoading}
+    //                   setFormData={setFormData}
+    //                   initPosts={initPosts}
+    //                   updateOpen={setOpen}
+    //                   updateHistoryOpen={setHistoryOpen}
+    //                 />
+    //               </Grid>
+    //             ) : null}
+    //           </Grid>
+    //         </Box>
+    //       </Container>
+    //       {canAccess(relation, content.accessModifier) ? (
+    //         <>
+    //           {content.address ? (
+    //             <Grid
+    //               className={classes.children}
+    //               container
+    //               alignItems="center"
+    //             >
+    //               <Grid container alignItems="center">
+    //                 <RoomIcon color="primary" />
+    //                 <span style={{ fontWeight: 600 }}>
+    //                   {content.address.split('#')[0]}
+    //                 </span>
+    //               </Grid>
+    //             </Grid>
+    //           ) : null}
+    //           {content?.hashtags.length > 0 ? (
+    //             <Grid className={classes.children}>
+    //               <Grid container direction="row" spacing={1}>
+    //                 {content.hashtags.map((item, index) => (
+    //                   <Grid item>
+    //                     <Chip
+    //                       className="tags"
+    //                       key={index}
+    //                       label={`#${item}`}
+    //                       variant="outlined"
+    //                       size="small"
+    //                       onClick={() => {
+    //                         // handleChipClick(index);
+    //                         // handleToggle(index);
+    //                       }}
+    //                       color="primary"
+    //                     />
+    //                   </Grid>
+    //                 ))}
+    //               </Grid>
+    //             </Grid>
+    //           ) : null}
+    //           {content.files.length !== 0 && (
+    //             <Grid className={classes.children}>
+    //               <FileList files={content.files} />
+    //             </Grid>
+    //           )}
+    //           {content.media.length !== 0 && (
+    //             <MediaList media={content.media} />
+    //           )}
+    //           <Box className={classes.children}>
+    //             <p
+    //               style={{
+    //                 wordBreak: 'break-all',
+    //                 margin: '0 0',
+    //                 whiteSpace: 'pre-wrap',
+    //               }}
+    //             >
+    //               {content.contents}
+    //               {/* {
+    //                 (content.contents.indexOf('https://') !== -1) && (
+    //                 <a href={content.contents.substring(content.contents.indexOf('http://'))}>
+    //                   {content.contents.substring(content.contents.indexOf('http://'))}
+    //                 </a>
+    //                 )
+    //               } */}
+    //             </p>
+    //           </Box>
+    //           <Divider style={{ margin: '0.5% 1%' }} />
+    //           <Box className={classes.children}>
+    //             <LikerCounter
+    //               count={likerCounter}
+    //               setLikerCounter={SetLikerCounter}
+    //               postId={content.id}
+    //             />
+    //             &nbsp;
+    //             <CommentCounter count={commentCounter} />
+    //           </Box>
+    //           {canAccess(relation, content.commentModifier) ? (
+    //             <Container disableGutters>
+    //               <CommentList
+    //                 projectId={content.project.id}
+    //                 postId={content.id}
+    //                 updateCommentCount={updateCommentCount}
+    //               />
+    //             </Container>
+    //           ) : (
+    //             <span
+    //               style={{
+    //                 backgroundColor: '#F8F8F8',
+    //                 textAlign: 'center',
+    //                 padding: '1% 0',
+    //                 fontSize: 'smaller',
+    //               }}
+    //             >
+    //               댓글을 볼 수 있는 권한이 없습니다
+    //             </span>
+    //           )}
+    //         </>
+    //       ) : (
+    //         <Grid
+    //           style={{
+    //             backgroundColor: '#F8F8F8',
+    //             textAlign: 'center',
+    //             padding: '10% 0',
+    //           }}
+    //         >
+    //           포스트를 볼 수 있는 권한이 없습니다
+    //         </Grid>
+    //       )}
+    //       <Container disableGutters />
+    //     </Card>
+    //   </Container>
+    //   <ResponsiveDialog open={open} updateOpen={setOpen}>
+    //     <PostFormPage
+    //       content={content}
+    //       hashtags={projectHashtags} // 임시 빈값
+    //       updateOpen={setOpen}
+    //       updatePost={updatePost}
+    //     />
+    //   </ResponsiveDialog>
+    //   <Dialog
+    //     open={historyOpen}
+    //     updateOpen={setHistoryOpen}
+    //     onClose={() => {
+    //       setHistoryOpen(false);
+    //     }}
+    //   >
+    //     <UpdateHistory id={content.id} updateOpen={setHistoryOpen} />
+    //   </Dialog>
+    // </>
   );
 };
 
-const CompressedMediaList = ({ media }) => {
-  const classes = useStyles();
-
-  const [curIndex, setCurIndex] = useState(1);
-
-  return (
-    <>
-      <Grid container direction="row-reverse">
-        {/* <span className={classes.chip}>{`${curIndex}/${media.length}`}</span> */}
-      </Grid>
-      <Box id="mediaBox" textAlign="center">
-        <Carousel
-          onChange={(index) => {
-            setCurIndex(index + 1);
-          }}
-          autoPlay={false}
-          animation="slide"
-          cycleNavigation={false}
-          indicatorIconButtonProps={{}}
-          indicators={false}
-          activeIndicatorIconButtonProps={{
-            style: {
-              color: '#C16AF5', // 2
-            },
-          }}
-        >
-          {media.map((file, i) => {
-            const { fileDownloadUri } = file;
-            const url = fileDownloadUri.slice(
-              fileDownloadUri.indexOf('/resources'),
-            );
-
-            if (file.contentType.includes('video')) {
-              return (
-                <Video file={file} compressed />
-              );
-            }
-
-            if (file.contentType.includes('image')) {
-              return (
-                <img
-                  key={url}
-                  src={convertResourceUrl(url)}
-                  alt="이미지"
-                  width="100%"
-                />
-              );
-            }
-
-            return null;
-          })}
-        </Carousel>
-      </Box>
-    </>
-  );
-};
-
-export const CompressedPost = (props) => {
-  const { post, noTime, type } = props;
-
-  const [historyOpen, setHistoryOpen] = useState(false);
-
-  const classes = useStyles();
-  const [likerCounter, setLikerCounter] = useState(post.likeCount);
-  const [commentCounter, setCommentCounter] = useState(post.commentCount);
-
-  const updateCommentCount = useCallback((counterEvent) => {
-    setCommentCounter(commentCounter + counterEvent);
-  }); // 댓글 개수 조정
-
-  const SetLikerCounter = useCallback((counterEvent) => {
-    setLikerCounter(likerCounter + counterEvent);
-  }); // 좋아요 개수 조정
-
-  useEffect(() => {
-    setCommentCounter(post.commentCount);
-    setLikerCounter(post.likeCount);
-  }, [post.id]);
-
-  return (
-    <>
-      <Container className={type ? classes.root : ''} disableGutters>
-        <Card className={classes.paper} elevation={0}>
-          <Container disableGutters>
-            <Box className={classes.children}>
-              <Grid
-                container
-                className={classes.header}
-                xs={12}
-                direction="row"
-                alignItems="center"
-              >
-                <Grid item xs={10}>
-                  <Grid container className={classes.account} alignItems="center">
-                    <Grid item>
-                      <AccountImage imgPath={post.writer.profileImgPath} />
-                    </Grid>
-                    <Grid
-                      item
-                      container
-                      direction="column"
-                      xs={2}
-                      style={{ padding: '0 1%' }}
-                    >
-                      <AccountId accountId={post.writer.id} />
-                      {!noTime && <DateInfo dateTime={post.writeTime} />}
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Box>
-          </Container>
-          <>
-            {post.address ? (
-              <Grid className={classes.children} container alignItems="center">
-                <Grid container alignItems="center">
-                  <RoomIcon color="primary" />
-                  <span style={{ fontWeight: 600 }}>
-                    {post.address.split('#')[0]}
-                  </span>
-                </Grid>
-              </Grid>
-            ) : null}
-            {post?.hashtags.length > 0 ? (
-              <Grid className={classes.children}>
-                <Grid container direction="row" spacing={1}>
-                  {post.hashtags.map((item, index) => (
-                    <Grid item>
-                      <Chip
-                        className="tags"
-                        key={index}
-                        label={`#${item}`}
-                        variant="outlined"
-                        size="small"
-                        onClick={() => {
-                          // handleChipClick(index);
-                          // handleToggle(index);
-                        }}
-                        color="primary"
-                      />
-                    </Grid>
-                  ))}
-                </Grid>
-              </Grid>
-            ) : null}
-            {post.files.length !== 0 && (
-              <Grid className={classes.children}>
-                <FileList files={post.files} />
-              </Grid>
-            )}
-            {post.media.length !== 0 && (
-              <CompressedMediaList media={post.media} />
-            )}
-            <Box className={classes.children}>
-              <p
-                style={{
-                  // wordBreak: 'break-all',
-                  margin: '0 0',
-                  whiteSpace: 'pre-wrap',
-                }}
-              >
-                {post.contents}
-              </p>
-            </Box>
-            <Divider style={{ margin: '0.5% 1%' }} />
-            <Box className={classes.children}>
-              <LikerCounter
-                count={likerCounter}
-                setLikerCounter={SetLikerCounter}
-                postId={post.id}
-              />
-              &nbsp;
-              <CommentCounter count={commentCounter} />
-            </Box>
-
-            <Container disableGutters>
-              <CommentList
-                projectId={post.project.id}
-                postId={post.id}
-                updateCommentCount={updateCommentCount}
-                type="compressed"
-              />
-            </Container>
-          </>
-          <Container disableGutters />
-        </Card>
-      </Container>
-      {/* 다이얼로그 */}
-      <Dialog
-        open={historyOpen}
-        updateOpen={setHistoryOpen}
-        onClose={() => {
-          setHistoryOpen(false);
-        }}
-      >
-        <UpdateHistory id={post.id} updateOpen={setHistoryOpen} />
-      </Dialog>
-    </>
-  );
-};
+export default Post;

@@ -1,7 +1,7 @@
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import { Box, Tooltip } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useContext, useEffect, useState } from 'react';
 import AuthContext from '../contexts/auth';
@@ -24,10 +24,11 @@ export const LikerCounter = (props) => {
   const classes = useStyles();
   const [accountId] = useContext(AuthContext);
   const [like, setLike] = useState(false); // 본인 좋아요 여부
+  const [processing, setProcessing] = useState(false); // 좋아요 처리 중 여부
   const [likers, setLikers] = useState([]); // 좋아하는 유저 목록
   const [isLoaded, setIsLoaded] = useState(false);
   const [isLikerListOpened, setIsLikerListOpened] = useState(false);
-  const { postId, count, setLikerCounter } = props;
+  const { postId, setLikerCounter } = props;
 
   useEffect(async () => {
     setIsLoaded(false);
@@ -35,7 +36,6 @@ export const LikerCounter = (props) => {
     setLikers(response);
     const contains = (val) => response.some(({ id }) => id.includes(val));
     if (contains(accountId)) {
-      // 아이디 변경 필요
       setLike(1);
     } else {
       setLike(0);
@@ -44,47 +44,47 @@ export const LikerCounter = (props) => {
   }, [postId]);
 
   const LikeIt = async () => {
-    if (like === 2) return;
+    if (processing) return;
 
-    let status;
     if (!like) {
-      status = await CreateLiker(postId);
+      await CreateLiker(postId);
       setLikerCounter(1);
     } else {
-      status = await DeleteLiker(postId);
+      await DeleteLiker(postId);
       setLikerCounter(-1);
     }
 
-    if (like === 1) setLike(0);
+    if (like) setLike(false);
     else {
-      setLike(2);
+      setProcessing(true);
       setTimeout(() => {
-        if (like === 1) setLike(0);
-        else setLike(1);
+        if (like) setLike(false);
+        else setLike(true);
+        setProcessing(false);
       }, 2100);
     }
     const response = await GetLiker(postId);
     setLikers(response);
   };
 
-  const Icon = () => {
-    if (like === 2) {
+  const Icon = ({ className, onClick }) => {
+    if (processing) {
       return (
         <FavoriteIcon
           className="gelatine"
-          fontSize="small"
           style={{ color: '#F5575A' }}
         />
       );
     }
-    if (like === 1) {
-      return <FavoriteIcon fontSize="small" style={{ color: '#F5575A' }} />;
+
+    if (like) {
+      return <FavoriteIcon style={{ color: '#F5575A' }} className={className} onClick={onClick} />;
     }
-    return <FavoriteBorderIcon fontSize="small" />;
+    return <FavoriteBorderIcon className={className} onClick={onClick} />;
   };
 
   const TooltipTitle = () => {
-  if (likers.length === 0) {
+    if (likers.length === 0) {
       return '가장 먼저 좋아요를 눌러보세요!';
     }
     if (likers.length === 1) {
@@ -94,30 +94,19 @@ export const LikerCounter = (props) => {
   };
 
   return isLoaded ? (
-    <>
-      <Box
-        className={accountId ? classes.likerCursor : null}
-        display="inline-block"
-        onClick={accountId ? () => LikeIt() : null}
-      >
-        <Icon />
-      </Box>
-      <Tooltip title={TooltipTitle()}>
-        <Box
-          className={classes.likerCursor}
-          display="inline-block"
-          onClick={() => setIsLikerListOpened(true)}
-        >
-          {count}
-        </Box>
-      </Tooltip>
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <Icon className={accountId ? classes.likerCursor : null}
+        onClick={accountId ? () => LikeIt() : null} />
+      <Typography variant="body2" color="text.secondary" style={{ marginLeft: '0.25em' }}>
+        {TooltipTitle()}
+      </Typography>
       <ResponsiveDialog
         open={isLikerListOpened}
         updateOpen={setIsLikerListOpened}
       >
         <LikerList likerList={likers} updateOpen={setIsLikerListOpened} />
       </ResponsiveDialog>
-    </>
+    </div>
   ) : (
     <>
       <Box display="inline-block">
@@ -131,9 +120,9 @@ export const LikerCounter = (props) => {
 export const CommentCounter = (props) => {
   const { count } = props;
   return (
-    <Box display="inline-block">
-      <ChatBubbleOutlineIcon fontSize="small" />
-      {count}
-    </Box>
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <ChatBubbleOutlineIcon />
+      <Typography variant="body2" color="text.secondary" style={{ marginLeft: '0.25em' }}>{count}</Typography>
+    </div>
   );
 };
