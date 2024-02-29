@@ -6,11 +6,9 @@ import MemberTab from './MemberTab';
 import Header from './header';
 import PostMain from './postmain';
 import ProjectFollower from './projectfollower';
-import ProjectMain from './projectmain';
 
 export default function Project() {
   const sections = [
-    { title: '홈', url: '', component: ProjectMain },
     { title: '포스트', url: '/post', component: PostMain },
     { title: '태스크', url: '/task', component: TaskContainer },
     { title: '멤버', url: '/member', component: MemberTab },
