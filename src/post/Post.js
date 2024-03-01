@@ -9,9 +9,9 @@ import {
   Avatar,
   Button,
   Card,
-  CardActions,
   CardContent,
   CardHeader,
+  Chip,
   Collapse,
   Dialog,
   DialogContent,
@@ -40,6 +40,7 @@ import { useMediaQuery } from 'react-responsive';
 import './css/carousel-theme.css';
 import './css/carousel.css';
 
+import { Container } from '@mui/system';
 import CommentList from '../comment/commentlist';
 import { DateInfo } from '../global/datetime';
 import ResponsiveDialog from '../organisms/ResponsiveDialog';
@@ -417,77 +418,103 @@ export const Post = (props) => {
   };
 
   return (
-    <Card>
-      <CardHeader
-        avatar={
-          <Avatar aria-label="recipe" src={content.writer.profileImgPath} />
-        }
-        action={
-          <IconButton aria-label="settings">
-            <PostMenu
-              content={content}
-              setIsPostLoading={setIsPostLoading}
-              setFormData={setFormData}
-              initPosts={initPosts}
-              updateOpen={setOpen}
-              updateHistoryOpen={setHistoryOpen}
+    <Container disableGutters maxWidth={maxWidth}>
+      <Card width='md'>
+        <CardHeader
+          avatar={
+            <Avatar aria-label="recipe" src={content.writer.profileImgPath} />
+          }
+          action={
+            <IconButton aria-label="settings">
+              <PostMenu
+                content={content}
+                setIsPostLoading={setIsPostLoading}
+                setFormData={setFormData}
+                initPosts={initPosts}
+                updateOpen={setOpen}
+                updateHistoryOpen={setHistoryOpen}
+              />
+            </IconButton>
+          }
+          title={content.writer.id}
+          subheader={<DateInfo dateTime={content.writeTime} />}
+        />
+        {content.media.length !== 0 && (
+          <MediaList media={content.media} />
+        )}
+        <CardContent>
+          <Typography variant="body2" color="text.secondary">
+            {content.contents}
+          </Typography>
+        </CardContent>
+        <CardContent>
+          {content?.hashtags.length > 0 ? (
+            <Grid container direction="row" spacing={1}>
+              {content.hashtags.map((item, index) => (
+                <Grid item>
+                  <Chip
+                    className="tags"
+                    key={index}
+                    label={`#${item}`}
+                    variant="outlined"
+                    size="small"
+                    onClick={() => {
+                      // handleChipClick(index);
+                      // handleToggle(index);
+                    }}
+                    color="primary"
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          ) : null}
+        </CardContent>
+        <CardContent disableSpacing>
+          <LikerCounter
+            count={likerCounter}
+            setLikerCounter={SetLikerCounter}
+            postId={content.id}
+          />
+        </CardContent>
+        <CardContent disableSpacing>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <CommentCounter count={commentCounter} />
+            <Typography variant="body2" color="text.secondary" style={{ marginLeft: '0.25em', display: 'flex' }}> {expanded ? '댓글 접기' : '댓글 펼쳐보기'}</Typography>
+            <ExpandMore
+              style={{ cursor: 'pointer' }}
+              expand={expanded}
+              onClick={handleExpandClick}
+              aria-expanded={expanded}
+              aria-label="show more"
             />
-          </IconButton>
-        }
-        title={content.writer.id}
-        subheader={<DateInfo dateTime={content.writeTime} />}
-      />
-      {content.media.length !== 0 && (
-        <MediaList media={content.media} />
-      )}
-      <CardContent>
-        <Typography variant="body2" color="text.secondary">
-          {content.contents}
-        </Typography>
-      </CardContent>
-      <CardActions disableSpacing>
-        <LikerCounter
-          count={likerCounter}
-          setLikerCounter={SetLikerCounter}
-          postId={content.id}
-        />
-      </CardActions>
-      <CardActions disableSpacing>
-        <CommentCounter count={commentCounter} />
-        <Typography variant="body2" color="text.secondary" style={{ marginLeft: '0.25em' }}> {expanded ? '댓글 접기' : '댓글 펼쳐보기'}</Typography>
-        <ExpandMore
-          style={{ cursor: 'pointer' }}
-          expand={expanded}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        />
-      </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CommentList
-          projectId={content.project.id}
-          postId={content.id}
-          updateCommentCount={updateCommentCount}
-        />
-      </Collapse>
-      <ResponsiveDialog open={open} updateOpen={setOpen}>
-        <PostForm
-          content={content}
-          hashtags={projectHashtags} // 임시 빈값
-          updateOpen={setOpen}
-          updatePost={updatePost}
-        />
-      </ResponsiveDialog>
-      <Dialog
-        open={historyOpen}
-        updateOpen={setHistoryOpen}
-        onClose={() => {
-          setHistoryOpen(false);
-        }}
-      >
-        <UpdateHistory id={content.id} updateOpen={setHistoryOpen} />
-      </Dialog>
-    </Card>
+          </div>
+        </CardContent>
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <CommentList
+            projectId={content.project.id}
+            postId={content.id}
+            updateCommentCount={updateCommentCount}
+          />
+        </Collapse>
+        <ResponsiveDialog open={open} updateOpen={setOpen}>
+          <PostForm
+            content={content}
+            hashtags={projectHashtags} // 임시 빈값
+            updateOpen={setOpen}
+            updatePost={updatePost}
+          />
+        </ResponsiveDialog>
+        <Dialog
+          open={historyOpen}
+          updateOpen={setHistoryOpen}
+          onClose={() => {
+            setHistoryOpen(false);
+          }}
+        >
+          <UpdateHistory id={content.id} updateOpen={setHistoryOpen} />
+        </Dialog>
+      </Card>
+    </Container>
     // <>
     //   <Route exact path="/accounts/:accountId" component={MyPage} />
     //   <Container
@@ -551,28 +578,6 @@ export const Post = (props) => {
     //                 <span style={{ fontWeight: 600 }}>
     //                   {content.address.split('#')[0]}
     //                 </span>
-    //               </Grid>
-    //             </Grid>
-    //           ) : null}
-    //           {content?.hashtags.length > 0 ? (
-    //             <Grid className={classes.children}>
-    //               <Grid container direction="row" spacing={1}>
-    //                 {content.hashtags.map((item, index) => (
-    //                   <Grid item>
-    //                     <Chip
-    //                       className="tags"
-    //                       key={index}
-    //                       label={`#${item}`}
-    //                       variant="outlined"
-    //                       size="small"
-    //                       onClick={() => {
-    //                         // handleChipClick(index);
-    //                         // handleToggle(index);
-    //                       }}
-    //                       color="primary"
-    //                     />
-    //                   </Grid>
-    //                 ))}
     //               </Grid>
     //             </Grid>
     //           ) : null}
