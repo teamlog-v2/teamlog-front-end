@@ -9,7 +9,7 @@ import ProjectFollower from './projectfollower';
 
 export default function Project() {
   const sections = [
-    { title: '포스트', url: '/post', component: PostMain },
+    { title: '포스트', url: '', component: PostMain },
     { title: '태스크', url: '/task', component: TaskContainer },
     { title: '멤버', url: '/member', component: MemberTab },
     { title: '팔로워', url: '/follower', component: ProjectFollower },

@@ -177,7 +177,6 @@ const PostMenu = (props) => {
     content,
     setIsPostLoading,
     setFormData,
-    initPosts,
     updateOpen,
     updateHistoryOpen,
   } = props;
@@ -205,7 +204,7 @@ const PostMenu = (props) => {
     if (status === 200) {
       setIsPostLoading(false);
       setFormData(null);
-      initPosts();
+      window.location.reload(true);
     }
     setAlertOpen(false);
   };
@@ -486,7 +485,6 @@ export const Post = (props) => {
                 content={content}
                 setIsPostLoading={setIsPostLoading}
                 setFormData={setFormData}
-                initPosts={initPosts}
                 updateOpen={setOpen}
                 updateHistoryOpen={setHistoryOpen}
               />
@@ -546,6 +544,7 @@ export const Post = (props) => {
           </div>
         </CardContent>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
+          {console.log(content.id)}
           <CommentList
             projectId={content.project.id}
             postId={content.id}

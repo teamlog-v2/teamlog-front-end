@@ -3,7 +3,6 @@ import Search from '@mui/icons-material/Search';
 import {
   Box,
   Button,
-  Card,
   CircularProgress,
   Fab,
   Grid,
@@ -105,7 +104,6 @@ const PostMain = (props) => {
     updatePost,
     fetchPosts,
     totalCount: postsTotalCount,
-    initPosts,
   } = useFetchPosts(url);
 
   // 스크롤 감지
@@ -134,17 +132,15 @@ const PostMain = (props) => {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [isPostsLoading, fetchPosts]);
+  }, [isPostsLoading]);
 
   useEffect(async () => {
     if (!formData || resource < 1) return;
 
     setIsPostLoading(true);
 
-    window.scrollTo({ top: 200, behavior: 'smooth' });
     try {
       resource -= 1;
-      setOpen(false);
 
       const res = await fetch('/api/posts', {
         method: 'POST',
@@ -154,9 +150,8 @@ const PostMain = (props) => {
 
       if (res.status === 201) {
         console.log('성공적으로 등록');
-        setIsPostLoading(false);
         setFormData(null);
-        initPosts();
+        window.location.reload(true);
       }
     } catch (error) {
       console.log(error);
@@ -248,19 +243,6 @@ const PostMain = (props) => {
                   {posts.length !== 0 &&
                     `총 ${postsTotalCount}개의 검색된 게시물 중 ${posts.length}개`}
                 </Typography>
-                {isPostLoading ? (
-                  <Card className={classes.children} elevation={0} xs={12}>
-                    <Grid
-                      item
-                      container
-                      alignItems="center"
-                      style={{ border: '1px solid #eee', padding: '1%' }}
-                    >
-                      <CircularProgress />
-                      &nbsp;업로드 중
-                    </Grid>
-                  </Card>
-                ) : null}
                 {posts.length === 0 && keyword === '' && !isPostsLoading ? (
                   <Grid
                     container
@@ -276,7 +258,6 @@ const PostMain = (props) => {
                     hashtags={hashtags}
                     setIsPostLoading={setIsPostLoading}
                     setFormData={setFormData}
-                    initPosts={initPosts}
                     updatePost={updatePost}
                     relation={relation}
                   />

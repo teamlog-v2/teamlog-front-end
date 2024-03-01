@@ -136,8 +136,8 @@ const useFetchPosts = (url) => {
   };
 
   useEffect(() => () => {
-      isMounted.current = false;
-    });
+    isMounted.current = false;
+  });
 
   return { ...state, updatePost, fetchPosts, totalCount, initPosts };
 };
