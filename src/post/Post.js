@@ -21,7 +21,6 @@ import {
   IconButton,
   Typography
 } from '@mui/material';
-import Box from '@mui/material/Box';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Grow from '@mui/material/Grow';
 import MenuItem from '@mui/material/MenuItem';
@@ -36,7 +35,6 @@ import React, {
   useState
 } from 'react';
 import Carousel from 'react-material-ui-carousel';
-import { useMediaQuery } from 'react-responsive';
 import './css/carousel-theme.css';
 import './css/carousel.css';
 
@@ -117,6 +115,7 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
     backgroundColor: 'black',
     width: '100%',
+    height: '50vh',
     // '&::after': {
     //   content: '',
     //   display: 'block',
@@ -324,59 +323,116 @@ const PostMenu = (props) => {
 };
 
 const MediaList = ({ media }) => {
-  const classes = useStyles();
+  const containerStyle = {
+    width: '80%', // Set the width of the container as needed
+    margin: 'auto', // Center the container
+    position: 'relative', // Set position to relative
+  };
 
-  const [curIndex, setCurIndex] = useState(1);
+  const carouselContainerStyle = {
+    width: '100%', // Set the width of the Carousel to 100% of its container
+    position: 'relative',
+  };
 
-  const isPc = useMediaQuery({
-    query: '(min-width:1024px)',
-  });
-  const isTablet = useMediaQuery({
-    query: '(min-width:768px) and (max-width:1023px)',
-  });
-  const isMobile = useMediaQuery({
-    query: '(max-width:767px)',
-  });
-
-  let size = null;
-  if (isPc) {
-    size = '60em';
-  } else if (isTablet) {
-    size = '45em';
-  } else if (isMobile) {
-    size = '30em';
-  }
+  const carouselStyle = {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+  };
 
   return (
-    <>
-      <Grid container direction="row-reverse">
-        <span className={classes.chip}>{`${curIndex}/${media.length}`}</span>
-      </Grid>
-      <Box id="mediaBox" textAlign="center">
-        <Carousel
-          onChange={(index) => {
-            setCurIndex(index + 1);
-          }}
-          autoPlay={false}
-          animation="slide"
-          cycleNavigation={false}
-          indicatorIconButtonProps={{}}
-          indicators={false}
-          activeIndicatorIconButtonProps={{
-            style: {
-              color: '#C16AF5', // 2
-            },
-          }}
-        >
+    <div style={containerStyle}>
+      <div style={carouselContainerStyle}>
+        <Carousel style={carouselStyle}>
+          {/* Your Carousel items go here */}
           {media.map((item, i) => (
-            <Box className={classes.media} height={size}>
-              <Media key={i} file={item} />
-            </Box>
+            <div style={{ display: 'flex', maxWidth: '100%' }}>
+              <div
+                style={{
+                  width: '100%', // 조절 가능한 폭
+                  paddingTop: '100%', // 1:1의 측면 비율을 갖기 위한 높이
+                  position: 'relative',
+                  backgroundColor: 'lightblue', // 배경색은 필요에 따라 조절
+                }}
+              >
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Media key={i} file={item} />
+                </div>
+              </div>
+            </div>
+            // <Box>
+            //   <Media key={i} file={item} />
+            // </Box>
           ))}
         </Carousel>
-      </Box>
-    </>
+      </div>
+    </div>
   );
+
+  // const classes = useStyles();
+
+  // const [curIndex, setCurIndex] = useState(1);
+
+  // const isPc = useMediaQuery({
+  //   query: '(min-width:1024px)',
+  // });
+  // const isTablet = useMediaQuery({
+  //   query: '(min-width:768px) and (max-width:1023px)',
+  // });
+  // const isMobile = useMediaQuery({
+  //   query: '(max-width:767px)',
+  // });
+
+
+
+  // return (
+  //   <div style={{
+  //     width: '100%', // Set the width of the container as needed
+  //     margin: 'auto', // Center the container
+  //     position: 'relative', // Set position to relative
+  //   }}>
+  //     < div style={{
+  //       width: '100%', // Set the width of the Carousel to 100% of its container
+  //       position: 'relative',
+  //     }}>
+  //       <Grid container direction="row-reverse">
+  //         <span className={classes.chip}>{`${curIndex}/${media.length}`}</span>
+  //       </Grid>
+  //       <Box id="mediaBox" textAlign="center" >
+  //         <Carousel
+  //           onChange={(index) => {
+  //             setCurIndex(index + 1);
+  //           }}
+  //           autoPlay={false}
+  //           animation="slide"
+  //           cycleNavigation={false}
+  //           indicators={false}
+
+  //           activeIndicatorIconButtonProps={{
+  //             style: {
+  //               color: '#C16AF5', // 2
+  //             },
+  //           }}
+  //         >
+
+  //         </Carousel>
+  //       </Box>
+  //     </div>
+  //   </div >
+  // );
 };
 
 export const Post = (props) => {

@@ -2,7 +2,7 @@ import { VideoCallRounded } from '@mui/icons-material';
 import { Box, Grid } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import jQuery from 'jquery';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ResponsiveDialog from '../organisms/ResponsiveDialog';
 import { convertResourceUrl, detectSupportFormat } from '../utils';
 
@@ -53,17 +53,8 @@ const ImageContent = ({ file }) => {
   const [open, setOpen] = useState(false);
   const classes = useStyles();
 
-  return (<>
-    <Box width="100%" className={classes.align} onClick={() => { setOpen(true); }} style={{ cursor: 'pointer' }}>
-      <img src={convertResourceUrl(fileDownloadUri)} width="100%" />
-    </Box>
-    <ResponsiveDialog open={open} updateOpen={setOpen} bgColor="black" max={"md"}>
-      <div>
-        <CloseButton handleClick={() => { setOpen(false); }} />
-        <img src={convertResourceUrl(fileDownloadUri)} width="100%" />
-      </div>
-    </ResponsiveDialog>
-  </>
+  return (
+    <img src={convertResourceUrl(fileDownloadUri)} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
   );
 };
 
