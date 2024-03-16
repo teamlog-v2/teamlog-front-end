@@ -7,16 +7,12 @@ import {
 } from '@mui/icons-material';
 import {
   Avatar,
-  Button,
   Card,
   CardContent,
   CardHeader,
   Chip,
   Collapse,
   Dialog,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
   Grid,
   IconButton,
   Typography
@@ -171,7 +167,6 @@ const useStyles = makeStyles((theme) => ({
 const PostMenu = (props) => {
   const classes = useStyles();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [alertOpen, setAlertOpen] = useState(false);
   const anchorRef = useRef(null);
   const {
     content,
@@ -206,7 +201,6 @@ const PostMenu = (props) => {
       setFormData(null);
       window.location.reload(true);
     }
-    setAlertOpen(false);
   };
 
   const prevOpen = useRef(menuOpen);
@@ -264,7 +258,7 @@ const PostMenu = (props) => {
                       }}
                     >
                       <Edit />
-                      &nbsp;<strong>포스트 수정</strong>
+                      &nbsp;<Typography>포스트 수정</Typography>
                     </MenuItem>
                     <MenuItem
                       onClick={() => {
@@ -272,15 +266,17 @@ const PostMenu = (props) => {
                       }}
                     >
                       <History />
-                      &nbsp;<strong>수정 내역</strong>
+                      &nbsp;<Typography>수정 내역</Typography>
                     </MenuItem>
                     <MenuItem
                       onClick={() => {
-                        setAlertOpen(true);
+                        if (window.confirm('정말로 삭제할까요?')) {
+                          handlePostDelete();
+                        }
                       }}
                     >
                       <Delete />
-                      &nbsp;<strong>포스트 삭제</strong>
+                      &nbsp;<Typography>포스트 삭제</Typography>
                     </MenuItem>
                   </MenuList>
                 </ClickAwayListener>
@@ -289,34 +285,6 @@ const PostMenu = (props) => {
           )}
         </Popper>
       </div>
-      <Dialog
-        open={alertOpen}
-        onClose={() => {
-          setAlertOpen(false);
-        }}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">포스트 삭제</DialogTitle>
-        <DialogContent style={{ width: 200, textAlign: 'center' }}>
-          <DialogContentText id="alert-dialog-description">
-            정말로 삭제할까요?
-          </DialogContentText>
-        </DialogContent>
-        <Grid container direction="row" justify="space-evenly">
-          <Button onClick={handlePostDelete} color="primary" autoFocus>
-            삭제
-          </Button>
-          <Button
-            onClick={() => {
-              setAlertOpen(false);
-            }}
-            color="primary"
-          >
-            취소
-          </Button>
-        </Grid>
-      </Dialog>
     </div>
   );
 };
