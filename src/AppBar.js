@@ -1,4 +1,4 @@
-import { ArrowDropDown, Notifications, Search } from '@mui/icons-material';
+import { ArrowDropDown, Search } from '@mui/icons-material';
 import GetAppIcon from '@mui/icons-material/GetApp';
 import {
   Avatar,
@@ -148,9 +148,6 @@ export default function AppBar() {
       <Wrapper>
         <Title />
         <Box display="flex">
-          <IconButton onClick={accountClickedAddToHome}>
-            <GetAppIcon style={{ fontSize: '1.125rem', color: 'white' }} />
-          </IconButton>
           <IconButton
             onClick={() => {
               history.push('/search');
@@ -158,13 +155,13 @@ export default function AppBar() {
           >
             <Search style={{ fontSize: '1.125rem', color: 'white' }} />
           </IconButton>
-          <IconButton
+          {/* <IconButton
             onClick={() => {
               history.push('/news');
             }}
           >
             <Notifications style={{ fontSize: '1.125rem', color: 'white' }} />
-          </IconButton>
+          </IconButton>  */}
           <Button onClick={handleClick}>
             <Avatar sx={{
               width: (theme) => theme.spacing(3),

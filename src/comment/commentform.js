@@ -1,6 +1,6 @@
 import {
   Avatar,
-  Box, Button, Container, ListItemIcon, ListItemText, MenuItem, MenuList
+  Box, Button, CircularProgress, Container, ListItemIcon, ListItemText, MenuItem, MenuList
 } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Grow from '@mui/material/Grow';
@@ -50,7 +50,6 @@ const CommentForm = (props) => {
     postId,
     projectId,
     addLatestComment,
-    setIsRefreshed,
     updateCommentCount,
   } = props;
   const [options, setOptions] = useState([]);
@@ -66,6 +65,7 @@ const CommentForm = (props) => {
     accountInput: '',
     tagStartIndex: -1,
   });
+  const [isRefreshed, setIsRefreshed] = useState(true);
   const [accountId] = useContext(AuthContext);
 
   useEffect(async () => {
@@ -260,7 +260,7 @@ const CommentForm = (props) => {
               setIsRefreshed(true);
             }}
           >
-            작성
+            {isRefreshed ? '작성' : <CircularProgress size={20} />}
           </Button>
         </Box>
       </Box>

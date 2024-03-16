@@ -1,5 +1,5 @@
 import { Skeleton } from '@mui/lab';
-import { Box, Grid, LinearProgress } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import { uniqBy } from 'lodash';
 import {
   useCallback,
@@ -41,7 +41,6 @@ const CommentList = ({ updateCommentCount, projectId, postId, type }) => {
   return isLoaded ?
     (
       <>
-        {<LinearProgress variant={isRefreshed ? 'determinate' : 'indeterminate'} value={isRefreshed ? 0 : undefined} />}
         {
           commentList
             ? commentList.map((item) => (
@@ -85,7 +84,6 @@ const CommentList = ({ updateCommentCount, projectId, postId, type }) => {
             postId={postId}
             addLatestComment={addLatestComment}
             updateCommentCount={updateCommentCount}
-            setIsRefreshed={setIsRefreshed}
           />
         )}
       </>

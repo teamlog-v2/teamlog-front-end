@@ -1,6 +1,9 @@
 import {
+  Avatar,
   Box,
-  Grid
+  Chip,
+  Grid,
+  Typography
 } from '@mui/material';
 import {
   makeStyles,
@@ -9,7 +12,6 @@ import { useCallback, useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import AuthContext from '../contexts/auth';
 import { DateInfo } from '../global/datetime';
-import { AccountId, AccountImage } from '../post/AccountProfile';
 import { DeleteComment, ReadChildCommentList } from './commentapi';
 import CommentForm from './commentform';
 
@@ -78,25 +80,33 @@ const Content = (props) => {
         ? stringSplit.map((string, index) => {
           const wordSplit = string.split(' ');
           return <Grid container item alignItems="center">
-            {index === 0 ? (writer) : <></>}
-            {
-              wordSplit.map((word) =>
-                (word[0] === '@' && tagList.includes(word.split('@')[1])) ?
-                  <Link
-                    to={`/accounts/${word.split('@')[1]}`}
-                    style={{ textDecoration: 'none', cursor: 'pointer' }}
-                  >
-                    <span style={{ color: '#593875', fontWeight: 600 }}>{word.split('@')[1]}&nbsp;</span>
-                  </Link>
-                  : (<span>{word}&nbsp;</span>)
-              )
-            }
+            {index === 0 ? <Typography variant="body2" color="text.primary" marginRight={'0.5em'}>{writer}</Typography> : <></>}
+            <Typography variant="body2" color="text.secondary">
+              {
+                wordSplit.map((word) =>
+                  (word[0] === '@' && tagList.includes(word.split('@')[1])) ?
+                    <Link
+                      to={`/accounts/${word.split('@')[1]}`}
+                      style={{ textDecoration: 'none', cursor: 'pointer' }}
+                    >
+                      <Chip variant="outlined"
+                        label={`${word.split('@')[1]}`}
+                        size="small"
+                        color='primary' />
+                      &nbsp;
+                    </Link>
+                    : (<span>{word}&nbsp;</span>)
+                )
+              }
+            </Typography>
           </Grid>
         }) :
         []}
-      <Grid container item direction="row" style={{ fontSize: 13, display: 'flex', gap: '1%' }} alignItems="center">
-        {writeTime}
-        {funcs}
+      <Grid container item direction="row" style={{ fontSize: 13, display: 'flex', gap: '1%', marginTop: '0.25em' }} alignItems="center">
+        <Typography variant="body2" color="text.secondary" style={{ fontSize: 13 }}>
+          {writeTime}&nbsp;
+          {funcs}
+        </Typography>
       </Grid>
     </Grid>
   );
@@ -161,12 +171,12 @@ const Comment = (props) => {
     <>
       <Box>
         <Grid container xs={12} className={classes.children}>
-          <Grid item>
-            <AccountImage imgPath={writer.profileImgPath} />
+          <Grid item xs={1}>
+            <Avatar aria-label="recipe" src={writer.profileImgPath} style={{ margin: '0 0.25em' }} />
           </Grid>
-          <Grid className={classes.commentGrid}>
+          <Grid item xs={11}>
             <Content
-              writer={(<AccountId accountId={writer.id} />)}
+              writer={writer.id}
               writeTime={<DateInfo dateTime={writeTime} />}
               funcs={(<>
                 {accountId && (<span
@@ -216,7 +226,7 @@ const Comment = (props) => {
                 />)) :
               <></>}
             <Grid display={remainCount !== 0 ? 'block' : 'none'} className={classes.children}>
-              <span
+              <Typography 
                 display={remainCount !== 0 ? 'block' : 'none'}
                 role="button"
                 size="small"
@@ -224,7 +234,7 @@ const Comment = (props) => {
                 onClick={loadMoreCommentList}
               >
                 ━━ 답글 {remainCount}개 보기
-              </span>
+              </Typography>
             </Grid>
           </Grid>
         </Grid>

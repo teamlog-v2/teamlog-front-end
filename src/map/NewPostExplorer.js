@@ -9,7 +9,6 @@ import { useMemo } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { Link, useParams } from 'react-router-dom';
 import { DateInfo } from '../global/datetime';
-import { CompressedPost } from '../post/Post';
 
 function cmpTimeStr(a, b) {
   return new Date(b) - new Date(a);
@@ -103,7 +102,6 @@ function PostCard({ post }) {
             <Box height="1rem" />
           </>
         )}
-        <CompressedPost post={post} noTime={!projectId} />
       </Box>
     </Card>
   );

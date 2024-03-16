@@ -1,6 +1,5 @@
 import { Avatar, Box } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { convertResourceUrl } from '../utils';
 
@@ -32,7 +31,7 @@ const AccountId = (props) => {
     <Box display="inline-block" fontSize={fontSize}>
       <Link
         to={`/accounts/${accountId}`}
-        style={{ textDecoration: 'none', color: 'black' }}
+        style={{ textDecoration: 'none' }}
       >
         <strong style={{ marginRight: '0.25em' }}>{accountId}</strong>
       </Link>

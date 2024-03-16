@@ -12,7 +12,6 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import AuthContext from '../contexts/auth';
 import { DateInfo } from '../global/datetime';
-import { CompressedPost } from '../post/Post';
 
 function cmpTimeStr(a, b) {
   return new Date(b) - new Date(a);
@@ -453,7 +452,6 @@ function PostCard({ postWrapper }) {
       &nbsp;
       <DateInfo dateTime={wrapperTime} />
       <Box height="1rem" />
-      <CompressedPost post={post} noTime />
     </UnitCard>
   );
 }
