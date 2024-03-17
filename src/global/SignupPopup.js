@@ -43,7 +43,7 @@ export default function SignupPopup() {
           <Anchor
             style={{ cursor: 'pointer' }}
             onClick={() => {
-              dispatch({ type: null });
+              dispatch({ type: 'none' });
             }}
           >
             나가기
