@@ -46,7 +46,7 @@ export default function LoginPopup() {
           <Anchor
             style={{ cursor: 'pointer' }}
             onClick={() => {
-              dispatch({ type: null });
+              dispatch({ type:'none' });
             }}
           >
             로그인하지 않고 이용하기

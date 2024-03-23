@@ -3,7 +3,7 @@ import { validateLogin } from '../account/AccountService';
 
 const AuthContext = React.createContext(null);
 
-const tokens = { accessToken: '' };
+const tokens = { accessToken: null };
 function getAccessToken() {
   return tokens.accessToken;
 }
@@ -11,7 +11,6 @@ function setAccessToken(token) {
   tokens.accessToken = token;
 }
 
-// eslint-disable-next-line no-global-assign
 fetch = ((origin) => (url, config) => {
   if (!config) {
     config = {};
@@ -19,7 +18,11 @@ fetch = ((origin) => (url, config) => {
   if (!config.headers) {
     config.headers = {};
   }
-  config.headers.Authorization = getAccessToken();
+
+  const accessToken = getAccessToken();
+
+  if (accessToken) config.headers.Authorization = `Bearer ${getAccessToken()}`;
+
   return origin(url, config);
 })(fetch);
 
