@@ -21,7 +21,7 @@ fetch = ((origin) => (url, config) => {
 
   const accessToken = getAccessToken();
 
-  if (accessToken) config.headers.Authorization = getAccessToken();
+  if (accessToken) config.headers.Authorization = `Bearer ${getAccessToken()}`;
 
   return origin(url, config);
 })(fetch);

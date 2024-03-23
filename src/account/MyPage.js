@@ -111,7 +111,7 @@ const MyPage = ({ match }) => {
       const response = await deleteAccount();
       if (response.status === 200) {
         localStorage.removeItem('access-token');
-        setAccessToken('');
+        setAccessToken(null);
         setContextId(null);
         history.push('/');
       } else if (response.status === 400) {

@@ -3,8 +3,6 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom";
 import { setAccessToken } from "../contexts/auth";
 
 const SignIn = () => {
-  const history = useHistory();
-
   useEffect(async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('AccessToken');
