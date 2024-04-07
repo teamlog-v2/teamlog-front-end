@@ -18,7 +18,7 @@ import {
   Typography
 } from '@mui/material';
 import { withStyles } from '@mui/styles';
-import { React, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { convertResourceUrl } from '../utils';
 
 const StyledList = withStyles({
@@ -75,15 +75,13 @@ const AccountSelect = ({
     } else {
       setSelectedAccountIds([...selectedAccountIds, accountId]);
     }
+
+    console.log(selectedAccountIds)
   };
 
   const saveSelectedAccounts = () => {
-    const selectedAccountsToSave = [];
-    selectedAccountIds.foreach((selectedAccountId) => {
-      const temp = accounts.find((account) => account.id === selectedAccountId);
-      selectedAccountsToSave.push(temp);
-    });
-    setSelectedAccounts(selectedAccountsToSave);
+    setSelectedAccounts(selectedAccountIds.map((selectedAccountId) => accounts.find((account) => account.id === selectedAccountId)));
+
     handleClose();
   };
 

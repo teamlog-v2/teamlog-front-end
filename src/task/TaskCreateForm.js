@@ -9,12 +9,12 @@ import {
   CircularProgress,
   Container,
   Dialog,
-  FormControlLabel,
-  FormLabel,
+  FormControl,
   Grid,
   IconButton,
-  Radio,
-  RadioGroup,
+  InputLabel,
+  MenuItem,
+  Select,
   TextField,
   Typography
 } from '@mui/material';
@@ -44,7 +44,8 @@ const getDate = (date) => {
     formattedDate[1] = month - 1;
     return new Date(...formattedDate);
   }
-  return null;
+
+  return Date.now();
 };
 
 const TaskCreateForm = ({
@@ -71,10 +72,6 @@ const TaskCreateForm = ({
     setopenAccountSelect(false);
   };
 
-  const getDeadlineValue = (value) => {
-    setDeadline(value);
-  };
-
   const handleStatusChange = (event) => {
     setTaskStatus(event.target.value * 1);
   };
@@ -88,9 +85,8 @@ const TaskCreateForm = ({
     event.preventDefault();
     const performersId = selectedAccounts.map(({ id }) => id);
 
-    console.log(deadline);
     if (taskName.length === 0) {
-      alert("태스크 이름을 1자 이상 입력해주세요.")
+      alert("태스크 이름이 비어있습니다.")
       setIsProcessing(false);
       return;
     }
@@ -101,9 +97,6 @@ const TaskCreateForm = ({
       deadline,
       status: taskStatus,
     };
-
-    console.log('updated data');
-    console.log(data);
 
     try {
       let response;
@@ -192,24 +185,20 @@ const TaskCreateForm = ({
                 />
               </Grid>
               <Grid item xs={12}>
-                <FormLabel component="legend">진행 상태</FormLabel>
-                <RadioGroup value={taskStatus} onChange={handleStatusChange} row>
-                  <FormControlLabel
-                    value={0}
-                    control={<Radio color="primary" />}
-                    label="진행 전"
-                  />
-                  <FormControlLabel
-                    value={1}
-                    control={<Radio color="primary" />}
-                    label="진행 중"
-                  />
-                  <FormControlLabel
-                    value={2}
-                    control={<Radio color="primary" />}
-                    label="완료"
-                  />
-                </RadioGroup>
+                <FormControl fullWidth>
+                  <InputLabel id="status-label">진행 상태</InputLabel>
+                  <Select
+                    labelId="status"
+                    id="status"
+                    value={taskStatus}
+                    onChange={handleStatusChange}
+                  >
+                    <MenuItem value={0}>대기</MenuItem>
+                    <MenuItem value={1}>진행 중</MenuItem>
+                    <MenuItem value={2}>완료</MenuItem>
+                    <MenuItem value={3}>종료</MenuItem>
+                  </Select>
+                </FormControl>
               </Grid>
               <Grid
                 container
@@ -260,49 +249,43 @@ const TaskCreateForm = ({
                   </Grid>
                   <Grid></Grid>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item>
                   <Button onClick={handleClickOpen}>
                     <Box display="flex" flexDirection="row">
-                      {selectedAccounts.length === 0 ? (
-                        <>
-                          <Typography>😱없음😱</Typography>
-                        </>
-                      ) : (
-                        <>
-                          {selectedAccounts.length > 5 ? (
-                            <>
-                              {selectedAccounts.slice(0, 5).map((account) => (
-                                <Box paddingLeft="5px" paddingRight="5px">
-                                  <Avatar
-                                    alt={account.name}
-                                    src={convertResourceUrl(account.profileImgPath)}
-                                  />
-                                  <Typography variant="caption">
-                                    {account.name}
-                                  </Typography>
-                                </Box>
-                              ))}
+                      <>
+                        {selectedAccounts.length > 5 ? (
+                          <>
+                            {selectedAccounts.slice(0, 5).map((account) => (
                               <Box paddingLeft="5px" paddingRight="5px">
-                                <Avatar>+{selectedAccounts.length - 5}</Avatar>
+                                <Avatar
+                                  alt={account.name}
+                                  src={convertResourceUrl(account.profileImgPath)}
+                                />
+                                <Typography variant="caption">
+                                  {account.name}
+                                </Typography>
                               </Box>
-                            </>
-                          ) : (
-                            <>
-                              {selectedAccounts.map((account) => (
-                                <Box paddingLeft="5px" paddingRight="5px">
-                                  <Avatar
-                                    alt={account.name}
-                                    src={convertResourceUrl(account.profileImgPath)}
-                                  />
-                                  <Typography variant="caption">
-                                    {account.name}
-                                  </Typography>
-                                </Box>
-                              ))}
-                            </>
-                          )}
-                        </>
-                      )}
+                            ))}
+                            <Box paddingLeft="5px" paddingRight="5px">
+                              <Avatar>+{selectedAccounts.length - 5}</Avatar>
+                            </Box>
+                          </>
+                        ) : (
+                          <>
+                            {selectedAccounts.map((account) => (
+                              <Box paddingLeft="5px" paddingRight="5px">
+                                <Avatar
+                                  alt={account.name}
+                                  src={convertResourceUrl(account.profileImgPath)}
+                                />
+                                <Typography variant="caption">
+                                  {account.name}
+                                </Typography>
+                              </Box>
+                            ))}
+                          </>
+                        )}
+                      </>
                     </Box>
                   </Button>
                 </Grid>
@@ -323,25 +306,13 @@ const TaskCreateForm = ({
                       마감일
                     </Typography>
                   </Grid>
-                  <Grid item>
-                    {deadline === null ? (
-                      <AddButton
-                        label="등록"
-                        action={() => setDeadline(new Date())}
-                      />
-                    ) : (
-                      <RemoveButton action={() => setDeadline(null)} />
-                    )}
-                  </Grid>
                 </Grid>
-                {deadline === null ? null : (
-                  <MultiTimePicker
-                    id="deadline"
-                    name="deadline"
-                    value={deadline}
-                    getDeadlineValue={getDeadlineValue}
-                  />
-                )}
+                <MultiTimePicker
+                  id="deadline"
+                  name="deadline"
+                  value={deadline}
+                  setDeadline={setDeadline}
+                />
               </Grid>
             </Grid>
             <Box paddingTop="20px" paddingBottom="12px">
@@ -356,7 +327,7 @@ const TaskCreateForm = ({
             </Box>
           </form>
         </div>
-      </Container>
+      </Container >
     </>
   );
 };
