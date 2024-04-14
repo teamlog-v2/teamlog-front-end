@@ -4,7 +4,6 @@ import {
   Paper,
   Typography,
 } from '@mui/material';
-import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 
@@ -22,7 +21,7 @@ const StyledIcon = styled(Typography)`
 const getItemStyle = (isDragging, draggableStyle) => ({
   accountSelect: 'none',
   padding: 10,
-  margin: '10px 0 5px 0',
+  margin: '10px 0 10px 0',
   backgroundColor: isDragging ? '#C09FCB' : 'white',
   boxShadow: '0px 0px 2px 1px #eee',
   ...draggableStyle,

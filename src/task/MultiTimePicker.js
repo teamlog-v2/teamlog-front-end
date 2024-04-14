@@ -1,13 +1,17 @@
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
 
-const MultiTimePicker = ({ label, value, setDeadline }) => (
-  <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='ko'>
+const MultiTimePicker = ({ value, setDeadline }) => (
+  < LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='ko' >
     <DatePicker
       inputVariant="outlined"
-      onChange={(date) => { setDeadline(date); }}
+      defaultValue={dayjs((value))}
+      onChange={(date) => {
+        setDeadline(date.format('YYYY-MM-DDTHH:mm:ss'));
+      }}
     />
-  </LocalizationProvider>
-);
+  </LocalizationProvider >
+)
 export default MultiTimePicker;

@@ -8,7 +8,6 @@ import {
   Button,
   CircularProgress,
   Container,
-  Dialog,
   FormControl,
   Grid,
   IconButton,
@@ -156,179 +155,159 @@ const TaskCreateForm = ({
     </IconButton>
   );
 
+  const sliceSize = 4;
+
   return (
-    <>
-      <Backdrop className={classes.backdrop} open={isProcessing}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
-      <Container component="main" maxWidth="xs" style={{ margin: '3% 0' }}>
-        <div>
-          <form onSubmit={handleSubmit} noValidate>
-            <Dialog open={openAccountSelect}>
-              <AccountSelect
-                projectId={projectId}
-                selectedAccounts={selectedAccounts.map(({ id }) => id)}
-                setSelectedAccounts={setSelectedAccounts}
-                handleClose={handleAccountSelectClose}
-              />
-            </Dialog>
-            <Grid container style={{ gap: 20 }}>
-              <Grid item xs={12}>
-                <TextField
-                  autoComplete="taskName"
-                  name="taskName"
-                  fullWidth
-                  id="taskName"
-                  label="태스크 이름"
-                  value={taskName}
-                  onChange={handleTaskNameChange}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl fullWidth>
-                  <InputLabel id="status-label">진행 상태</InputLabel>
-                  <Select
-                    labelId="status"
-                    id="status"
-                    value={taskStatus}
-                    onChange={handleStatusChange}
+    openAccountSelect ? <AccountSelect
+      projectId={projectId}
+      selectedAccounts={selectedAccounts.map(({ id }) => id)}
+      setSelectedAccounts={setSelectedAccounts}
+      handleClose={handleAccountSelectClose}
+    /> :
+      <>
+        <Backdrop className={classes.backdrop} open={isProcessing}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
+        <Container component="main" maxWidth="xs" style={{ margin: '3% 0' }}>
+          <div>
+            <form onSubmit={handleSubmit} noValidate>
+              <Grid container style={{ gap: 20 }}>
+                <Grid item xs={12}>
+                  <TextField
+                    autoComplete="taskName"
+                    name="taskName"
+                    fullWidth
+                    id="taskName"
+                    label="태스크 이름"
+                    value={taskName}
+                    onChange={handleTaskNameChange}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl fullWidth>
+                    <InputLabel id="status-label">진행 상태</InputLabel>
+                    <Select
+                      labelId="status"
+                      id="status"
+                      value={taskStatus}
+                      onChange={handleStatusChange}
+                    >
+                      <MenuItem value={0}>대기</MenuItem>
+                      <MenuItem value={1}>진행 중</MenuItem>
+                      <MenuItem value={2}>완료</MenuItem>
+                      <MenuItem value={3}>종료</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid
+                  container
+                  direction="column"
+                  justify="flex-start"
+                  alignItems="flex-start"
+                >
+                  {' '}
+                  <Grid
+                    container
+                    item
+                    direction="row"
+                    justify="flex-start"
+                    alignItems="center"
                   >
-                    <MenuItem value={0}>대기</MenuItem>
-                    <MenuItem value={1}>진행 중</MenuItem>
-                    <MenuItem value={2}>완료</MenuItem>
-                    <MenuItem value={3}>종료</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid
-                container
-                direction="column"
-                justify="flex-start"
-                alignItems="flex-start"
-              >
-                {' '}
-                <Grid
-                  container
-                  item
-                  direction="row"
-                  justify="flex-start"
-                  alignItems="center"
-                >
-                  <Grid item>
-                    <Typography
-                      variant="body1"
-                      color="textSecondary"
-                      align="center"
-                    >
-                      태스크 수행자
-                    </Typography>
+                    <Grid item>
+                      <Typography
+                        variant="body1"
+                        color="textSecondary"
+                        align="center"
+                      >
+                        태스크 수행자
+                      </Typography>
+                    </Grid>
+                    <Grid item>
+                      {selectedAccounts.length === 0 ? (
+                        <AddButton label="추가" action={handleClickOpen} />
+                      ) : (
+                        <>
+                          <IconButton onClick={handleClickOpen}>
+                            <Avatar
+                              className={classes.small}
+                              style={{
+                                background: 'transparent',
+                              }}
+                            >
+                              <EditTwoToneIcon color="primary" />
+                            </Avatar>
+                            <Typography
+                              variant="caption"
+                              style={{ color: 'black' }}
+                            >
+                              &nbsp;수정
+                            </Typography>
+                          </IconButton>
+                        </>
+                      )}
+                    </Grid>
+                    <Grid></Grid>
                   </Grid>
                   <Grid item>
-                    {selectedAccounts.length === 0 ? (
-                      <AddButton label="추가" action={handleClickOpen} />
-                    ) : (
-                      <>
-                        <IconButton onClick={handleClickOpen}>
-                          <Avatar
-                            className={classes.small}
-                            style={{
-                              background: 'transparent',
-                            }}
-                          >
-                            <EditTwoToneIcon color="primary" />
-                          </Avatar>
-                          <Typography
-                            variant="caption"
-                            style={{ color: 'black' }}
-                          >
-                            &nbsp;수정
-                          </Typography>
-                        </IconButton>
-                      </>
-                    )}
-                  </Grid>
-                  <Grid></Grid>
-                </Grid>
-                <Grid item>
-                  <Button onClick={handleClickOpen}>
-                    <Box display="flex" flexDirection="row">
-                      <>
-                        {selectedAccounts.length > 5 ? (
-                          <>
-                            {selectedAccounts.slice(0, 5).map((account) => (
-                              <Box paddingLeft="5px" paddingRight="5px">
-                                <Avatar
-                                  alt={account.name}
-                                  src={convertResourceUrl(account.profileImgPath)}
-                                />
-                                <Typography variant="caption">
-                                  {account.name}
-                                </Typography>
-                              </Box>
-                            ))}
-                            <Box paddingLeft="5px" paddingRight="5px">
-                              <Avatar>+{selectedAccounts.length - 5}</Avatar>
-                            </Box>
-                          </>
-                        ) : (
-                          <>
-                            {selectedAccounts.map((account) => (
-                              <Box paddingLeft="5px" paddingRight="5px">
-                                <Avatar
-                                  alt={account.name}
-                                  src={convertResourceUrl(account.profileImgPath)}
-                                />
-                                <Typography variant="caption">
-                                  {account.name}
-                                </Typography>
-                              </Box>
-                            ))}
-                          </>
+                    <Button onClick={handleClickOpen}>
+                      <Box display="flex" flexDirection="row">
+                        {selectedAccounts.slice(0, sliceSize).map((account, index) => (
+                          <Box key={index} paddingLeft="5px" paddingRight="5px">
+                            <Avatar
+                              alt={account.name}
+                              src={convertResourceUrl(account.profileImgPath)}
+                            />
+                            <Typography variant="caption">{account.name}</Typography>
+                          </Box>
+                        ))}
+                        {selectedAccounts.length > sliceSize && (
+                          <Box paddingLeft="5px" paddingRight="5px">
+                            <Avatar>+{selectedAccounts.length - sliceSize}</Avatar>
+                          </Box>
                         )}
-                      </>
-                    </Box>
-                  </Button>
-                </Grid>
-              </Grid>
-              <Grid item xs={12}>
-                <Grid
-                  container
-                  direction="row"
-                  justify="flex-start"
-                  alignItems="center"
-                >
-                  <Grid item>
-                    <Typography
-                      variant="body1"
-                      color="textSecondary"
-                      align="center"
-                    >
-                      마감일
-                    </Typography>
+                      </Box>
+                    </Button>
                   </Grid>
                 </Grid>
-                <MultiTimePicker
-                  id="deadline"
-                  name="deadline"
-                  value={deadline}
-                  setDeadline={setDeadline}
-                />
+                <Grid item xs={12}>
+                  <Grid
+                    container
+                    direction="row"
+                    justify="flex-start"
+                    alignItems="center"
+                  >
+                    <Grid item>
+                      <Typography
+                        variant="body1"
+                        color="textSecondary"
+                        align="center"
+                      >
+                        마감일
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                  <MultiTimePicker
+                    id="deadline"
+                    name="deadline"
+                    value={deadline}
+                    setDeadline={setDeadline}
+                  />
+                </Grid>
               </Grid>
-            </Grid>
-            <Box paddingTop="20px" paddingBottom="12px">
-              <Button
-                type="submit"
-                fullWidth
-                variant="outlined"
-                color="primary"
-              >
-                {task ? '수정' : '생성'}
-              </Button>
-            </Box>
-          </form>
-        </div>
-      </Container >
-    </>
+              <Box paddingTop="20px" paddingBottom="12px">
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="outlined"
+                  color="primary"
+                >
+                  {task ? '수정' : '생성'}
+                </Button>
+              </Box>
+            </form>
+          </div>
+        </Container >
+      </>
   );
 };
 export default TaskCreateForm;
