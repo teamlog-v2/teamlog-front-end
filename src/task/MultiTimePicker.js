@@ -1,28 +1,17 @@
-import React, { useState } from 'react';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDateTimePicker,
-} from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
-import koLocale from 'date-fns/locale/ko';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 
-const MultiTimePicker = ({ label, value, getDeadlineValue }) => {
-  const [selectedDate, setDate] = useState(value);
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
 
-  return (
-    <MuiPickersUtilsProvider locale={koLocale} utils={DateFnsUtils}>
-      <KeyboardDateTimePicker
-        variant="dialog"
-        label={label}
-        inputVariant="outlined"
-        value={selectedDate}
-        onChange={(date) => { setDate(date); }}
-        onAccept={(date) => { getDeadlineValue(date); }}
-        onError={console.log}
-        disablePast
-        format="yyyy/MM/dd aa h:mm "
-      />
-    </MuiPickersUtilsProvider>
-  );
-};
+const MultiTimePicker = ({ value, setDeadline }) => (
+  < LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='ko' >
+    <DatePicker
+      inputVariant="outlined"
+      defaultValue={dayjs((value))}
+      onChange={(date) => {
+        setDeadline(date.format('YYYY-MM-DDTHH:mm:ss'));
+      }}
+    />
+  </LocalizationProvider >
+)
 export default MultiTimePicker;

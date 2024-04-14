@@ -9,7 +9,7 @@ import {
   Paper,
   Typography
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { useParams } from 'react-router';
 import ResponsiveDialog from '../organisms/ResponsiveDialog';
@@ -45,7 +45,7 @@ const TaskContainer = (props) => {
     { name: '진행 전', color: '#000000' },
     { name: '진행 중', color: '#000000' },
     { name: '완료', color: '#000000' },
-    { name: '실패', color: '#F93B2E' },
+    { name: '종료', color: '#F93B2E' },
   ];
   const projectId = useParams().id;
 
@@ -60,12 +60,14 @@ const TaskContainer = (props) => {
     let originIndex = -1;
 
     state.some((taskList, taskStatus) =>  // 전체 태스크 중 기존 태스크 상태 및 위치 탐색
-       taskList.some((item, index) => {
+      taskList.some((item, index) => {
         if (item.id === task.id) {
           from = taskStatus;
           originIndex = index;
+
           return true;
         }
+
         return false;
       })
     );
@@ -234,23 +236,20 @@ const TaskContainer = (props) => {
           >
             {state.map((el, ind) => (
               <Droppable key={ind} droppableId={`${ind}`}>
-                {(provided) => (
+                {(provided, snapshot) => (
                   <Grid
                     item
                     sm={3}
                     xs={12}
                     ref={provided.innerRef}
                     {...provided.droppableProps}
+                    style={{ backgroundColor: snapshot.isDraggingOver ? '#f5f5f5' : 'inherit' }}
                   >
-                    <Grid container spacing={1} alignItems="center">
-                      <Grid item>
-                        <strong style={{ color: status[ind].color }}>
-                          {status[ind].name}
-                        </strong>
-                        &nbsp;
-                        {state[ind].length}
-                      </Grid>
-                    </Grid>
+                    <strong style={{ color: status[ind].color }}>
+                      {status[ind].name}
+                    </strong>
+                    &nbsp;
+                    {state[ind].length}
                     {state[ind].length === 0 ? (
                       <Paper
                         elevation={0}
