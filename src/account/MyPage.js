@@ -89,17 +89,15 @@ const MyPage = ({ match }) => {
     (async () => {
       setIsLoaded(false);
       setValue('1');
-      let accountInfo;
-      try {
-        const response = await getAccount(match.params.accountId);
-        if (response.status === 401) {
-          setIsLogin(false);
-        }
-        accountInfo = await response.json();
-      } catch (err) {
-        alert(err);
-        setIsLoaded(false);
+
+      const response = await getAccount(match.params.accountId);
+
+      if (response.status === 401) {
+        setIsLogin(false);
+        return;
       }
+
+      const accountInfo = await response.json();
 
       setAccount(accountInfo);
       setIsLoaded(true);
@@ -107,27 +105,21 @@ const MyPage = ({ match }) => {
   }, [match.params.accountId]);
 
   const handleSubmit = async () => {
-    try {
-      const response = await deleteAccount();
-      if (response.status === 200) {
-        localStorage.removeItem('access-token');
-        setAccessToken(null);
-        setContextId(null);
-        history.push('/');
-      } else if (response.status === 400) {
-        const res = await response.json();
-        alert(res.message);
-      }
-    } catch (err) {
-      setAlertOpen(false);
-      alert(err);
+    const response = await deleteAccount();
+    if (response.status === 200) {
+      localStorage.removeItem('access-token');
+      setAccessToken(null);
+      setContextId(null);
+      history.push('/');
+    } else {
+      alert('회원 탈퇴에 실패했습니다.');
     }
+
     setAlertOpen(false);
   };
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
-    console.log(anchorEl);
   };
 
   const handleClose = () => {
@@ -140,20 +132,15 @@ const MyPage = ({ match }) => {
 
   const followAccount = () => {
     const newAccount = { ...account, isFollow: true };
-    try {
-      const response = follow(account.identification);
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
+    
+    follow(account.identification);
     setAccount(newAccount);
   };
 
   const unfollowAccount = () => {
     const newAccount = { ...account, isFollow: false };
     try {
-      const response = unfollow(account.identification);
-      console.log(response);
+      unfollow(account.identification);
     } catch (error) {
       console.log(error);
     }

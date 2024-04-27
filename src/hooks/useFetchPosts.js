@@ -42,32 +42,21 @@ const useFetchPosts = (url) => {
           throw res.status;
         }
 
-        // 테스트를 위한 딜레이
-        // promise = new Promise((resolve) => {
-        //   setTimeout(resolve, 200);
-        // });
-        // promiseRef.current = promise;
-        // await promise;
-        // if (promiseRef.current !== promise || !isMounted) {
-        //   return;
-        // }
-
         promise = res.json();
         promiseRef.current = promise;
         result = await promise;
         if (promiseRef.current !== promise || !isMounted) {
           return;
         }
-      } catch (error) {
+      } catch (e) {
         setState({
           isLoading: false,
           posts,
-          error,
+          error: e,
         });
         return;
       }
       setTotalCount(result.totalElements);
-      console.log('post 로드');
       setState({
         isLoading: false,
         posts: [...posts, ...result.content],
@@ -103,11 +92,11 @@ const useFetchPosts = (url) => {
         if (promiseRef.current !== promise || !isMounted) {
           return;
         }
-      } catch (error) {
+      } catch (e) {
         setState({
           isLoading: false,
           posts,
-          error,
+          error: e,
         });
         return;
       }

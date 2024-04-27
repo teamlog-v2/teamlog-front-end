@@ -33,8 +33,7 @@ const AccountList = ({ type, accountId, fetchData }) => {
       try {
         const response = await fetchData(accountId);
         result = await response.json();
-        console.log(result);
-      } catch (error) {
+      } catch (e) {
         setIsLoaded(false);
         return;
       }
@@ -47,13 +46,10 @@ const AccountList = ({ type, accountId, fetchData }) => {
     const newAccounts = accounts.map((account) => (account.identification === target.identification ? { ...account, isFollow: true }
       : account));
     let result = null;
-    try {
-      const response = follow(target.identification);
-      result = response.json();
-      console.log(result);
-    } catch (error) {
-      console.log(error);
-    }
+
+    const response = follow(target.identification);
+    result = response.json();
+
     setAccounts(newAccounts);
   };
 
@@ -61,13 +57,10 @@ const AccountList = ({ type, accountId, fetchData }) => {
     const newAccounts = accounts.map((account) => (account.identification === target.identification ? { ...account, isFollow: false }
       : account));
     let result = null;
-    try {
-      const response = unfollow(target.identification);
-      result = response.json();
-      console.log(result);
-    } catch (error) {
-      console.log(error);
-    }
+
+    const response = unfollow(target.identification);
+    result = response.json();
+
     setAccounts(newAccounts);
   };
 

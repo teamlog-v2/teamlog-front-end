@@ -49,32 +49,23 @@ const SignUp = () => {
       password,
       name,
     };
-    try {
-      console.log(data);
-      const response = await createAccount(data);
-      setIsProcessing(false);
-      if (response.status === 201) {
-        setIsSuccess(true);
-        alert('회원가입을 축하합니다 ^^');
-      } else if (response.status === 400) {
-        const res = await response.json();
-        alert(res.message);
-      }
-    } catch (err) {
-      console.error('Error');
-      setIsProcessing(false);
+
+    const response = await createAccount(data);
+    setIsProcessing(false);
+    if (response.status === 201) {
+      setIsSuccess(true);
+      alert('회원가입이 완료되었습니다.');
+    } else {
+      alert('회원가입에 실패했습니다.');
     }
   };
 
   useEffect(async () => {
-    try {
-      const response = await validateLogin();
-      if (response.status === 200) {
-        setIsLogin(true);
-      }
-    } catch (err) {
-      console.log(err);
+    const response = await validateLogin();
+    if (response.status === 200) {
+      setIsLogin(true);
     }
+
     setIsLoaded(true);
   }, []);
 

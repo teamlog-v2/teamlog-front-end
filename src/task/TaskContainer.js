@@ -90,19 +90,15 @@ const TaskContainer = (props) => {
   };
 
   const handleDeleteTask = async (task) => {
-    try {
-      const response = await deleteTask(task.id);
-      const result = await response.json();
+    const response = await deleteTask(task.id);
+    const result = await response.json();
 
-      const updatedState = [...state];
-      const { id, status: taskStatus } = task;
-      updatedState[taskStatus] = updatedState[taskStatus].filter((item) => item.id !== id);
+    const updatedState = [...state];
+    const { id, status: taskStatus } = task;
+    updatedState[taskStatus] = updatedState[taskStatus].filter((item) => item.id !== id);
 
-      setFocusedTask(null);
-      setState(updatedState);
-    } catch (err) {
-      alert(err);
-    }
+    setFocusedTask(null);
+    setState(updatedState);
   };
 
   const handleClose = () => {
@@ -123,18 +119,19 @@ const TaskContainer = (props) => {
         container.length = 0;
       });
       setState(newState);
-      let tasks;
       try {
         const response = await getTasksByProject(projectId);
-        tasks = await response.json();
-      } catch (err) {
-        alert(err);
+        const tasks = await response.json();
+        tasks.forEach((task) => {
+          addTaskInContainer(task);
+        });
+
+        setIsLoaded(true);
+      } catch (e) {
+        alert('태스크 목록을 불러오는 중 오류가 발생했습니다.');
+
         setIsLoaded(false);
       }
-      tasks.forEach((task) => {
-        addTaskInContainer(task);
-      });
-      setIsLoaded(true);
     })();
   }, []);
 

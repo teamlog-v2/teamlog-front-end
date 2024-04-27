@@ -82,21 +82,17 @@ const ProjectManagement = (props) => {
       new Blob([JSON.stringify(data)], { type: 'application/json' }),
     );
 
-    try {
-      const tempURL = URL.createObjectURL(file);
-      const resizedImage = await resizeImage(file, tempURL);
-      formData.append('thumbnail', resizedImage);
+    const tempURL = URL.createObjectURL(file);
+    const resizedImage = await resizeImage(file, tempURL);
+    formData.append('thumbnail', resizedImage);
 
-      const res = await fetch(`/api/projects/${projectId}/thumbnail`, {
-        method: 'PUT',
-        body: formData,
-      });
+    const res = await fetch(`/api/projects/${projectId}/thumbnail`, {
+      method: 'PUT',
+      body: formData,
+    });
 
-      if (res.status >= 200 && res.status < 300) {
-        setProject(await (await GetProject(projectId)).json());
-      }
-    } catch (error) {
-      console.log(error);
+    if (res.status >= 200 && res.status < 300) {
+      setProject(await (await GetProject(projectId)).json());
     }
   };
 

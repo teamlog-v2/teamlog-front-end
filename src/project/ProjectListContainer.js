@@ -16,18 +16,15 @@ const ProjectListContainer = ({ accountId }) => {
     (async () => {
       let result;
       try {
-        console.log(accountId);
         const response = await fetch(`/api/projects/accounts/${accountId}`, {
           method: 'Get',
           headers: { 'Content-Type': 'application/json' },
         });
-        console.log(response.status);
         result = await response.json();
-      } catch (error) {
+      } catch (e) {
         setIsLoaded(false);
         return;
       }
-      console.log(result);
       setProjects(result);
       setIsLoaded(true);
     })();

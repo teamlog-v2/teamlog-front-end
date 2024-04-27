@@ -103,32 +103,22 @@ const TaskCreateForm = ({
       if (task) response = await putTask(task.id, data);
       else response = await createTask(projectId, data);
 
-      if (task) {
-        console.log('put');
-      } else console.log('create');
-
       const { status } = response;
       const res = await response.json();
-
-      console.log('수정 결과');
-      console.log(res);
 
       if (status === 201) {
         addTaskInContainer(res);
         handleClose();
         CreateTaskNotification(accountId, projectId);
-        console.log('ok');
       } else if (status === 200) {
         updateTask(res);
         handleClose();
-      } else if (status === 400) {
-        alert(res.message);
       } else {
-        alert('실패');
+        alert('태스크 생성에 실패했습니다.')
       }
+
       setIsProcessing(false);
-    } catch (err) {
-      console.error('Error');
+    } catch (e) {
       setIsProcessing(false);
     }
   };

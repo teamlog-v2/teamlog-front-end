@@ -40,8 +40,8 @@ Publisher.prototype.update = async function () {
 
   try {
     result = await fetch(this.url);
-  } catch (err) {
-    this.error = err;
+  } catch (e) {
+    this.error = e;
     this.isLoading = false;
     return;
   }
@@ -60,8 +60,8 @@ Publisher.prototype.update = async function () {
 
   try {
     result = await result.json();
-  } catch (err) {
-    this.error = err;
+  } catch (e) {
+    this.error = e;
     this.isLoading = false;
     return;
   }
@@ -132,12 +132,12 @@ const useFetchData = (url) => {
 
       try {
         response = await fetch(url);
-      } catch (err) {
+      } catch (e) {
         if (!isMounted) {
           return;
         }
 
-        setError(err);
+        setError(e);
         return;
       }
       if (!isMounted) {
@@ -146,12 +146,12 @@ const useFetchData = (url) => {
 
       try {
         result = await response.json();
-      } catch (err) {
+      } catch (e) {
         if (!isMounted) {
           return;
         }
 
-        setError(err);
+        setError(e);
         return;
       }
       if (!isMounted) {
