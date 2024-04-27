@@ -1,5 +1,4 @@
 import Tooltip from '@mui/material/Tooltip';
-import React from 'react';
 import styled from 'styled-components';
 
 const getPassedTime = (date) => {
@@ -58,9 +57,8 @@ export const ManufactureDate = (dateTime) => {
 
 export const DateInfo = (props) => {
   const { dateTime } = props;
-  const dateBuilder = dateTime.slice();
-  dateBuilder[1] -= 1;
-  const date = new Date(...dateBuilder);
+
+  const date = new Date(dateTime);
 
   return (
     <Tooltip title={date.toLocaleString()}>
