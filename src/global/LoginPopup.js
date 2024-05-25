@@ -46,7 +46,7 @@ export default function LoginPopup() {
           <Anchor
             style={{ cursor: 'pointer' }}
             onClick={() => {
-              dispatch({ type:'none' });
+              dispatch({ type: 'none' });
             }}
           >
             로그인하지 않고 이용하기
@@ -77,13 +77,15 @@ function LoginForm() {
       setAccessToken(res.token);
       res = await validateLogin();
       res = await res.json();
+
       if (res.status) {
         return;
       }
+
       setIsProcessing(false);
       window.location.reload(false);
-    } catch (err) {
-      console.error(err);
+    } catch (e) {
+      alert('아이디 또는 비밀번호가 일치하지 않습니다.');
       setIsProcessing(false);
     }
   }

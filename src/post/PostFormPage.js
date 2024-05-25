@@ -112,43 +112,31 @@ const PostForm = (props) => {
     });
 
     // 이미지 압축
-    try {
-      const newMedia = mediaFiles.filter((file) => !file.id);
+    const newMedia = mediaFiles.filter((file) => !file.id);
 
-      const blobs = await Promise.all(newMedia.map(async ({ file, type, url }) => (
-        type === 'VIDEO' ? new Blob([file]) : resizeImage(file, url))));
+    const blobs = await Promise.all(newMedia.map(async ({ file, type, url }) => (
+      type === 'VIDEO' ? new Blob([file]) : resizeImage(file, url))));
 
-      newMedia.forEach(({ file }, index) => {
-        const blobToFile = new File([blobs[index]], file.name, { type: file.type });
-        formData.append('media', blobToFile);
-      });
-    } catch (error) {
-      console.log(error);
-      return;
-    }
+    newMedia.forEach(({ file }, index) => {
+      const blobToFile = new File([blobs[index]], file.name, { type: file.type });
+      formData.append('media', blobToFile);
+    });
 
     mediaFiles.forEach((file) => {
       URL.revokeObjectURL(file.url);
     });
 
-    if (isUpdateRequest) { // 업데이트 로직
-      try {
-        const res = await fetch(`/api/posts/${postId}`, {
-          method: 'PUT',
-          body: formData,
-          headers: {},
-        });
-        if (res.status === 200) {
-          const result = await res.json();
-          console.log('성공적으로 수정');
-          console.log(id);
-          console.log('----------------');
-          UpdatePostNotification(accountId, id, postId);
-          updatePost(postId, result);
-          updateOpen(false);
-        }
-      } catch (error) {
-        console.log(error);
+    if (isUpdateRequest) { // 수정 로직
+      const res = await fetch(`/api/posts/${postId}`, {
+        method: 'PUT',
+        body: formData,
+        headers: {},
+      });
+      if (res.status === 200) {
+        const result = await res.json();
+        UpdatePostNotification(accountId, id, postId);
+        updatePost(postId, result);
+        updateOpen(false);
       }
     } else { // 등록로직 -> 부모 컴포넌트에 요청
       updateFormData(formData);

@@ -131,32 +131,23 @@ const AccountEditForm = ({ match }) => {
       new Blob([JSON.stringify(data)], { type: 'application/json' }),
     );
 
-    try {
-      if (profileImg) {
-        const tempURL = URL.createObjectURL(profileImg);
-        const resizedImage = await resizeImage(profileImg, tempURL);
-        formData.append('profileImg', resizedImage);
-      }
-    } catch (error) {
-      console.log(error);
-      return;
+
+    if (profileImg) {
+      const tempURL = URL.createObjectURL(profileImg);
+      const resizedImage = await resizeImage(profileImg, tempURL);
+      formData.append('profileImg', resizedImage);
     }
 
-    try {
-      const response = await updateAccount(formData);
-      if (response.status === 200) {
-        history.push(`/accounts/${match.params.accountId}`);
-        let res = await validateLogin();
-        res = await res.json();
-        setContextProfileImgPath(res.profileImgPath);
-      } else if (response.status === 400) {
-        const res = await response.json();
-        alert(res.message);
-      }
-    } catch (err) {
-      setIsLoading(false);
-      alert(err);
+    const response = await updateAccount(formData);
+    if (response.status === 200) {
+      history.push(`/accounts/${match.params.accountId}`);
+      let res = await validateLogin();
+      res = await res.json();
+      setContextProfileImgPath(res.profileImgPath);
+    } else {
+      alert('프로필 수정에 실패했습니다.');
     }
+
     setIsLoading(false);
   };
 
@@ -166,10 +157,11 @@ const AccountEditForm = ({ match }) => {
       try {
         const response = await getAccount(match.params.accountId);
         accountInfo = await response.json();
-      } catch (err) {
-        alert(err);
+      } catch (e) {
+        alert('프로필 정보를 불러오는데 실패했습니다.');
         setIsLoaded(false);
       }
+
       setAccount(accountInfo);
       setName(accountInfo.name);
       setIntroduction(accountInfo.introduction);

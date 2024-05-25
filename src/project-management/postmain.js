@@ -138,23 +138,18 @@ const PostMain = (props) => {
     if (!formData || resource < 1) return;
 
     setIsPostLoading(true);
+    resource -= 1;
 
-    try {
-      resource -= 1;
+    const res = await fetch('/api/posts', {
+      method: 'POST',
+      body: formData,
+      headers: {},
+    });
 
-      const res = await fetch('/api/posts', {
-        method: 'POST',
-        body: formData,
-        headers: {},
-      });
-
-      if (res.status === 201) {
-        console.log('성공적으로 등록');
-        setFormData(null);
-        window.location.reload(true);
-      }
-    } catch (error) {
-      console.log(error);
+    if (res.status === 201) {
+      console.log('성공적으로 등록');
+      setFormData(null);
+      window.location.reload(true);
     }
     resource += 1;
   }, [formData]);

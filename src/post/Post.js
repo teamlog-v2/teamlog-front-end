@@ -320,8 +320,7 @@ const MediaList = ({ media }) => {
                 style={{
                   width: '100%', // 조절 가능한 폭
                   paddingTop: '100%', // 1:1의 측면 비율을 갖기 위한 높이
-                  position: 'relative',
-                  backgroundColor: 'lightblue', // 배경색은 필요에 따라 조절
+                  position: 'relative'
                 }}
               >
                 <div

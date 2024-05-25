@@ -11,16 +11,12 @@ const UpdateHistory = (props) => {
   const [history, setHistory] = useState(null);
 
   useEffect(async () => {
-    try {
-      const response = await fetch(`/api/posts/${id}/historys`, {
-        method: 'GET',
-      });
-      const result = await response.json();
-      result.reverse();
-      setHistory(result);
-    } catch (err) {
-      console.log(err);
-    }
+    const response = await fetch(`/api/posts/${id}/historys`, {
+      method: 'GET',
+    });
+    const result = await response.json();
+    result.reverse();
+    setHistory(result);
   }, []);
 
   return (
