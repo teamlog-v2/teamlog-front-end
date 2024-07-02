@@ -19,7 +19,7 @@ import {
   InvitationAccept,
   LeaveProject,
   RefuseProject,
-} from './projectApi';
+} from './project-api';
 
 const DeleteButton = withStyles({
   root: {

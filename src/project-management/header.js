@@ -19,7 +19,7 @@ import { Link, Redirect, useLocation, useParams } from 'react-router-dom';
 import AuthContext from '../contexts/auth';
 import ErrorContext from '../contexts/error';
 import { useFetchData } from '../hooks/hooks';
-import { ApplyProject, InvitationAccept } from './projectApi';
+import { ApplyProject, InvitationAccept } from './project-api';
 
 const useStyles = makeStyles((theme) => ({
   root: {

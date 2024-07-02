@@ -23,7 +23,7 @@ import { makeStyles, withStyles } from '@mui/styles';
 import { useContext, useEffect, useState } from 'react';
 import AuthContext from '../contexts/auth';
 import { convertResourceUrl } from '../utils';
-import { GetProjectInvitees, InviteProjectNotification, JoinProject } from './projectApi';
+import { GetProjectInvitees, InviteProjectNotification, JoinProject } from './project-api';
 
 const StyledList = withStyles({
   root: {

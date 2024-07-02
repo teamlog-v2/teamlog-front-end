@@ -7,7 +7,7 @@ import ResponsiveDialog from '../organisms/ResponsiveDialog';
 import { convertResourceUrl } from '../utils';
 import InviteesSelect from './inviteesSelect';
 import MasterSelect from './masterSelect';
-import { AcceptProject, GetProject, GetProjectApplcants, GetProjectInvitees, GetProjectMembers, KickOutProjectMember, RefuseProject } from './projectApi';
+import { AcceptProject, GetProject, GetProjectApplcants, GetProjectInvitees, GetProjectMembers, KickOutProjectMember, RefuseProject } from './project-api';
 
 const useStyles = makeStyles(() => ({
   profileImg: {

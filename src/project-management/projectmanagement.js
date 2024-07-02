@@ -7,7 +7,7 @@ import ResponsiveDialog from '../organisms/ResponsiveDialog';
 import ProjectUpdateForm from '../project/ProjectUpdateForm';
 import { resizeImage } from '../utils';
 import Introduction from './introduction';
-import { DeleteProject, GetProject } from './projectApi';
+import { DeleteProject, GetProject } from './project-api';
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
