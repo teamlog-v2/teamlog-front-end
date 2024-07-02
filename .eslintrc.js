@@ -43,5 +43,8 @@ module.exports = {
     'no-unused-vars': 'off', // 정의 후 사용하지 않은 변수
     'react/prop-types': 'off', // prop type 검사 
     'react/jsx-key': 'off', // key prop 검사
+    'no-console': 'off', // console 사용
+    'no-alert': 'off', // alert 사용
+    'func-names': 'off', // 익명함수 사용
   },
 };
