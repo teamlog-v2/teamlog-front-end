@@ -21,7 +21,7 @@ import {
 import { withStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
 import { convertResourceUrl } from '../utils';
-import { DelegateProjectMaster, DelegateProjectMasterNotification } from './projectApi';
+import { DelegateProjectMaster, DelegateProjectMasterNotification } from './project-api';
 
 const StyledList = withStyles({
   root: {

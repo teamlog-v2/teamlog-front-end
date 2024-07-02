@@ -1,4 +1,4 @@
-import { GetProject, GetProjectMembers } from '../project-management/projectApi';
+import { GetProject, GetProjectMembers } from '../project-management/project-api';
 
 const headersData = { 'Content-Type': 'application/json' };
 
