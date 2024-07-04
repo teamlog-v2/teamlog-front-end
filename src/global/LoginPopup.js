@@ -144,7 +144,7 @@ function LoginForm() {
           color: 'white',
         }}
         variant="contained"
-        href='http://localhost:8090/login/github'
+        href={`${process.env.REACT_APP_API_URL}/login/github`}
         fullWidth
         disabled={isProcessing}
       >
