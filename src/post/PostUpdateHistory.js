@@ -11,7 +11,7 @@ const UpdateHistory = (props) => {
   const [history, setHistory] = useState(null);
 
   useEffect(async () => {
-    const response = await fetch(`/api/posts/${id}/historys`, {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/posts/${id}/historys`, {
       method: 'GET',
     });
     const result = await response.json();

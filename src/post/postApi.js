@@ -1,7 +1,7 @@
 
 export const DeletePost = async (id) => {
   const status = await fetch(
-    `/api/posts/${id}`, {
+    `${process.env.REACT_APP_API_URL}/api/posts/${id}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
@@ -13,7 +13,7 @@ export const DeletePost = async (id) => {
 
 // 게시물 수정 알림
 export const UpdatePostNotification = async (accountId, projectId, postId) => {
-  const project = await fetch(`/api/projects/${projectId}`)
+  const project = await fetch(`${process.env.REACT_APP_API_URL}/api/projects/${projectId}`)
     .then((res) => res.json());
 
   console.log(project);

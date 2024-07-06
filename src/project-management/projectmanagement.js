@@ -86,7 +86,7 @@ const ProjectManagement = (props) => {
     const resizedImage = await resizeImage(file, tempURL);
     formData.append('thumbnail', resizedImage);
 
-    const res = await fetch(`/api/projects/${projectId}/thumbnail`, {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/api/projects/${projectId}/thumbnail`, {
       method: 'PUT',
       body: formData,
     });

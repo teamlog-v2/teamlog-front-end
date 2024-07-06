@@ -79,7 +79,7 @@ const PostMain = (props) => {
   const { relation } = props;
 
   const [hashtags, isHashtagsLoaded] = useFetchData(
-    `/api/projects/${projectId}/hashtags`,
+    `${process.env.REACT_APP_API_URL}/api/projects/${projectId}/hashtags`,
   );
 
   // posts를 선별 조회하기 위한 states
@@ -88,7 +88,7 @@ const PostMain = (props) => {
   const [order, setOrder] = useState(1);
 
   // fetch를 위한 url을 해시태그와 키워드 검색을 토대로 생성한다.
-  let url = `/api/posts/project/${projectId}?`;
+  let url = `${process.env.REACT_APP_API_URL}/api/posts/project/${projectId}?`;
   if (selectedTags.length !== 0) {
     url += `&hashtag=${selectedTags.map((index) => hashtags[index])}`;
   }
@@ -140,7 +140,7 @@ const PostMain = (props) => {
     setIsPostLoading(true);
     resource -= 1;
 
-    const res = await fetch('/api/posts', {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/api/posts`, {
       method: 'POST',
       body: formData,
       headers: {},

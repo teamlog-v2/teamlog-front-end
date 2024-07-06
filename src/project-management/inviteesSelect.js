@@ -62,7 +62,7 @@ const InviteesSelect = ({
     (async () => {
       let result;
       try {
-        const response = await fetch(`/api/projects/${projectId}/not-members`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/projects/${projectId}/not-members`, {
           method: 'Get',
           headers: { 'Content-Type': 'application/json' },
         });

@@ -198,7 +198,7 @@ const Header = ({ sections, updateRelation }) => {
   const { id: projectId } = useParams();
   const { pathname } = useLocation();
 
-  const [project, isProjectLoaded, projectLoadError] = useFetchData(`/api/projects/${projectId}`);
+  const [project, isProjectLoaded, projectLoadError] = useFetchData(`${process.env.REACT_APP_API_URL}/api/projects/${projectId}`);
   const title = project?.name;
   const introduction = project?.introduction;
   const relation = project?.relation;

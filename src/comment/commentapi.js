@@ -11,7 +11,7 @@ export const CreateComment = async (
     commentMentions: commentMentionsVal,
   };
 
-  const response = await fetch('/api/comments', {
+  const response = await fetch(`${process.env.REACT_APP_API_URL}/api/comments`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -36,7 +36,7 @@ export const UpdateComment = async (
     commentMentions: commentMentionsVal,
   };
 
-  const status = await fetch(`/api/comments/${comment.parentCommentId}`, {
+  const status = await fetch(`${process.env.REACT_APP_API_URL}/api/comments/${comment.parentCommentId}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -48,7 +48,7 @@ export const UpdateComment = async (
 };
 
 export const readComment = async (commentId) => {
-  const response = await fetch(`/api/comments/${commentId}`, {
+  const response = await fetch(`${process.env.REACT_APP_API_URL}/api/comments/${commentId}`, {
     headers: {
       'Content-Type': 'application/json',
     },
@@ -59,7 +59,7 @@ export const readComment = async (commentId) => {
 
 export const ReadCommentList = async (postId, page, size) => {
   const response = await fetch(
-    `/api/posts/${postId}/parent-comments?page=${page}&size=${size}`, {
+    `${process.env.REACT_APP_API_URL}/api/posts/${postId}/parent-comments?page=${page}&size=${size}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -72,7 +72,7 @@ export const ReadCommentList = async (postId, page, size) => {
 
 export const ReadChildCommentList = async (commentId, page, size) => {
   const response = await fetch(
-    `/api/comments/${commentId}/child-comments?page=${page}&size=${size}`, {
+    `${process.env.REACT_APP_API_URL}/api/comments/${commentId}/child-comments?page=${page}&size=${size}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -84,7 +84,7 @@ export const ReadChildCommentList = async (commentId, page, size) => {
 
 export const DeleteComment = async (commentId) => {
   const status = await fetch(
-    `/api/comments/${commentId}`, {
+    `${process.env.REACT_APP_API_URL}/api/comments/${commentId}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',

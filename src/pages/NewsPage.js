@@ -36,7 +36,7 @@ export default function NewsPage() {
 
   useEffect(() => {
     // 프로젝트 초대장
-    fetch('/api/accounts/project-invitation')
+    fetch(`${process.env.REACT_APP_API_URL}/api/accounts/project-invitation`)
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
@@ -44,7 +44,7 @@ export default function NewsPage() {
       });
 
     // 속한 프로젝트
-    fetch(`/api/projects/accounts/${accountId}`)
+    fetch(`${process.env.REACT_APP_API_URL}/api/projects/accounts/${accountId}`)
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
@@ -52,7 +52,7 @@ export default function NewsPage() {
       });
 
     // 팔로우 프로젝트
-    fetch(`/api/accounts/${accountId}/following-projects`)
+    fetch(`${process.env.REACT_APP_API_URL}/api/accounts/${accountId}/following-projects`)
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
@@ -60,7 +60,7 @@ export default function NewsPage() {
       });
 
     // 나의 팔로워의 게시물
-    fetch('/api/posts/following-accounts')
+    fetch(`${process.env.REACT_APP_API_URL}/api/posts/following-accounts`)
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
@@ -78,7 +78,7 @@ export default function NewsPage() {
     // 최신 (7일 이내? 기준시간값을 변경하기 쉽게 구현하세요)측에 속하는 것만 가지고 나머지는 날린다. (이러고 남은게 없으면 패스~)
     // 정렬 후 포장해서 저장한다.
     belongingProjects.forEach((project) => {
-      fetch(`/api/projects/${project.id}/tasks`)
+      fetch(`${process.env.REACT_APP_API_URL}/api/projects/${project.id}/tasks`)
         .then((res) => res.json())
         .then((res) => {
           console.log(res);
@@ -123,7 +123,7 @@ export default function NewsPage() {
     // 프로젝트 단위로 받는데, 딱히 구분하진 않는다.
     // 상태변수에 추가한다. (정렬은 나중에 한번에)
     belongingProjects.forEach(({ id }) => {
-      fetch(`/api/posts/project/${id}`)
+      fetch(`${process.env.REACT_APP_API_URL}/api/posts/project/${id}`)
         .then((res) => res.json())
         .then((res) => {
           console.log(res);
@@ -143,7 +143,7 @@ export default function NewsPage() {
     // 프로젝트 단위로 받는데, 딱히 구분하진 않는다.
     // 상태변수에 추가한다. (정렬은 나중에 한번에)
     followingProjects.forEach(({ id }) => {
-      fetch(`/api/posts/project/${id}`)
+      fetch(`${process.env.REACT_APP_API_URL}/api/posts/project/${id}`)
         .then((res) => res.json())
         .then((res) => {
           console.log(res);
@@ -291,7 +291,7 @@ function InvitationsCard({ invitation }) {
 
   async function accept() {
     setIsLoading(true);
-    const res = await fetch(`/api/project-joins/${joinId}`, {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/api/project-joins/${joinId}`, {
       method: 'POST',
     });
     if (res.status >= 200 && res.status < 300) {
@@ -302,7 +302,7 @@ function InvitationsCard({ invitation }) {
 
   async function reject() {
     setIsLoading(true);
-    const res = await fetch(`/api/project-joins/${joinId}`, {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/api/project-joins/${joinId}`, {
       method: 'DELETE',
     });
     if (res.status >= 200 && res.status < 300) {

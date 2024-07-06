@@ -125,7 +125,7 @@ const convertResourceUrl = (src) => {
 
 const convertDownloadUrl = (src) => {
   if (src?.indexOf(`${process.env.REACT_APP_API_URL}/api/downloadFile`) === 0) {
-    return src.slice(src.indexOf('/api/downloadFile'));
+    return src.slice(src.indexOf(`${process.env.REACT_APP_API_URL}/api/downloadFile`));
   }
 
   return src;

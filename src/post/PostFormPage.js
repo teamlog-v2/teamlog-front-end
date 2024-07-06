@@ -127,7 +127,7 @@ const PostForm = (props) => {
     });
 
     if (isUpdateRequest) { // 수정 로직
-      const res = await fetch(`/api/posts/${postId}`, {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/posts/${postId}`, {
         method: 'PUT',
         body: formData,
         headers: {},

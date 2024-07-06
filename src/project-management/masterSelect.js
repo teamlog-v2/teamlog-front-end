@@ -47,7 +47,7 @@ const MasterSelect = ({
     (async () => {
       let result;
       try {
-        const response = await fetch(`/api/projects/${projectId}/members`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/projects/${projectId}/members`, {
           method: 'Get',
           headers: { 'Content-Type': 'application/json' },
         });
