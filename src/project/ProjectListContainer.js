@@ -1,6 +1,6 @@
 import { Skeleton } from '@mui/lab';
 import { Box, Grid } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ProjectItem from './ProjectItem';
 // thumbnail: 'https://images.unsplash.com/photo-1617892459113-0ef697cafa05?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max',
 // thumbnail: 'https://images.unsplash.com/photo-1617143777034-fe4c261ac738?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max',
@@ -16,7 +16,7 @@ const ProjectListContainer = ({ accountId }) => {
     (async () => {
       let result;
       try {
-        const response = await fetch(`/api/projects/accounts/${accountId}`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/projects/accounts/${accountId}`, {
           method: 'Get',
           headers: { 'Content-Type': 'application/json' },
         });

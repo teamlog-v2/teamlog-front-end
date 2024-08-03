@@ -25,10 +25,10 @@
 // };
 
 // export const requestNewPostNotification = async (accountId, projectId) => {
-//   const targets = await fetch(`/api/projects/${projectId}/members`)
+//   const targets = await fetch(`${process.env.REACT_APP_API_URL}/api/projects/${projectId}/members`)
 //   .then((res) => res.json()).then((res) => res.map((member) => member.id));
 
-//   const projectName = await fetch(`/api/projects/${projectId}`)
+//   const projectName = await fetch(`${process.env.REACT_APP_API_URL}/api/projects/${projectId}`)
 //   .then((res) => res.json()).then((res) => res.name);
 
 //   console.log(accountId, projectId, targets, projectName);
@@ -55,7 +55,7 @@
 // };
 
 // export const requestNewCommentNotification = async (writerId, postId, projectId) => {
-//   const target = await fetch(`/api/posts/${postId}`).then((res) => res.json()).then((res) => res.writer.id);
+//   const target = await fetch(`${process.env.REACT_APP_API_URL}/api/posts/${postId}`).then((res) => res.json()).then((res) => res.writer.id);
 
 //   try {
 //     if (!target) throw `can't notify new comment`;
@@ -100,7 +100,7 @@
 
 
 // export const requestNewPostLikeNotification = async (postId, source) => {
-//   const { target, projectId } = await fetch(`/api/posts/${postId}`)
+//   const { target, projectId } = await fetch(`${process.env.REACT_APP_API_URL}/api/posts/${postId}`)
 //     .then((res) => res.json())
 //     .then((res) => ({
 //     target: res.writer.id,

@@ -5,7 +5,7 @@ import { Redirect, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import AuthContext from '../contexts/auth';
 import { convertResourceUrl } from '../utils';
-import { FollowProject, FollowProjectNotification, GetFollowProjects, GetProjectFollowers, UnFollowProject } from './projectApi';
+import { FollowProject, FollowProjectNotification, GetFollowProjects, GetProjectFollowers, UnFollowProject } from './project-api';
 
 const useStyles = makeStyles(() => ({
   profileImg: {

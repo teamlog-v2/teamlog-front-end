@@ -1,6 +1,6 @@
 import { Avatar, Box, Card, CircularProgress, Container, Grid, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import ErrorContext from '../contexts/error';
@@ -55,7 +55,7 @@ const Master = (props) => {
               </Box>
             </Card>
           </Grid>
-) : (<></>)}
+        ) : (<></>)}
 
       </Grid>
     </Container>
@@ -75,7 +75,7 @@ const Member = (props) => {
       </Grid>
       <Grid container spacing={2}>
         {members.map((member) => (
-            // <div key={member.id}>{member.id}</div>
+          // <div key={member.id}>{member.id}</div>
           <Grid item sm={6} xs={12}>
             <Card elevation={2}>
               <Box display="flex" flexDirection="row">
@@ -101,7 +101,7 @@ const Member = (props) => {
               </Box>
             </Card>
           </Grid>
-          ))}
+        ))}
       </Grid>
     </Container>
   );
@@ -111,11 +111,11 @@ const MemberTab = () => {
   const { id: projectId } = useParams();
 
   const [members, isMemebersLoaded, membersLoadError] = useFetchData(
-    `/api/projects/${projectId}/members`,
+    `${process.env.REACT_APP_API_URL}/api/projects/${projectId}/members`,
   );
 
   const [project, isProjectLoaded, projectsLoadError] = useFetchData(
-    `/api/projects/${projectId}`,
+    `${process.env.REACT_APP_API_URL}/api/projects/${projectId}`,
   );
 
   const { useHandleError } = useContext(ErrorContext);

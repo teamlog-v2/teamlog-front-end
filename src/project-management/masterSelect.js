@@ -21,7 +21,7 @@ import {
 import { withStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
 import { convertResourceUrl } from '../utils';
-import { DelegateProjectMaster, DelegateProjectMasterNotification } from './projectApi';
+import { DelegateProjectMaster, DelegateProjectMasterNotification } from './project-api';
 
 const StyledList = withStyles({
   root: {
@@ -47,7 +47,7 @@ const MasterSelect = ({
     (async () => {
       let result;
       try {
-        const response = await fetch(`/api/projects/${projectId}/members`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/projects/${projectId}/members`, {
           method: 'Get',
           headers: { 'Content-Type': 'application/json' },
         });

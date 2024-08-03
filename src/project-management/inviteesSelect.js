@@ -23,7 +23,7 @@ import { makeStyles, withStyles } from '@mui/styles';
 import { useContext, useEffect, useState } from 'react';
 import AuthContext from '../contexts/auth';
 import { convertResourceUrl } from '../utils';
-import { GetProjectInvitees, InviteProjectNotification, JoinProject } from './projectApi';
+import { GetProjectInvitees, InviteProjectNotification, JoinProject } from './project-api';
 
 const StyledList = withStyles({
   root: {
@@ -62,7 +62,7 @@ const InviteesSelect = ({
     (async () => {
       let result;
       try {
-        const response = await fetch(`/api/projects/${projectId}/not-members`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/projects/${projectId}/not-members`, {
           method: 'Get',
           headers: { 'Content-Type': 'application/json' },
         });

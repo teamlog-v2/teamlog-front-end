@@ -1,7 +1,7 @@
 import { Map } from '@mui/icons-material';
 import { Box, Button } from '@mui/material';
 import GoogleMapReact from 'google-map-react';
-import React, { useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { useHistory, useParams } from 'react-router';
 import useSupercluster from 'use-supercluster';
@@ -12,7 +12,7 @@ import SimpleMarker from './SimpleMarker';
 
 function ProjectAnchor() {
   const { id: projectId } = useParams();
-  const [project] = useFetchData(`/api/projects/${projectId}`);
+  const [project] = useFetchData(`${process.env.REACT_APP_API_URL}/api/projects/${projectId}`);
   const history = useHistory();
 
   if (!project) {
@@ -48,7 +48,7 @@ export default function MapPage() {
 
   const [posts] = useFetchData(
     projectId
-      ? `/api/projects/${projectId}/posts/with-location`
+      ? `${process.env.REACT_APP_API_URL}/api/projects/${projectId}/posts/with-location`
       : '/api/posts/with-location',
   );
   const [selectedPosts, setSelectedPosts] = useState(null);
@@ -63,13 +63,13 @@ export default function MapPage() {
   }
 
   const points = useMemo(() => (posts || []).map((post, index) => ({
-      type: 'Feature',
-      properties: { cluster: false, postIndex: index },
-      geometry: {
-        type: 'Point',
-        coordinates: [post.longitude, post.latitude],
-      },
-    })), [posts]);
+    type: 'Feature',
+    properties: { cluster: false, postIndex: index },
+    geometry: {
+      type: 'Point',
+      coordinates: [post.longitude, post.latitude],
+    },
+  })), [posts]);
 
   const [bounds, setBounds] = useState(null);
   const [zoom, setZoom] = useState(3);

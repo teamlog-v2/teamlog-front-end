@@ -19,7 +19,7 @@ import { Link, Redirect, useLocation, useParams } from 'react-router-dom';
 import AuthContext from '../contexts/auth';
 import ErrorContext from '../contexts/error';
 import { useFetchData } from '../hooks/hooks';
-import { ApplyProject, InvitationAccept } from './projectApi';
+import { ApplyProject, InvitationAccept } from './project-api';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -198,7 +198,7 @@ const Header = ({ sections, updateRelation }) => {
   const { id: projectId } = useParams();
   const { pathname } = useLocation();
 
-  const [project, isProjectLoaded, projectLoadError] = useFetchData(`/api/projects/${projectId}`);
+  const [project, isProjectLoaded, projectLoadError] = useFetchData(`${process.env.REACT_APP_API_URL}/api/projects/${projectId}`);
   const title = project?.name;
   const introduction = project?.introduction;
   const relation = project?.relation;

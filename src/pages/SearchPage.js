@@ -15,7 +15,7 @@ import {
   Typography
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ProjectItem from '../project/ProjectItem';
 import { convertResourceUrl } from '../utils';
@@ -39,7 +39,7 @@ export default function SearchPage() {
 
     if (type === 'PROJECT') {
       (async () => {
-        const promise = fetch(`/api/projects?name=${query}`);
+        const promise = fetch(`${process.env.REACT_APP_API_URL}/api/projects?name=${query}`);
         lastPromise.current = promise;
         const res = await promise;
         const projects = await res.json();
@@ -54,7 +54,7 @@ export default function SearchPage() {
 
     if (type === 'TEAM') {
       (async () => {
-        const promise = fetch(`/api/teams?name=${query}`);
+        const promise = fetch(`${process.env.REACT_APP_API_URL}/api/teams?name=${query}`);
         lastPromise.current = promise;
         const res = await promise;
         const projects = await res.json();
@@ -69,7 +69,7 @@ export default function SearchPage() {
 
     if (type === 'USER') {
       (async () => {
-        const promise = fetch(`/api/accounts?name=${query}`);
+        const promise = fetch(`${process.env.REACT_APP_API_URL}/api/accounts?name=${query}`);
         lastPromise.current = promise;
         // 병렬처리도 가능하긴 함
         const res = await promise;
@@ -77,7 +77,7 @@ export default function SearchPage() {
         if (promise !== lastPromise.current) {
           return;
         }
-        const res2 = await fetch(`/api/accounts?id=${query}`);
+        const res2 = await fetch(`${process.env.REACT_APP_API_URL}/api/accounts?id=${query}`);
         const accounts2 = await res2.json();
         if (promise !== lastPromise.current) {
           return;

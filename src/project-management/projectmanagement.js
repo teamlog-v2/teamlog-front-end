@@ -7,7 +7,7 @@ import ResponsiveDialog from '../organisms/ResponsiveDialog';
 import ProjectUpdateForm from '../project/ProjectUpdateForm';
 import { resizeImage } from '../utils';
 import Introduction from './introduction';
-import { DeleteProject, GetProject } from './projectApi';
+import { DeleteProject, GetProject } from './project-api';
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -86,7 +86,7 @@ const ProjectManagement = (props) => {
     const resizedImage = await resizeImage(file, tempURL);
     formData.append('thumbnail', resizedImage);
 
-    const res = await fetch(`/api/projects/${projectId}/thumbnail`, {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/api/projects/${projectId}/thumbnail`, {
       method: 'PUT',
       body: formData,
     });

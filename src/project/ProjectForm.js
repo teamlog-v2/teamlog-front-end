@@ -46,7 +46,7 @@ export default function ProjectForm({ teamIdVal = null, updateOpen }) {
       teamId: teamIdVal,
     };
 
-    return fetch('/api/projects', {
+    return fetch(`${process.env.REACT_APP_API_URL}/api/projects`, {
       method: 'POST',
       body: JSON.stringify(data),
       headers: { 'Content-type': 'application/json' },

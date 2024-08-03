@@ -116,7 +116,7 @@ const detectSupportFormat = async (url) => {
 };
 
 const convertResourceUrl = (src) => {
-  if (src?.indexOf?.('http://localhost:8090/resources') === 0) {
+  if (src?.indexOf(`${process.env.REACT_APP_API_URL}/resources`) === 0) {
     return src.slice(src.indexOf('/resources'));
   }
 
@@ -124,20 +124,16 @@ const convertResourceUrl = (src) => {
 };
 
 const convertDownloadUrl = (src) => {
-  if (src?.indexOf?.('http://localhost:8090/api/downloadFile') === 0) {
-    return src.slice(src.indexOf('/api/downloadFile'));
+  if (src?.indexOf(`${process.env.REACT_APP_API_URL}/api/downloadFile`) === 0) {
+    return src.slice(src.indexOf(`${process.env.REACT_APP_API_URL}/api/downloadFile`));
   }
 
   return src;
 };
 
 export {
-  isDuplicateData,
-  isValidSize,
-  getFormat,
-  getTypeofFile,
-  resizeImage,
-  detectSupportFormat,
-  convertResourceUrl,
-  convertDownloadUrl,
+  convertDownloadUrl, convertResourceUrl, detectSupportFormat, getFormat,
+  getTypeofFile, isDuplicateData,
+  isValidSize, resizeImage
 };
+

@@ -15,7 +15,7 @@ import {
   useState
 } from 'react';
 import AuthContext from '../contexts/auth';
-import { GetProjectMembers } from '../project-management/projectApi';
+import { GetProjectMembers } from '../project-management/project-api';
 import { convertResourceUrl } from '../utils';
 import { CreateComment } from './commentapi';
 
